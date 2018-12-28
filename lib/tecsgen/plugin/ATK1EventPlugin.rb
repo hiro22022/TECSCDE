@@ -38,13 +38,13 @@
 
 #== ATK1 Event celltype プラグインクラス
 class ATK1EventPlugin < CelltypePlugin
-#@@instancies:: []     :セル実体群
+# @@instancies:: []     :セル実体群
 @@instancies = []
 
   #===  初期化
   #      全てのセルの実体を意味解析後に参照する必要があるために
   #      初期化時に singleton の instancies に格納する
-  #signature::     Celltype        シグニチャ（インスタンス）
+  # signature::     Celltype        シグニチャ（インスタンス）
   def initialize( celltype, option )
     super
     @@instancies << self
@@ -78,7 +78,7 @@ class ATK1EventPlugin < CelltypePlugin
 
         # AUTO type search and change to zero
         if join then
-          #mask_bit = join.get_rhs.to_s.eval_cnst( nil )
+          # mask_bit = join.get_rhs.to_s.eval_cnst( nil )
           mask_bit = join.get_rhs.to_s.to_i
           mask_str = join.get_rhs.to_s
           if mask_str == "AUTO" then

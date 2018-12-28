@@ -284,7 +284,7 @@ EOT
           subsc_str = ""
         end
 
-        eport = "eThroughEntry" #RPCの受け口名に変更
+        eport = "eThroughEntry" # RPCの受け口名に変更
         file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc}"
       end
 
@@ -304,8 +304,8 @@ EOT
   end
 
   #=== 後ろのコードを生成
-  #プラグインの後ろのコードを生成
-  #file:: File: 
+  # プラグインの後ろのコードを生成
+  # file:: File: 
   def self.gen_post_code( file )
     file.print "/* '#{self.name}' post code */\n"
     @@shared_channel_list.each{ |chan_name,plugin_obj|

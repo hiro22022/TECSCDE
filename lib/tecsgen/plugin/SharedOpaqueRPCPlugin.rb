@@ -261,7 +261,7 @@ EOT
           subsc_str = ""
         end
 
-        eport = @entry_port_name #RPCの受け口名に変更
+        eport = @entry_port_name # RPCの受け口名に変更
         file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
       end
 
@@ -316,7 +316,7 @@ EOT
 
   #=== post コード(CDL) を生成
   # プラグインの後のコードを生成
-  #file:: File: 
+  # file:: File: 
   def self.gen_post_code( file )
 
     file.print "/* '#{self.name}' post code */\n"

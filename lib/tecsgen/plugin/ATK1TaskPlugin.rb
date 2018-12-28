@@ -38,10 +38,10 @@
 
 #== celltype プラグインの共通の親クラス
 class ATK1TaskPlugin < CelltypePlugin
-#@celltype:: Celltype
-#@option:: String     :オプション文字列
+# @celltype:: Celltype
+# @option:: String     :オプション文字列
 
-  #signature::     Celltype        シグニチャ（インスタンス）
+  # signature::     Celltype        シグニチャ（インスタンス）
   def initialize( celltype, option )
     super
   end
@@ -51,7 +51,7 @@ class ATK1TaskPlugin < CelltypePlugin
   #      重複して生成してはならない
   #      すでに生成されている場合は出力しないこと。
   #      もしくは同名の import により、重複を避けること。
-  #file::        FILE       生成するファイル
+  # file::        FILE       生成するファイル
 #  def gen_cdl_file file
 #  end
 
@@ -68,15 +68,15 @@ class ATK1TaskPlugin < CelltypePlugin
   #===  受け口関数の本体(C言語)を生成する
   #     このメソッドが未定義の場合、ジェネレータは受け口関数のテンプレートを生成する
   #     このメソッドが定義済みの場合、（テンプレートではなく、変更する必要のない）セルタイプコードを生成する
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
-  #sig_name::       string
-  #ep_name::        string
-  #func_name::      string
-  #func_global_name:: string
-  #func_type::      class derived from Type
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
+  # sig_name::       string
+  # ep_name::        string
+  # func_name::      string
+  # func_global_name:: string
+  # func_type::      class derived from Type
 #  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
 #  end
 

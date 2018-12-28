@@ -265,15 +265,15 @@ EOT
   #===  受け口関数の本体(C言語)を生成する
   #     通常であれば、ジェネレータは受け口関数のテンプレートを生成する
   #     プラグインの場合、変更する必要のないセルタイプコードを生成する
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
-  #sig_name::       string
-  #ep_name::        string
-  #func_name::      string
-  #func_global_name:: string
-  #func_type::      class derived from Type
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
+  # sig_name::       string
+  # ep_name::        string
+  # func_name::      string
+  # func_global_name:: string
+  # func_type::      class derived from Type
   def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
         # puts "generate ep_func for #{ct_name}"
 
@@ -313,10 +313,10 @@ EOT
             file.print( "  " )
         end
 
-        #file.print( "#{@call_port_name}_#{func_name}(" )
+        # file.print( "#{@call_port_name}_#{func_name}(" )
         SVCManage.set_func_id( "#{@ct_name_body}_#{func_name}" )
         svcid = SVCManage.get_func_id( "#{@ct_name_body}_#{func_name}" )
-        #file.print( "cal_svc( #{@ct_name_body}_#{func_name}" )
+        # file.print( "cal_svc( #{@ct_name_body}_#{func_name}" )
         file.print( "cal_svc( TFN_TECSGEN_ORIGIN + #{svcid.to_s}" )
 
         #    if ( ! b_singleton ) then

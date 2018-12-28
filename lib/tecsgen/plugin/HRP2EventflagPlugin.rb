@@ -36,7 +36,7 @@
 #   $Id: HRP2EventflagPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
-#require "HRP2KernelObjectPlugin"
+# require "HRP2KernelObjectPlugin"
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
@@ -59,7 +59,7 @@ class HRP2EventflagPlugin < HRP2KernelObjectPlugin
     def print_cfg_sac(file, val, acv)
         file.puts "SAC_FLG(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
     end
-    #tEventflagの受け口リスト 
+    # tEventflagの受け口リスト 
     def get_entry_ports_name_list()
         @@ep
     end

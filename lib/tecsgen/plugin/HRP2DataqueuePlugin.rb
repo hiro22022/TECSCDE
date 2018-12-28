@@ -36,7 +36,7 @@
 #   $Id: HRP2DataqueuePlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
-#require "HRP2KernelObjectPlugin"
+# require "HRP2KernelObjectPlugin"
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
@@ -59,7 +59,7 @@ class HRP2DataqueuePlugin < HRP2KernelObjectPlugin
     def print_cfg_sac(file, val, acv)
         file.puts "SAC_DTQ(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
     end
-    #tDataqueueの受け口リスト 
+    # tDataqueueの受け口リスト 
     def get_entry_ports_name_list()
         @@ep
     end

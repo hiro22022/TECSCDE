@@ -41,8 +41,8 @@
 class HRPKernelObjectPlugin < CelltypePlugin
     # @@obj_hash = {}
 
-    #@celltype:: Celltype
-    #@option:: String     :オプション文字列
+    # @celltype:: Celltype
+    # @option:: String     :オプション文字列
     def initialize( celltype, option )
         super
         #
@@ -161,7 +161,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
 #                        file2.puts "}\n"
                     else
                         dbgPrint "~~~~~ #{cell.get_region.get_namespace_path} is included in"
-                        #p @@region_list
+                        # p @@region_list
                     end
                     file3 = AppFile.open( "#{$gen}/tecsgen_#{cell_domain_root.get_global_name}.cfg" )
                     print_cfg_cre(file3, cell, val,"")
@@ -270,7 +270,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                             end 
                         end
                     }
-                    #各種SACの生成
+                    # 各種SACの生成
                     domainOption = cell_domain_type.get_option
                     # p "domain_root ", cell.get_region.get_domain_root.get_name
                     if domainOption != "OutOfDomain" || cell.get_region.get_domain_root.get_name != "::"

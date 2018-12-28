@@ -127,8 +127,8 @@ end
 class HRP2KernelObjectPlugin < CelltypePlugin
     # @@obj_hash = {}
 
-    #@celltype:: Celltype
-    #@option:: String     :オプション文字列
+    # @celltype:: Celltype
+    # @option:: String     :オプション文字列
     def initialize( celltype, option )
         super
         # それぞれのカーネルオブジェクトを解析対象セルタイプに追加
@@ -216,7 +216,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
                 # $id$を置換
                 if val[:id].nil? != true
                     puts val[:id]
-                    #val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}" )
+                    # val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}" )
                     val[:id] = @celltype.subst_name( val[:id], @celltype.get_name_array( cell ) )
                 end
                 # $cbp$の代わり
@@ -262,8 +262,8 @@ class HRP2KernelObjectPlugin < CelltypePlugin
                     # p val[:accessPattern]
                     # p val[:accessPattern].class
 
-                    #ep = [ :eTaskActivate, :eTaskControl, :eTaskManage, :eTaskRefer ]
-                    #各カーネルオブジェクトの受け口名を取得
+                    # ep = [ :eTaskActivate, :eTaskControl, :eTaskManage, :eTaskRefer ]
+                    # 各カーネルオブジェクトの受け口名を取得
                     # ep = get_entry_ports_name_list()
                     i = 0
                     acv = []
@@ -288,7 +288,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
                     dbgPrint "acv = "
                     p acv
 
-                    #各種SACの生成
+                    # 各種SACの生成
                     domainOption = cell_domain_type.get_option
                     # if cell.get_region.get_region_type == :DOMAIN
                     if domainOption != "OutOfDomain"

@@ -61,8 +61,8 @@ class TECS_LANG
   }
 
   #=== LANG のパース
-  #lang::String  "ja_JP.eucJP@cjknarrow", "C" など
-  #RETURN:: [ :ja_JP, :eucJP, :cjknarrow ]
+  # lang::String  "ja_JP.eucJP@cjknarrow", "C" など
+  # RETURN:: [ :ja_JP, :eucJP, :cjknarrow ]
   def self.parse_lang( lang )
     lang =~ /([^\.@]*)(\.([^@]*))?(@(.*))?/
 
@@ -79,9 +79,9 @@ class TECS_LANG
   end
 
   #=== lang, charset の別明解決および妥当性のチェック
-  #lang::Symbol    : :en_US, :ja_JP など
-  #charset::Symbol : :eucJP, :utf8 など
-  #RETURN:
+  # lang::Symbol    : :en_US, :ja_JP など
+  # charset::Symbol : :eucJP, :utf8 など
+  # RETURN:
   #  [ lang, charset, result ]::　　result = false の場合 lang, charset は不適切
   def self.resolve_alias_and_check( lang, charset )
     if LANG_ALIAS[ lang.to_s.upcase ] then
@@ -107,7 +107,7 @@ class TECS_LANG
   end
 
   #=== codepage を取り出す
-  #codepage は3〜5桁の整数として仮定
+  # codepage は3〜5桁の整数として仮定
   def self.get_win_codepage
     cmd_pipe = IO.popen('cmd /c chcp','r')
     cmd_pipe.read =~ /([0-9]{3,5})/
@@ -236,7 +236,7 @@ class TECS_LANG
 
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const: 
-    #set_kcode $KCODE_TECSGEN     # このファイルの文字コードを設定
+    # set_kcode $KCODE_TECSGEN     # このファイルの文字コードを設定
   end
 
   #=== 一時的に KCODE を BINARY に変更する
@@ -245,7 +245,7 @@ class TECS_LANG
   # ただし、SJIS の場合は、エスケープ文字の問題があるため、変更しない
   def self.set_kcode_binary
 
-    #2.0
+    # 2.0
     if $b_no_kcode then
       return
     end

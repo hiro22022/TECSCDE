@@ -37,8 +37,8 @@
 #++
 
 class TracePlugin < ThroughPlugin
-#@cellEntry_list::[ "Cell.eEntry", "Cell2.eEntry2", ... ]
-#@b_generate::bool  : true : TracePlugin を生成する必要がある
+# @cellEntry_list::[ "Cell.eEntry", "Cell2.eEntry2", ... ]
+# @b_generate::bool  : true : TracePlugin を生成する必要がある
 
   #=== TracePlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
@@ -76,7 +76,7 @@ class TracePlugin < ThroughPlugin
   #===  宣言コードの生成
   #      typedef, signature, celltype など（cell 以外）のコードを生成
   #          重複して生成してはならない（すでに生成されている場合は出力しないこと）
-  #file::        FILE       生成するファイル
+  # file::        FILE       生成するファイル
   def gen_plugin_decl_code( file )
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？

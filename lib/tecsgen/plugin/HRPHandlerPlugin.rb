@@ -62,7 +62,7 @@ class HRPHandlerPlugin < HRPKernelObjectPlugin
         end
         # $cbp$の代わり
         index = cell.get_id - @celltype.get_id_base
-        #cell_CB_name = "#{@celltype.get_global_name}_CB_tab[#{index}]"
+        # cell_CB_name = "#{@celltype.get_global_name}_CB_tab[#{index}]"
         name_array = cell.get_celltype.get_name_array cell
         cell_CBP = name_array[8]
         # CRE_XXXの生成

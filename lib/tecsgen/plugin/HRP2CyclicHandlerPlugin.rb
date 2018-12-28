@@ -36,7 +36,7 @@
 #   $Id: HRP2CyclicHandlerPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
-#require "HRP2KernelObjectPlugin"
+# require "HRP2KernelObjectPlugin"
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 #== celltype プラグインの共通の親クラス
@@ -68,7 +68,7 @@ EOT
        file.puts "SAC_CYC(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
     end
 
-    #tCyclicHandlerの受け口リスト 
+    # tCyclicHandlerの受け口リスト 
     def get_entry_ports_name_list()
         @@ep
     end

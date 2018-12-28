@@ -140,7 +140,7 @@ class Expression < Node
 ## private
 
   #=== 式を文字列に変換
-  #name_list:: attribute (Celltype::@attribute_list), struct の @member_list を仮定している
+  # name_list:: attribute (Celltype::@attribute_list), struct の @member_list を仮定している
   def elements_to_s( elements, name_list = nil, pre = nil, post = nil )
     if elements.instance_of? Token then
       return elements.to_s    # OP_DOT, OP_REF の右辺
@@ -229,13 +229,13 @@ class Expression < Node
   end
 
   #=== Expression# 逆ポーランド文字列化
-  #param_list:: ParamlList  関数の引数リスト
+  # param_list:: ParamlList  関数の引数リスト
   def get_rpn( param_list = nil, name_list2 = nil )
     return elements_rpn( @elements, param_list, name_list2 )
   end
 
   #=== Expression# 逆ポーランド文字列化 (private)
-  #name_list:: ParamlList  関数の引数リスト
+  # name_list:: ParamlList  関数の引数リスト
   def elements_rpn( elements, name_list = nil, name_list2 = nil )
     if elements.instance_of? Token then
       print "rpn: #{elements.to_s}\n"
@@ -245,7 +245,7 @@ class Expression < Node
     case elements[0]
     when :IDENTIFIER
       nsp = elements[1]
-      #if nsp.is_name_only? && name_list && name_list.find( nsp.get_name ) then
+      # if nsp.is_name_only? && name_list && name_list.find( nsp.get_name ) then
       if nsp.is_name_only? then
         count = 0
         # p "search: #{nsp.get_name}"
@@ -438,7 +438,7 @@ class Expression < Node
       return IntegerVal.new( elements[1].val.hex, elements[1].val )
     when :CHARACTER_LITERAL
       str =  elements[1].val.gsub(/'/, "" )
-#2.0      if str.jlength == 1
+# 2.0      if str.jlength == 1
       if $b_no_kcode then
         len = str.length
       else
@@ -449,28 +449,28 @@ class Expression < Node
         str.each_byte { |b| sum = sum * 256 + b }
         return IntegerVal.new( sum, elements[1].val )
       else
-#2.0        if str[0] == 92 then
+# 2.0        if str[0] == 92 then
         if str[0] == 92 || str[0] == "\\" then
           case str[1]
-#2.0          when 48 # '0'
+# 2.0          when 48 # '0'
           when 48, "0" # '0'
             return IntegerVal.new( 0, elements[1].val )
-#2.0          when 110 # 'n'
+# 2.0          when 110 # 'n'
           when 110, "n" # 'n'
             return IntegerVal.new( 10, elements[1].val )
-#2.0          when 114 # 'r'
+# 2.0          when 114 # 'r'
           when 114, "r" # 'r'
             return IntegerVal.new( 13, elements[1].val )
-#2.0          when 116 # 't'
+# 2.0          when 116 # 't'
           when 116, "t" # 't'
             return IntegerVal.new( 15, elements[1].val )
-#2.0          when 92 # '\\'
+# 2.0          when 92 # '\\'
           when 92, '\\' # '\\'
             return IntegerVal.new( 92, elements[1].val )
           end
         end
       end
-#2.0      printf( "c=%c\n", str[1] )
+# 2.0      printf( "c=%c\n", str[1] )
       printf( "len=%d c=%c\n", len, str[1] )
       raise Error
 
@@ -531,7 +531,7 @@ class Expression < Node
       return nil if ! evaluable?( val )
 # p "val.respond_to?( \"-@\" )=#{val.respond_to?( "-@" )} #{val.class}"
 # p "val.respond_to?( \"~@\" )=#{val.respond_to?( "~@" )}"
-#2.0      if val.respond_to?( "~@" ) then  # Ruby 1.9, 2.0 preview 版では例外が発生してしまう
+# 2.0      if val.respond_to?( "~@" ) then  # Ruby 1.9, 2.0 preview 版では例外が発生してしまう
       if val.kind_of? IntegerVal then
         return ~ val
       else
@@ -813,10 +813,10 @@ class Expression < Node
 
   end
 
-  #Express# get_allocator_rhs_elem
-  #alloc_type::Symbol  :NORMAL_ALLOC|:INTERNAL_ALLOC|:RELAY_ALLOC
-  #式がアロケータ指定子の右辺として妥当かチェックし、正しければ分解した値を返す
-  #return:
+  # Express# get_allocator_rhs_elem
+  # alloc_type::Symbol  :NORMAL_ALLOC|:INTERNAL_ALLOC|:RELAY_ALLOC
+  # 式がアロケータ指定子の右辺として妥当かチェックし、正しければ分解した値を返す
+  # return:
   #  :NORMAL_ALLOC      [ cell_nsp, ep_name ]               # rhs = cell_nsp.ep_name    ex) Alloc.eAlloc
   #  :INTERNAL_ALLOC    [ ep_name ]                         # rhs = ep_name             ex) eAlloc
   #  :RELAY_ALLOC       [ cp_name, func_name, param_name ]  # rhs = cp_name.func_name.param_name
@@ -824,7 +824,7 @@ class Expression < Node
     ele = @elements
     case alloc_type 
     when :NORMAL_ALLOC
-      if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER then   #1
+      if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER then   # 1
         cdl_error( "E1017 $1: rhs not \'Cell.ePort\' form" , ele[0].to_s )
         return nil
       end
@@ -844,7 +844,7 @@ class Expression < Node
     when :RELAY_ALLOC
       if( ele[0] != :OP_DOT ||
           ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || ! ele[1][1][1].is_name_only? ||
-          ! ele[1][2].instance_of?( Token ) || ! ele[2].instance_of?( Token ) )then   #1
+          ! ele[1][2].instance_of?( Token ) || ! ele[2].instance_of?( Token ) )then   # 1
         cdl_error( "E1020 rhs not in 'call_port.func.param' form ($1)" , ele[0].to_s )   # S1086
       end
       func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
@@ -853,7 +853,7 @@ class Expression < Node
     return  nil
   end
 
-  #Expression#Expression のクローンを作成する
+  # Expression#Expression のクローンを作成する
   def clone_for_composite
     cl = self.clone
     elements = clone_elements @elements
@@ -861,8 +861,8 @@ class Expression < Node
     return cl
   end
 
-  #Expression#elements のクローンを作成
-  #elements::Array
+  # Expression#elements のクローンを作成
+  # elements::Array
   # このメソッドは、Array のディープコピーを行う
   def clone_elements elements
     elements = elements.clone
@@ -896,7 +896,7 @@ class Expression < Node
     end
 
     # elements = [ :OP_DOT, [ :IDENTIFIER, token ], token ]
-    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER then   #1
+    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER then   # 1
       return nil
     end
 
@@ -907,9 +907,9 @@ class Expression < Node
   end
 
   #=== Expression# セルへの結合の式を生成する
-  #nsp:: NamespacePath
-  #subscript:: Integer
-  #port_name:: Symbol
+  # nsp:: NamespacePath
+  # subscript:: Integer
+  # port_name:: Symbol
   # analyze_cell_join_expression と対になっている
   def self.create_cell_join_expression( nsp, subscript, port_name, locale = nil )
     if ! port_name.instance_of?( Symbol ) then
@@ -927,7 +927,7 @@ class Expression < Node
   end
 
   #=== Expression#整数定数の式を生成する
-  #val:: Integer : 値： 整数
+  # val:: Integer : 値： 整数
   def self.create_integer_constant( val, locale = nil )
     if val != Integer( val ) || val < 0 then
       raise "create_integer_constant: not integer or negative: #{val}"
@@ -949,7 +949,7 @@ class Expression < Node
   end
 
   #=== Expression#
-  #nsp:: NamespacePath :  参照するもの識別子
+  # nsp:: NamespacePath :  参照するもの識別子
   def self.create_single_identifier( nsp, locale )
     if ! nsp.instance_of?( NamespacePath ) then
       raise "create_single_identifier: not NamespacePath: #{nsp.to_s}"
@@ -958,7 +958,7 @@ class Expression < Node
   end
 
   #=== 評価可能かチェックする
-  #*v:: 可変個引数（任意の型）
+  # *v:: 可変個引数（任意の型）
   # すべてが BaseVal の子クラス（値）であれば、評価可能と判断する
   def evaluable?( *v )
     v.each{ |val|
@@ -977,8 +977,8 @@ end
 class C_EXP < Node
 # @c_exp_string : string
 
-  #c_exp_string::String
-  #b_renew::Bool  : true なら C_EXP の clone 作成（エスケープ処理等をしない）
+  # c_exp_string::String
+  # b_renew::Bool  : true なら C_EXP の clone 作成（エスケープ処理等をしない）
   def initialize( c_exp_string, b_renew = false )
     if b_renew then
       @c_exp_string = c_exp_string
@@ -991,8 +991,8 @@ class C_EXP < Node
   end
 
   #=== composite 用に C_EXP を clone する
-  #ct_name::
-  #cell_name::
+  # ct_name::
+  # cell_name::
   # composite の attribute に現れる C_EXP を文字列置換して生成しなおす．
   # この文字列置換は、意味解釈段階で行う．
   # 他の C_EXP の文字列置換は、コード生成段階で行う．

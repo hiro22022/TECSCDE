@@ -252,7 +252,7 @@ EOT
   end
   
   def print_info( f, indent )
-    #p "print_info: #{self.get_global_name}"
+    # p "print_info: #{self.get_global_name}"
     self.print_info_region f, indent
   end
 
@@ -834,7 +834,7 @@ EOT
   end
 
   #=== Type# 型文字列の識別子化
-  #型文字列に含まれる識別子として用いることのできない文字を用いることのできる文字列に置き換える
+  # 型文字列に含まれる識別子として用いることのできない文字を用いることのできる文字列に置き換える
   # 空白 => __
   # * => _Ptr_
   # [] => _Array_

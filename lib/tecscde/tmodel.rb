@@ -66,7 +66,7 @@ module TECSCDE
   #== TmObject: base class for TECSModel & its children
   #
   class TmObject
-    #@owner::
+    # @owner::
     #  TmRegion  => TmRegion, TECSModel(for root region)
     #  TmCell    => TmRegion
     #  TmPort    => TmCell | TmCPortArray | TmEPortArray
@@ -113,7 +113,7 @@ module TECSCDE
   #==ChangeSetControl: provide methods for controling ChangeSet
   module ChangeSetControl
     #== ChangeSet class
-    #record each change (change by user's operation)
+    # record each change (change by user's operation)
     class ChangeSet
       def initialize number
         @set = {}
@@ -144,7 +144,7 @@ module TECSCDE
     end
 
     #== ChangeSetMangager class
-    #contain all changes & execute undo
+    # contain all changes & execute undo
     class ChangeSetManager
       def initialize
         @change_no = 0
@@ -259,13 +259,13 @@ module TECSCDE
 
     IDENTIFIER_RE = /[A-Za-z_][0-9A-Za-z_]*/
 
-    #@paper::Hash : See Paper
-    #@cell_list::[TmCell]
-    #@cell_hash::{ Symbole(namespace_path) => TmCell }
-    #@join_list::[TmJoin]
-    #@view::TView
-    #@root_region::TmRegion
-    #@file_editing::String
+    # @paper::Hash : See Paper
+    # @cell_list::[TmCell]
+    # @cell_hash::{ Symbole(namespace_path) => TmCell }
+    # @join_list::[TmJoin]
+    # @view::TView
+    # @root_region::TmRegion
+    # @file_editing::String
 
     def initialize tecsgen
       @cell_list = []
@@ -288,7 +288,7 @@ module TECSCDE
     end
 
     #=== TECSModel#new_cell ***
-    #namespace_path::String : namespace path string of celltype
+    # namespace_path::String : namespace path string of celltype
     def new_cell( xm, ym, celltype_name, ct_namespace_path, tecsgen_cell = nil )
 
       ct_nsp = NamespacePath.analyze( ct_namespace_path )
@@ -307,9 +307,9 @@ module TECSCDE
       return new_cell2( xm, ym, ct, region, tecsgen_cell )
     end
 
-    #celltype::Celltype : in tecsgen (should be changed to TmCelltype)
-    #region:TmRegion    :
-    #tecsgen_cell:Cell  : in tecsgen
+    # celltype::Celltype : in tecsgen (should be changed to TmCelltype)
+    # region:TmRegion    :
+    # tecsgen_cell:Cell  : in tecsgen
     def new_cell2( xm, ym, celltype, region, tecsgen_cell )
       modified {
 
@@ -344,13 +344,13 @@ module TECSCDE
       modified {
 
         @cell_list.delete cell
-        @cell_hash.delete cell.get_name #mikan region
+        @cell_hash.delete cell.get_name # mikan region
       }
     end
 
     #=== TECSModel#rename_cell
-    #old_name::Symbol
-    #cell:: TmCell
+    # old_name::Symbol
+    # cell:: TmCell
     # don't call externally, use TmCell#change_name instead
     def rename_cell( cell, new_name )
       modified {
@@ -396,19 +396,19 @@ module TECSCDE
     end
 
     #=== TECSModel.normal direction of edge
-    #RETURN:: 1: if direction is positive, -1: negative
+    # RETURN:: 1: if direction is positive, -1: negative
     def self.get_sign_of_normal( edge_side )
       ((edge_side & 0b01)) != 0 ? 1 : -1
     end
 
     #=== TECSModel.is_vertical?
-    #RETURN:: true if vertical, false if horizontal
+    # RETURN:: true if vertical, false if horizontal
     def self.is_vertical?( edge_side )
       ((edge_side & 0b10) != 0) ? true : false
     end
 
     #=== TECSModel.is_parallel?
-    #RETURN:: true if parallel, false if right anble
+    # RETURN:: true if parallel, false if right anble
     def self.is_parallel?( edge_side1, edge_side2 )
       # p "edge val", edge_side1, edge_side2, edge_side1 ^ edge_side2
       ( edge_side1 ^ edge_side2) < 0b10
@@ -485,13 +485,13 @@ module TECSCDE
     end
 
     #=== TECSModel#get_file_editing
-    #return::String : file name editing
+    # return::String : file name editing
     def get_file_editing
       @file_editing
     end
 
     #=== TECSModel.get_alignment
-    #return::String : file name editing
+    # return::String : file name editing
     def self.get_alignment
       ALIGN
     end
@@ -542,10 +542,10 @@ module TECSCDE
 
     # class must be descendant of Node
     module TmUneditable
-      #@b_editable::Bool | Nil:  objects from .cdl cannot be editable  (used by TmJoin, TmCell)
+      # @b_editable::Bool | Nil:  objects from .cdl cannot be editable  (used by TmJoin, TmCell)
 
       #=== TmObject#set_editable
-      #locale:: see Node in syntaxobj.rb
+      # locale:: see Node in syntaxobj.rb
       def set_editable locale
         if locale[0] == get_model.get_file_editing
           @b_editable = true
@@ -561,19 +561,19 @@ module TECSCDE
     end
 
     class TmCell < TmObject
-      #@x::Integer
-      #@y::Integer
-      #@width::Integer
-      #@height::Integer
-      #@name::Symbol
-      #@cports::{ Symbol => CPORT }
-      #@eports::{ Symbol => EPORT }
-      #@n_cport::Integer
-      #@n_eport::Integer
-      #@celltype::  ::Celltype
-      #@owner::TmRegion
-      #@tecsgen_cell::Cell :  not nil if Cell from .cde/.cdl file
-      #@attr_list::{Symbol(name)=>Expression}
+      # @x::Integer
+      # @y::Integer
+      # @width::Integer
+      # @height::Integer
+      # @name::Symbol
+      # @cports::{ Symbol => CPORT }
+      # @eports::{ Symbol => EPORT }
+      # @n_cport::Integer
+      # @n_eport::Integer
+      # @celltype::  ::Celltype
+      # @owner::TmRegion
+      # @tecsgen_cell::Cell :  not nil if Cell from .cde/.cdl file
+      # @attr_list::{Symbol(name)=>Expression}
 
       include TmUneditable
 
@@ -597,13 +597,13 @@ module TECSCDE
         @celltype.get_port_list.each{ |port_def|
           # p "celltype:#{@celltype.get_name} port:#{port_def.get_name}"
           if port_def.get_port_type == :ENTRY then
-            #if ! port_def.is_reverse_required? then
+            # if ! port_def.is_reverse_required? then
             if port_def.get_array_size == nil
               @eports[ port_def.get_name ] = TmEPort.new( self, port_def )
             else
               @eports[ port_def.get_name ] = TmEPortArray.new( self, port_def )
             end
-            #end
+            # end
           else
             if ! port_def.is_require? then
               if port_def.get_array_size == nil
@@ -673,8 +673,8 @@ module TECSCDE
       end
 
       #=== TmCell#change_name ***
-      #name::Symbol : new name
-      #return::Bool: true if succeed
+      # name::Symbol : new name
+      # return::Bool: true if succeed
       # if cell of new_name already exists, results false
       def change_name name
         if @owner.rename_cell( self, name )
@@ -693,7 +693,7 @@ module TECSCDE
       end
 
       #=== TmCell#get_region
-      #return::TmRegion
+      # return::TmRegion
       def get_region
         @owner
       end
@@ -802,8 +802,8 @@ module TECSCDE
         end
       end
 
-      #TmCell#adjust_port_position_to_insert
-      #port::TmPort : insert after the port
+      # TmCell#adjust_port_position_to_insert
+      # port::TmPort : insert after the port
       def adjust_port_position_to_insert port
         # p "adjust_port_position_to_insert"
         nearest_port = find_nearest_next_port port
@@ -816,8 +816,8 @@ module TECSCDE
         end
       end
 
-      #TmCell#find_nearest_next_port
-      #this method is part of adjust_port_position_to_insert
+      # TmCell#find_nearest_next_port
+      # this method is part of adjust_port_position_to_insert
       def find_nearest_next_port port
         # p "find_nearest_next_port #{port.get_name} #{port.get_subscript}"
         edge_side = port.get_edge_side
@@ -856,7 +856,7 @@ module TECSCDE
       end
 
       #=== TmCell#adjust_port_position_after_port port, offs
-      #this method is part of adjust_port_position_to_insert
+      # this method is part of adjust_port_position_to_insert
       def adjust_port_position_after_port port, move_offs
         # p "adjust_port_position_after_port"
         edge_side = port.get_edge_side
@@ -938,8 +938,8 @@ module TECSCDE
       end
 
       #=== TmCell#set_attr
-      #name::Symbol
-      #init::String|Nil  (from Expression)
+      # name::Symbol
+      # init::String|Nil  (from Expression)
       def set_attr( name, init )
         modified {
 
@@ -1017,11 +1017,11 @@ module TECSCDE
     end # class TmCell
 
     class TmRegion < TmObject
-      #@sub_region::{name=>TmRegion}
+      # @sub_region::{name=>TmRegion}
 
       #=== TmRegion#initialize
-      #namespace_path::NamespacePath
-      #owner::TmRegion (parent) or TECSModel (root region)
+      # namespace_path::NamespacePath
+      # owner::TmRegion (parent) or TECSModel (root region)
       def initialize( namespace_path, owner )
         @namespace_path = namespace_path
         @owner = owner
@@ -1071,17 +1071,17 @@ module TECSCDE
     end # class TmRegion
 
     class TmPortArray < TmObject
-      #@ports::[TmPort]
-      #@port_def::Port
-      #@actual_size::Integer
-      #@subscript1::subscript value of 1st element. to check consistency of subscript
+      # @ports::[TmPort]
+      # @port_def::Port
+      # @actual_size::Integer
+      # @subscript1::subscript value of 1st element. to check consistency of subscript
 
       def get_actual_size
         @actual_size
       end
 
-      #TmPortArray#get_port_for_new_join
-      #this method is for load
+      # TmPortArray#get_port_for_new_join
+      # this method is for load
       def get_port_for_new_join( subscript )
         if @subscript1 == nil
           # 1st element of this entry array
@@ -1373,11 +1373,11 @@ EOT
     end # class TmEPortArray
 
     class TmPort < TmObject
-      #@edge_side::Integer()
-      #@offs::Integer(mm)  # distance from top or left side
-      #@owner::TmCell | TmXPortArray  (Reverse Reference)
-      #@port_def:: ::Port
-      #@subscript::Integer | Nil
+      # @edge_side::Integer()
+      # @offs::Integer(mm)  # distance from top or left side
+      # @owner::TmCell | TmXPortArray  (Reverse Reference)
+      # @port_def:: ::Port
+      # @subscript::Integer | Nil
 
       #=== TmPort#move
       def move( x_inc, y_inc )
@@ -1407,10 +1407,10 @@ EOT
 
       #=== TmPort#moved_edge
       # moved cell's edge
-      #x_inc_l::Float : left edge moved,   value is incremental
-      #x_inc_r::Float : right edge moved,  value is incremental
-      #y_inc_t::Float : top edge moved,    value is incremental
-      #y_inc_b::Float : bottom edge moved, value is incremental
+      # x_inc_l::Float : left edge moved,   value is incremental
+      # x_inc_r::Float : right edge moved,  value is incremental
+      # y_inc_t::Float : top edge moved,    value is incremental
+      # y_inc_b::Float : bottom edge moved, value is incremental
       def moved_edge( x_inc_l, x_inc_r, y_inc_t, y_inc_b )
         case @edge_side
         when EDGE_TOP, EDGE_LEFT
@@ -1424,7 +1424,7 @@ EOT
 
       #=== tmport#get_normal_bar_of_edge
       # (1)  (6) bar from call port. this indicate A position.
-      #join::TmJoin
+      # join::TmJoin
       def get_normal_bar_of_edge join
         pos = get_cell.get_edge_position_in_normal_dir( @edge_side ) + CPGap * TECSModel.get_sign_of_normal( @edge_side )
         TECSModel.is_vertical?( @edge_side ) ? HBar.new( pos, join ) : VBar.new( pos, join )
@@ -1492,7 +1492,7 @@ EOT
       end
 
       #=== TmPort# get_signature
-      #RETURN::Signature
+      # RETURN::Signature
       def get_signature
         @port_def.get_signature
       end
@@ -1534,7 +1534,7 @@ EOT
       end
 
       #=== TmPort#insert
-      #before_after::Symbol: :before, :after
+      # before_after::Symbol: :before, :after
       # insert if this port is a member of unsubscripted array.
       def insert before_after
         if @owner.kind_of? TmPortArray
@@ -1560,7 +1560,7 @@ EOT
     end # class TmPort
 
     class TmCPort < TmPort      # mikan cp array
-      #@join::TmJoin
+      # @join::TmJoin
 
       def initialize owner, port_def, subscript = nil
         # p "port_def::#{port_def.get_name}  #{port_def.class}"
@@ -1634,7 +1634,7 @@ EOT
     end # class TmCPort
 
     class TmEPort < TmPort   # mikan ep array
-      #@joins::[TmJoin]
+      # @joins::[TmJoin]
 
       def initialize owner, port_def, subscript = nil
         @owner = owner
@@ -1710,10 +1710,10 @@ EOT
     end # class TmEPort
 
     class TmJoin < TmObject
-      #@cport::TmCPort
-      #@eport::TmEPort
-      #@bars::[HBar|VBar]
-      #@owner::TECSModel
+      # @cport::TmCPort
+      # @eport::TmEPort
+      # @bars::[HBar|VBar]
+      # @owner::TECSModel
 
       include TmUneditable
 
@@ -1899,7 +1899,7 @@ EOT
       end
 
       #=== TmJoin#is_between?
-      #RETURN:: true if x is between a & b
+      # RETURN:: true if x is between a & b
       def is_between?( x, a, b )
         if a >= b
           if  b <= x && x <= a
@@ -1955,8 +1955,8 @@ EOT
     end # class TmJoin
 
     class TmJoinBar < TmObject
-      #@position::Integer(mm)     # horizontal(x) or vertical(y) position
-      #@owner::TmJoin (Reverse Reference)
+      # @position::Integer(mm)     # horizontal(x) or vertical(y) position
+      # @owner::TmJoin (Reverse Reference)
       def initialize( position, owner_join )
         @position = position
         @owner = owner_join

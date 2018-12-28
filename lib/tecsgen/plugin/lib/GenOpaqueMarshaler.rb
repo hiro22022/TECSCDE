@@ -162,9 +162,9 @@ module GenOpaqueMarshaler
   # オプション引数が、以下の形式であることをチェック
   #     substituteAllocator(Alloc.eAlloc=>Subst.eAlloc,Alloc2.eAlloc=>Subst2.eAlloc)
   def set_substituteAllocator( rhs )
-    #str::String : 破壊される（マッチした残りになる）。str.empty? で空になったことをチェックできる
-    #regexp::Regexp : 期待するトークンにマッチする正規表現。 "\A" 出始める
-    #expected::String: 期待するトークン、regexp が出現しなかった場合にエラーメッセージとして表示
+    # str::String : 破壊される（マッチした残りになる）。str.empty? で空になったことをチェックできる
+    # regexp::Regexp : 期待するトークンにマッチする正規表現。 "\A" 出始める
+    # expected::String: 期待するトークン、regexp が出現しなかった場合にエラーメッセージとして表示
     def optparse (str,regexp,expected)
       str.strip!
       token = nil
@@ -382,7 +382,7 @@ EOT
   end
 
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
-  #ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
+  # ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
   def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
 
     # unmarshaler クラスか?
@@ -919,13 +919,13 @@ EOT
   end
  
 
-  #b_marshal:: bool
-  #b_get:: bool
+  # b_marshal:: bool
+  # b_get:: bool
   #  b_marshal = true  && b_get == false   :  マーシャラで入力引数送出
   #  b_marshal = true  && b_get == true    :  マーシャラで出力引数受取
   #  b_marshal = false && b_get == false   :  アンマーシャラで入力引数受取
   #  b_marshal = false && b_get == true    :  アンマーシャラで出力引数送出
-  #b_referenced:: size_is, count_is, string で参照されているものを出力
+  # b_referenced:: size_is, count_is, string で参照されているものを出力
   def print_params( params, file, nest, b_marshal, b_get, b_referenced, port_name, func_name )
     params.each{ |param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"

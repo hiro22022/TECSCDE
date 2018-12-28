@@ -45,7 +45,7 @@ class TECSMsg
   # CDL の文字コードに合わせて、文字コード変換を行う
   def self.get( msg )
     str = @@comment[ msg ]
-#2.0    if $KCONV_TECSGEN == $KCONV_CDL
+# 2.0    if $KCONV_TECSGEN == $KCONV_CDL
     if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Kconv::BINARY then
       return str
     else
@@ -54,7 +54,7 @@ class TECSMsg
   end
 
  #=== TECSMsg#ローカライズされたエラーメッセージを得る
- #body::String   : "S0001 error message body"  の形式
+ # body::String   : "S0001 error message body"  の形式
  # S0001 の部分が使用される
  # Generator.error2 から呼び出される
  def self.get_error_message( body )

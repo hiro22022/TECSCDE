@@ -896,8 +896,8 @@ class NotifierPlugin < CelltypePlugin
 		NullHandlerType.new
 	]
 
-    #@celltype:: Celltype
-    #@option:: String     :オプション文字列
+    # @celltype:: Celltype
+    # @option:: String     :オプション文字列
     def initialize( celltype, option )
     	super
     	@plugin_arg_check_proc_tab = NotifierPluginArgProc

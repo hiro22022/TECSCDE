@@ -36,7 +36,7 @@
 #   $Id: HRP2HandlerPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
-#require "HRP2KernelObjectPlugin"
+# require "HRP2KernelObjectPlugin"
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 #== celltype プラグインの共通の親クラス

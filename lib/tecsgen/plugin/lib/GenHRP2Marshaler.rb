@@ -36,11 +36,11 @@
 #   $Id: GenHRP2Marshaler.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
-#プラグインオプション用変数
-#@task_priority:: Integer
-#@channelCelltype:: String
-#@channelCellName:: String
-#@PPAllocatorSize:: Integer
+# プラグインオプション用変数
+# @task_priority:: Integer
+# @channelCelltype:: String
+# @channelCellName:: String
+# @PPAllocatorSize:: Integer
 module GenTransparentMarshaler
 
   # プラグイン引数名と Proc
@@ -147,7 +147,7 @@ EOT
   end
 
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
-  #ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
+  # ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
   def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
 
     # unmarshaler クラスか?

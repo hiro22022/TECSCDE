@@ -118,7 +118,7 @@ class TOOL_INFO
   # you have to check array length in your code, if necessary.
   class VALIDATOR
 
-    #@b_ok::Bool
+    # @b_ok::Bool
 
     def error( msg )
       STDERR.print( "__tool_info__: " + msg )
@@ -207,8 +207,8 @@ class TOOL_INFO
     end
 
     #=== TOOL_INFO::VALIDATOR#validate_types
-    #obj::Object (Integer, Floating, String, Hash)
-    #val_type::Symbol : required object type
+    # obj::Object (Integer, Floating, String, Hash)
+    # val_type::Symbol : required object type
     def validate_types obj, val_type, path
       type = get_object_type obj
       case val_type
@@ -294,10 +294,10 @@ class TECSGEN
   class  Cell_location
 
     #=== Join_location#initialize
-    #cell_nspath::NamespacePath
-    #x,y,w,h::Expression
-    #port_location_list::[ [Symbol(ep_or_cp_name), Symbol(edge_name), Expression(offset)], ... ]
-    #ep_name::Symbol
+    # cell_nspath::NamespacePath
+    # x,y,w,h::Expression
+    # port_location_list::[ [Symbol(ep_or_cp_name), Symbol(edge_name), Expression(offset)], ... ]
+    # ep_name::Symbol
     def initialize( cell_nspath, x, y, w, h, port_location_list )
       # p "Cell_location: #{cell_nspath}, #{x}, #{y}, #{w}, #{h}, #{port_location_list}"
       @cell_nspath = cell_nspath
@@ -322,11 +322,11 @@ class TECSGEN
     @@join_location_list = []
 
     #=== Join_location#initialize
-    #cp_cell_nspath::NamespacePath
-    #cp_name::Symbol
-    #ep_cell_nspath::NamespacePath
-    #ep_name::Symbol
-    #bar_list::[[Symbol (VBar or HBar), Expression(position mm)], ....]
+    # cp_cell_nspath::NamespacePath
+    # cp_name::Symbol
+    # ep_cell_nspath::NamespacePath
+    # ep_name::Symbol
+    # bar_list::[[Symbol (VBar or HBar), Expression(position mm)], ....]
     def initialize( cp_cell_nspath, cp_name, ep_cell_path, ep_name, bar_list )
       # p "Join_location  #{cp_cell_nspath}, #{cp_name}, #{ep_cell_path}, #{ep_name} #{bar_list}"
       @cp_cell_nspath = cp_cell_nspath

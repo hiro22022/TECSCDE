@@ -320,7 +320,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
 
   #=== 構造体のメンバーの型のチェック
   def check_struct_member struct_type, fh
-    #p "tag name:#{struct_type.get_name}"
+    # p "tag name:#{struct_type.get_name}"
     # sttype = Namespace.find_tag( struct_type.get_name )
     sttype = struct_type.get_original_type
     if sttype.get_name == nil then
@@ -390,7 +390,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
 
   #===  CDL ファイルの生成
   #      typedef, signature, celltype, cell コードを生成
-  #file::        FILE       生成するファイル
+  # file::        FILE       生成するファイル
   def gen_cdl_file(file)
 
     # ブリッジセルタイプの生成
@@ -566,7 +566,7 @@ EOT
 #    celltype #{name} {
 #        entry  sInitializeTECSBridge eInitialize;
 #    };
-#EOT
+# EOT
 #    }
 
     file.print "\n  // MrubyBridgeSignaturePlugin: MBP601\n"
@@ -630,7 +630,7 @@ EOT
   ####### 以下コード生成段階 ######
 
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
-  #ct_name:: Symbol    (プラグインで生成された) セルタイプ名 ．Symbol として送られてくる
+  # ct_name:: Symbol    (プラグインで生成された) セルタイプ名 ．Symbol として送られてくる
   def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
     if @@celltypes[ ct_name ] then
       gen_ep_func_body_bridge( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
@@ -736,10 +736,10 @@ EOT
 
   #===  受け口関数の preamble (C言語)を生成する
   #     必要なら preamble 部に出力する
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
   def gen_preamble( file, b_singleton, ct_name, global_ct_name )
     if @@celltypes[ ct_name ] then
       gen_preamble_mruby( file, b_singleton, ct_name, global_ct_name )

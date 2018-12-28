@@ -55,7 +55,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 module TECSCDE
   class CellPluginDialog
     #=== CellPluginDialog#initialize
-    #cell::TmCell
+    # cell::TmCell
     def initialize cell
       @cell = cell
 

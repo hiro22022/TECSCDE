@@ -753,12 +753,12 @@ EOT
   end
 
   #=== すべてのセルタイプの名前を出力
-  #f::       FILE:   出力先ファイル
-  #prepend:: string: 前置文字列
-  #append::  string: 後置文字列
-  #b_plguin::  bool:   plugin により生成されたセルタイプを出力
-  ##b_inline_only::  bool:   true ならば inline の entry port のみのセルタイプを含める
-  #b_inline_only_or_proc::  bool|Proc:   true ならば inline の entry port のみ、かつインアクティブなセルタイプを含める
+  # f::       FILE:   出力先ファイル
+  # prepend:: string: 前置文字列
+  # append::  string: 後置文字列
+  # b_plguin::  bool:   plugin により生成されたセルタイプを出力
+  # #b_inline_only::  bool:   true ならば inline の entry port のみのセルタイプを含める
+  # b_inline_only_or_proc::  bool|Proc:   true ならば inline の entry port のみ、かつインアクティブなセルタイプを含める
   #                                      Proc ならば Proc を実行した結果 true ならば含める
   #  namespace "::" から呼出される
   def gen_celltype_names( f, prepend, append, b_plugin, b_inline_only_or_proc = true )
@@ -781,7 +781,7 @@ EOT
   end
 
   #=== すべてのセルタイプの名前を出力
-  #region:: Region:
+  # region:: Region:
   # gen_celltype_names とgen_celltype_names_domain の相違：
   #   region を domain_roots に含む場合、出力する．
   #   または、region を含まないが、domain_roots が複数かつルートリージョンの場合、出力する．
@@ -1485,7 +1485,7 @@ EOT
 
   #=== 呼び口配列の大きさを得るマクロの出力
   #
-  #セルタイプヘッダへ呼び口の個数を出力
+  # セルタイプヘッダへ呼び口の個数を出力
   def gen_ph_n_cp f
 
     b_comment = false
@@ -1527,7 +1527,7 @@ EOT
 
   #=== 受け口配列の大きさを得るマクロの出力
   #
-  #セルタイプヘッダへ受け口の個数を出力
+  # セルタイプヘッダへ受け口の個数を出力
   def gen_ph_n_ep f
 
     b_comment = false
@@ -2172,8 +2172,8 @@ EOT
   end
 
   #=== send/receive で受け取ったメモリ領域を dealloc するマクロコード
-  #f:: File
-  #b_undef:: bool : true = #undef コードの生成,  false = #define コードの生成
+  # f:: File
+  # b_undef:: bool : true = #undef コードの生成,  false = #define コードの生成
   def  gen_ph_dealloc_code( f, append_name, b_undef = false )
     b_msg = false
     @port.each{ |p|
@@ -2575,7 +2575,7 @@ EOT
 
 
   #===   attribute の型宣言出力
-  #inib_cb::  :INIB または :CB
+  # inib_cb::  :INIB または :CB
   def gen_cell_cb_type_attribute( f, inib_cb )
     if inib_cb == :INIB && @n_attribute_ro > 0 then
       f.print "    /* attribute(RO) #_ATO_# */ \n"
@@ -2685,7 +2685,7 @@ EOT
             if p.get_array_size == "[]" then
               f.print( "    int_t n_#{p.get_name};\n" )
             end
-          #else
+          # else
           #  optional で未結合
           end
         end
@@ -3171,7 +3171,7 @@ EOT
                             des_type,
                             "#{j.get_port_global_name(i)}_des")
                 end
-              #else if j == nil
+              # else if j == nil
               #  optioanl で配列要素が初期化されていない
               end
               i += 1
@@ -3590,7 +3590,7 @@ EOT
             f.printf( "&%-39s /* _inib */\n", "#{name_array[5]}," )
           end
 
-          #if ! has_INIB? then
+          # if ! has_INIB? then
           if $rom == false then
             gen_cell_cb_port( c, indent, f, name_array, :CB_ALL )
           else
@@ -3834,7 +3834,7 @@ EOT
     end
   end
 
-  #inib_cb::Symbol: :INIB, :CB_ALL, :CB_DYNAMIC
+  # inib_cb::Symbol: :INIB, :CB_ALL, :CB_DYNAMIC
   def gen_cell_cb_port( cell, indent, f, name_array, inib_cb = :INIB )
     gen_cell_cb_call_port( cell, indent, f, name_array, inib_cb )
     gen_cell_cb_entry_port( cell, indent, f, name_array )
@@ -3907,7 +3907,7 @@ EOT
           end
         else
           # 同一セルタイプの結合の場合、VDES 型へのキャストが必要
-          #print "CCP0/CCP1 #{p.get_name}, #{j.get_rhs_cell.get_celltype.get_name}, #{@name}\n"
+          # print "CCP0/CCP1 #{p.get_name}, #{j.get_rhs_cell.get_celltype.get_name}, #{@name}\n"
           if j.get_rhs_cell.get_celltype == self then
             definition = j.get_definition
             des_type_cast = "(struct tag_#{definition.get_signature.get_global_name}_VDES *)"
@@ -3969,7 +3969,7 @@ EOT
 
   #=== セルの attribute の初期値を出力
   #
-  #f_get_str:: true の場合、文字列を返す、false の場合、ファイル f に出力する．
+  # f_get_str:: true の場合、文字列を返す、false の場合、ファイル f に出力する．
   # 文字列を返すとき、末尾に ',' は含まれない．
   # ファイルへ出力するとき、末尾に ',' が出力される．構造体要素、配列要素の初期値を出力すると ',' が二重に出力される．
   # ただし現状では、ファイルへ出力することはない
@@ -4909,7 +4909,7 @@ EOT
   end
 
   #=== decl 用の dealloc コードを生成
-  #b_reset:: Bool:  リセット用の dealloc コードの生成 (NULL ポインタの場合 dealloc しない)
+  # b_reset:: Bool:  リセット用の dealloc コードの生成 (NULL ポインタの場合 dealloc しない)
   # mikan string 修飾されたポインタの先にポインタが来ないと仮定。ポインタ型を持つ構造体の可能性を排除していない
   # このメソッドでは、行を出力する直前に " \\\n" を出力し、行末で改行文字を出力しない
   def gen_dealloc_code_for_type( f, type, dealloc_func_name, pre, name, post, level, b_reset, count_str = nil )
@@ -5029,7 +5029,7 @@ EOT
             headers << " #{ct.get_global_name}_inline.#{$h_suffix}"
           end
           headers += ct.get_depend_header_list_( celltype_list )
-        #else
+        # else
         #  optional で未結合  
         end
       end
@@ -5096,7 +5096,7 @@ class AppFile
       real_name = name+".tmp"
     end
 
-#2.0
+# 2.0
     if $b_no_kcode then 
       mode = ":" + $Ruby19_File_Encode
     else
@@ -5105,12 +5105,12 @@ class AppFile
 
     # 既に開いているか？
     if @@file_name_list[ name ] then
-#2.0
+# 2.0
       mode = "a" + mode
       # 追記モードで開く
       file = File.open( real_name, mode )
     else
-#2.0
+# 2.0
       mode = "w" + mode
       # 新規モードで開く（既にあれば、サイズを０にする）
       file = File.open( real_name, mode )

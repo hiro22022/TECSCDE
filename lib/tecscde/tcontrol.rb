@@ -87,14 +87,14 @@ Structure of Palette Window
   UNSELECTED_STR = "(unselected)"
 
   class Control
-    #@window:: Gtk::Window
-    #@model::Model
-    #@view::View
-    #@mode::Symbol: :NEW_CELL, :POINTER
-    #@cport_joining::TmCPort   # :SM_JOINING starting cell
-    #@celltypeTreeView::CelltypeTreeView
-    #@attrTreeView::AttrTreeView
-    #@prev_time::Integer: event time (milli second)
+    # @window:: Gtk::Window
+    # @model::Model
+    # @view::View
+    # @mode::Symbol: :NEW_CELL, :POINTER
+    # @cport_joining::TmCPort   # :SM_JOINING starting cell
+    # @celltypeTreeView::CelltypeTreeView
+    # @attrTreeView::AttrTreeView
+    # @prev_time::Integer: event time (milli second)
 
     ModeList    = [ :MODE_NONE, :MODE_NEW_CELL, :MODE_POINTER ]
     SubmodeList = [ :SM_NONE,   :SM_JOINING,    :SM_SURROUNDING_CELLS,
@@ -209,10 +209,10 @@ Structure of Palette Window
     #----- canvas events action -----#
 
     #=== mouse pressed on canvas
-    #button::Integer: mouse button number
-    #state::GdkModifierType: modifier key state
-    #time::Integer: milli second
-    #click_count::Integer: 1=single click, 2=double click
+    # button::Integer: mouse button number
+    # state::GdkModifierType: modifier key state
+    # time::Integer: milli second
+    # click_count::Integer: 1=single click, 2=double click
     def pressed_on_canvas xm, ym, state, button, time, click_count
       # p "button=#{button} state=#{state} time=#{time} sub_mode=#{@sub_mode}"
       if @sub_mode == :SM_EDIT_CELL_NAME
@@ -419,7 +419,7 @@ EOT
     end
 
     #=== find_near object
-    #RETURN::TmCell, TmPort, TmJoin
+    # RETURN::TmCell, TmPort, TmJoin
     def find_near xm, ym
       @model.get_cell_list.each{ |cell|
         port = cell.get_near_port( xm, ym )
@@ -447,8 +447,8 @@ EOT
       return min_bar
     end
 
-    #Control#get_hilite_objs
-    #return::hilite_objs
+    # Control#get_hilite_objs
+    # return::hilite_objs
     def get_hilite_objs
       @hilite_objs
     end
@@ -462,7 +462,7 @@ EOT
       end
     end
 
-    #Control#update
+    # Control#update
     def update
       @hilite_objs.update_attrTreeView
       @view.paint_canvas
@@ -524,7 +524,7 @@ EOT
     end
 
     #=== CelltypeTreeView#get_treeView
-    #RETURN::Gtk::TreeView
+    # RETURN::Gtk::TreeView
     def get_treeView
       @treeView
     end
@@ -534,11 +534,11 @@ EOT
   # formerly this class is sub-class of Gtk::TreeView
   # currently this class has Gtk::TreeView
   class AttrTreeView # < Gtk::TreeView
-    #@choice_list::{name=>ListStore}
-    #@cell::TmCell
-    #@ct_attr_list::{ String(attr_name) => String(initializer) }
-    #@view::MainView
-    #@treeView::Gtk::TreeView
+    # @choice_list::{name=>ListStore}
+    # @cell::TmCell
+    # @ct_attr_list::{ String(attr_name) => String(initializer) }
+    # @view::MainView
+    # @treeView::Gtk::TreeView
 
     COL_NAME   = 0
     COL_TYPE = 1
@@ -688,7 +688,7 @@ EOT
     end
 
     #=== AttrTreeView#set_cell
-    #cell::TmCell
+    # cell::TmCell
     def set_cell cell
       clear
       @cell = cell
@@ -733,13 +733,13 @@ EOT
     end
 
     #=== AttrTreeView#set_view
-    #view::MainView
+    # view::MainView
     def set_view view
       @view = view
     end
 
     #=== AttrTreeView#get_treeView
-    #RETURN::Gtk::TreeView
+    # RETURN::Gtk::TreeView
     def get_treeView
       @treeView
     end
@@ -747,7 +747,7 @@ EOT
 
   #== manage hilited objects
   class Hilite_objs
-    #@hilite_objs::[TmCell|TmJoinBar]
+    # @hilite_objs::[TmCell|TmJoinBar]
     def initialize
       @hilite_objs = []
     end
@@ -782,7 +782,7 @@ EOT
     #=== hilite_objs#reset_if_ncessary
     # Port and ( Cell or Bar ) cannot be hilited simultaneously.
     # Ports belonging to diferent Cell cannot be hilited simultaneously.
-    #obj::TmCell | TmBar | TmPort: new object to be hilited
+    # obj::TmCell | TmBar | TmPort: new object to be hilited
     def reset_if_ncessary obj
       if @hilite_objs.length > 0
         if @hilite_objs[0].kind_of? TECSModel::TmPort
@@ -801,7 +801,7 @@ EOT
       end
     end
 
-    def each  #proc
+    def each  # proc
       proc = Proc.new
       @hilite_objs.each{ |obj|
         proc.call obj

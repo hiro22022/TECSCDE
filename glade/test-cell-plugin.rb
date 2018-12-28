@@ -1,14 +1,14 @@
 
-#まずは決まり文句
+# まずは決まり文句
 require 'gtk2'
 
 builder = Gtk::Builder.new
-builder.add_from_file("tecscde-cell-plugin.glade") #読み込むgladeファイルを指定
+builder.add_from_file("tecscde-cell-plugin.glade") # 読み込むgladeファイルを指定
 
 # p builder
 # p builder.objects
 
-#後で処理を書くウィジェットは下のような形で、変数に代入しておくのよ
+# 後で処理を書くウィジェットは下のような形で、変数に代入しておくのよ
 main_window = builder["dialog_cell_plugin"]
 # @btn_quit = builder["quit"]
 label_cell_name = builder[ "label_cell_name" ]
@@ -36,12 +36,12 @@ plugin_list.append_column(col)
 
 liststore.set_sort_column_id( COL_NAME )
 
-#ウィンドウのクローズボタンが押されたら終了
+# ウィンドウのクローズボタンが押されたら終了
 main_window.signal_connect("destroy") do
   Gtk.main_quit
 end
 
-#終了ボタンがクリックされたら終了
+# 終了ボタンがクリックされたら終了
 # btn_quit.signal_connect("clicked") do
 # 	Gtk.main_quit
 # end

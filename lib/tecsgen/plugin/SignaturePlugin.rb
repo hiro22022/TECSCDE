@@ -38,10 +38,10 @@
 
 #== signature プラグインの共通の親クラス
 class SignaturePlugin < Plugin
-#@signature:: Signature   プラグインの対象となるシグニチャ
-#@option:: String   '"', '"' で囲まれた文字列
+# @signature:: Signature   プラグインの対象となるシグニチャ
+# @option:: String   '"', '"' で囲まれた文字列
 
-  #signature::     Signature        シグニチャ（インスタンス）
+  # signature::     Signature        シグニチャ（インスタンス）
   def initialize( signature, option )
     super()
     @signature = signature
@@ -52,8 +52,8 @@ class SignaturePlugin < Plugin
   end
 
   #=== 後ろのコードを生成
-  #プラグインの後ろの CDL コードを生成
-  #file:: File: 
+  # プラグインの後ろの CDL コードを生成
+  # file:: File: 
   def self.gen_post_code( file )
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
@@ -62,15 +62,15 @@ class SignaturePlugin < Plugin
   #===  受け口関数の本体(C言語)を生成する
   #     通常であれば、ジェネレータは受け口関数のテンプレートを生成する
   #     プラグインの場合、変更する必要のないセルタイプコードを生成する
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
-  #sig_name::       string
-  #ep_name::        string
-  #func_name::      string
-  #func_global_name:: string
-  #func_type::      class derived from Type
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
+  # sig_name::       string
+  # ep_name::        string
+  # func_name::      string
+  # func_global_name:: string
+  # func_type::      class derived from Type
   def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
     raise "gen_ep_func_body must be overridden by sub class"
   end

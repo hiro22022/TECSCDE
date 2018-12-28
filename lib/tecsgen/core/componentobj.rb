@@ -160,7 +160,7 @@ class Signature < NSBDNode  # < Nestable
 
   #=== Signature# signature の指定子を設定
   # STAGE: B
-  #spec_list::      [ [ :CONTEXT,  String ], ... ]
+  # spec_list::      [ [ :CONTEXT,  String ], ... ]
   #                     s[0]        s[1]
   def set_specifier_list( spec_list )
     return if spec_list == nil  # 空ならば何もしない
@@ -230,7 +230,7 @@ class Signature < NSBDNode  # < Nestable
   end
 
   #=== Signature# signaure のすべての関数のすべてのパラメータをたどる
-  #block:: ブロックを引数に取る
+  # block:: ブロックを引数に取る
   # ブロックは2つの引数を受け取る  Decl, ParamDecl     ( Decl: 関数ヘッダ )
   # Port クラスにも each_param がある（同じ働き）
   def each_param # ブロック引数 { |func_decl, param_decl| }
@@ -357,7 +357,7 @@ class Signature < NSBDNode  # < Nestable
 end
 
   #== Signature# 引数で参照されている Descriptor 型のリストを
-  #RETURN:: Hash { Signature => ParamDecl }:  複数の ParamDecl から参照されている場合、最後のものしか返さない
+  # RETURN:: Hash { Signature => ParamDecl }:  複数の ParamDecl から参照されている場合、最後のものしか返さない
   def get_descriptor_list
     @descriptor_list
   end
@@ -533,7 +533,7 @@ module CelltypePluginModule
       end
     }
   end
-end #CelltypePluginModule
+end # CelltypePluginModule
 
 class Celltype < NSBDNode # < Nestable
 # @name:: Symbol
@@ -750,7 +750,7 @@ class Celltype < NSBDNode # < Nestable
   end
 
   #=== Celltype# new_attribute for Celltype
-  #attribute:: [Decl]
+  # attribute:: [Decl]
   def new_attribute( attribute )
     @attribute += attribute
     attribute.each { |a|
@@ -855,7 +855,7 @@ class Celltype < NSBDNode # < Nestable
   end
 
   #=== Celltype# 新しい内部変数
-  #var:: [Decl]
+  # var:: [Decl]
   def new_var( var )
     @var += var
     var.each { |i|     # i: Decl
@@ -917,7 +917,7 @@ class Celltype < NSBDNode # < Nestable
 
   def new_require( ct_or_cell_nsp, ep_name, cp_name )
     # Require: set_owner するものがない
-    obj = Namespace.find( ct_or_cell_nsp )    #1
+    obj = Namespace.find( ct_or_cell_nsp )    # 1
     if obj.instance_of? Celltype then
       # Celltype 名で指定
       ct = obj
@@ -1083,7 +1083,7 @@ class Celltype < NSBDNode # < Nestable
     return nil
   end
   #=== Celltype#ディスクリプタ型でシグニチャが一致し dyn_ref に対応づく引数を探す
-  #dyn_ref::Symbol: :DYNAMIC=ディスクリプタを得る手段となる引数を探す．:REF_DESC=渡す手段となる引数を探す
+  # dyn_ref::Symbol: :DYNAMIC=ディスクリプタを得る手段となる引数を探す．:REF_DESC=渡す手段となる引数を探す
   def find_descriptor_param signature, dyn_ref
     param_list = []
     @port.each{ |port|
@@ -1126,7 +1126,7 @@ class Celltype < NSBDNode # < Nestable
   end
 
   #=== Celltype# celltype に新しい cell を追加
-  #cell:: Cell
+  # cell:: Cell
   # 新しいセルをセルタイプに追加．
   # セルの構文解釈の最後でこのメソドを呼出される．
   # シングルトンセルが同じ linkunit に複数ないかチェック
@@ -1203,7 +1203,7 @@ class Celltype < NSBDNode # < Nestable
   end
 
   #=== Celltype# singleton セルを得る
-  #region:: Region   : singleton を探す Region
+  # region:: Region   : singleton を探す Region
   # 距離が最も近いものを返す
   # mikan 本当は region の範囲の singleton を探す必要がある
   def get_singleton_cell region
@@ -1213,7 +1213,7 @@ class Celltype < NSBDNode # < Nestable
     @cell_list.each{ |c|
       # 到達可能で最も近いセルを探す（複数の singleton があるかもしれない）
       d = region.distance( c.get_region )
-      #debug
+      # debug
       dbgPrint "distance #{d} from #{region.get_name} to #{c.get_name} in #{c.get_region.get_name}\n"
       # print "DOMAIN: distance #{d} from #{region.get_name} to #{c.get_name} in #{c.get_region.get_name}\n"
       if d != nil then
@@ -1446,7 +1446,7 @@ class Cell < NSBDNode # < Nestable
     @region = Region.get_current
 
     # celltype のplugin/存在をチェック
-    object = Namespace.find( ct_path )    #1
+    object = Namespace.find( ct_path )    # 1
     if object == nil then
       # mikan celltype の名前が不完全 "::ct1ct2" になる
       cdl_error( "S1027 \'$1\' celltype not found" , ct_path.get_path_str )
@@ -1545,7 +1545,7 @@ class Cell < NSBDNode # < Nestable
     if @celltype.instance_of? CompositeCelltype then
       @celltype.get_internal_allocator_list.each{ |cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
         nsp = NamespacePath.new( @name, false )
-        rhs = Expression.new( [:OP_DOT, [:IDENTIFIER, nsp], Token.new( ext_alloc_ent.to_s.to_sym, nil, nil, nil ) ] )  #1 構文解析段階なので locale 不要
+        rhs = Expression.new( [:OP_DOT, [:IDENTIFIER, nsp], Token.new( ext_alloc_ent.to_s.to_sym, nil, nil, nil ) ] )  # 1 構文解析段階なので locale 不要
 
         @alloc_list << [:NORMAL_ALLOC,port_name,nil,fd_name,par_name,rhs]
 # print "add alloc_list: #{port_name}.#{fd_name}.#{par_name}=#{rhs.to_s}\n"
@@ -1589,8 +1589,8 @@ class Cell < NSBDNode # < Nestable
   #===  Cell# 新しい結合をチェック
   # STAGE:   P
   #
-  #join::  Join : 新しい結合
-  #b_regular:: bool : 通常の場所 (bnf.y.rb)からならば true, それ以外(allocator, require) では false
+  # join::  Join : 新しい結合
+  # b_regular:: bool : 通常の場所 (bnf.y.rb)からならば true, それ以外(allocator, require) では false
   def new_join( join, b_regular = false )
     join.set_owner self
 
@@ -1837,7 +1837,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# プロトタイプ宣言(false)か定義(true)かを設定
   #    このメソッドは構文解釈の最後に呼出される
-  #f_def::     bool     false if prototype, true if definition
+  # f_def::     bool     false if prototype, true if definition
   def set_f_def f_def
     if ! f_def then
       return
@@ -1869,7 +1869,7 @@ class Cell < NSBDNode # < Nestable
   # STAGE:  B
   #
   #    bnf.y.rb の statement_specifiler_list
-  #spec_list::      [ :ALLOCATOR, [ [ :NORMAL_ALLOC, ep_name, subscript, func_name, param_name, expr ], ... ] ]
+  # spec_list::      [ :ALLOCATOR, [ [ :NORMAL_ALLOC, ep_name, subscript, func_name, param_name, expr ], ... ] ]
   #                     s[0]      s[1]   a[0]        a[1]       a[2]        a[3]     a[4]       a[5]
   #    セルに指定されたアロケータ指定子
   #    a[1] の subscript はこのメソッドの中で Expression から Integer に評価される
@@ -2000,12 +2000,12 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell# cell を composite セルタイプのセル用に clone する
-  #name::        string : 親 cell の名前  (cell tComposite cell1 での cell1)
-  #global_name:: string : 親 cell の global_name 
-  #join_array::  Join[] : composite の cell の join で、この cell に対応するもの
-  #ct_name::     string : 親セルのセルタイプ名
-  #region::      Region : 元のセルが属する region
-  #このメソッドは CompositeCelltype の expand から呼出される
+  # name::        string : 親 cell の名前  (cell tComposite cell1 での cell1)
+  # global_name:: string : 親 cell の global_name 
+  # join_array::  Join[] : composite の cell の join で、この cell に対応するもの
+  # ct_name::     string : 親セルのセルタイプ名
+  # region::      Region : 元のセルが属する region
+  # このメソッドは CompositeCelltype の expand から呼出される
   def clone_for_composite( name, global_name, namespacePath, join_array, ct_name, region, plugin, locale )
 
     # debug
@@ -2029,10 +2029,10 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell# clone されたセルの内部に持つ名前情報を調整する
-  #name::        string : 親 cell の名前  (cell tComposite cell1 での cell1)
-  #global_name:: string : 親 cell の global_name
-  #join_array::  Join[] : composite の cell の join で、この cell に対応するもの
-  #parent_ct_name:: string : 親セルのセルタイプ名（composite セルタイプ）
+  # name::        string : 親 cell の名前  (cell tComposite cell1 での cell1)
+  # global_name:: string : 親 cell の global_name
+  # join_array::  Join[] : composite の cell の join で、この cell に対応するもの
+  # parent_ct_name:: string : 親セルのセルタイプ名（composite セルタイプ）
   #  このメソッドはすぐ上の clone_for_composite から呼出され、clone されたセルを整える
   def set_cloned( name, global_name, namespacePath, join_array, parent_ct_name, region, plugin, locale )
 
@@ -2074,7 +2074,7 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== clone されたセルが composite の場合、内部セルを展開する
-  #self:: clone されたセルでなければならない
+  # self:: clone されたセルでなければならない
   def expand_inner
     if ! @f_cloned then
       raise "expnad_inner: not cloned cell"
@@ -2283,7 +2283,7 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell# 受け口のport の参照カウントをアップする
-  #port_name:: Symbol  : ポート名
+  # port_name:: Symbol  : ポート名
   def port_referenced port
     if @referenced_port_list[ port ] then
       @referenced_port_list[ port ] += 1
@@ -2323,8 +2323,8 @@ class Cell < NSBDNode # < Nestable
     end
   end
 
-  #Cell#属性の初期値を得る
-  #attr_name::Symbol  必ず初期化されていないと Ruby 例外となる
+  # Cell#属性の初期値を得る
+  # attr_name::Symbol  必ず初期化されていないと Ruby 例外となる
   def get_attr_initializer attr_name
     val = @join_list.get_item( attr_name )
     if val == nil then
@@ -2535,7 +2535,7 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell# @@cell_list を得る
-  #composite の中を含まない
+  # composite の中を含まない
   def self.get_cell_list
     @@cell_list
   end
@@ -2904,9 +2904,9 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# require 呼び口の結合を行う
   # STAGE: S
-  #cp_name:: Symbol           : 呼び口名
-  #cell_or_t:: Celltype|Cell  : celltype の require の右辺で指定されたセルタイプまたはセル
-  #port::  Port               : celltype の Port オブジェクト
+  # cp_name:: Symbol           : 呼び口名
+  # cell_or_t:: Celltype|Cell  : celltype の require の右辺で指定されたセルタイプまたはセル
+  # port::  Port               : celltype の Port オブジェクト
   def set_require_join( cp_name, cell_or_ct, port )
 
     # set_require_join は2度呼び出される
@@ -2942,7 +2942,7 @@ class Cell < NSBDNode # < Nestable
       nsp = NamespacePath.new( cell.get_name, false, cell.get_namespace )
       nsp.set_locale @locale
       rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, nsp ],
-                              Token.new( port.get_name, nil, nil, nil ) ], @locale )   #1
+                              Token.new( port.get_name, nil, nil, nil ) ], @locale )   # 1
       join = Join.new( cp_name, nil, rhs, @locale )
       self.new_join( join )
 
@@ -3005,7 +3005,7 @@ class Cell < NSBDNode # < Nestable
   # このセルが composite セルタイプ
   def expand
 
-    #debug
+    # debug
     dbgPrint "=====    expanding   #{@name}     =====\n"
 
     # composite celltype の cell を展開
@@ -3371,11 +3371,11 @@ class CompositeCelltype < NSBDNode # < Nestable
 
   #=== CompositeCelltype# CompositeCelltypeJoin を作成
   # STAGE: B
-  #export_name:: Symbol : 外部に公開する名前
-  #internal_cell_name:: Symbol : 内部セル名
-  #internal_cell_elem_name:: Symbol : 内部セルの要素名（呼び口名、受け口名、属性名のいずれか）
-  #type::  :CALL, :ENTRY, :ATTRIBUTE のいずれか（構文要素としてあるべきもの）
-  #RETURN:: Decl | Port : エクスポート定義
+  # export_name:: Symbol : 外部に公開する名前
+  # internal_cell_name:: Symbol : 内部セル名
+  # internal_cell_elem_name:: Symbol : 内部セルの要素名（呼び口名、受け口名、属性名のいずれか）
+  # type::  :CALL, :ENTRY, :ATTRIBUTE のいずれか（構文要素としてあるべきもの）
+  # RETURN:: Decl | Port : エクスポート定義
   # new_join は
   #   cCall => composite.cCall;     (セル内)
   #   attr = composite.attr;        (セル内)
@@ -3598,7 +3598,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
   #=== CompositeCelltype# new_attribute for CompositeCelltype
-  #attribute:: [Decl]
+  # attribute:: [Decl]
   def new_attribute( attribute )
     attribute.each { |a|
       a.set_owner self   # Decl (CompositeCelltype)
@@ -3640,7 +3640,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     # 従来仕様
 #    cj = @export_name_list.get_item( name )
-#p "#{name}, #{cj.get_port_decl}"
+# p "#{name}, #{cj.get_port_decl}"
 #    if cj then
 #      return cj.get_port_decl
 #    else
@@ -3649,17 +3649,17 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
   #=== CompositeCelltype# export する CompositeCelltypeJoin を得る
-  #name:: string:
+  # name:: string:
   # attribute の場合、同じ名前に対し複数存在する可能性があるが、最初のものしか返さない
   def find_export name
     return @export_name_list.get_item( name )
   end
 
   #=== CompositeCelltype# composite celltype の cell を展開
-  #name:: string: Composite cell の名前
-  #global_name:: string: Composite cell の global name (C 言語名)
-  #join_list:: NamedList : Composite cell に対する Join の NamedList
-  #RETURN:
+  # name:: string: Composite cell の名前
+  # global_name:: string: Composite cell の global name (C 言語名)
+  # join_list:: NamedList : Composite cell に対する Join の NamedList
+  # RETURN:
   # [ { name => cell }, [ cell, ... ] ]
   #  戻り値 前は 名前⇒cloneされた内部セル、後ろは composite の出現順のリスト
   def expand( name, global_name, namespacePath, join_list, region, plugin, locale )
@@ -3937,14 +3937,14 @@ class Port < BDNode
         cdl_error( "S1073 Not constant expression $1" , array_size.to_s )
       end
 
-      #if Integer( @array_size ) != @array_size || @array_size <= 0 then
+      # if Integer( @array_size ) != @array_size || @array_size <= 0 then
       if ! @array_size.kind_of? Integer then
         cdl_error( "S1074 Not Integer $1" , array_size.to_s )
       end
 
     end
 
-    object = Namespace.find( sig_path )    #1
+    object = Namespace.find( sig_path )    # 1
     if object == nil then
       # mikan signature の名前が不完全
       cdl_error( "S1075 \'$1\' signature not found" , sig_path )
@@ -3972,7 +3972,7 @@ class Port < BDNode
         end
 
         # 呼び口のセルタイプを探す
-        ct_or_cell = Namespace.find( @reverse_require_cell_path )  #1
+        ct_or_cell = Namespace.find( @reverse_require_cell_path )  # 1
         if ct_or_cell.instance_of? Cell then
           ct = ct_or_cell.get_celltype
         elsif ct_or_cell.instance_of? Celltype then
@@ -4061,9 +4061,9 @@ end
   end
 
   #=== Port# アロケータポートの設定
-  #port:: Port : send/receive のあった呼び口または受け口
-  #fd:: Decl : 関数の declarator
-  #par:: ParamDecl : send/receive のあった引数
+  # port:: Port : send/receive のあった呼び口または受け口
+  # fd:: Decl : 関数の declarator
+  # par:: ParamDecl : send/receive のあった引数
   # この呼び口が生成されるもとになった呼び口または受け口の情報を設定
   def set_allocator_port( port, fd, par )
     @allocator_port = port
@@ -4281,7 +4281,7 @@ end
         ele = ai[3].get_elements
         if( ele[0] != :OP_DOT ||
             ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || ! ele[1][1][1].is_name_only? ||
-            ! ele[1][2].instance_of?( Token ) || ! ele[2].instance_of?( Token ) )then   #1
+            ! ele[1][2].instance_of?( Token ) || ! ele[2].instance_of?( Token ) )then   # 1
           # [ :OP_DOT, [ :OP_DOT, [ :IDENTIFIER,  name_space_path ],  Token(1) ],  Token(2) ]
           #    ele[0]    ele[1][0]  ele[1][1][0]  ele[1][1][1]        ele[1][2]    ele[2]
           #      name_space_path.Token(1).Token(2) === call_port.func.param
@@ -4449,7 +4449,7 @@ end
     nsp = NamespacePath.new( cell.get_name, false, cell.get_namespace )
 #    rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, Token.new( cell.get_name, nil, nil, nil ) ],
     rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, nsp ],
-                            Token.new( @name, nil, nil, nil ) ], cell.get_locale )   #1
+                            Token.new( @name, nil, nil, nil ) ], cell.get_locale )   # 1
     join = Join.new( @reverse_require_entry_port_name, -1, rhs, cell.get_locale )
     cell2.new_join( join )
     join.set_definition( ct.find(join.get_name) )
@@ -4457,7 +4457,7 @@ end
   end
 
   #=== Port# signature のすべての関数のすべてのパラメータをたどる
-  #block:: ブロックを引数として取る(ruby の文法で書かない)
+  # block:: ブロックを引数として取る(ruby の文法で書かない)
   #  ブロックは3つの引数を受け取る(Port, Decl,      ParamDecl)    Decl: 関数ヘッダ
   # Signature クラスにも each_param がある（同じ働き）
   def each_param # ブロック引数{  |port, func_decl, param_decl| }
@@ -4720,8 +4720,8 @@ class Namespace < NSBDNode
   end
 
   #=== Namespace.find : in_path で示されるオブジェクトを探す
-  #in_path:: NamespacePath
-  #in_path:: Array : 古い形式
+  # in_path:: NamespacePath
+  # in_path:: Array : 古い形式
   #  path [ "::", "ns1", "ns2" ]   absolute
   #  path [ "ns1", "ns2" ]         relative
   def self.find( in_path )
@@ -5146,9 +5146,9 @@ class Join < BDNode
   include PluginModule
 
   #=== Join# 初期化
-  #name:: string: 名前（属性名、呼び口名）
-  #subscript:: Nil=非配列, -1="[]", N="[N]"
-  #rhs:: Expression: 右辺の式
+  # name:: string: 名前（属性名、呼び口名）
+  # subscript:: Nil=非配列, -1="[]", N="[N]"
+  # rhs:: Expression: 右辺の式
   def initialize( name, subscript, rhs, locale = nil )
     # dbgPrint "Join#new: #{name}, #{subscript} #{rhs.eval_const(nil)}\n"
     dbgPrint "Join#new: #{name}, #{subscript}\n"
@@ -5160,7 +5160,7 @@ class Join < BDNode
 
     @name = name
     if subscript.instance_of?( Expression ) then
-       #mikan 配列添数が整数であることを未チェック
+       # mikan 配列添数が整数であることを未チェック
        @subscript = subscript.eval_const(nil)
        if @subscript == nil then
          cdl_error( "S1099 array subscript not constant"  )
@@ -5196,7 +5196,7 @@ class Join < BDNode
   # STAGE:   S
   #
   #     代入可能かチェックする
-  #definition:: Decl (attribute,varの時) または Port (callの時) または nil (definition が見つからなかった時)
+  # definition:: Decl (attribute,varの時) または Port (callの時) または nil (definition が見つからなかった時)
 
   def set_definition( definition )
 
@@ -5280,15 +5280,15 @@ class Join < BDNode
 
     # mikan Expression の get_type で型導出させる方がスマート
     # mikan '=' の左辺が配列かどうか未チェック
-    #(1) '=' の右辺は "Cell.ePort" の形式か？
+    # (1) '=' の右辺は "Cell.ePort" の形式か？
     #     演算子は "."  かつ "." の左辺が :IDENTIFIER
     #     "." の右辺はチェック不要 (synatax 的に :IDENTIFIER)
-    #(2) "Cell" は存在するか？（名前が一致するものはあるか）
-    #(3) "Cell" は cell か？
-    #(4) "Cell" の celltype は有効か？ (無効なら既にエラー）
-    #(5) "ePort" は "Cell" の celltype 内に存在するか？
-    #(6) "ePort" は entry port か？
-    #(7) signature は一致するか
+    # (2) "Cell" は存在するか？（名前が一致するものはあるか）
+    # (3) "Cell" は cell か？
+    # (4) "Cell" の celltype は有効か？ (無効なら既にエラー）
+    # (5) "ePort" は "Cell" の celltype 内に存在するか？
+    # (6) "ePort" は entry port か？
+    # (7) signature は一致するか
 
     # 右辺がない（以前の段階でエラー）
     return unless @rhs
@@ -5304,7 +5304,7 @@ class Join < BDNode
 
     # 右辺の Expression の要素を取り出す
     ret = @rhs.analyze_cell_join_expression
-    if ret == nil then   #1
+    if ret == nil then   # 1
       cdl_error( "S1108 $1: rhs not \'Cell.ePort\' form" , @name )
       return
     end
@@ -5318,7 +5318,7 @@ class Join < BDNode
     if object == false then
 #     mikan 左辺が namespace に対応していないため。 path にして find
       # p nsp.get_path_str, nsp.get_path
-      object = Namespace.find( nsp )    #1
+      object = Namespace.find( nsp )    # 1
       in_composite = false
     else
       if nsp.get_path.length != 1 then
@@ -5389,7 +5389,7 @@ class Join < BDNode
           # p "rhs:  #{@cell}  #{@cell.get_name}"
         end  # end of port (object2) チェック
 
-        #else
+        # else
         #  celltype == nil (すでにエラー)
       end  # end of celltyep チェック
 
@@ -5402,7 +5402,7 @@ class Join < BDNode
 
   #=== Join# アロケータの結合を生成
   # STAGE: S
-  #cell::  呼び口の結合先のセル
+  # cell::  呼び口の結合先のセル
   #
   # ここでは呼び口側に生成されるアロケータ呼び口の結合を生成
   # 受け口側は Cell の set_specifier_list で生成
@@ -5425,7 +5425,7 @@ class Join < BDNode
           # p "creating allocator join #{cp_name} #{@subscript} #{a[1+1]}"
           join = Join.new( cp_name, @subscript, a[4+1], @locale )
 
-          #debug
+          # debug
           dbgPrint "create_allocator_join: #{@owner.get_name}.#{cp_name} [#{@subscript}] #{@name}\n"
           @owner.new_join join
         else
@@ -5441,7 +5441,7 @@ class Join < BDNode
   # mikan Cell#distance とRegion へたどり着くまでための処理に共通部分が多い
   def check_region( object )
 
-    #debug
+    # debug
     dbgPrint "check_region #{@owner.get_name}.#{@name} => #{object.get_name}\n"
     # print "DOMAIN: check_region #{@owner.get_name}.#{@name} => #{object.get_name}\n"
 
@@ -5709,7 +5709,7 @@ class Join < BDNode
           next
         end
 
-        next_cell = Namespace.find( next_cell_nsp )    #1
+        next_cell = Namespace.find( next_cell_nsp )    # 1
         if next_cell == nil then
           # p "next_cell_path: #{next_cell_nsp.get_path_str}"
           cdl_error( "S1125 $1: not generated cell \'$2\'" , @through_generated_list[ i + 1 ].class, next_cell_nsp.get_path_str )
@@ -5769,7 +5769,7 @@ class Join < BDNode
         if @through_generated_list[0] == nil then
           return  # plugin_object の生成に失敗している
         end
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    #1
+        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
         if cell.instance_of? Cell then
           cell.set_f_ref
         end
@@ -5841,7 +5841,7 @@ class Join < BDNode
     generate_and_parse plugin_object
   end
 
-  #プラグインへの引数で渡さないものを、一時的に記憶しておく
+  # プラグインへの引数で渡さないものを、一時的に記憶しておく
   # プラグインの initialize の中でコールバックして設定する
   @@plugin_creating_join = nil
   @@start_region = nil
@@ -5891,7 +5891,7 @@ class Join < BDNode
       # mikan through で生成したものが root namespace 限定
       if @through_generated_list[0] then
         # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name.to_sym ] )    #1
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    #1
+        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
         # cell が nil になるのはプラグインの get_cell_namespace_path が正しくないか、
         # プラグイン生成コードがエラーになっている。
         # できの悪いプラグインが多ければ、cell == nil をはじいた方がよい。
@@ -5919,7 +5919,7 @@ class Join < BDNode
       # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name ] )
       if @through_generated_list[0] then
         # cell = Namespace.find( [ @through_generated_list[0].get_cell_name ] )    #1
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    #1
+        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
       else
         cell = @cell            # generate に失敗している
       end
@@ -5950,7 +5950,7 @@ class Join < BDNode
       if @through_generated_list[0] then
         # mikan through で生成したものが root namespace 限定
         # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name.to_sym ] )    #1
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    #1
+        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
         if cell then
           return cell.get_region
         end
@@ -5980,7 +5980,7 @@ class Join < BDNode
 
   #===  Join# 結合の右辺の受け口の名前
   #     namespace 名 + '_' + セル名 + '_' + 受け口名   （このセルが composite ならば展開後のセル名、受け口名）
-  #subscript:: Integer  呼び口配列の時添数 または nil 呼び口配列でない時
+  # subscript:: Integer  呼び口配列の時添数 または nil 呼び口配列でない時
   def get_port_global_name( subscript = nil )  # 受け口名（コンポジットなら展開した内側のセル）
 
     # debug
@@ -5991,7 +5991,7 @@ class Join < BDNode
 
       # mikan through で生成したものが root namespace 限定
       # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name.to_sym ] )    #1
-      cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    #1
+      cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
 
       # through で挿入されたセルで、実際に接続されるセル（compositeの場合内部の)の受け口の C 言語名前
       return cell.get_real_global_port_name( @through_generated_list[0].get_through_entry_port_name )
@@ -6034,7 +6034,7 @@ class Join < BDNode
     # through 指定あり？
     if @through_list[0] then
       # through で生成されたセルを探す
-      cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    #1
+      cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
       # cell のプラグインで生成されたポート名のポートを探す (composite なら内部の繋がるポート)
       return cell.get_real_port( @through_generated_list[0].get_through_entry_port_name )
     else
@@ -6084,7 +6084,7 @@ class Join < BDNode
   #=== Join# 呼び口配列の2番目以降の要素を追加する
   #     一番最初に定義された配列要素が全要素の初期値の配列を持つ
   #     このメソッドは非配列の場合も呼出される（join 重複エラーの場合）
-  #join2:: Join  呼び口配列要素の Join
+  # join2:: Join  呼び口配列要素の Join
   def add_array_member join2
 
     # subscript2: join2 の左辺添数
@@ -6184,7 +6184,7 @@ class Join < BDNode
     end
 
     # 右辺が　cell.ePort の形式でない
-    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER then   #1
+    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER then   # 1
       return
     else
       # セル名を composite 内部の名前から、外部の名前に入れ替える
@@ -6217,7 +6217,7 @@ class Join < BDNode
   end
 
   #=== Join# composite セル用にクローン
-  #cell_global_name:: string : 親セルのグローバル名
+  # cell_global_name:: string : 親セルのグローバル名
   # 右辺の C_EXP に含まれる $id$, $cell$, $ct$ を置換
   # ここで置換するのは composite の attribute の C_EXP を composite セルタイプおよびセル名に置換するため
   # （内部セルの C_EXP もここで置換される）
@@ -6274,7 +6274,7 @@ class Join < BDNode
   end
 
   #=== Join# rhs を入れ換える
-  #rhs:: Expression | initializer
+  # rhs:: Expression | initializer
   # 右辺を入れ換える．
   # このメソッドは、composite で cell の属性の初期値を attribute の値で置き換えるのに使われる
   # このメソッドは composite 内の cell の属性の初期値が定数ではなく式になった場合、不要になる
@@ -6378,11 +6378,11 @@ end
 
 #== 逆結合
 class ReverseJoin < BDNode
-#@ep_name:: Symbol
-#@ep_subscript:: Expression or nil
-#@cell_nsp: NamespacePath
-#@cp_name:: Symbol
-#@cp_subscript:: Expression or nil
+# @ep_name:: Symbol
+# @ep_subscript:: Expression or nil
+# @cell_nsp: NamespacePath
+# @cp_name:: Symbol
+# @cp_subscript:: Expression or nil
   def initialize( ep_name, ep_subscript, cell_nsp, cp_name, cp_subscript = nil )
     super()
     @ep_name = ep_name
@@ -6423,13 +6423,13 @@ class CompositeCelltypeJoin < BDNode
   end
 
   #=== CompositeCelltypeJoin# CompositeCelltypeJoin の対象セルか？
-  #cell::  Cell 対象かどうかチェックするセル
+  # cell::  Cell 対象かどうかチェックするセル
   #
   #     CompositeCelltypeJoin と cell の名前が一致するかチェックする
   #     port_decl が指定された場合は、現状使われていない
   def match?( cell, port_decl = nil )
 
-    #debug
+    # debug
     if port_decl
       dbgPrint(  "match?"  )
       dbgPrintf( "  @cell:      %-20s      %08x\n", @cell.get_name, @cell.object_id )
@@ -6533,7 +6533,7 @@ class CompositeCelltypeJoin < BDNode
   end
 
   #=== CompositeCelltypeJoin# 配列サイズを得る
-  #RETURN:: nil: not array, "[]": 大きさ指定なし, Integer: 大きさ指定あり
+  # RETURN:: nil: not array, "[]": 大きさ指定なし, Integer: 大きさ指定あり
   def get_array_size
     @port_decl.get_array_size
   end
@@ -6636,7 +6636,7 @@ class Factory < BDNode
     @arg_list.each{ |elements|
 
       case elements[0]
-      when :IDENTIFIER  #1
+      when :IDENTIFIER  # 1
         obj = celltype.find( elements[1] )
         if obj == nil then
           cdl_error( "S1136 \'$1\': not found" , elements[1] )
@@ -6693,11 +6693,11 @@ end
 #
 # region の domain を記憶するクラス
 class DomainType < Node
-#@name::Symbol : ドメインタイプの名前 ex) HRP2
-#@region::Region
-#@plugin_name::Symbol : ex) HRP2Plugin
-#@option::String : ex) "trusted", "nontrusted"
-#@plugin::DomainPlugin の子クラス
+# @name::Symbol : ドメインタイプの名前 ex) HRP2
+# @region::Region
+# @plugin_name::Symbol : ex) HRP2Plugin
+# @option::String : ex) "trusted", "nontrusted"
+# @plugin::DomainPlugin の子クラス
 
   include PluginModule
 
@@ -6761,7 +6761,7 @@ class DomainType < Node
   end
 
   #== DomainType#ドメイン種別を得る
-  #return::Symbol :kernel, :user, :OutOfDomain
+  # return::Symbol :kernel, :user, :OutOfDomain
   def get_kind
     @plugin.get_kind
   end
@@ -6811,7 +6811,7 @@ class Region < Namespace
     # mikan name の Namespace 修飾
     # object = Namespace.find( [ name ] )   # 親まで捜しにいく
     if name != "::" then
-      object = Namespace.get_current.find( name )    #1
+      object = Namespace.get_current.find( name )    # 1
     else
       # root リージョン
       object = nil
@@ -7252,12 +7252,12 @@ end
 #== Importable class
 # this module is included by Import_C and Import
 module Importable
-#@last_base_dir::String
+# @last_base_dir::String
 
   #=== Importable#find_file
-  #file::String : file name to find
-  #return::String | Nil: path to file or nil if not found
-  #find file in 
+  # file::String : file name to find
+  # return::String | Nil: path to file or nil if not found
+  # find file in 
   def find_file file
     $import_path.each{ |path|
       if path == "."
@@ -7327,8 +7327,8 @@ class Import_C < Node
   include Importable
 
   #=== Import_C# import_C の生成（ヘッダファイルを取込む）
-  #header:: Token : import_C の第一引数文字列リテラルトークン
-  #define:: Token : import_C の第二引数文字列リテラルトークン
+  # header:: Token : import_C の第一引数文字列リテラルトークン
+  # define:: Token : import_C の第二引数文字列リテラルトークン
   def initialize( header, define = nil )
     super()
     # ヘッダファイル名文字列から前後の "" を取り除く
@@ -7574,8 +7574,8 @@ class Import < Node
   end
 
   #=== Import# import を行う
-  #cdl::      string   cdl へのパス．"" で囲まれていることを仮定
-  #b_reuse::  bool     true: template を生成しない
+  # cdl::      string   cdl へのパス．"" で囲まれていることを仮定
+  # b_reuse::  bool     true: template を生成しない
   def initialize( cdl, b_reuse = false, b_imported = true )
     Import.push self
     @b_imported = b_imported
@@ -7668,10 +7668,10 @@ end
 
 #== generate: signature, celltype, cell へのプラグインのロードと適用
 class Generate < Node
-#@plugin_name:: Symbol
-#@object_nsp:: NamespacePath
-#@option::         String '"', '"' で囲まれている
-#@plugin_object:: Plugin
+# @plugin_name:: Symbol
+# @object_nsp:: NamespacePath
+# @option::         String '"', '"' で囲まれている
+# @plugin_object:: Plugin
 
   include PluginModule
 
@@ -7704,14 +7704,14 @@ end
 
 #== 名前空間パス
 class NamespacePath < Node
-#@b_absolute::Bool
-#@path::[ Symbol,... ]
-#@namespace::Namespace:  @b_absolute == false のとき、基点となる namespace
+# @b_absolute::Bool
+# @path::[ Symbol,... ]
+# @namespace::Namespace:  @b_absolute == false のとき、基点となる namespace
 
   #=== NamespacePath# initialize
-  #ident::Symbol           最初の名前, ただし "::" のみの場合は String
-  #b_absolute:Bool         "::" で始まっている場合 true
-  #namespace::Namespace    b_absolute = false かつ、構文解釈段階以外で呼び出す場合は、必ず指定すること 
+  # ident::Symbol           最初の名前, ただし "::" のみの場合は String
+  # b_absolute:Bool         "::" で始まっている場合 true
+  # namespace::Namespace    b_absolute = false かつ、構文解釈段階以外で呼び出す場合は、必ず指定すること 
   def initialize( ident, b_absolute, namespace = nil )
     super()
 
@@ -7738,7 +7738,7 @@ class NamespacePath < Node
   end
 
   #=== NamespacePath# append する
-  #RETURN self
+  # RETURN self
   # このメソッドは、元の NamespacePath オブジェクトを変形して返す
   def append!( ident )
     @path << ident
@@ -7746,7 +7746,7 @@ class NamespacePath < Node
   end
   #=== NamespacePath# append する
   # このメソッドは、元の NamespacePath オブジェクトを変形しない
-  #RETURN:: 複製した NamespacePath
+  # RETURN:: 複製した NamespacePath
   def append( ident )
     cl = self.clone
     cl.set_clone
@@ -7852,8 +7852,8 @@ class NamespacePath < Node
   end
 
   #=== NamespacePath:: 分解して NamespacePath インスタンスを生成する
-  #path_str:: String       : namespace または region のパス ex) "::path::A" , "::", "ident"
-  #b_force_absolute:: Bool : "::" で始まっていない場合でも絶対パスに扱う
+  # path_str:: String       : namespace または region のパス ex) "::path::A" , "::", "ident"
+  # b_force_absolute:: Bool : "::" で始まっていない場合でも絶対パスに扱う
   #
   # NamespacePath は通常構文解析されて作成される
   # このメソッドは、オプションなどで指定される文字列を分解して NamespacePath を生成するのに用いる

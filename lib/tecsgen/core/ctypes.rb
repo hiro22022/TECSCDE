@@ -166,7 +166,7 @@ class CIntType < IntType
   include CType
 
   def initialize( bit_size )
-    #p super.class   mikan super.class が Symbol だ、なぜ？
+    # p super.class   mikan super.class が Symbol だ、なぜ？
     super( bit_size )
   end
 

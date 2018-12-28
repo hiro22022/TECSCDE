@@ -96,7 +96,7 @@ class HRP2Plugin < DomainPlugin
         puts "***** nil"
         return []
         # return [ :HRP2SVCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true" ]
-    #elsif @start_region.get_param != :KERNEL_DOMAIN && @end_region.get_param == :KERNEL_DOMAIN
+    # elsif @start_region.get_param != :KERNEL_DOMAIN && @end_region.get_param == :KERNEL_DOMAIN
     elsif current_domain.get_option.to_s != "trusted" && next_domain.get_option.to_s == "trusted"
         # ユーザドメインからカーネルドメインへの結合
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
@@ -119,7 +119,7 @@ class HRP2Plugin < DomainPlugin
   end
 
   #== ドメイン種別を返す
-  #return::Symbol :kernel, :user, :OutOfDomain
+  # return::Symbol :kernel, :user, :OutOfDomain
   def get_kind
     case @option
     when "trusted"

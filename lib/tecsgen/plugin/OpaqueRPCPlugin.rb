@@ -224,7 +224,7 @@ EOT
           subsc_str = ""
         end
 
-        eport = "eThroughEntry" #RPCの受け口名に変更
+        eport = "eThroughEntry" # RPCの受け口名に変更
         file.print nest_str
         file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
       end

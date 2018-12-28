@@ -41,27 +41,27 @@
 #==  スループラグインの共通の親クラス　かつ （何もせず）スルーするセルを挿入するスループラグイン
 #    スループラグインは ThroughPlugin の子クラスとして定義する
 class ThroughPlugin < Plugin
-#@cell_name::      Symbol             生成するセル名（複数セルを生成する場合、受け口側のセル）
-#@plugin_arg_str:: string             through で指定された引数
-#@next_cell:: Cell                    呼び口を結合するセル
-#@next_cell_port_name:: Symbol       呼び口を結合する受口の名前
-#@next_cell_port_subscript::Nil|Integer   呼び口を結合する受口の配列添数．受け口配列でない場合 nil
-#@signature::      Signature          シグニチャ
-#@celltype::       Celltype           呼び先のセルのセルタイプ. through が連接する場合、最終的な呼び先のセルのセルタイプ
-#@entry_port_name::Symbol             生成するセルの受け口名  "eThroughEntry"
-#@call_port_name:: Symbol             生成するセルの呼び口名  "cCall"
-#@ct_name::        Symbol             生成するセルのセルタイプ名   "t#{self.class.name}_#{@signature.get_global_name}"
-#@plugin_arg_list:: Hash              プラグイン引数をパースした結果のハッシュ変数
-#@caller_cell::    Cell               呼び元のセル．through プラグインが連接する場合では、最も呼び元のセル．($source$)
+# @cell_name::      Symbol             生成するセル名（複数セルを生成する場合、受け口側のセル）
+# @plugin_arg_str:: string             through で指定された引数
+# @next_cell:: Cell                    呼び口を結合するセル
+# @next_cell_port_name:: Symbol       呼び口を結合する受口の名前
+# @next_cell_port_subscript::Nil|Integer   呼び口を結合する受口の配列添数．受け口配列でない場合 nil
+# @signature::      Signature          シグニチャ
+# @celltype::       Celltype           呼び先のセルのセルタイプ. through が連接する場合、最終的な呼び先のセルのセルタイプ
+# @entry_port_name::Symbol             生成するセルの受け口名  "eThroughEntry"
+# @call_port_name:: Symbol             生成するセルの呼び口名  "cCall"
+# @ct_name::        Symbol             生成するセルのセルタイプ名   "t#{self.class.name}_#{@signature.get_global_name}"
+# @plugin_arg_list:: Hash              プラグイン引数をパースした結果のハッシュ変数
+# @caller_cell::    Cell               呼び元のセル．through プラグインが連接する場合では、最も呼び元のセル．($source$)
 #                                     through プラグインが合流するケースでは、1つ目の呼び元セルのみ引数として与えられる
 #                                     従って TracePlugin の呼び元の判別に利用する場合は、異なる呼び元から呼ばれる可能性があることに注意しなくてはならない
-#@callee_cell:: Cell                  呼び先のセル($destination$)
-#@plugin_arg_check_proc_tab:: [string => Proc]  プラグイン引数名⇒チェック関数
+# @callee_cell:: Cell                  呼び先のセル($destination$)
+# @plugin_arg_check_proc_tab:: [string => Proc]  プラグイン引数名⇒チェック関数
 # 以下の変数は、initialize ではなく、後から設定される
-#@start_@region::  Region             始まりのリージョン： caller_cell のリージョンとは異なる可能性がある ($start_region$)
-#@end_region::  Region                終わりのリージョン： next_cell のリージョンとは異なる可能性がある ($end_region$)
-#@region:: Region                     @start_region と @end_region のいずれかで、cell を置くのが好ましいリージョン ($preferred_region$)
-#@through_type:: Symbol              :THROUGH, :TO_THROUGH, :IN_THROUGH, :OUT_THROUGH のいずれか
+# @start_@region::  Region             始まりのリージョン： caller_cell のリージョンとは異なる可能性がある ($start_region$)
+# @end_region::  Region                終わりのリージョン： next_cell のリージョンとは異なる可能性がある ($end_region$)
+# @region:: Region                     @start_region と @end_region のいずれかで、cell を置くのが好ましいリージョン ($preferred_region$)
+# @through_type:: Symbol              :THROUGH, :TO_THROUGH, :IN_THROUGH, :OUT_THROUGH のいずれか
 
   # この Plugin が生成したセルタイプのリスト
   @@generated_celltype = {}
@@ -69,14 +69,14 @@ class ThroughPlugin < Plugin
   #=== ThroughPlugin の初期化
   #     through が指定された時点で生成が行われる
   #         初期化では、指定された引数を記録するに留める
-  #cell_name::      Symbol             生成すべきセル名（受口側）
-  #plugin_arg::     string             through で指定された引数
-  #next_cell::      Cell               呼び口を接続するセル
-  #next_cell_port_name:: Symbol        呼び口を接続する受口の名前
-  #next_cell_port_subscript:: Nil|Integer  呼び口を接続する受口配列添数
-  #signature::      Signature          シグニチャ
-  #celltype::       Celltype           セルタイプ (呼び先のセルのセルタイプ)
-  #caller_cell::    Cell               呼び元のセル．@caller_cell の項を参照
+  # cell_name::      Symbol             生成すべきセル名（受口側）
+  # plugin_arg::     string             through で指定された引数
+  # next_cell::      Cell               呼び口を接続するセル
+  # next_cell_port_name:: Symbol        呼び口を接続する受口の名前
+  # next_cell_port_subscript:: Nil|Integer  呼び口を接続する受口配列添数
+  # signature::      Signature          シグニチャ
+  # celltype::       Celltype           セルタイプ (呼び先のセルのセルタイプ)
+  # caller_cell::    Cell               呼び元のセル．@caller_cell の項を参照
   def initialize( cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell )
     super()
     @cell_name = cell_name                      # 生成すべきセル名（受け口側のセル名）
@@ -147,7 +147,7 @@ class ThroughPlugin < Plugin
   #===  宣言コードの生成
   #      typedef, signature, celltype など（cell 以外）のコードを生成
   #          重複して生成してはならない（すでに生成されている場合は出力しないこと）
-  #file::        FILE       生成するファイル
+  # file::        FILE       生成するファイル
   def gen_plugin_decl_code( file )
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
@@ -196,7 +196,7 @@ EOT
   end
 
   #=== CDL ファイルの生成
-  #file::     FILE    生成するファイル
+  # file::     FILE    生成するファイル
   def gen_cdl_file( file )
     gen_plugin_decl_code( file )
     gen_through_cell_code( file )
@@ -204,7 +204,7 @@ EOT
 
   #===  セルコードの生成
   #     through 指定により生じるセルコード(CDL)を生成する
-  #file::        FILE       生成するファイル
+  # file::        FILE       生成するファイル
   def gen_through_cell_code( file )
 
     nest = @region.gen_region_str_pre file
@@ -220,8 +220,8 @@ EOT
   end
 
   #=== 後ろのコードを生成
-  #プラグインの後ろのコード (CDL) を生成
-  #file:: File: 
+  # プラグインの後ろのコード (CDL) を生成
+  # file:: File: 
   def self.gen_post_code( file )
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
@@ -230,15 +230,15 @@ EOT
   #===  受け口関数の本体(C言語)を生成する
   #     通常であれば、ジェネレータは受け口関数のテンプレートを生成する
   #     プラグインの場合、変更する必要のないセルタイプコードを生成する
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
-  #sig_name::       string
-  #ep_name::        string
-  #func_name::      string
-  #func_global_name:: string
-  #func_type::      class derived from Type
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
+  # sig_name::       string
+  # ep_name::        string
+  # func_name::      string
+  # func_global_name:: string
+  # func_type::      class derived from Type
   def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
 
     ret_type = func_type.get_type

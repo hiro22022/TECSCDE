@@ -36,7 +36,7 @@
 #   $Id: HRP2TaskPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
-#require "HRP2KernelObjectPlugin"
+# require "HRP2KernelObjectPlugin"
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 #== celltype プラグインの共通の親クラス
 class HRP2TaskPlugin < HRP2KernelObjectPlugin
@@ -51,11 +51,11 @@ class HRP2TaskPlugin < HRP2KernelObjectPlugin
     # val  : 
     # tab  : 
     def print_cfg_cre(file, cell, val, tab)
-        #val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_global_name.to_s}" )
-        #val[:id] = @celltype.subst_name( val[:id], @celltype.get_name_array( cell ) )
+        # val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_global_name.to_s}" )
+        # val[:id] = @celltype.subst_name( val[:id], @celltype.get_name_array( cell ) )
         # $cbp$の代わり
         index = cell.get_id - @celltype.get_id_base
-        #cell_CB_name = "#{@celltype.get_global_name}_pCB_tab[#{index}]"
+        # cell_CB_name = "#{@celltype.get_global_name}_pCB_tab[#{index}]"
         cell_CB_name = "#{index}"
         # CRE_XXX/DEF_XXXの生成
         dbgPrint "assign task plugin\n"

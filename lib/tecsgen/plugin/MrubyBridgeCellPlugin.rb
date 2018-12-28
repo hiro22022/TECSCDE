@@ -52,12 +52,12 @@ class MrubyBridgeCellPlugin < CellPlugin
 
   require_tecsgen_lib( "MrubyBridgeSignaturePlugin.rb" )
 
-  #@exclude_port::[ String(port_name) ] : 
-  #@exclude_port_func::{ [ String(port_name) ] => [ String(func_name) ] } : 
-  #@port_list::{ String(port_name) => String(include/exclude=func_name) }  : all included port and opt_string
+  # @exclude_port::[ String(port_name) ] : 
+  # @exclude_port_func::{ [ String(port_name) ] => [ String(func_name) ] } : 
+  # @port_list::{ String(port_name) => String(include/exclude=func_name) }  : all included port and opt_string
 
   #=== CellPlugin# initialize
-  #cell::     Cell        セル（インスタンス）
+  # cell::     Cell        セル（インスタンス）
   # このメソッドは、セルの構文解析が終わったところで呼び出される
   # この段階では意味解析が終わっていない
   def initialize( cell, option )
@@ -175,8 +175,8 @@ EOT
   end
 
   #=== 後ろの CDL コードを生成
-  #プラグインの後ろの CDL コードを生成
-  #file:: File: 
+  # プラグインの後ろの CDL コードを生成
+  # file:: File: 
   def self.gen_post_code( file )
     dbgPrint "#{self.name}: gen_post_code\n"
     if ! @@b_gen_post_code_by_dependent then

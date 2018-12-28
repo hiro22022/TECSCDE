@@ -48,7 +48,7 @@
 # 
 
 class Node
-#@locale::    [@file, @lineno, @col]
+# @locale::    [@file, @lineno, @col]
 
   def initialize
     @locale = Generator.current_locale
@@ -60,13 +60,13 @@ class Node
   end
 
   #=== エラーを出力する
-  #locale:: Array(locale info) : 構文解析中は無視される
+  # locale:: Array(locale info) : 構文解析中は無視される
   def cdl_error2( locale, message, *arg )
     Generator.error2( locale, message, *arg )
   end
 
   #=== エラーを出力する
-  #locale:: Array(locale info)
+  # locale:: Array(locale info)
   # 構文解析中 cdl_error2 では locale が無視されるため、別に locale を出力する
   def cdl_error3( locale, message, *arg )
     Generator.error(  message, *arg )
@@ -117,7 +117,7 @@ end
 #            Celltype, CompositeCelltype(attr,var)
 #            Struct(member), ParamDecl(parameter), FuncHead(funchead)
 #    Signature, Celltype, CompositeCelltype, Typedef => Namespace
-#,   Namespace => Namespace, Generator.class (root Namespace の場合)
+# ,   Namespace => Namespace, Generator.class (root Namespace の場合)
 #    Cell => Region, CompositeCelltype(in_composite)
 #    Port => Celltype, Composite
 #    Factory => Celltype
@@ -137,10 +137,10 @@ end
 #    StructType は Type の一種なので owner を持たない
 #
 class BDNode < Node
-#@owner::Node
-#@NamespacePath:: NamespacePath
-#@Generator::
-#@import::Import :  
+# @owner::Node
+# @NamespacePath:: NamespacePath
+# @Generator::
+# @import::Import :  
 
   def initialize
     super
@@ -757,7 +757,7 @@ class ParamDecl < BDNode
 
         case i[0]
         when :SEND, :RECEIVE
-          @allocator = Namespace.find( i[1] )   #1
+          @allocator = Namespace.find( i[1] )   # 1
           if ! @allocator.instance_of?( Signature ) then
             cdl_error( "S2009 $1: not found or not signature" , i[1] )
             next
@@ -847,7 +847,7 @@ class ParamDecl < BDNode
     #----  end req_level & max_level    ----#
 
     # p "req_level: #{req_level} ptr_level: #{ptr_level}"
-    #if ptr_level < req_level && ! ( @direction == :IN && req_level == 1 && ptr_level == 0) then
+    # if ptr_level < req_level && ! ( @direction == :IN && req_level == 1 && ptr_level == 0) then
     if ptr_level < min_level then
       cdl_error( "S2014 $1 need pointer or more pointer" , @declarator.get_identifier )
     elsif ptr_level > max_level then
@@ -870,8 +870,8 @@ class ParamDecl < BDNode
         type.set_scs( @size, @count, @string, @max, @b_nullable )
       end
 
-#p ptr_level
-#type.show_tree 1
+# p ptr_level
+# type.show_tree 1
 
       # ポインタが指している先のデータ型を得る
       i = 0
@@ -1158,7 +1158,7 @@ class ParamList < BDNode
   end
 
   #== ParamList# 文字列化
-  #b_name:: Bool: パラメータ名を含める
+  # b_name:: Bool: パラメータ名を含める
   def to_str( b_name )
     str = "("
     delim = ""

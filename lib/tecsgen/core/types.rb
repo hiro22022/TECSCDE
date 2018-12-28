@@ -158,7 +158,7 @@ class Type < Node
 
   #=== struct の tag をチェック
   #    正当な型定義かどうか、チェックする
-  #kind:: Decl の @kind を参照
+  # kind:: Decl の @kind を参照
   def check_struct_tag kind
     # tag が存在しなければエラーを出力する
     # 配列型では、要素の型を再帰的にチェック
@@ -168,11 +168,11 @@ class Type < Node
 
   #===  初期化可能かチェック
   #     attribute など初期化可能かチェックする（型に対し正当な初期化子が与えられているか）
-  #ident::        string                被代入変数命
-  #initialize::   Expression, Array of initializer or C_EXP
+  # ident::        string                被代入変数命
+  # initialize::   Expression, Array of initializer or C_EXP
   #               代入値、C_EXP が与えられるのは IntType の場合のみ
-  #kind::         symbol (:ATTRIBUTE, :VAR, :CONSTNAT )
-  #attribute::    NameList              kind == :VAR のとき参照できる attribute
+  # kind::         symbol (:ATTRIBUTE, :VAR, :CONSTNAT )
+  # attribute::    NameList              kind == :VAR のとき参照できる attribute
   #
   #     locale を第一引数として取るのは、以下の理由による。
   #     このメソッドは、変数への代入が行われる「行」に対して呼び出されるが、
@@ -248,7 +248,7 @@ class DefinedType < Type
     @type_name = type_name
 
     # mikan type_name が path になっていないため暫定
-    @typedef = Namespace.find( [ type_name ] )  #1
+    @typedef = Namespace.find( [ type_name ] )  # 1
 
 #    if @type.class != Typedef then
 #      raise NotTypedef
@@ -483,8 +483,8 @@ class IntType < Type
 
   #=== IntType# 最大値、最小値をチェックしてクリップする
   # キャスト演算を行う
-  #in_val:: IntegerVal, FloatVal:  この型にキャストする値
-  #from_type:: Symbol:  :IntType, :FloatType  IntType の場合はビット数でクリップ、FloatType の場合は最大値でクリップ
+  # in_val:: IntegerVal, FloatVal:  この型にキャストする値
+  # from_type:: Symbol:  :IntType, :FloatType  IntType の場合はビット数でクリップ、FloatType の場合は最大値でクリップ
   def check_and_clip( in_val, from_type = :IntType )
     bit_size = get_bit_size
     if bit_size == -1 then
@@ -804,7 +804,7 @@ class StructType < Type
 
   #=== 構造体のタグをチェック
   #  declarator の時点でチェックする
-  #kind:: Decl の @kind を参照
+  # kind:: Decl の @kind を参照
   def check_struct_tag kind
     if @tag == nil
       return

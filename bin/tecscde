@@ -55,9 +55,9 @@ Copyright (C) 2014-2015 by TOPPERS Project
 =end
 
 #= TECSCDE - TECS Component Diagram Editor
-#Authors::   Hiroshi OYAMA
-#Copyright:: TOPPERS Project, 2014. All rights reserved.
-#License::   TOPPERS License (written above and each file)
+# Authors::   Hiroshi OYAMA
+# Copyright:: TOPPERS Project, 2014. All rights reserved.
+# License::   TOPPERS License (written above and each file)
 
 # tecsgen.rb, tecscde.rb, tecslib & cdelib must be in the same directory
 $tecsgen_base_path = File.dirname( File.expand_path __FILE__ )
@@ -87,8 +87,8 @@ module TECSCDE
 
   #=== TECSCDE.message_box
   # Function to open a dialog box displaying the message provided.
-  #ok_yn_okcan::
-  #RETURN
+  # ok_yn_okcan::
+  # RETURN
   def self.message_box(message, ok_yn_okcan )
     # p "message_box #{message}"
 
@@ -135,8 +135,8 @@ module TECSCDE
   end
 
   class MainViewAndModel
-    #@model::TECSModel
-    #@view::MainView
+    # @model::TECSModel
+    # @view::MainView
     def initialize tecsgen
       @model   = TECSModel.new tecsgen
       @control = Control.new @model
@@ -177,9 +177,9 @@ require "tecsgen.rb"
 
 begin
 
-  $tecscde = true    #Bool: true if tecscde
-  $b_tate = true     #Bool: true if vertical style
-  $b_force_apply_tool_info = false   #Bool: force to apply tool_info
+  $tecscde = true    # Bool: true if tecscde
+  $b_tate = true     # Bool: true if vertical style
+  $b_force_apply_tool_info = false   # Bool: force to apply tool_info
 
   additional_option_parser = Proc.new { |parser|
     parser.on( '--base_dir=dir', 'base directory (tecscde only)' ){ |dir|
@@ -200,7 +200,7 @@ begin
   tecsgen = TECSGEN.new
   tecsgen.run1
   TECSCDE.main tecsgen
-#rescue => evar
+# rescue => evar
 #  STDERR << "tecsgen: exit because of unrecoverble error.\n"
 #  STDERR << "   please retry after resolve early error.\n"
 #  STDERR << "   if no error occured, please report to TOPPERS TECS WG (users@toppers.jp or com-wg@toppers.jp).\n"

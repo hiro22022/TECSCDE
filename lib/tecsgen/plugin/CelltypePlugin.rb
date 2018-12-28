@@ -39,7 +39,7 @@
 #== celltype プラグインの共通の親クラス
 class CelltypePlugin < Plugin
 
-  #celltype::     Celltype        セルタイプ（インスタンス）
+  # celltype::     Celltype        セルタイプ（インスタンス）
   def initialize( celltype, option )
     super()
     @celltype = celltype
@@ -50,7 +50,7 @@ class CelltypePlugin < Plugin
   end
 
   #=== 新しいセル
-  #cell::        Cell            セル
+  # cell::        Cell            セル
   #
   # celltype プラグインを指定されたセルタイプのセルが生成された
   # セルタイププラグインに対する新しいセルの報告
@@ -65,8 +65,8 @@ class CelltypePlugin < Plugin
   end
 
   #=== 後ろの CDL コードを生成
-  #プラグインの後ろの CDL コードを生成
-  #file:: File: 
+  # プラグインの後ろの CDL コードを生成
+  # file:: File: 
   def self.gen_post_code( file )
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"

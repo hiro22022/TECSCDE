@@ -55,9 +55,9 @@ class MrubyBridgePlugin < MultiPlugin
       dbgPrint "MrubyBridgePlugin: CellPlugin"
       require_tecsgen_lib 'tecslib/plugin/MrubyBridgeCellPlugin.rb'
       return MrubyBridgeCellPlugin
-    #elsif superClass == ThroughPlugin
+    # elsif superClass == ThroughPlugin
     #  return ThroughPlugin
-    #elsif superClass == DomainPlugin
+    # elsif superClass == DomainPlugin
     #  return DomainPlugin
     else
       dbgPrint "MrubyBridgePlugin: unsupported"

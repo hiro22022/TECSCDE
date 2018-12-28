@@ -147,8 +147,8 @@ end
 # ポインタ値は、CDL で直接生成されることはない
 # 整数値のキャスト演算により生成される
 class PointerVal < BaseVal
-#@int_val:: IntegerVal: IntegerVal でなくてはならない
-#@ptr_type:: PtrType: ポインタの指す先の型
+# @int_val:: IntegerVal: IntegerVal でなくてはならない
+# @ptr_type:: PtrType: ポインタの指す先の型
 
   def initialize( int_val, ptr_type )
     super()
@@ -194,10 +194,10 @@ end
 
 #= IntegerVal: 整数値を扱うクラス
 class IntegerVal < BaseVal
-#@val:: Integer: value
-#@str:: string: literal
-#@sign:: Symbol: :SIGNED | :UNSIGNED
-#@size:: Symbol: :NORMAL | :SHORT | :LONG | :LONGLONG
+# @val:: Integer: value
+# @str:: string: literal
+# @sign:: Symbol: :SIGNED | :UNSIGNED
+# @size:: Symbol: :NORMAL | :SHORT | :LONG | :LONGLONG
 
   def initialize( val, str = nil, sign = :SIGNED, size = :NORMAL )
     super()
@@ -375,7 +375,7 @@ end
 
 #= BoolVal: bool 値を扱うクラス
 class BoolVal < BaseVal
-#@val:: bool: true, false
+# @val:: bool: true, false
 
   def initialize( val )
     super()
@@ -457,7 +457,7 @@ end
 
 #= FloatVal: 実数値を扱うクラス
 class FloatVal < BaseVal
-#@val:: Float
+# @val:: Float
   def initialize( val )
     super()
     @val = val.to_f
@@ -543,8 +543,8 @@ end
 
 #= 文字列リテラルを扱うクラス
 class StringVal < BaseVal
-#@str:: Token:
-#@specifier:: Symbol: :WIDE, :NORMAL
+# @str:: Token:
+# @specifier:: Symbol: :WIDE, :NORMAL
 
   def initialize( str, spec = :NORMAL )
     super()

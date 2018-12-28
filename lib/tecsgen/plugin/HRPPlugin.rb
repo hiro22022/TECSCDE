@@ -68,12 +68,12 @@ class HRPPlugin < DomainPlugin
     # return []
     dbgPrint "MyDomainPlugin: add_through_plugin: #{current_region.get_name}=>#{next_region.get_name}, #{join.get_owner.get_name}.#{join.get_definition.get_name}=>#{join.get_cell.get_name}.#{join.get_port_name}, #{through_type}\n"
 
-    #puts "=====Join Check Start====="
-    #puts "caller: #{join.get_owner.get_name.to_s}, callee: #{join.get_cell.get_name.to_s}"
-    #puts "=====Join Check param====="
+    # puts "=====Join Check Start====="
+    # puts "caller: #{join.get_owner.get_name.to_s}, callee: #{join.get_cell.get_name.to_s}"
+    # puts "=====Join Check param====="
     current_domain = current_region.get_domain_root.get_domain_type
     next_domain = next_region.get_domain_root.get_domain_type
-    #puts current_domain.get_option.to_s
+    # puts current_domain.get_option.to_s
     # if !next_domain.nil?
     #     puts next_domain.get_option.to_s
     # else
@@ -87,7 +87,7 @@ class HRPPlugin < DomainPlugin
     if HRPKernelObjectManager.include_celltype?(join.
                                                  get_cell.
                                                  get_real_celltype(join.get_rhs_port1).
-                                                 get_global_name)                #oyama: get_name => get_global_name 
+                                                 get_global_name)                # oyama: get_name => get_global_name 
         # 結合先がカーネルオブジェクトセル
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # 何もしないthrough
@@ -103,7 +103,7 @@ class HRPPlugin < DomainPlugin
     #     # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # puts "***** nil"
         return []
-    #elsif @start_region.get_param != :KERNEL_DOMAIN && @end_region.get_param == :KERNEL_DOMAIN
+    # elsif @start_region.get_param != :KERNEL_DOMAIN && @end_region.get_param == :KERNEL_DOMAIN
     elsif current_domain.get_option.to_s != "kernel" && next_domain.get_option.to_s == "kernel"
         # ユーザドメインからカーネルドメインへの結合
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
@@ -133,7 +133,7 @@ class HRPPlugin < DomainPlugin
   end
 
   #== ドメイン種別を返す
-  #return::Symbol :kernel, :user, :OutOfDomain
+  # return::Symbol :kernel, :user, :OutOfDomain
   def get_kind
     return @option.to_sym
   end
@@ -273,7 +273,7 @@ class HRPPlugin < DomainPlugin
   end
 
   #----- Inter Domain Join Set -----#
-  @@inter_domain_join_set = {}      #{entry_cell =>{domain_root=>count} }  Hash of inter domain join
+  @@inter_domain_join_set = {}      # {entry_cell =>{domain_root=>count} }  Hash of inter domain join
   def self.add_inter_domain_join_set join
     rhs_cell = join.get_cell
     dbgPrint "--------- add_inter_domain:#{join.get_owner.get_namespace_path} => #{join.get_cell.get_namespace_path}-----\n"

@@ -40,12 +40,12 @@
 class TECSInfoPlugin < CelltypePlugin
 
   @@cell_list = []
-  #@celltype::Celltype
-  #@plugin_arg_str::String
-  #@plugin_arg_list::{argNameString=>argOptionString}
-  #@cell_list::[Cell]
+  # @celltype::Celltype
+  # @plugin_arg_str::String
+  # @plugin_arg_list::{argNameString=>argOptionString}
+  # @cell_list::[Cell]
 
-  #celltype::     Celltype        セルタイプ（インスタンス）
+  # celltype::     Celltype        セルタイプ（インスタンス）
   def initialize( celltype, option )
     super
     if $unopt_entry == false then
@@ -55,7 +55,7 @@ class TECSInfoPlugin < CelltypePlugin
   end
 
   #=== 新しいセル
-  #cell::        Cell            セル
+  # cell::        Cell            セル
   #
   # celltype プラグインを指定されたセルタイプのセルが生成された
   # セルタイププラグインに対する新しいセルの報告
@@ -262,8 +262,8 @@ EOT
   end
 
   #=== 後ろの CDL コードを生成
-  #プラグインの後ろの CDL コードを生成
-  #file:: File:
+  # プラグインの後ろの CDL コードを生成
+  # file:: File:
   def self.gen_post_code( file )
     if Generator.get_n_error > 0 then
       Generator.info( "I9999 TECSInfoPlugin does not generate TECSInfo code because of early error" )

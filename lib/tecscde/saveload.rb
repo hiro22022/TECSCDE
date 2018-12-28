@@ -88,7 +88,7 @@ module TECSCDE
       },
       :join_location => {
         :type         => "join_location",         # fixed string (type name)
-        :call_region  => :string,                 #"rRegionParent::rRegionChild",
+        :call_region  => :string,                 # "rRegionParent::rRegionChild",
         :call_cell    => :string,                 # "CellName",
         :call_port    => :string,                 # "cPort",
         :entry_region => :string,                 # "rERegionParent::rERegionChild",
@@ -482,7 +482,7 @@ module TECSCDE
     end
 
     #=== TECSModel#save_tecsgen
-    #output __tool_info__ ("tecsgen")
+    # output __tool_info__ ("tecsgen")
     def save_tecsgen f
       f.print "__tool_info__ (\"tecsgen\") {\n"
 
@@ -541,7 +541,7 @@ module TECSCDE
     end
 
     #=== TECSModel#save_cells
-    #output cell definition
+    # output cell definition
     def save_cells f
       @cell_list.each{ |cell|                           # mikan region
         if ! cell.is_editable?
@@ -594,7 +594,7 @@ module TECSCDE
     end
 
     #=== TECSModel#save_info
-    #output location information
+    # output location information
     def save_info f
       f.print "\n"
       f.print "/*************************************************\n"
@@ -612,7 +612,7 @@ module TECSCDE
     end
 
     #=== TECSModel#save_cell_info
-    #output cell location information
+    # output cell location information
     def save_paper_info f
       f.print <<EOT
     "paper" : {
@@ -624,7 +624,7 @@ EOT
     end
 
     #=== TECSModel#save_cell_info
-    #output cell location information
+    # output cell location information
     def save_cell_info f
       f.print "    \"cell_list\" : [\n"
       delim_1 = ""
@@ -674,7 +674,7 @@ EOT
     end
 
     #=== TECSModel#save_join_info
-    #output join location information
+    # output join location information
     def save_join_info f
       f.print "    \"join_list\" : [\n"
       delim_1 = ""

@@ -165,26 +165,26 @@ module TECSCDE
 
   #== MainView class
   class MainView
-    #@mainWindow::Gtk::Window
-    #@mainWindowHeight::Integer
-    #@mainWindowWidth::Integer
-    #@vbox::VBox
-    #@canvas_height::Integer
-    #@canvas_width::Integer
-    #@canvas::Canvas
-    #@canvasPixmap::Gtk::Pixmap
-    #@gdkWindow::Gdk::Window  GDK window of @canvas
-    #@drawTarget::Gtk::Pixmap | Gdk::Window : @canvasPixmap or @gdkWindow
-    #@canvasGc::Gdk::GC
-    #@model::Model
-    #@hScale::HScale
-    #@scale_val::Integer
-    #@control::Control
-    #@pango_context::Gdk::Pango.context
-    #@pango_layout::Pango::Layout
-    #@pango_matrix::Pango::Matrix
+    # @mainWindow::Gtk::Window
+    # @mainWindowHeight::Integer
+    # @mainWindowWidth::Integer
+    # @vbox::VBox
+    # @canvas_height::Integer
+    # @canvas_width::Integer
+    # @canvas::Canvas
+    # @canvasPixmap::Gtk::Pixmap
+    # @gdkWindow::Gdk::Window  GDK window of @canvas
+    # @drawTarget::Gtk::Pixmap | Gdk::Window : @canvasPixmap or @gdkWindow
+    # @canvasGc::Gdk::GC
+    # @model::Model
+    # @hScale::HScale
+    # @scale_val::Integer
+    # @control::Control
+    # @pango_context::Gdk::Pango.context
+    # @pango_layout::Pango::Layout
+    # @pango_matrix::Pango::Matrix
 
-    #colors
+    # colors
     @@colors = nil
     @@colormap = nil
 
@@ -237,7 +237,7 @@ module TECSCDE
 
       @vbox = Gtk::VBox.new
       # @vbox.set_resize_mode Gtk::RESIZE_IMMEDIATE
-      #p @vbox.resize_mode
+      # p @vbox.resize_mode
       @mainWindow.add @vbox
 
       @scrolledWindow = Gtk::ScrolledWindow.new
@@ -388,14 +388,14 @@ module TECSCDE
     end
 
     #=== TmView#drawTargetDirect
-    #change draw target to Window
+    # change draw target to Window
     def drawTargetDirect
       # @drawTarget = @gdkWindow
       # @cairo_context_target = @cairo_context_win
     end
 
     #=== TmView#drawTargetReset
-    #reset draw target to canvasPixmap
+    # reset draw target to canvasPixmap
     def drawTargetReset
       # @drawTarget = @canvasPixmap
       # @cairo_context_target = @cairo_context_pixmap
@@ -413,7 +413,7 @@ module TECSCDE
       @hbox.pack_start @emphasize_cell_name_button
 
       #----- color by region button -----#
-      #@color_by_region_button = Gtk::ToggleButton.new( "Color by Region" )
+      # @color_by_region_button = Gtk::ToggleButton.new( "Color by Region" )
       @color_by_region_button = Gtk::CheckButton.new( "Color by Region" )
       @color_by_region_button.signal_connect("toggled") { |button|
         @b_color_by_region = button.active?
@@ -840,10 +840,10 @@ module TECSCDE
       end
     end
 
-    #x::Integer(dot)
-    #y::Integer(dot)
-    #obj_type::CELL_NAME, SIGNATURE_NAME, PORT_NAME
-    #alignment::ALIGN_CENTER, ALIGN_LEFT
+    # x::Integer(dot)
+    # y::Integer(dot)
+    # obj_type::CELL_NAME, SIGNATURE_NAME, PORT_NAME
+    # alignment::ALIGN_CENTER, ALIGN_LEFT
     def draw_text( x, y, text, obj_type, alignment, direction )
       if direction == TEXT_VERTICAL then
         draw_text_v( x, y, text, obj_type, alignment )
@@ -946,10 +946,10 @@ module TECSCDE
       cr.show_pango_layout( plo )
     end
 
-    #x::Integer(dot)
-    #y::Integer(dot)
-    #obj_type::CELL_NAME, SIGNATURE_NAME, PORT_NAME
-    #alignment::ALIGN_CENTER, ALIGN_LEFT
+    # x::Integer(dot)
+    # y::Integer(dot)
+    # obj_type::CELL_NAME, SIGNATURE_NAME, PORT_NAME
+    # alignment::ALIGN_CENTER, ALIGN_LEFT
     def draw_text_v( x, y, text, obj_type, alignment )
       # draw_text_v_gdk( x, y, text, obj_type, alignment )
       draw_text_v_cairo( x, y, text, obj_type, alignment )

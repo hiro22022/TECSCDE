@@ -41,16 +41,16 @@ class DomainPlugin < Plugin
 
   #== domain 指定されたリージョンが定義された
   # region で domain 指定があった
-  #domain_type_name::Symbol : domain 指定子の第一引数
-  #option::String : domain 指定子の第二引数
+  # domain_type_name::Symbol : domain 指定子の第一引数
+  # option::String : domain 指定子の第二引数
   def initialize( region, domain_type_name, option )
     super()
   end
 
   #== 結合 join にプラグインを挿入する
-  #join::Join : 結合に関する情報
-  #return::[ plugin_name::String, option::String ]: 挿入するプラグイン。 挿入するものがなければ nil を返す
-  #return::(1) [ plugin_name, option ] or (2) [[ plugin_name, option ], ...], or [] or nil:  (2): not supported now
+  # join::Join : 結合に関する情報
+  # return::[ plugin_name::String, option::String ]: 挿入するプラグイン。 挿入するものがなければ nil を返す
+  # return::(1) [ plugin_name, option ] or (2) [[ plugin_name, option ], ...], or [] or nil:  (2): not supported now
   #   nil: region 間の結合禁止, []: region 間の結合可(プラグイン挿入無し)
   #   [ plugin_name, option ]: *_through( plugin_name, option ) 指定したのと同等
   #
@@ -78,7 +78,7 @@ class DomainPlugin < Plugin
   end
 
   #== ドメイン種別を返す
-  #return::Symbol :kernel, :user, :OutOfDomain
+  # return::Symbol :kernel, :user, :OutOfDomain
   def get_kind
     :kernel
   end

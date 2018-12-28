@@ -51,7 +51,7 @@ end
 
 #
 ##== celltype プラグインの共通の親クラス
-#class MrubyBridgeCelltypePlugin < CelltypePlugin
+# class MrubyBridgeCelltypePlugin < CelltypePlugin
 #
 #  # プラグイン引数名 => Proc
 #  MrubyBridgePluginArgProc = { 
@@ -134,9 +134,9 @@ end
 #    fn2 = "#{$gen}/tmp_MrubyBridgeCelltypePlugin_#{@celltype.get_name}_#{@@count}.cdl"
 #    f2 = File.open( fn2, "w" )
 #    f2.print <<EOT
-#/* MrubyBridgeCelltypePlugin: celltype=#{@celltype.get_name} */
-#generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "#{opt_str}" );
-#EOT
+# /* MrubyBridgeCelltypePlugin: celltype=#{@celltype.get_name} */
+# generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "#{opt_str}" );
+# EOT
 #    f2.close
 #    Import.new "#{fn2}"
 #    @@count += 1
@@ -154,19 +154,19 @@ end
 #    
 ##    dbgPrint "MrubyBridgeCelltypePlugin: gen_cdl_file: #{@celltype.get_name}\n"
 ##    file.print <<EOT
-##/* MrubyBridgeCelltypePlugin: celltype=#{@celltype.get_name}
+# #/* MrubyBridgeCelltypePlugin: celltype=#{@celltype.get_name}
 ## *
 ## *    cell's generate before celltype's generate
 ## */
 ##
-##EOT
+# #EOT
 ##    @celltype.get_cell_list.each { |cell|
 ##      @cell_list << cell
 ##      # mikan option, region
 ##      dbgPrint "MrubyBridgeCelltypePlugin: cell=#{cell.get_name}\n"
 ##      file.print <<EOT
-##generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
-##EOT
+# #generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
+# #EOT
 ##    }
 #
 #  end
@@ -199,8 +199,8 @@ end
 ##      plugin.get_celltype.get_cell_list.each{ |cell|
 ##        # mikan option, region
 ##        f2.print <<EOT
-##generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
-##EOT
+# #generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
+# #EOT
 ##      }
 ##    }
 ##    f2.close
@@ -289,5 +289,5 @@ end
 #      cdl_warning( "MRB9999 auto_exclude: unknown rhs value ignored. specify true or false" )
 #    end
 #  end
-#end
+# end
 #

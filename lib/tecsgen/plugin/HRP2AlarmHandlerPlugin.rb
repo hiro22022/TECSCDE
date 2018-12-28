@@ -37,7 +37,7 @@
 #  
 #++
 
-#require "HRP2KernelObjectPlugin"
+# require "HRP2KernelObjectPlugin"
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 #== celltype プラグインの共通の親クラス
 class HRP2AlarmHandlerPlugin < HRP2KernelObjectPlugin
@@ -68,7 +68,7 @@ EOT
        file.puts "SAC_ALM(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
     end
 
-    #tAlarmの受け口リスト 
+    # tAlarmの受け口リスト 
     def get_entry_ports_name_list()
         @@ep
     end

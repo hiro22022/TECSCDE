@@ -105,9 +105,9 @@ module PluginModule
       p "#{plugin_name}: MultiPlugin"
       return
     elsif @@loaded_plugin_list[ plugin_name ] == nil then
-      #raise "#{plugin_name} might have different name "
+      # raise "#{plugin_name} might have different name "
       ## プラグインのファイル名と、プラグインのクラス名が相違する場合
-      #MultiPlugin の get_plugin で返されたケースでは nil になっている
+      # MultiPlugin の get_plugin で返されたケースでは nil になっている
       @@loaded_plugin_list[ plugin_name ] = 0
     end
     count = @@loaded_plugin_list[ plugin_name ]

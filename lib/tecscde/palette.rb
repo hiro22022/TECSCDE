@@ -54,7 +54,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
 module TECSCDE
   class Palette
-    #control::TECSCDE::Control
+    # control::TECSCDE::Control
     def initialize control
       @control = control
       Dir.chdir( "#{$tecsgen_base_path}/../glade" ){

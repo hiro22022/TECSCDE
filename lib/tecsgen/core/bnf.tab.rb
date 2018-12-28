@@ -5188,7 +5188,7 @@ class TECSIO
   #
   # このメソッドは、エラーメッセージ出力でも使用されていることに注意．
   #
-  #msg_enc::Encode | String
+  # msg_enc::Encode | String
   def self.str_code_convert( msg, str )
     if $b_no_kcode == false then
       return str                          # Ruby V1.8 まで

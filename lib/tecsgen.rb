@@ -39,19 +39,19 @@
 
 #= tecsgen  : TECS のジェネレータ
 #
-#Authors::    石川　拓也(HRP2Plugin)
-#Authors::    原　　拓(動的結合仕様)
-#Authors::    河田　智明(NotifierPlugin)
-#Authors::    高田　広章(ASP3 への TECS 組込み)
-#Authors::    高木　信尚(ランタイムヘッダ)
-#Authors::    成瀬　有美(TECS flow 実装)
-#Authors::    鵜飼　敬幸(ATK1Plugin)
-#Authors::    大山　博司(ジェネレータ実装, RPCPlugin, TracePlugin, MrubyBridgePlugin)
-#Authors::    山本　将也(ジェネレータ初期プロトタイプ実装)
-#Authors::    小南　靖雄(テストコードの一部)
-#Authors::    安積　卓也(ASP+TECS, EV3RT+TECS, mruby on TECS等実装)
+# Authors::    石川　拓也(HRP2Plugin)
+# Authors::    原　　拓(動的結合仕様)
+# Authors::    河田　智明(NotifierPlugin)
+# Authors::    高田　広章(ASP3 への TECS 組込み)
+# Authors::    高木　信尚(ランタイムヘッダ)
+# Authors::    成瀬　有美(TECS flow 実装)
+# Authors::    鵜飼　敬幸(ATK1Plugin)
+# Authors::    大山　博司(ジェネレータ実装, RPCPlugin, TracePlugin, MrubyBridgePlugin)
+# Authors::    山本　将也(ジェネレータ初期プロトタイプ実装)
+# Authors::    小南　靖雄(テストコードの一部)
+# Authors::    安積　卓也(ASP+TECS, EV3RT+TECS, mruby on TECS等実装)
 #  Authors list is in i-ro-ha order.
-#Version::   see version.rb
+# Version::   see version.rb
 $Copyright = "Copyright(c) 2008-2018, TOPPERS project. All rights reserved."
 $License   = "TOPPERS License"
 
@@ -91,7 +91,7 @@ end
 #
 # プラグインの場合は b_fatal = false を指定。ファイルがなくてもエラー出力後、処理続行
 # b_fatal = false の場合 tecslib/core がサーチパスに追加される
-#RETURN::Bool   : true=成功、 false=失敗   失敗した場合、Generator.error は呼び元で出力する
+# RETURN::Bool   : true=成功、 false=失敗   失敗した場合、Generator.error は呼び元で出力する
 def require_tecsgen_lib( fname, b_fatal = true )
   dbgPrint( "require_lib: #{fname}\n")
   set_kcode $KCODE_TECSGEN
@@ -163,7 +163,7 @@ def require_tecsgen_lib( fname, b_fatal = true )
 end
 
 #=== 例外の表示
-#evar:: Exception
+# evar:: Exception
 def print_exception( evar )
 # もしスタックトレースが出るまでい時間がかかるようならば、次をコメントアウトしてみるべし
   print "*** Begin Ruby exception message ***\n"
@@ -266,7 +266,7 @@ class TECSGEN
   def self.initialize_global_var
 
     require 'optparse'
-    #2.0 require 'runit/assert.rb'
+    # 2.0 require 'runit/assert.rb'
     require 'kconv'
     $b_no_kcode = RUBY_VERSION >= "1.9.0" ? true : false
 	       # Use Ruby 1.9 M17N code (use Ruby 1.8 code if false).
@@ -302,7 +302,7 @@ class TECSGEN
     $library_path = [ $tecsgen_base_path ] # string array : path to dir where tecsgen.rb placed
     $define    = [ ]       # string array : define
     $ram_initializer = false # bool: generate ram initializer
-    $region_list = {}      #string array : region path which is generated
+    $region_list = {}      # string array : region path which is generated
     $generating_region = nil # Region:  Region to optimisze & generate code   # コマンドラインオプションではない
 		 #           Cell#is_generate? にて参照される
     $unit_test = false     # bool:   unit test verification
@@ -459,7 +459,7 @@ class TECSGEN
       }
       #  parser.on(  '--include_path_opt_format',  'cpp include path option format, default: "-I %s"' ){
       #  }
-      parser.version = #{$version}
+      parser.version = # {$version}
       parser.release = nil
       if additional_option_parser
         additional_option_parser.call( parser )

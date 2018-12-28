@@ -53,7 +53,7 @@ module MrubyBridgeCelltypePluginModule
   @@plugin_list = []
   @@count = 1
 
-  #celltype::     Celltype        セルタイプ（インスタンス）
+  # celltype::     Celltype        セルタイプ（インスタンス）
   def initialize( celltype, option )
     dbgPrint "#{self.class.name}: initialzie: #{celltype.get_name}\n"
 
@@ -76,7 +76,7 @@ module MrubyBridgeCelltypePluginModule
   end
 
   #=== 新しいセル
-  #cell::        Cell            セル
+  # cell::        Cell            セル
   #
   # celltype プラグインを指定されたセルタイプのセルが生成された
   # セルタイププラグインに対する新しいセルの報告
@@ -134,25 +134,25 @@ EOT
   #      重複して生成してはならない
   #      すでに生成されている場合は出力しないこと。
   #      もしくは同名の import により、重複を避けること。
-  #file::        FILE       生成するファイル
+  # file::        FILE       生成するファイル
   def gen_cdl_file file
 #   この段階で呼びだすと generate 文が呼び出される前のセルのみの出力となる
     
 #    dbgPrint "MrubyBridgeCelltypePlugin: gen_cdl_file: #{@celltype.get_name}\n"
 #    file.print <<EOT
-#/* MrubyBridgeCelltypePlugin: celltype=#{@celltype.get_name}
+# /* MrubyBridgeCelltypePlugin: celltype=#{@celltype.get_name}
 # *
 # *    cell's generate before celltype's generate
 # */
 #
-#EOT
+# EOT
 #    @celltype.get_cell_list.each { |cell|
 #      @cell_list << cell
 #      # mikan option, region
 #      dbgPrint "MrubyBridgeCelltypePlugin: cell=#{cell.get_name}\n"
 #      file.print <<EOT
-#generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
-#EOT
+# generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
+# EOT
 #    }
 
   end
@@ -170,8 +170,8 @@ EOT
 
   @@b_gen_post_code_called = false
   #=== 後ろの CDL コードを生成
-  #プラグインの後ろの CDL コードを生成
-  #file:: File: 
+  # プラグインの後ろの CDL コードを生成
+  # file:: File: 
   def self.gen_post_code( file )
     dbgPrint "#{self.name}: gen_post_code_body\n"
 
@@ -192,8 +192,8 @@ EOT
 #      plugin.get_celltype.get_cell_list.each{ |cell|
 #        # mikan option, region
 #        f2.print <<EOT
-#generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
-#EOT
+# generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
+# EOT
 #      }
 #    }
 #    f2.close

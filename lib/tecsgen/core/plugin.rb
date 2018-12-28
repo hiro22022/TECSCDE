@@ -39,7 +39,7 @@
 #== Plugin クラス
 # ThroughPlugin, SignaturePlugin, CelltypePlugin に include する
 class Plugin < Node
-#@error_backlog:: [msg1, msg2, ... ]   @locale が設定される前に発生したエラー
+# @error_backlog:: [msg1, msg2, ... ]   @locale が設定される前に発生したエラー
 
   PluginArgProc = {
     "silent"  => Proc.new { |obj,rhs| obj.set_silent rhs },
@@ -82,7 +82,7 @@ class Plugin < Node
   #      重複して生成してはならない
   #      すでに生成されている場合は出力しないこと。
   #      もしくは同名の import により、重複を避けること。
-  #file::        FILE       生成するファイル
+  # file::        FILE       生成するファイル
   def gen_cdl_file file
   end
 
@@ -99,25 +99,25 @@ class Plugin < Node
   #     プラグインの場合、変更する必要のないセルタイプコードを生成する
   #     このメソッドが未定義であれば、プラグインはセルタイプコードを生成しない (通常通りテンプレートを生成する)
   #      gen_cdl_file の中で生成されたセルタイプに対して呼び出される
-  #file::           FILE        出力先ファイル (tCelltype.c)
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
-  #sig_name::       string
-  #ep_name::        string
-  #func_name::      string
-  #func_global_name:: string
-  #func_type::      class derived from Type
+  # file::           FILE        出力先ファイル (tCelltype.c)
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
+  # sig_name::       string
+  # ep_name::        string
+  # func_name::      string
+  # func_global_name:: string
+  # func_type::      class derived from Type
 #  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
 #  end
 
   #===  受け口関数の preamble (C言語)を生成する
   #     必要なら preamble 部に出力する
   #      gen_cdl_file の中でで生成されたセルタイプに対して呼び出される
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
   def gen_preamble( file, b_singleton, ct_name, global_ct_name )
     # デフォルトでは何も出力しない
   end
@@ -125,10 +125,10 @@ class Plugin < Node
   #===  受け口関数の postamble (C言語)を生成する
   #     必要なら postamble 部に出力する
   #      gen_cdl_file の中で生成されたセルタイプに対して呼び出される
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
   def gen_postamble( file, b_singleton, ct_name, global_ct_name )
     # デフォルトでは何も出力しない
   end
@@ -136,10 +136,10 @@ class Plugin < Node
   #=== gen_cdl_file の中で生成されたセルタイプに新しいセルが生成された
   # どのセルタイプかは cell.get_celltype で分かる
   #
-  #file::           FILE        出力先ファイル
-  #b_singleton::    bool        true if singleton
-  #ct_name::        Symbol
-  #global_ct_name:: string
+  # file::           FILE        出力先ファイル
+  # b_singleton::    bool        true if singleton
+  # ct_name::        Symbol
+  # global_ct_name:: string
   def new_cell cell
     # デフォルトでは何もしない
   end
@@ -244,8 +244,8 @@ class Plugin < Node
   #=== プラグイン引数をチェックする
   # @plugin_arg_check_proc_tab に従ってプラグイン引数をチェックすする
   # 古い用法：子クラスでオーバーライドし、引数識別子が正しいかチェックする
-  #ident:: string: 引数識別子
-  #rhs:: string: 右辺文字列
+  # ident:: string: 引数識別子
+  # rhs:: string: 右辺文字列
   def check_plugin_arg( ident, rhs )
 
     dbgPrint "check_plugin_arg: #{ident} #{rhs.to_str}\n"

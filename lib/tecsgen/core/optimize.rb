@@ -415,7 +415,7 @@ class Celltype
                 port2 = j2.get_rhs_port   # 右辺のポート
                 # 受け口側の最適化可能性を設定
                 port2.set_entry_VMT_skelton_useless( b_VMT_useless, b_skelton_useless )
-              #else
+              # else
               #  optional で呼び口配列要素が初期化されていない
               end
             }
@@ -429,7 +429,7 @@ class Celltype
     }
   end
 
-  #Celltype# リセットする
+  # Celltype# リセットする
   def reset_optimize
     @@ID_BASE = ID_BASE      # 本当は一回だけでよい
     @id_base = 1             # set_cell_id でリセットされるので不要
@@ -444,9 +444,9 @@ class Celltype
     @domain_roots = {}
   end
 
-  #Celltype# ヘッダは include されているか
-  #hname::Symbol : ヘッダ名
-  #RETURN:: bool_t: false インクルードされていない、true インクルードされている
+  # Celltype# ヘッダは include されているか
+  # hname::Symbol : ヘッダ名
+  # RETURN:: bool_t: false インクルードされていない、true インクルードされている
   # #_ISH_#, #_ICT_# でヘッダが取り込まれているかチェックする
   # false が返った場合、hname は登録されて、次回の呼び出しでは true が返る
   def header_included?( hname )

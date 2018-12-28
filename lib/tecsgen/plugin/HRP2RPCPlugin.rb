@@ -215,7 +215,7 @@ EOT
 import( "#{@rpc_channel_celltype_file_name}" );
 EOT
 
-    #nest = @end_region.gen_region_str_pre file
+    # nest = @end_region.gen_region_str_pre file
     indent_str = ""
 
     file.print <<EOT
@@ -248,7 +248,7 @@ EOT
           subsc_str = ""
         end
 
-        eport = "eThroughEntry" #RPCの受け口名に変更
+        eport = "eThroughEntry" # RPCの受け口名に変更
         file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc}"
       end
 

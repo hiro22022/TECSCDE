@@ -40,7 +40,7 @@
 class CellPlugin < Plugin
 
   #=== CellPlugin# initialize
-  #cell::     Cell        セル（インスタンス）
+  # cell::     Cell        セル（インスタンス）
   # このメソッドは、セルの構文解析が終わったところで呼び出される
   # この段階では意味解析が終わっていない
   def initialize( cell, option )
@@ -53,8 +53,8 @@ class CellPlugin < Plugin
   end
 
   #=== 後ろの CDL コードを生成
-  #プラグインの後ろの CDL コードを生成
-  #file:: File: 
+  # プラグインの後ろの CDL コードを生成
+  # file:: File: 
   def self.gen_post_code( file )
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
