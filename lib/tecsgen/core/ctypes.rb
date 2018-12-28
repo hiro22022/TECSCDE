@@ -133,7 +133,7 @@ module CType
   def set_qualifier(qual)
 
     if @qualifier
-      cdl_error("C1004 $1: qualifier redefined. previous one: $2" , qual, @qualifier)
+      cdl_error("C1004 $1: qualifier redefined. previous one: $2", qual, @qualifier)
     end
     super(qual)
   end
@@ -179,7 +179,7 @@ class CFloatType < FloatType
 
   def to_long
     if @bit_size != -64
-      cdl_warning("W9999 long specified for $1" , get_type_str)
+      cdl_warning("W9999 long specified for $1", get_type_str)
     else
       @bit_size = -128  # @bit_size = -128 : long double
     end

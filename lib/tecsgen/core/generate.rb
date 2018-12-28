@@ -1901,7 +1901,7 @@ EOT
 
   def gen_ph_cp_fun_macro(f)
     if @n_call_port >0
-      f.printf(TECSMsg.get(:CPM_comment) , "#_CPM_#")
+      f.printf(TECSMsg.get(:CPM_comment), "#_CPM_#")
     end
 
     @port.each { |p|
@@ -4743,7 +4743,7 @@ EOT
           cfg_file.puts("\n")
           cfg_file.close()
         rescue => evar
-          cdl_error("H1004 \'$1\' : write error while writing factory (specify -t to get more info)" , file_name)
+          cdl_error("H1004 \'$1\' : write error while writing factory (specify -t to get more info)", file_name)
           print_exception(evar)
         end
       end
@@ -4830,7 +4830,7 @@ EOT
             cfg_file.puts("\n")
             cfg_file.close()
           rescue => evar
-            cdl_error("H1005 \'$1\' : write error while writing factory (specify -t to get more info)" , file_name)
+            cdl_error("H1005 \'$1\' : write error while writing factory (specify -t to get more info)", file_name)
             print_exception(evar)
           end
         end

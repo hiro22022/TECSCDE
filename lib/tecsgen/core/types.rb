@@ -132,7 +132,7 @@ class Type < Node
       str = "#{str}#{delim}nullable"
       delim = ", "
     end
-    cdl_error("T1003 $1: unsuitable specifier for $2" , str, self.class)
+    cdl_error("T1003 $1: unsuitable specifier for $2", str, self.class)
   end
 
   def clear_max
@@ -186,7 +186,7 @@ class Type < Node
   #=== const_val を指定の型にキャストする
   # 派生クラスでオーバーライドしていないとエラー
   def cast(const_val)
-    cdl_error("T1004 cannot cast to $1" , self.class)
+    cdl_error("T1004 cannot cast to $1", self.class)
   end
 
   #=== 型が一致するかのチェック
@@ -254,9 +254,9 @@ class DefinedType < Type
 #      raise NotTypedef
     #    end
     if @typedef == nil
-      cdl_error("T1005 \'$1\' not defined" , type_name)
+      cdl_error("T1005 \'$1\' not defined", type_name)
     elsif @typedef.class != Typedef
-      cdl_error("T1006 \'$1\' not type name. expecting type name here" , type_name)
+      cdl_error("T1006 \'$1\' not type name. expecting type name here", type_name)
     end
     @type = @typedef.get_declarator.get_type
     initHasType
@@ -349,7 +349,7 @@ class VoidType < Type
   end
 
   def check_init(locale, ident, initializer, kind, attribute = nil)
-    cdl_error2(locale, "T1007 $1: void type variable cannot have initializer" , ident)
+    cdl_error2(locale, "T1007 $1: void type variable cannot have initializer", ident)
   end
 
   def get_type_str
@@ -405,9 +405,9 @@ class IntType < Type
       end
     elsif b_uint == false && @bit_size > 0
       if sign == :SIGNED
-        cdl_warning("W2001 signed int$1_t: obsolete. use int$2_t" , @bit_size, @bit_size)
+        cdl_warning("W2001 signed int$1_t: obsolete. use int$2_t", @bit_size, @bit_size)
       else
-        cdl_warning("W2002 unsinged int$1_t: obsolete. use uint$2_t" , @bit_size, @bit_size)
+        cdl_warning("W2002 unsinged int$1_t: obsolete. use uint$2_t", @bit_size, @bit_size)
       end
     end
 
@@ -431,25 +431,25 @@ class IntType < Type
 
     if val.instance_of? Token    # StringVal 導入により、もはや Token は来ないはず
       # val が Token の場合 == の右辺が String だとエラーを起こす (#198)
-      cdl_error2(locale, "T1009 $1: $2: not integer" , ident, val)
+      cdl_error2(locale, "T1009 $1: $2: not integer", ident, val)
       return
     elsif val.is_a? C_EXP
       # #192 var が attribute を参照し、attribute の右辺が C_EXP の場合
       # const の右辺が C_EXP の場合も
       return
     elsif val.kind_of? FloatVal
-      cdl_error2(locale, "T1011 $1: need cast to assign float to integer" , ident)
+      cdl_error2(locale, "T1011 $1: need cast to assign float to integer", ident)
       return
     elsif val.instance_of? Array
-      cdl_error2(locale, "T1017 $1: unsuitable initializer for scalar type" , ident)
+      cdl_error2(locale, "T1017 $1: unsuitable initializer for scalar type", ident)
       return
     elsif val == nil
-      cdl_error2(locale, "T1010 $1: initializer is not constant" , ident)
+      cdl_error2(locale, "T1010 $1: initializer is not constant", ident)
       return
     end
 
     if ! val.kind_of? IntegerVal
-      cdl_error2(locale, "T1012 $1: $2: not integer" , ident, val)
+      cdl_error2(locale, "T1012 $1: $2: not integer", ident, val)
       return
     end
 
@@ -461,9 +461,9 @@ class IntType < Type
     if !max.nil?
       if val > max
         if @sign == :SIGNED || @sign == nil
-          cdl_error2(locale, "T1013 $1: too large (max=$2)" , ident, max)
+          cdl_error2(locale, "T1013 $1: too large (max=$2)", ident, max)
         else
-          cdl_error2(locale, "T1016 $1: too large (max=$2)" , ident, max)
+          cdl_error2(locale, "T1016 $1: too large (max=$2)", ident, max)
         end
       end
     end
@@ -471,9 +471,9 @@ class IntType < Type
     if !min.nil?
       if val < min
         if @sign == :SIGNED || @sign == nil
-          cdl_error2(locale, "T1014 $1: too large negative value (min=$2)" , ident, min)
+          cdl_error2(locale, "T1014 $1: too large negative value (min=$2)", ident, min)
         else
-          cdl_error2(locale, "T1015 $1: negative value for unsigned" , ident)
+          cdl_error2(locale, "T1015 $1: negative value for unsigned", ident)
         end
       end
     end
@@ -495,7 +495,7 @@ class IntType < Type
       else
         rval = get_max                         # 最大値でクリップ (FloatType)
       end
-      cdl_warning("W2003 $1: too large to cast to $2, clipped($3)" , in_val, get_type_str, rval)
+      cdl_warning("W2003 $1: too large to cast to $2, clipped($3)", in_val, get_type_str, rval)
     elsif get_min && val < get_min
       if from_type == :IntType
         rval = ((1 << bit_size)-1) & val
@@ -503,9 +503,9 @@ class IntType < Type
         rval = get_min
       end
       if @sign == :SIGNED || @sign == nil
-        cdl_warning("W2004 $1: too small to cast to $2, clipped($3)" , in_val, get_type_str, rval)
+        cdl_warning("W2004 $1: too small to cast to $2, clipped($3)", in_val, get_type_str, rval)
       else    # @sign == :UNSIGNED || @sign == nil (char の場合)
-        cdl_warning("W2005 $1: negative value for unsigned: convert to $2" , in_val, rval)
+        cdl_warning("W2005 $1: negative value for unsigned: convert to $2", in_val, rval)
       end
     else
       rval = val
@@ -647,18 +647,18 @@ class FloatType < Type
 
     if val.instance_of? Token
       # val が Token の場合 == の右辺が String だとエラーを起こす
-      cdl_error2(locale, "T1018 $1: $2: not number" , ident, val)
+      cdl_error2(locale, "T1018 $1: $2: not number", ident, val)
       return
     elsif val.instance_of? Array
-      cdl_error2(locale, "T1020 $1: unsuitable initializer for scalar type" , ident)
+      cdl_error2(locale, "T1020 $1: unsuitable initializer for scalar type", ident)
       return
     elsif val.instance_of? C_EXP
       return
     elsif val == nil
-      cdl_error2(locale, "T1019 $1: initializer is not constant" , ident)
+      cdl_error2(locale, "T1019 $1: initializer is not constant", ident)
       return
     elsif ! val.kind_of?(IntegerVal) && ! val.kind_of?(FloatVal)
-      cdl_error2(locale, "T1037 $1: not number" , ident)
+      cdl_error2(locale, "T1037 $1: not number", ident)
       return
     end
     # else
@@ -810,7 +810,7 @@ class StructType < Type
 
     st = Namespace.find_tag(@tag)
     if st == nil
-      cdl_error("T1022 struct $1: not defined" , @tag)
+      cdl_error("T1022 struct $1: not defined", @tag)
     end
   end
 
@@ -819,7 +819,7 @@ class StructType < Type
 
     st = Namespace.find_tag(@tag)
     if st == nil
-      cdl_error2(locale, "T1023 struct $1: not defined" , @tag)
+      cdl_error2(locale, "T1023 struct $1: not defined", @tag)
       return
     end
 
@@ -833,9 +833,9 @@ class StructType < Type
         else
           str = "unknown"
         end
-        cdl_error2(locale, "T1038 $1: initializer type mismatch. '$2' & '$3'" , ident, get_type_str, str)
+        cdl_error2(locale, "T1038 $1: initializer type mismatch. '$2' & '$3'", ident, get_type_str, str)
       elsif @tag != t.get_name
-        cdl_error2(locale, "T1039 $1: struct tag mismatch $2 and $3" , ident, @tag, t.get_name)
+        cdl_error2(locale, "T1039 $1: struct tag mismatch $2 and $3", ident, @tag, t.get_name)
       end
       initializer = initializer.eval_const(attribute)
     end
@@ -849,7 +849,7 @@ class StructType < Type
         i += 1
       }
     else
-      cdl_error2(locale, "T1024 $1: unsuitable initializer for struct" , ident)
+      cdl_error2(locale, "T1024 $1: unsuitable initializer for struct", ident)
     end
   end
 
@@ -1089,7 +1089,7 @@ class FuncType < Type
   end
 
   def check_init(locale, ident, initializer, kind, attribute = nil)
-    cdl_error2(locale, "T1028 $1: cannot initialize function pointer" , ident)
+    cdl_error2(locale, "T1028 $1: cannot initialize function pointer", ident)
     return
   end
 
@@ -1126,13 +1126,13 @@ class FuncType < Type
     @b_oneway = b_oneway
 
     if ((@type.get_type_str != "ER" && @type.get_type_str != "void") || @type.get_type_str_post != "")
-      cdl_error("T1029 oneway function cannot return type \'$1$2\', \'void\' or \'ER\' is permitted" , @type.get_type_str, @type.get_type_str_post)
+      cdl_error("T1029 oneway function cannot return type \'$1$2\', \'void\' or \'ER\' is permitted", @type.get_type_str, @type.get_type_str_post)
     end
 
     if @paramlist
       @paramlist.get_items.each{ |p|
         if p.get_direction != :IN && p.get_direction != :SEND
-          cdl_error("T1030 oneway function cannot have $1 parameter for \'$2\'" , p.get_direction, p.get_name)
+          cdl_error("T1030 oneway function cannot have $1 parameter for \'$2\'", p.get_direction, p.get_name)
         end
       }
     end
@@ -1276,7 +1276,7 @@ class ArrayType < Type
         n_sub = @subscript.eval_const(nil)
         if n_sub
           if initializer.length > n_sub
-            cdl_error2(locale, "T9999 $1: too many initializer, $2 for $3" , ident, initializer.length, n_sub)
+            cdl_error2(locale, "T9999 $1: too many initializer, $2 for $3", ident, initializer.length, n_sub)
           end
         end
       end
@@ -1286,7 +1286,7 @@ class ArrayType < Type
         index += 1
       }
     else
-      cdl_error2(locale, "T1031 $1: unsuitable initializer for array" , ident)
+      cdl_error2(locale, "T1031 $1: unsuitable initializer for array", ident)
     end
   end
 
@@ -1388,19 +1388,19 @@ class PtrType < Type
           elsif (t1.kind_of?(CDefinedType) || t2.kind_of?(CDefinedType))&& t1.get_type_str == t2.get_type_str && t1.get_type_str_post && t2.get_type_str_post
             # int8_t などが、一方は .h に定義されているケース
           else
-            cdl_error2(locale, "T1032 $1: incompatible pointer type" , ident)
+            cdl_error2(locale, "T1032 $1: incompatible pointer type", ident)
             break
           end
         end
       elsif val.kind_of? IntegerVal
         if val.to_i != 0
-          cdl_error2(locale, "T1033 $1: need cast to assign integer to pointer" , ident)
+          cdl_error2(locale, "T1033 $1: need cast to assign integer to pointer", ident)
         end
       elsif val.kind_of? StringVal
         # 文字列定数
         # mikan L"wide string"
         if @type.get_bit_size != -1 && @type.get_bit_size != -11  # -1: char_t
-          cdl_error2(locale, "T1034 $1: unsuitable string constant" , ident)
+          cdl_error2(locale, "T1034 $1: unsuitable string constant", ident)
         end
       elsif (val.instance_of?(Array))
         i = 0
@@ -1411,7 +1411,7 @@ class PtrType < Type
       elsif val.instance_of?(C_EXP)
 
       else
-        cdl_error2(locale, "T1035 $1: unsuitable initializer for pointer" , ident)
+        cdl_error2(locale, "T1035 $1: unsuitable initializer for pointer", ident)
       end
     elsif (initializer.instance_of?(Array))
       if @size == nil && @count == nil
@@ -1426,7 +1426,7 @@ class PtrType < Type
     elsif(initializer.instance_of?(C_EXP))
 
     else
-      cdl_error2(locale, "T1036 $1: unsuitable initializer for pointer" , ident)
+      cdl_error2(locale, "T1036 $1: unsuitable initializer for pointer", ident)
     end
   end
 

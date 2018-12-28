@@ -234,7 +234,7 @@ class NamedList
       name = item.get_name
       prev = @names[name]
       if prev
-        Generator.error("S2001 \'$1\' duplicate $2" , name, @type)
+        Generator.error("S2001 \'$1\' duplicate $2", name, @type)
         prev_locale = prev.get_locale
         puts "previous: #{prev_locale[0]}: line #{prev_locale[1]} \'#{name}\' defined here"
         return self
@@ -379,7 +379,7 @@ class FuncHead <BDNode
     if declarator.get_type.kind_of? FuncType
       if declarator.get_type.get_type.get_original_type.kind_of?(PtrType) &&
           Signature.get_current.is_deviate? == false
-        cdl_warning("W3004 $1 pointer type has returned. specify deviate or stop return pointer" , @declarator.get_identifier)
+        cdl_warning("W3004 $1 pointer type has returned. specify deviate or stop return pointer", @declarator.get_identifier)
       end
     end
   end
@@ -496,14 +496,14 @@ class Decl < BDNode
     # 型のチェックを行う
     res = @type.check
     if res
-      cdl_error("S2002 $1: $2" , @identifier, res)
+      cdl_error("S2002 $1: $2", @identifier, res)
     end
 
     # 不要の初期化子をチェックする
     if @initializer
       case @kind
       when :PARAMETER, :TYPEDEF, :MEMBER, :FUNCHEAD
-        cdl_error("S2003 $1: $2 cannot have initializer" , @identifier, @kind.to_s.downcase)
+        cdl_error("S2003 $1: $2 cannot have initializer", @identifier, @kind.to_s.downcase)
       when :VAR, :ATTRIBUTE, :CONSTANT
         # p @initializer  ここでは代入可能かどうか、チェックしない
         # :VAR, :ATTRIBUTE, :CONSTANT はそれぞれでチェックする
@@ -515,9 +515,9 @@ class Decl < BDNode
 
     if(@type.kind_of? ArrayType) && (@type.get_subscript == nil) && (@omit == false)
       if @kind == :ATTRIBUTE
-        cdl_error("S2004 $1: array subscript must be specified or omit" , @identifier)
+        cdl_error("S2004 $1: array subscript must be specified or omit", @identifier)
       elsif @kind == :VAR || @kind == :MEMBER
-        cdl_error("S2005 $1: array subscript must be specified" , @identifier)
+        cdl_error("S2005 $1: array subscript must be specified", @identifier)
       end
     end
 
@@ -727,13 +727,13 @@ class ParamDecl < BDNode
     @b_nullable = false
 
     if @declarator.is_function?    # (1)
-      cdl_error("S2006 \'$1\' function" , get_name)
+      cdl_error("S2006 \'$1\' function", get_name)
       return
     end
 
     res = @declarator.check
     if res          # (2)
-      cdl_error("S2007 \'$1\' $2" , get_name, res)
+      cdl_error("S2007 \'$1\' $2", get_name, res)
       return
     end
 
@@ -743,10 +743,10 @@ class ParamDecl < BDNode
         if @direction == nil
           @direction = i[0]
         elsif i[0] == @direction
-          cdl_warning("W3001 $1: duplicate" , i[0])
+          cdl_warning("W3001 $1: duplicate", i[0])
           next
         else
-          cdl_error("S2008 $1: inconsitent with previous one" , i[0])
+          cdl_error("S2008 $1: inconsitent with previous one", i[0])
           next
         end
 
@@ -754,7 +754,7 @@ class ParamDecl < BDNode
         when :SEND, :RECEIVE
           @allocator = Namespace.find(i[1])   # 1
           if ! @allocator.instance_of?(Signature)
-            cdl_error("S2009 $1: not found or not signature" , i[1])
+            cdl_error("S2009 $1: not found or not signature", i[1])
             next
           elsif ! @allocator.is_allocator?
             # cdl_error( "S2010 $1: not allocator signature" , i[1] )
@@ -800,7 +800,7 @@ class ParamDecl < BDNode
     end
 
     if (@direction == :OUT || @direction == :INOUT) && @string == -1
-      cdl_warning("W3002 $1: this string might cause buffer over run" , get_name)
+      cdl_warning("W3002 $1: this string might cause buffer over run", get_name)
     end
 
     # mikan ポインタの配列（添数有）のレベルが０
@@ -844,11 +844,11 @@ class ParamDecl < BDNode
     # p "req_level: #{req_level} ptr_level: #{ptr_level}"
     # if ptr_level < req_level && ! ( @direction == :IN && req_level == 1 && ptr_level == 0) then
     if ptr_level < min_level
-      cdl_error("S2014 $1 need pointer or more pointer" , @declarator.get_identifier)
+      cdl_error("S2014 $1 need pointer or more pointer", @declarator.get_identifier)
     elsif ptr_level > max_level
       # note: 構文解析段階で実行のため get_current 可
       if Signature.get_current == nil || Signature.get_current.is_deviate? == false
-        cdl_warning("W3003 $1 pointer level mismatch" , @declarator.get_identifier)
+        cdl_warning("W3003 $1 pointer level mismatch", @declarator.get_identifier)
       end
     end
 
@@ -886,11 +886,11 @@ class ParamDecl < BDNode
       # const 修飾が適切かチェック
       if @direction == :IN
         if ! t2.is_const?
-          cdl_error("S2015 '$1' must be const for \'in\' parameter $2" , get_name, type.class)
+          cdl_error("S2015 '$1' must be const for \'in\' parameter $2", get_name, type.class)
         end
       else
         if t2.is_const?
-          cdl_error("S2016 '$1' can not be const for $2 parameter" , get_name, @direction)
+          cdl_error("S2016 '$1' can not be const for $2 parameter", get_name, @direction)
         end
       end
     else
@@ -1063,9 +1063,9 @@ class ParamList < BDNode
           end
         else
           if val != Integer(val)
-            cdl_error("S2018 \'$1\' size_is parameter not integer" , i.get_declarator.get_identifier)
+            cdl_error("S2018 \'$1\' size_is parameter not integer", i.get_declarator.get_identifier)
           elsif val <= 0
-            cdl_error("S2019 \'$1\' size_is parameter negative or zero" , i.get_declarator.get_identifier)
+            cdl_error("S2019 \'$1\' size_is parameter negative or zero", i.get_declarator.get_identifier)
           end
         end
       end
@@ -1102,9 +1102,9 @@ class ParamList < BDNode
           end
         else
           if val != Integer(val)
-            cdl_error("S2021 \'$1\' count_is parameter not integer" , i.get_declarator.get_identifier)
+            cdl_error("S2021 \'$1\' count_is parameter not integer", i.get_declarator.get_identifier)
           elsif val <= 0
-            cdl_error("S2022 \'$1\' count_is parameter negative or zero" , i.get_declarator.get_identifier)
+            cdl_error("S2022 \'$1\' count_is parameter negative or zero", i.get_declarator.get_identifier)
           end
         end
       end
@@ -1122,9 +1122,9 @@ class ParamList < BDNode
           end
         else
           if val != Integer(val)
-            cdl_error("S2024 \'$1\' string parameter not integer" , i.get_declarator.get_identifier)
+            cdl_error("S2024 \'$1\' string parameter not integer", i.get_declarator.get_identifier)
           elsif val <= 0
-            cdl_error("S2025 \'$1\' string parameter negative or zero" , i.get_declarator.get_identifier)
+            cdl_error("S2025 \'$1\' string parameter negative or zero", i.get_declarator.get_identifier)
           end
         end
       end

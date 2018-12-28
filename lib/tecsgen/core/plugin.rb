@@ -161,7 +161,7 @@ class Plugin < Node
         ident = $~
         arg = $'
       else
-        cdl_error("P1001 plugin arg: cannot find identifier in $1" , arg)
+        cdl_error("P1001 plugin arg: cannot find identifier in $1", arg)
         return
       end
 
@@ -171,7 +171,7 @@ class Plugin < Node
       if arg =~ /=/
         arg = $'
       else
-        cdl_error("P1002 plugin arg: expecting \'=\' not \'$1\'" , arg)
+        cdl_error("P1002 plugin arg: expecting \'=\' not \'$1\'", arg)
         return
       end
 
@@ -219,7 +219,7 @@ class Plugin < Node
         rhs = $1
         remain = $'
       else
-        cdl_error("P1003 plugin arg: unexpected $1" , arg)
+        cdl_error("P1003 plugin arg: unexpected $1", arg)
         return
       end
 
@@ -266,7 +266,7 @@ class Plugin < Node
         params = "#{params}#{delim}#{j}"
         delim = ", "
       }
-      cdl_error("P1004 $1: unknown plugin argument\'s identifier\n  $2 are acceptible for RPCPlugin." , ident, params)
+      cdl_error("P1004 $1: unknown plugin argument\'s identifier\n  $2 are acceptible for RPCPlugin.", ident, params)
     end
   end
 

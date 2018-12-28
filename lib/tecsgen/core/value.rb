@@ -121,7 +121,7 @@ class BaseVal < Node
   end
 
   def unsupport(op)
-    cdl_error("V1001 $1: unable for $2" , op, self.class)
+    cdl_error("V1001 $1: unable for $2", op, self.class)
   end
 
   def to_s
@@ -129,15 +129,15 @@ class BaseVal < Node
   end
 
   def to_b
-    cdl_error("V1002 $1: cannot cast to bool (implicitly)" , self.class)
+    cdl_error("V1002 $1: cannot cast to bool (implicitly)", self.class)
     false
   end
   def to_i
-    cdl_error("V1003 $1: cannot cast to integer (implicitly)" , self.class)
+    cdl_error("V1003 $1: cannot cast to integer (implicitly)", self.class)
     1
   end
   def to_f
-    cdl_error("V1004 $1: cannot cast to float (implicitly)" , self.class)
+    cdl_error("V1004 $1: cannot cast to float (implicitly)", self.class)
     1.0
   end
 end
@@ -173,7 +173,7 @@ class PointerVal < BaseVal
     elsif t.kind_of? PtrType
       return PointerVal.new(@int_val, type)
     else
-      cdl_error("V1006 pointer value cannot cast to $1" , type.class)
+      cdl_error("V1006 pointer value cannot cast to $1", type.class)
       return nil
     end
   end
@@ -350,7 +350,7 @@ class IntegerVal < BaseVal
     elsif t.kind_of? BoolType
       return BoolVal.new(@val.to_b)
     else
-      cdl_error("V1013 integer value cannot cast to $1" , type.class)
+      cdl_error("V1013 integer value cannot cast to $1", type.class)
       return nil
     end
   end
@@ -396,7 +396,7 @@ class BoolVal < BaseVal
     if val.kind_of? BoolVal
       return BoolVal.new(self.to_i == val.to_i)
     else
-      cdl_error("V1014 comparing bool value with \'$1\'" , val.class)
+      cdl_error("V1014 comparing bool value with \'$1\'", val.class)
       return BoolVal.new(false)
     end
   end
@@ -404,7 +404,7 @@ class BoolVal < BaseVal
     if val.kind_of? BoolVal
       return BoolVal.new(self.to_i != val.to_i)
     else
-      cdl_error("V1015 comparing bool value with \'$1\'" , val.class)
+      cdl_error("V1015 comparing bool value with \'$1\'", val.class)
       return BoolVal.new(false)
     end
   end
@@ -428,7 +428,7 @@ class BoolVal < BaseVal
     elsif t.kind_of? BoolType
       return self
     else
-      cdl_error("V1016 bool value cannot cast to $1" , type.class)
+      cdl_error("V1016 bool value cannot cast to $1", type.class)
       return nil
     end
   end
@@ -520,7 +520,7 @@ class FloatVal < BaseVal
     elsif t.kind_of? FloatType
       return self
     else
-      cdl_error("V1019 floating value cannot cast to $1" , type)
+      cdl_error("V1019 floating value cannot cast to $1", type)
       return self
     end
   end
@@ -564,7 +564,7 @@ class StringVal < BaseVal
     elsif t.kind_of? PtrType
       cdl_error("V1024 string cannot cast to pointer")
     else
-      cdl_error("V1025 string cannot cast to $1" , type)
+      cdl_error("V1025 string cannot cast to $1", type)
     end
   end
 

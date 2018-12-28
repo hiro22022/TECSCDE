@@ -62,7 +62,7 @@ module PluginModule
         end
         # "#{plugin_name}.rb" をロード（システム用ではないので、fatal エラーにしない）
         if require_tecsgen_lib("#{plugin_name}.rb", false) == false
-          cdl_error("P2001 $1.rb : fail to load plugin" , plugin_name)
+          cdl_error("P2001 $1.rb : fail to load plugin", plugin_name)
           return nil
         end
       end
@@ -80,7 +80,7 @@ module PluginModule
         @@loaded_plugin_list[plugin_name.to_sym] = :MultiPlugin
         return plugin_object
       else
-        cdl_error("P2002 $1: not kind of $2" ,  plugin_name, superClass.name)
+        cdl_error("P2002 $1: not kind of $2",  plugin_name, superClass.name)
         return nil
       end
     rescue Exception => evar
@@ -88,7 +88,7 @@ module PluginModule
         p evar.class
         pp evar.backtrace
       end
-      cdl_error("P2003 $1: load failed" , plugin_name)
+      cdl_error("P2003 $1: load failed", plugin_name)
       return nil
     end
     # ここへは来ない
@@ -117,20 +117,20 @@ module PluginModule
     begin
       tmp_file = CFile.open(tmp_file_name, "w")
     rescue Exception => evar
-      cdl_error("P2004 $1: open error \'$2\'" , plugin_name, tmp_file_name)
+      cdl_error("P2004 $1: open error \'$2\'", plugin_name, tmp_file_name)
       print_exception(evar)
     end
     dbgPrint "generate_and_parse: #{plugin_object.class}: gen_cdl_file\n"
     begin
       plugin_object.gen_cdl_file(tmp_file)
     rescue Exception => evar
-      cdl_error("P2005 $1: plugin error in gen_through_cell_code " , plugin_name)
+      cdl_error("P2005 $1: plugin error in gen_through_cell_code ", plugin_name)
       print_exception(evar)
     end
     begin
       tmp_file.close
     rescue Exception => evar
-      cdl_error("P2006 $1: close error \'$2\'" , plugin_name, tmp_file_name)
+      cdl_error("P2006 $1: close error \'$2\'", plugin_name, tmp_file_name)
       print_exception(evar)
     end
 
@@ -156,7 +156,7 @@ module PluginModule
       begin
         eval(eval_str)
       rescue Exception => evar
-        Generator.error("P2007 $1: fail to generate post code" , plugin_name)
+        Generator.error("P2007 $1: fail to generate post code", plugin_name)
 
         print_exception(evar)
       end

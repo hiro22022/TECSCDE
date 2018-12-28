@@ -382,14 +382,14 @@ class Expression < Node
 
       # IDENTIFIER は見つからなかった？
       if object == nil
-        cdl_error("E1001 $1: not found" , nsp.get_path_str)
+        cdl_error("E1001 $1: not found", nsp.get_path_str)
         # raise  "E1001"  # bug trap
         return nil
       elsif object.instance_of?(Join)
         # Join の場合： cell の中の attribute, var, call のどれかが見つかった
         # Decl (attribute, var) でない？
         if ! object.get_definition.instance_of?(Decl)
-          cdl_error("E1002 $1: not constant (port)" , nsp.get_path_str)
+          cdl_error("E1002 $1: not constant (port)", nsp.get_path_str)
           return nil
         end
         return object.get_rhs.eval_const2(name_list, name_list2, nest)
@@ -398,7 +398,7 @@ class Expression < Node
         if (! object.instance_of?(ParamDecl))
                                                       # mikan paramdecl は無視する
                                                       # ParamList から呼ばれたとき
-          cdl_error("E1003 $1: not constant" , nsp.get_path_str)
+          cdl_error("E1003 $1: not constant", nsp.get_path_str)
         else
           # ParamDecl
           object.referenced
@@ -515,7 +515,7 @@ class Expression < Node
       if val.respond_to?("+@")
         return + val
       else
-        cdl_error("E1011 cannot evaluate unary + for $1" , val.class)
+        cdl_error("E1011 cannot evaluate unary + for $1", val.class)
         return nil
       end
     when :OP_U_MINUS
@@ -694,7 +694,7 @@ class Expression < Node
         paramdecl = nil
       end
       unless paramdecl
-        cdl_error("E1012 $1: not found in parameter list" , nsp.get_path_str)
+        cdl_error("E1012 $1: not found in parameter list", nsp.get_path_str)
         return IntType.new(32)        # dummy result
       end
       return paramdecl.get_type
@@ -739,7 +739,7 @@ class Expression < Node
       return BoolType.new
 
     when :OP_LT, :OP_GT, :OP_LE, :OP_GE, :OP_EQ, :OP_NE, :OP_LAND, :OP_LOR, :OP_CEX, :CAST
-      cdl_error("E1014 $1: elements_get_type: sorry not supported" , elements[0])
+      cdl_error("E1014 $1: elements_get_type: sorry not supported", elements[0])
     end
 
     return nil
@@ -789,7 +789,7 @@ class Expression < Node
       end
 
       if judge == false
-        cdl_error("E1015 \'$1\': direction mismatch for $2, $3 required" , nsp.get_path_str, spec, req_direct)
+        cdl_error("E1015 \'$1\': direction mismatch for $2, $3 required", nsp.get_path_str, spec, req_direct)
       end
 
     when :INTEGER_CONSTANT, :FLOATING_CONSTANT, :OCTAL_CONSTANT, :HEX_CONSTANT, :CHARACTER_LITERAL, :STRING_LITERAL_LIST
@@ -808,7 +808,7 @@ class Expression < Node
       return elements_check_dir_for_param(elements[1], namedList, dir, spec) && elements_check_dir_for_param(elements[2], namedList, dir, spec) && elements_check_dir_for_param(elements[3], namedList, dir, spec)
 
     else
-      cdl_error("E1016 $1: elements_check_dir_for_param: sorry not supported" , elements[0])
+      cdl_error("E1016 $1: elements_check_dir_for_param: sorry not supported", elements[0])
     end
 
   end
@@ -825,7 +825,7 @@ class Expression < Node
     case alloc_type
     when :NORMAL_ALLOC
       if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER   # 1
-        cdl_error("E1017 $1: rhs not \'Cell.ePort\' form" , ele[0].to_s)
+        cdl_error("E1017 $1: rhs not \'Cell.ePort\' form", ele[0].to_s)
         return nil
       end
       cell_nsp  = elements[1][1]
@@ -845,7 +845,7 @@ class Expression < Node
       if(ele[0] != :OP_DOT ||
           ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || ! ele[1][1][1].is_name_only? ||
           ! ele[1][2].instance_of?(Token) || ! ele[2].instance_of?(Token))   # 1
-        cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)" , ele[0].to_s)   # S1086
+        cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s)   # S1086
       end
       func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
       return [ cp_name, func_name, param_name ]
