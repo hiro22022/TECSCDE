@@ -85,8 +85,8 @@ class ThroughPlugin < Plugin
     @next_cell_port_name = next_cell_port_name
     @next_cell_port_subscript = next_cell_port_subscript
     @signature = signature
-    @entry_port_name = :"eThroughEntry"
-    @call_port_name = :"cCall"
+    @entry_port_name = :eThroughEntry
+    @call_port_name = :cCall
     @ct_name = :"t#{self.class.name}_#{@signature.get_global_name}"
     @celltype = celltype
     @plugin_arg_str = plugin_arg

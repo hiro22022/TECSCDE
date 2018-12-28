@@ -49,8 +49,8 @@ class TracePlugin < ThroughPlugin
     @probeName       = ""
     @b_generate      = false
     @b_displayTime   = false
-    @kernelCelltype  = :"tKernel"
-    @syslogCelltype  = :"tSysLog"
+    @kernelCelltype  = :tKernel
+    @syslogCelltype  = :tSysLog
 
     super
     @plugin_arg_check_proc_tab = TracePluginArgProc

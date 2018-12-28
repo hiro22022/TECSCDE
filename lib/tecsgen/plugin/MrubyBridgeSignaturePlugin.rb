@@ -467,7 +467,7 @@ EOT
     if join
       vm_name = CDLString.remove_dquote(join.get_rhs.to_s).to_sym
     else
-      vm_name = :"VM"
+      vm_name = :VM
     end
 
     if @@VM_list[vm_name] == nil

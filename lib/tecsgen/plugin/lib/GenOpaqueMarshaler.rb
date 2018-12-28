@@ -280,24 +280,24 @@ module GenOpaqueMarshaler
     # オプション設定される変数のデフォルトを設定
     @taskPriority = 11
     @stackSize  = 4096
-    @serverChannelCelltype = :"tSocketServer"
-    @clientChannelCelltype = :"tSocketClient"
+    @serverChannelCelltype = :tSocketServer
+    @clientChannelCelltype = :tSocketClient
     @serverChannelCell = :"#{@cell_name}Server"
     @clientChannelCell = :"#{@cell_name}Client"
     @serverChannelInitializer = subst_name("portNo=8931+$count$;").to_sym
     @clientChannelInitializer = subst_name("portNo=8931+$count$; serverAddr=\"127.0.0.1\"; ").to_sym
-    @taskCelltype = :"tTask"
+    @taskCelltype = :tTask
     @PPAllocatorSize = nil
     # @TDRCelltype  = :"tTDR"   # "tNBOTDR" に変更の予定
-    @TDRCelltype  = :"tNBOTDR"
+    @TDRCelltype  = :tNBOTDR
     @substituteAllocator = {}
     @noServerChannelOpenerCode = false
-    @semaphoreCelltype = :"tSemaphore"
+    @semaphoreCelltype = :tSemaphore
     @semaphoreInitializer = :"count = 1; attribute = C_EXP( \"TA_NULL\" ); ";
     @clientErrorHandler = nil
     @serverErrorHandler = nil
     @b_genOpener = false
-    @taskMainCelltype = :"tRPCDedicatedTaskMain"
+    @taskMainCelltype = :tRPCDedicatedTaskMain
 
     @marshaler_celltype_name = :"tOpaqueMarshaler_#{@signature.get_global_name}"
     @unmarshaler_celltype_name = :"tOpaqueUnmarshaler_#{@signature.get_global_name}"
@@ -324,17 +324,17 @@ module GenOpaqueMarshaler
     nsp = NamespacePath.analyze(@serverChannelCelltype.to_s)
     scct = Namespace.find nsp
     if scct
-      obj = scct.find(:"eOpener")
+      obj = scct.find(:eOpener)
       if obj.instance_of? Port
         if obj.get_signature.get_name.to_sym == :sServerChannelOpener
           if @noServerChannelOpenerCode == false
             @b_genOpener = true
-            @taskMainCelltype = :"tRPCDedicatedTaskMainWithOpener"
+            @taskMainCelltype = :tRPCDedicatedTaskMainWithOpener
           end
         end
       end
     end
-    if @noServerChannelOpenerCode == false && @taskMainCelltype != :"tRPCDedicatedTaskMainWithOpener"
+    if @noServerChannelOpenerCode == false && @taskMainCelltype != :tRPCDedicatedTaskMainWithOpener
       cdl_warning("O9999 ServerChannelOpener code not generated, not found 'entry sServerChannelOpener eOpener'")
     end
   end

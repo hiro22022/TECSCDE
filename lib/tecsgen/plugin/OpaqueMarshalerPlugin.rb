@@ -75,7 +75,7 @@ EOT
   end
 
   def subst_name(val)
-    return :"_"
+    return :_
     # return nil
   end
 end

@@ -5508,12 +5508,12 @@ class Join < BDNode
         out_through_list.each { |ol|
           if ol[0]    # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote ol[1]
-            through = [ ol[0], :"Join_out_through_", plugin_arg, f1[i], f1[i-1], :OUT_THROUGH, region_count]
+            through = [ ol[0], :Join_out_through_, plugin_arg, f1[i], f1[i-1], :OUT_THROUGH, region_count]
             @region_through_list << through
           end
         }
         if domain_through && domain_through.length > 0
-          through = [ domain_through[0], :"Join_domain_out_through_", domain_through[1], f1[i], f1[i-1], :OUT_THROUGH, region_count ]
+          through = [ domain_through[0], :Join_domain_out_through_, domain_through[1], f1[i], f1[i-1], :OUT_THROUGH, region_count ]
           @region_through_list << through
         end
         i -= 1
@@ -5528,7 +5528,7 @@ class Join < BDNode
           if t[0][0] == f2[sibling_level].get_name   # region 名が一致するか ?
             if t[1]    # plugin_name が指定されていなければ登録しない
               plugin_arg = CDLString.remove_dquote t[2]
-              through = [ t[1], :"Join_to_through__", plugin_arg, f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count ]
+              through = [ t[1], :Join_to_through__, plugin_arg, f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count ]
               @region_through_list << through
             end
             found = 1
@@ -5541,7 +5541,7 @@ class Join < BDNode
             cdl_error("S9999 $1: going from regin '$2' not permitted by domain'$3'", @name, f1[sibling_level].get_name, f2[sibling_level].get_domain_type.get_name)
           end
           if domain_through && domain_through.length > 0
-            through = [ domain_through[0], :"Join_domain_to_through_", domain_through[1], f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count ]
+            through = [ domain_through[0], :Join_domain_to_through_, domain_through[1], f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count ]
             @region_through_list << through
           end
         elsif found == 0
@@ -5567,7 +5567,7 @@ class Join < BDNode
                         @name, f2[i-1].get_name, f2[i].get_name, f2[i].get_domain_type.get_name)
           end
           if domain_through && domain_through.length > 0
-            through = [ domain_through[0], :"Join_domain_in_through_", domain_through[1], f2[i-1], f2[i], :IN_THROUGH, region_count ]
+            through = [ domain_through[0], :Join_domain_in_through_, domain_through[1], f2[i-1], f2[i], :IN_THROUGH, region_count ]
             @region_through_list << through
           end
         elsif in_through_list.length == 0
@@ -5576,7 +5576,7 @@ class Join < BDNode
         in_through_list.each { |il|
           if il[0]    # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote il[1]
-            through = [ il[0], :"Join_in_through_", plugin_arg, f2[i-1], f2[i],:IN_THROUGH, region_count ]
+            through = [ il[0], :Join_in_through_, plugin_arg, f2[i-1], f2[i],:IN_THROUGH, region_count ]
             @region_through_list << through
           end
         }
@@ -7891,16 +7891,16 @@ if $unit_test
   root_namespace = Namespace.new("::")
 
   puts("===== Unit Test: NamespacePath ===== (componentobj.rb)")
-  a = NamespacePath.new(:"ABC", true)
+  a = NamespacePath.new(:ABC, true)
   printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
-  a.append(:"DEF")
+  a.append(:DEF)
   printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
-  a = NamespacePath.new(:"abc", false)
+  a = NamespacePath.new(:abc, false)
   printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
-  a.append(:"def")
+  a.append(:def)
   printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
   puts ""

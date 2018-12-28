@@ -68,7 +68,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
   def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
     super
     initialize_opaque_marshaler
-    @entry_port_name = :"eClientEntry"   # Marshaler の受け口名 (through セルの入り口)
+    @entry_port_name = :eClientEntry   # Marshaler の受け口名 (through セルの入り口)
 
     # オプション：GenOpaqueMarshaler 参照
     @plugin_arg_check_proc_tab = SharedOpaqueRPCPluginArgProc
@@ -77,7 +77,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
     check_opener_code
     check_PPAllocator
 
-    @shared_channel_ct_name = :"tSharedOpaqueRPCPluginChannel_tTDR"
+    @shared_channel_ct_name = :tSharedOpaqueRPCPluginChannel_tTDR
     @shared_channel_server_ct_name = :"#{@shared_channel_ct_name}_Server"
     @shared_channel_client_ct_name = :"#{@shared_channel_ct_name}_Client"
     @shared_channel_ct_file_name = "#{$gen}/#{@shared_channel_ct_name}.cdl"
