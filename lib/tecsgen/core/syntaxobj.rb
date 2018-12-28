@@ -179,11 +179,11 @@ class NSBDNode < BDNode
   def get_namespace
     if @owner.kind_of? Namespace
       return @owner
-    elsif @owner != nil then
+    elsif @owner != nil
       return @owner.get_namespace
     else
       # @owner == nil なら "::"
-      if @name != "::" then
+      if @name != "::"
         raise "non-root namespace has no owner #{self.class.name}##{@name} #{self}"
       end
       return nil
@@ -192,7 +192,7 @@ class NSBDNode < BDNode
 
   def set_namespace_path
     ns = get_namespace
-    if ns then
+    if ns
       @NamespacePath = ns.get_namespace_path.append(get_name)
     else
       raise "get_namespace_path: no namespace found"
@@ -205,7 +205,7 @@ class NSBDNode < BDNode
   end
 
   def is_imported?
-    if @import then
+    if @import
       return @import.is_imported?
     else
       return false    # mikan: 仮 @import が nil になるケースが追求できていない
@@ -230,11 +230,11 @@ class NamedList
   # parse した時点で加えること(場所を記憶する)
   def add_item(item)
 
-    if item then
+    if item
       assert_name item
       name = item.get_name
       prev = @names[name]
-      if prev then
+      if prev
         Generator.error("S2001 \'$1\' duplicate $2" , name, @type)
         prev_locale = prev.get_locale
         puts "previous: #{prev_locale[0]}: line #{prev_locale[1]} \'#{name}\' defined here"
@@ -275,7 +275,7 @@ class NamedList
       }
       raise "get_item: #{name}: not Symbol"
     end
-    if name then
+    if name
       return @names[name.to_sym]
     else
       return nil
@@ -370,17 +370,17 @@ class FuncHead <BDNode
     @declarator = declarator
     @declarator.set_owner self  # Decl (FuncHead)
 
-    if @declarator.get_type.kind_of?(FuncType) then
-      if b_oneway then
+    if @declarator.get_type.kind_of?(FuncType)
+      if b_oneway
         @declarator.get_type.set_oneway(b_oneway)
       end
     end
     @declarator.get_type.check_struct_tag :FUNCHEAD
 
     # check if return type is pointer
-    if declarator.get_type.kind_of? FuncType then
+    if declarator.get_type.kind_of? FuncType
       if declarator.get_type.get_type.get_original_type.kind_of?(PtrType) &&
-          Signature.get_current.is_deviate? == false then
+          Signature.get_current.is_deviate? == false
         cdl_warning("W3004 $1 pointer type has returned. specify deviate or stop return pointer" , @declarator.get_identifier)
       end
     end
@@ -395,7 +395,7 @@ class FuncHead <BDNode
   end
 
   def is_oneway?
-    if @declarator.is_function? then
+    if @declarator.is_function?
       return @declarator.get_type.is_oneway?
     end
     return false
@@ -414,7 +414,7 @@ class FuncHead <BDNode
   # types.rb に定義されている型
   # 関数ヘッダの定義として不完全な場合 nil を返す
   def get_return_type
-    if is_function? then
+    if is_function?
       return @declarator.get_type.get_type
     end
   end
@@ -423,7 +423,7 @@ class FuncHead <BDNode
   # ParamList を返す
   # 関数ヘッダの定義として不完全な場合 nil を返す
   def get_paramlist
-    if is_function? then
+    if is_function?
       return @declarator.get_type.get_paramlist
     end
   end
@@ -482,7 +482,7 @@ class Decl < BDNode
   end
 
   def is_function?
-    if @type.class == FuncType then
+    if @type.class == FuncType
       return true
     else
       return false
@@ -498,12 +498,12 @@ class Decl < BDNode
 
     # 型のチェックを行う
     res = @type.check
-    if res then
+    if res
       cdl_error("S2002 $1: $2" , @identifier, res)
     end
 
     # 不要の初期化子をチェックする
-    if @initializer then
+    if @initializer
       case @kind
       when :PARAMETER, :TYPEDEF, :MEMBER, :FUNCHEAD
         cdl_error("S2003 $1: $2 cannot have initializer" , @identifier, @kind.to_s.downcase)
@@ -516,10 +516,10 @@ class Decl < BDNode
       end
     end
 
-    if(@type.kind_of? ArrayType) && (@type.get_subscript == nil) && (@omit == false) then
-      if @kind == :ATTRIBUTE then
+    if(@type.kind_of? ArrayType) && (@type.get_subscript == nil) && (@omit == false)
+      if @kind == :ATTRIBUTE
         cdl_error("S2004 $1: array subscript must be specified or omit" , @identifier)
-      elsif @kind == :VAR || @kind == :MEMBER then
+      elsif @kind == :VAR || @kind == :MEMBER
         cdl_error("S2005 $1: array subscript must be specified" , @identifier)
       end
     end
@@ -536,7 +536,7 @@ class Decl < BDNode
     level = 0
     type = @type
     while 1
-      if type.kind_of?(PtrType) then
+      if type.kind_of?(PtrType)
         level += 1
         type = type.get_referto
 #      elsif type.kind_of?( ArrayType ) then  # 添数なし配列はポインタとみなす
@@ -547,7 +547,7 @@ class Decl < BDNode
 #          break
 #        end
         # mikan ポインタの添数あり配列のポインタレベルは０でよい？
-      elsif type.kind_of?(DefinedType) then
+      elsif type.kind_of?(DefinedType)
         type = type.get_type
         # p "DefinedType: #{type} #{type.class}"
       else
@@ -566,7 +566,7 @@ class Decl < BDNode
   end
 
   def set_type(type)
-    unless @type then
+    unless @type
       @type = type
     else
       @type.set_type(type)             # 葉に設定
@@ -586,7 +586,7 @@ class Decl < BDNode
     @kind = kind
     case kind
     when :TYPEDEF, :CONSTANT
-      if Namespace.get_global_name.to_s == "" then
+      if Namespace.get_global_name.to_s == ""
         @global_name = @identifier
       else
         @global_name = :"#{Namespace.get_global_name}_#{@identifier}"
@@ -660,9 +660,9 @@ class Decl < BDNode
   def is_type?(type)
     t = @type
     while 1
-      if t.kind_of?(type) then
+      if t.kind_of?(type)
         return true
-      elsif t.kind_of?(DefinedType) then
+      elsif t.kind_of?(DefinedType)
         t = t.get_type
       else
         return false
@@ -673,9 +673,9 @@ class Decl < BDNode
   def is_const?
     type = @type
     while 1
-      if type.is_const? then
+      if type.is_const?
         return true
-      elsif type.kind_of?(DefinedType) then
+      elsif type.kind_of?(DefinedType)
         type = type.get_type
       else
         return false
@@ -689,7 +689,7 @@ class Decl < BDNode
     (indent+1).times { print "  " }
     puts "type:"
     @type.show_tree(indent + 2)
-    if @initializer then
+    if @initializer
       (indent+1).times { print "  " }
       puts "initializer:"
       @initializer.show_tree(indent + 2)
@@ -731,13 +731,13 @@ class ParamDecl < BDNode
     @b_ref = false
     @b_nullable = false
 
-    if @declarator.is_function? then    # (1)
+    if @declarator.is_function?    # (1)
       cdl_error("S2006 \'$1\' function" , get_name)
       return
     end
 
     res = @declarator.check
-    if res then          # (2)
+    if res          # (2)
       cdl_error("S2007 \'$1\' $2" , get_name, res)
       return
     end
@@ -745,9 +745,9 @@ class ParamDecl < BDNode
     @param_specifier.each { |i|
       case i[0]                                     # (3)
       when :IN, :OUT, :INOUT, :SEND, :RECEIVE
-        if @direction == nil then
+        if @direction == nil
           @direction = i[0]
-        elsif i[0] == @direction then
+        elsif i[0] == @direction
           cdl_warning("W3001 $1: duplicate" , i[0])
           next
         else
@@ -758,30 +758,30 @@ class ParamDecl < BDNode
         case i[0]
         when :SEND, :RECEIVE
           @allocator = Namespace.find(i[1])   # 1
-          if ! @allocator.instance_of?(Signature) then
+          if ! @allocator.instance_of?(Signature)
             cdl_error("S2009 $1: not found or not signature" , i[1])
             next
-          elsif ! @allocator.is_allocator? then
+          elsif ! @allocator.is_allocator?
             # cdl_error( "S2010 $1: not allocator signature" , i[1] )
           end
         end
 
       when :SIZE_IS
-        if @size then
+        if @size
           cdl_error("S2011 size_is duplicate")
         else
           @size = i[1]
         end
       when :COUNT_IS
-        if @count then
+        if @count
           cdl_error("S2012 count_is duplicate")
         else
           @count = i[1]
         end
       when :STRING
-        if @string then
+        if @string
           cdl_error("S2013 string duplicate")
-        elsif i[1] then
+        elsif i[1]
           @string = i[1]
         else
           @string = -1
@@ -800,11 +800,11 @@ class ParamDecl < BDNode
 
     }
 
-    if @direction == nil then
+    if @direction == nil
       cdl_error("S2014 No direction specified. [in/out/inout/send/receive]")
     end
 
-    if (@direction == :OUT || @direction == :INOUT) && @string == -1 then
+    if (@direction == :OUT || @direction == :INOUT) && @string == -1
       cdl_warning("W3002 $1: this string might cause buffer over run" , get_name)
     end
 
@@ -815,32 +815,32 @@ class ParamDecl < BDNode
     # p @declarator
 
     #----  set req_level, min_level & max_level  ----#
-    if !(@size||@count||@string) then      # (4)
+    if !(@size||@count||@string)      # (4)
       req_level = 1
-    elsif (@size||@count)&&@string then
+    elsif (@size||@count)&&@string
       req_level = 2
     else
       req_level = 1
     end
 
-    if @direction == :RECEIVE then
+    if @direction == :RECEIVE
       req_level += 1
     end
     min_level = req_level
     max_level = req_level
 
     # IN without pointer specifier can be non-pointer type
-    if @direction == :IN && !(@size||@count||@string) then
+    if @direction == :IN && !(@size||@count||@string)
       min_level = 0
     end
 
     # if size_is specified and pointer refer to struct, max_level increase
-    if @size then
+    if @size
       type = @declarator.get_type.get_original_type
       while type.kind_of? PtrType
         type = type.get_referto.get_original_type
       end
-      if type.kind_of? StructType then
+      if type.kind_of? StructType
         max_level += 1
       end
     end
@@ -848,11 +848,11 @@ class ParamDecl < BDNode
 
     # p "req_level: #{req_level} ptr_level: #{ptr_level}"
     # if ptr_level < req_level && ! ( @direction == :IN && req_level == 1 && ptr_level == 0) then
-    if ptr_level < min_level then
+    if ptr_level < min_level
       cdl_error("S2014 $1 need pointer or more pointer" , @declarator.get_identifier)
-    elsif ptr_level > max_level then
+    elsif ptr_level > max_level
       # note: 構文解析段階で実行のため get_current 可
-      if Signature.get_current == nil || Signature.get_current.is_deviate? == false then
+      if Signature.get_current == nil || Signature.get_current.is_deviate? == false
         cdl_warning("W3003 $1 pointer level mismatch" , @declarator.get_identifier)
       end
     end
@@ -862,9 +862,9 @@ class ParamDecl < BDNode
       type = type.get_original_type
     end
 
-    if ptr_level > 0 then
+    if ptr_level > 0
       # size_is, count_is, string をセット
-      if @direction == :RECEIVE && ptr_level > 1 then
+      if @direction == :RECEIVE && ptr_level > 1
         type.get_type.set_scs(@size, @count, @string, @max, @b_nullable)
       else
         type.set_scs(@size, @count, @string, @max, @b_nullable)
@@ -889,18 +889,18 @@ class ParamDecl < BDNode
 # p t2.is_const?
 
       # const 修飾が適切かチェック
-      if @direction == :IN then
-        if ! t2.is_const? then
+      if @direction == :IN
+        if ! t2.is_const?
           cdl_error("S2015 '$1' must be const for \'in\' parameter $2" , get_name, type.class)
         end
       else
-        if t2.is_const? then
+        if t2.is_const?
           cdl_error("S2016 '$1' can not be const for $2 parameter" , get_name, @direction)
         end
       end
     else
       # 非ポインタタイプ
-      if @size != nil || @count != nil || @string != nil || @max != nil || @b_nullable then
+      if @size != nil || @count != nil || @string != nil || @max != nil || @b_nullable
         type.set_scs(@size, @count, @string, @max, @b_nullable)
       end
     end
@@ -976,14 +976,14 @@ class ParamDecl < BDNode
   # Transparent PC で oneway かどうかは、ここでは判断しないので別途判断が必要
   # Opaque RPC の場合 size_is, count_is, string のいずれかが指定されている場合、PPAllocator が必要
   def need_PPAllocator?(b_opaque = false)
-    if ! b_opaque then
+    if ! b_opaque
 #      if @direction == :IN && ( @size || @count || @string ) then
-      if @direction == :IN && @declarator.get_type.get_original_type.kind_of?(PtrType) then
+      if @direction == :IN && @declarator.get_type.get_original_type.kind_of?(PtrType)
         return true
       end
     else
       if (@direction == :IN || @direction == :OUT || @direction == :INOUT) &&
-          @declarator.get_type.get_original_type.kind_of?(PtrType) then
+          @declarator.get_type.get_original_type.kind_of?(PtrType)
         return true
       end
     end
@@ -994,27 +994,27 @@ class ParamDecl < BDNode
     indent.times { print "  " }
     puts "ParamDecl: direction: #{@direction} #{locale_str}"
     @declarator.show_tree(indent + 1)
-    if @size then
+    if @size
       (indent+1).times { print "  " }
       puts "size:"
       @size.show_tree(indent + 2)
     end
-    if @count then
+    if @count
       (indent+1).times { print "  " }
       puts "count:"
       @count.show_tree(indent + 2)
     end
-    if @string then
+    if @string
       (indent+1).times { print "  " }
       puts "string:"
-      if @string == -1 then
+      if @string == -1
        (indent+2).times { print "  " }
         puts "size is not specified"
       else
         @string.show_tree(indent + 2)
       end
     end
-    if @allocator then
+    if @allocator
       (indent+1).times { print "  " }
       puts "allocator: signature: #{@allocator.get_name}"
     end    
@@ -1050,43 +1050,43 @@ class ParamList < BDNode
     @param_list.get_items.each { |i|
       next if i == nil                      # i == nil : エラー時
 
-      if i.get_type.class == VoidType then
+      if i.get_type.class == VoidType
         # 単一の void 型はここにはこない
         cdl_error("S2027 '$1' parameter cannot be void type", i.get_name)
       end
 
       size = i.get_size      # Expression
-      if size then
+      if size
         val = size.eval_const(@param_list)
-        if val == nil then      # 定数式でないか？
+        if val == nil      # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = size.get_type(@param_list)
-          unless type.kind_of?(IntType) then
+          unless type.kind_of?(IntType)
             cdl_error("S2017 size_is argument is not integer type")
           else
             size.check_dir_for_param(@param_list, i.get_direction, "size_is")
           end
         else
-          if val != Integer(val) then
+          if val != Integer(val)
             cdl_error("S2018 \'$1\' size_is parameter not integer" , i.get_declarator.get_identifier)
-          elsif val <= 0 then
+          elsif val <= 0
             cdl_error("S2019 \'$1\' size_is parameter negative or zero" , i.get_declarator.get_identifier)
           end
         end
       end
 
       max = i.get_max
-      if max then
+      if max
         val2 = max.eval_const(@param_list)
-        if val2 == nil then
+        if val2 == nil
           cdl_error("S2028 '$1' max (size_is 2nd parameter) not constant", i.get_name)
-        elsif val2 != Integer(val2) || val2 <= 0 then
+        elsif val2 != Integer(val2) || val2 <= 0
           cdl_error("S2029 '$1' max (size_is 2nd parameter) negative or zero, or not integer", i.get_name)
         end
       end
 
-      if val != nil && val2 != nil then
-        if val < val2 then
+      if val != nil && val2 != nil
+        if val < val2
           cdl_warning("W3005 '$1' size_is always lower than max. max is ignored", i.get_name)
           i.clear_max
         else
@@ -1095,40 +1095,40 @@ class ParamList < BDNode
       end
 
       count = i.get_count      # Expression
-      if count then
+      if count
         val = count.eval_const(@param_list)
-        if val == nil then      # 定数式でないか？
+        if val == nil      # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = count.get_type(@param_list)
-          unless type.kind_of?(IntType) then
+          unless type.kind_of?(IntType)
             cdl_error("S2020 count_is argument is not integer type")
           else
             count.check_dir_for_param(@param_list, i.get_direction, "count_is")
           end
         else
-          if val != Integer(val) then
+          if val != Integer(val)
             cdl_error("S2021 \'$1\' count_is parameter not integer" , i.get_declarator.get_identifier)
-          elsif val <= 0 then
+          elsif val <= 0
             cdl_error("S2022 \'$1\' count_is parameter negative or zero" , i.get_declarator.get_identifier)
           end
         end
       end
 
       string = i.get_string      # Expression
-      if string != -1 && string then
+      if string != -1 && string
         val = string.eval_const(@param_list)
-        if val == nil then      # 定数式でないか？
+        if val == nil      # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = string.get_type(@param_list)
-          unless type.kind_of?(IntType) then
+          unless type.kind_of?(IntType)
             cdl_error("S2023 string argument is not integer type")
           else
             string.check_dir_for_param(@param_list, i.get_direction, "string")
           end
         else
-          if val != Integer(val) then
+          if val != Integer(val)
             cdl_error("S2024 \'$1\' string parameter not integer" , i.get_declarator.get_identifier)
-          elsif val <= 0 then
+          elsif val <= 0
             cdl_error("S2025 \'$1\' string parameter negative or zero" , i.get_declarator.get_identifier)
           end
         end
@@ -1146,7 +1146,7 @@ class ParamList < BDNode
   # Transparent RPC の場合 (oneway かつ) in の配列(size_is, count_is, string のいずれかで修飾）がある
   def need_PPAllocator?(b_opaque = false)
     @param_list.get_items.each { |i|
-      if i.need_PPAllocator?(b_opaque) then
+      if i.need_PPAllocator?(b_opaque)
         return true
       end
     }
@@ -1165,7 +1165,7 @@ class ParamList < BDNode
     @param_list.get_items.each{ |paramdecl|
       decl = paramdecl.get_declarator
       str += delim + decl.get_type
-      if b_name then
+      if b_name
         str += " " + decl.get_name
       end
       str += decl.get_type_post
@@ -1214,12 +1214,12 @@ class CDLInitializer
   #=== 初期化子のクローン
   # 初期化子は Expression, C_EXP, Array のいずれか
   def self.clone_for_composite(rhs, ct_name, cell_name, locale)
-    if rhs.instance_of? C_EXP then
+    if rhs.instance_of? C_EXP
       # C_EXP の clone を作るとともに置換
       rhs = rhs.clone_for_composite(ct_name, cell_name, locale)
-    elsif rhs.instance_of? Expression then
+    elsif rhs.instance_of? Expression
       rhs = rhs.clone_for_composite
-    elsif rhs.instance_of? Array then
+    elsif rhs.instance_of? Array
       rhs = clone_for_compoiste_array(rhs, ct_name, cell_name, locale)
     else
       raise "unknown rhs for join"
@@ -1231,7 +1231,7 @@ class CDLInitializer
   # 要素は clone_for_composite を持つものだけ
   def self.clone_for_compoiste_array(array, ct_name, cell_name, locale)
     # "compoiste.identifier" の場合 (CDL としては誤り)
-    if array[0] == :COMPOSITE then
+    if array[0] == :COMPOSITE
       return array.clone
     end
 

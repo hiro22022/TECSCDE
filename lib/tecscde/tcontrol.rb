@@ -263,7 +263,7 @@ Delete existing join before creating new join.
 If you want to hilited port, click with pressing shift key.
 EOT
           end
-        elsif object.kind_of? TECSModel::TmEPort then
+        elsif object.kind_of? TECSModel::TmEPort
           if state.shift_mask?
             @sub_mode = :SM_MOVING_EPORT
             @hilite_objs.add object
@@ -277,9 +277,9 @@ EOT
           end
         else
           # p "NOT FOUND"
-          if @mode == :MODE_NEW_CELL then
+          if @mode == :MODE_NEW_CELL
             ctn, nsp = @celltypeTreeView.selected
-            if ctn then
+            if ctn
               cell = @model.new_cell(xm, ym, ctn, nsp)
               @model.set_undo_point
             end
@@ -323,7 +323,7 @@ EOT
         @view.draw_hilite_objects @hilite_objs
       when :SM_JOINING
         object = find_near xm, ym
-        if object.kind_of? TECSModel::TmEPort then
+        if object.kind_of? TECSModel::TmEPort
           if object.get_signature == @cport_joining.get_signature
             @view.set_cursor CURSOR_JOIN_OK
           end
@@ -332,7 +332,7 @@ EOT
 
       when :SM_NONE
         object = find_near xm, ym
-        if object.kind_of? TECSModel::TmCPort then
+        if object.kind_of? TECSModel::TmCPort
           @view.set_cursor CURSOR_PORT
         else
           @view.set_cursor CURSOR_NORMAL
@@ -351,7 +351,7 @@ EOT
         @model.set_undo_point
       when :SM_JOINING
         object = find_near xm, ym
-        if object.kind_of? TECSModel::TmEPort then
+        if object.kind_of? TECSModel::TmEPort
           if object.get_signature == @cport_joining.get_signature
             join = @model.new_join(@cport_joining, object)
             @model.set_undo_point
@@ -422,12 +422,12 @@ EOT
     def find_near xm, ym
       @model.get_cell_list.each{ |cell|
         port = cell.get_near_port(xm, ym)
-        if port != nil then
+        if port != nil
           # p "found port"
           return port
         end
 
-        if cell.is_near?(xm, ym) then
+        if cell.is_near?(xm, ym)
           # p "found cell"
           return cell
         end
@@ -438,7 +438,7 @@ EOT
       min_bar = nil
       @model.get_join_list.each{ |join|
         bar, dist = join.get_near_bar(xm, ym)
-        if dist < min_dist then
+        if dist < min_dist
           min_dist = dist
           min_bar = bar
         end
@@ -454,7 +454,7 @@ EOT
 
     def add_celltype_list
       ctl = @model.get_celltype_list
-      if ctl then
+      if ctl
         ctl.each{ |ct|
           @celltypeTreeView.add ct
         }
@@ -508,7 +508,7 @@ EOT
 
     def selected
       iter = @treeView.selection.selected
-      if iter then
+      if iter
         [iter[COL_NAME], iter[COL_NSPATH] ]
       else
         [ nil, nil ]

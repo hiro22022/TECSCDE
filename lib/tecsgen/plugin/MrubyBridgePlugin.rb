@@ -39,7 +39,7 @@
 class MrubyBridgePlugin < MultiPlugin
   def self.get_plugin superClass
     # case when (つまりは ===) では、期待したように一致しない模様
-    if superClass == SignaturePlugin then
+    if superClass == SignaturePlugin
       dbgPrint "MrubyBridgePlugin: SignaturePlugin"
       require_tecsgen_lib 'tecslib/plugin/MrubyBridgeSignaturePlugin.rb'
       return MrubyBridgeSignaturePlugin

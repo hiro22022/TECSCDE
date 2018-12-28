@@ -70,18 +70,18 @@ class HRPRPCPlugin < ThroughPlugin
     @rpc_channel_celltype_name = "tRPCPlugin_#{@TDRCelltype}_#{@channelCelltype}_#{@signature.get_name}"
     @rpc_channel_celltype_file_name = "#{$gen}/#{@rpc_channel_celltype_name}.cdl"
 
-    if @signature.get_context == "non-task" then
+    if @signature.get_context == "non-task"
         cdl_error("HRP9999 RPC cannot be applied to non-task context signature '$1'", @signature.get_name)
-    elsif @signature.get_context == "any" then
+    elsif @signature.get_context == "any"
         cdl_info("HRP9999 RPC is applied to any context signature '$1'", @signature.get_name)
     end
 
-    if @signature.need_PPAllocator?(true) then
-      if @PPAllocatorSize == nil then
+    if @signature.need_PPAllocator?(true)
+      if @PPAllocatorSize == nil
         cdl_error("HRP9999 PPAllocatorSize must be speicified for pointer argments")
         # @PPAllocatorSize = 0   # 仮に 0 としておく (cdl の構文エラーを避けるため)
       end
-    elsif @PPAllocatorSize then
+    elsif @PPAllocatorSize
       cdl_warning("HRP9999 PPAllocatorSize speicified in spite of PPAllocator unnecessary")
       @PPAllocatorSize = nil
     end
@@ -116,7 +116,7 @@ class HRPRPCPlugin < ThroughPlugin
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ct_name] == nil then
+    if @@generated_celltype[ct_name] == nil
       @@generated_celltype[ct_name] = [ self ]
     else
       @@generated_celltype[ct_name] << self
@@ -209,7 +209,7 @@ EOT
     nest_str = "  " * nest
 
     # セマフォの生成
-    if @b_noClientSemaphore == false then
+    if @b_noClientSemaphore == false
       file.print <<EOT
 #{nest_str}  //  Semaphore for Multi-task use ("specify noClientSemaphore" option to delete this)
 #{nest_str}  cell #{@semaphoreCelltype} #{@serverChannelCell}_Semaphore{
@@ -237,7 +237,7 @@ EOT
 EOT
 
     # セマフォの結合文
-    if @b_noClientSemaphore == false then
+    if @b_noClientSemaphore == false
       semaphore = "#{nest_str}    cLockChannel = #{@serverChannelCell}_Semaphore.eSemaphore;\n"
     else
       semaphore = ""
@@ -246,7 +246,7 @@ EOT
     ### クライアント側チャンネル (マーシャラ+TDR)の生成 ###
     cell = @next_cell
     # アロケータの指定があるか？
-    if cell.get_allocator_list.length > 0 then
+    if cell.get_allocator_list.length > 0
 
       file.print nest_str
       file.print "[allocator("
@@ -256,14 +256,14 @@ EOT
 
         alloc_str = alloc.to_s
         subst = @substituteAllocator[alloc_str.to_sym]
-        if subst then
+        if subst
           alloc_str = subst[2]+"."+subst[3]
         end
 
         file.print delim
         delim = ",\n"        # 最終行には出さない
 
-        if subsc then        # 配列添数
+        if subsc        # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
@@ -277,7 +277,7 @@ EOT
       file.puts ")]"
     end
 
-    if @clientErrorHandler then
+    if @clientErrorHandler
       clientErrorHandler_str = "#{nest_str}    cErrorHandler = #{@clientErrorHandler};\n"
     else
       clientErrorHandler_str = ""
@@ -296,20 +296,20 @@ EOT
     nest = @end_region.gen_region_str_pre file
     nest_str = "  " * nest
 
-    if @serverErrorHandler then
+    if @serverErrorHandler
       serverErrorHandler_str = "#{nest_str}    cErrorHandler = #{@serverErrorHandler};\n"
     else
       serverErrorHandler_str = ""
     end
 
-    if @b_genOpener then
+    if @b_genOpener
       opener = "#{nest_str}    cOpener       = #{@serverChannelCell}.eOpener;\n"
     else
       opener = ""
     end
 
     # サーバー側チャンネル (tMessageBufferCEP)
-    if @PPAllocatorSize then
+    if @PPAllocatorSize
       alloc_cell =<<EOT
 
 #{nest_str}  cell tPPAllocator #{@serverChannelCell}_PPAllocator {
@@ -339,7 +339,7 @@ EOT
 #{nest_str}  };
 EOT
 
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
@@ -382,9 +382,9 @@ EOT
   #=== プラグイン引数 noClientSemaphore のチェック
   def set_noClientSemaphore rhs
     rhs = rhs.to_sym
-    if rhs == :true then
+    if rhs == :true
       @b_noClientSemaphore = true
-    elsif rhs == :false then
+    elsif rhs == :false
       @b_noClientSemaphore = false
     else
       cdl_error("RPCPlugin: specify true or false for noClientSemaphore")
@@ -396,7 +396,7 @@ EOT
     @semaphoreCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: semaphoreCelltype '#{rhs}' not celltype or not defined")
     end
   end

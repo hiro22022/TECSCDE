@@ -58,7 +58,7 @@ class OpaqueMarshalerPlugin < SignaturePlugin
     @plugin_arg_check_proc_tab = OpaqueMarshalerPluginArgProc
     parse_plugin_arg
     # check_PPAllocator
-    if @signature.need_PPAllocator?(true) then
+    if @signature.need_PPAllocator?(true)
       @PPAllocatorSize = 1    # PPAllocatorの必要性有のために設定 (サイズは使われない)
       necessity = "Necessary"
     else

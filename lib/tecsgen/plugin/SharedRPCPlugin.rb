@@ -78,11 +78,11 @@ class SharedRPCPlugin < ThroughPlugin
     @rpc_channel_celltype_file_name = "#{$gen}/#{@rpc_channel_celltype_name}.cdl"
 
     @shared_channel_cell = @channelCellName
-    if @shared_channel_cell == "" then
+    if @shared_channel_cell == ""
       cdl_error("SharedRPCPlugin: need channelCellName option")
     end
 
-    if @@shared_channel_list[@shared_channel_cell] == nil then
+    if @@shared_channel_list[@shared_channel_cell] == nil
       # 初出
       @@shared_channel_list[@shared_channel_cell] = [ self ]
     else
@@ -91,15 +91,15 @@ class SharedRPCPlugin < ThroughPlugin
     end
     @sub_channel_no = (@@shared_channel_list[@shared_channel_cell].length) -1
 
-    if @region != @@shared_channel_list[@shared_channel_cell][0].region then
+    if @region != @@shared_channel_list[@shared_channel_cell][0].region
       # 初出とリージョン不一致 (初出は、自分自身とチェックされる。無駄だが小さいので放置)
       cdl_error("SharedRPCPlugin: preferred region mismatch current: #{@region.get_name} previous: #{@@shared_channel_list[@shared_channel_cell][0].region.get_name}")
     else
       dbgPrint "SahredRPCPlugin: Region: #{@region.get_name}, #{@@shared_channel_list[@shared_channel_cell][0].region.get_name}\n"
     end
 
-    if @signature.need_PPAllocator? then
-      if @PPAllocatorSize == nil then
+    if @signature.need_PPAllocator?
+      if @PPAllocatorSize == nil
         cdl_error("PPAllocatorSize must be speicified for oneway [in] array")
       end
     end
@@ -114,13 +114,13 @@ class SharedRPCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@shared_channel_ct_name] == nil then
+    if @@generated_celltype[@shared_channel_ct_name] == nil
       @@generated_celltype[@shared_channel_ct_name] = [ self ]
     else
       @@generated_celltype[@shared_channel_ct_name] << self
     end
 
-    if @@generated_celltype[@ct_name] == nil then
+    if @@generated_celltype[@ct_name] == nil
       @@generated_celltype[@ct_name] = [ self ]
     else
       @@generated_celltype[@ct_name] << self
@@ -129,7 +129,7 @@ class SharedRPCPlugin < ThroughPlugin
     gen_marshaler_celltype
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
-    if @signature.need_PPAllocator? then
+    if @signature.need_PPAllocator?
       alloc_call_port = "  call sPPAllocator cPPAllocator;\n"
       alloc_call_port_join = "  cPPAllocator => composite.cPPAllocator;\n"
     else
@@ -234,7 +234,7 @@ EOT
     # nest = @next_cell.get_region.gen_region_str_pre file
     nest = @region.gen_region_str_pre file
     indent_str = "  " * nest
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
@@ -246,8 +246,8 @@ EOT
     cell = Namespace.find(@next_cell.get_namespace_path)
 
     # PPAllocator が必要か?
-    if @signature.need_PPAllocator? then
-      if @sub_channel_no == 0 then
+    if @signature.need_PPAllocator?
+      if @sub_channel_no == 0
         file.print <<EOT
 #{indent_str}cell tPPAllocator PPAllocator_#{@shared_channel_cell}{
 #{indent_str}  heapSize = #{@PPAllocatorSize};
@@ -268,7 +268,7 @@ EOT
     # ここから各結合ごとのセルを生成
 
     # アロケータの指定があるか？
-    if cell.get_allocator_list.length > 0 then
+    if cell.get_allocator_list.length > 0
 
       file.print "#{indent_str}[allocator("
 
@@ -278,7 +278,7 @@ EOT
         file.print delim
         delim = ",\n#{indent_str}           "        # 最終行には出さない
 
-        if subsc then        # 配列添数
+        if subsc        # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""

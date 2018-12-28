@@ -103,7 +103,7 @@ class HRPSVCPlugin < ThroughPlugin
     # 受け口配列の場合、配列添数ごとに別のセルタイプとする
     # セルタイプをシングルトン化したいため。
     # さもないと、セルを識別する引数を渡す必要があり、NUM_SVC_ARG_MAX(5) つしか渡せない引数の一つを消費することになるため。
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = "__" + @next_cell_port_subscript.to_s
     else
       subscript = ""
@@ -130,7 +130,7 @@ class HRPSVCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@ct_name_body] == nil then
+    if @@generated_celltype[@ct_name_body] == nil
         @@generated_celltype[@ct_name_body] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
         file2.print <<EOT
@@ -150,7 +150,7 @@ EOT
     file.print "import( \"#{$gen}/#{@ct_name_body}.cdl\" );\n"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@ct_name] == nil then
+    if @@generated_celltype[@ct_name] == nil
         @@generated_celltype[@ct_name] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         file2.print <<EOT
@@ -234,7 +234,7 @@ EOT
     ##### サーバー側のセルの生成 #####
     nest = @end_region.gen_region_str_pre file
     nest_str = "  " * nest
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
@@ -299,7 +299,7 @@ EOT
         #   return retval;
         # }
 
-        if ! func_type.get_type.kind_of?(VoidType) then
+        if ! func_type.get_type.kind_of?(VoidType)
             file.print("  #{func_type.get_type_str}  retval;\n")
         end
 
@@ -307,7 +307,7 @@ EOT
         # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
         delim = ""
-        if ! func_type.get_type.kind_of?(VoidType) then
+        if ! func_type.get_type.kind_of?(VoidType)
             file.print("  retval = (#{func_type.get_type_str})")
         else
             file.print("  ")
@@ -342,7 +342,7 @@ EOT
 
         file.print(" );\n\n")
 
-        if ! func_type.get_type.kind_of?(VoidType) then
+        if ! func_type.get_type.kind_of?(VoidType)
             file.print("  return retval;\n")
         end
 
@@ -368,7 +368,7 @@ EOT
         #   return retval;
         # }
             file2 = AppFile.open("#{$gen}/#{@ct_name_body}.c")
-            if @b_printed_include_stdint == false then
+            if @b_printed_include_stdint == false
               file2.print <<EOT
 #ifndef SIZE_MAX
 #define  SIZE_MAX   (~0UL)
@@ -378,7 +378,7 @@ EOT
               @b_printed_include_stdint = true
             end
 
-            if func_type.get_type.kind_of?(VoidType) then
+            if func_type.get_type.kind_of?(VoidType)
                 retval_assign = ""
             else
                 retval_assign = "retval = (ER_UINT)"
@@ -414,10 +414,10 @@ EOT
             #
             num = 0
             params.each{ |param|
-                if param.get_declarator.get_ptr_level > 0 then
+                if param.get_declarator.get_ptr_level > 0
                     align_check_str = "!ALIGN_TYPE(#{passed_param[num]}, #{param.get_type.get_referto.get_type_str}) || "
                   
-                    if param.get_type.get_referto.kind_of?(IntType) then
+                    if param.get_type.get_referto.kind_of?(IntType)
                         case param.get_type.get_referto.get_bit_size
                         when -11, -1, 8   # char, char_t, int8_t (無符号含む)
                         #
@@ -429,19 +429,19 @@ EOT
                           align_check_str = ""
                         end
                     end
-                    if param.get_direction == :IN then
+                    if param.get_direction == :IN
                         #
                         #  入力([in])のポインタパラメータは，呼出し元タスクに
                         #  TPM_READ(読出し可能)のアクセス権が必要
                         #
                         # 二重ポインタが不可のため、size_is と string が同時に設定されることはない
                         prb_func = "prb_mem"
-                        if param.get_size then
+                        if param.get_size
                           size_str = param.get_size.to_s
-                        elsif param.get_string == -1 then
+                        elsif param.get_string == -1
                           size_str = "SIZE_MAX"
                           prb_func = "prb_str"
-                        elsif param.get_string then
+                        elsif param.get_string
                           size_str = param.get_string.to_s
                           prb_func = "prb_str"
                         else
@@ -454,15 +454,15 @@ EOT
         }
 EOT
 
-                    elsif param.get_direction == :OUT || param.get_direction == :INOUT then
+                    elsif param.get_direction == :OUT || param.get_direction == :INOUT
                         #
                         #  出力([out])のポインタパラメータは，呼出し元タスクに
                         #  TPM_WRITE(書込み可能)のアクセス権が必要
                         #
                         prb_func = "prb_mem"
-                        if param.get_size then
+                        if param.get_size
                           size_str = param.get_size.to_s
-                        elsif param.get_string then          # 引数なしの string はない
+                        elsif param.get_string          # 引数なしの string はない
                           size_str = param.get_string.to_s
                           # prb_func = "prb_str"             # out, inout の場合、必ず領域を確保する. prb_mem を用いる
                         else
@@ -711,7 +711,7 @@ EOS
     signature.get_function_head_array.each{ |fh|
       type = fh.get_return_type
       check_return_type signature, fh, type
-      if fh.get_paramlist.get_items.length > NUM_SVC_ARG_MAX then
+      if fh.get_paramlist.get_items.length > NUM_SVC_ARG_MAX
         cdl_error("HSV0005 $1.$2: # of parameter more than #{NUM_SVC_ARG_MAX}", signature.get_name, fh.get_name)
       end
       fh.get_paramlist.get_items.each{ |param|
@@ -724,9 +724,9 @@ EOS
   # 整数、ブール、void は可能、他は不可
   def check_return_type signature, fh, type
     ot = type.get_original_type
-    if(type.get_type_str == "ER" || type.get_type_str == "ER_UINT") then
+    if(type.get_type_str == "ER" || type.get_type_str == "ER_UINT")
       # OK!
-    elsif ot.kind_of?(IntType) || ot.kind_of?(VoidType) || ot.kind_of?(BoolType) then
+    elsif ot.kind_of?(IntType) || ot.kind_of?(VoidType) || ot.kind_of?(BoolType)
       cdl_warning("HSW0001 $1.$2: $3 return type cannot get access violation error", signature.get_name, fh.get_name, type.get_type_str.downcase)
       check_intptr "#{signature.get_name}.#{fh.get_name} return type", type
     else
@@ -740,16 +740,16 @@ EOS
     dir = param.get_direction
     case dir
     when :IN
-      if ot.kind_of?(IntType) || ot.kind_of?(BoolType) then
+      if ot.kind_of?(IntType) || ot.kind_of?(BoolType)
         # OK!
         check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}", type
-      elsif ot.kind_of? PtrType then
+      elsif ot.kind_of? PtrType
         check_ptr signature, fh, param, dir
       else
         cdl_error("HSV0002 $1.$2.$3 $4 param type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
       end
     when :OUT, :INOUT
-      if ot.kind_of? PtrType then
+      if ot.kind_of? PtrType
         check_ptr signature, fh, param, dir
       else
         # error
@@ -761,17 +761,17 @@ EOS
   def check_ptr signature, fh, param, dir
     type = param.get_type.get_referto
     ot = type.get_original_type
-    if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType) then
+    if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)
       # OK!
       check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}", type
-    elsif ot.kind_of? PtrType then
+    elsif ot.kind_of? PtrType
       cdl_error("HSV0003 $1.$2.$3 multi-pointer type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
-    elsif  ot.kind_of? StructType then
+    elsif  ot.kind_of? StructType
       check_struct signature, fh, param
     else
       cdl_error("HSV0004 $1.$2.$3 $4 type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
     end
-    if (dir == :OUT || dir == :INOUT) && param.get_string == -1 then
+    if (dir == :OUT || dir == :INOUT) && param.get_string == -1
       cdl_error("HSV0009 $1.$2.$3 string argment is necessary for out/inout parameter", signature.get_name, fh.get_name, param.get_name)
     end
   end
@@ -781,12 +781,12 @@ EOS
     ot.get_members_decl.get_items.each{ |decl|
       type = decl.get_type
       ot = type.get_original_type
-      if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType) then
+      if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)
         # OK!
         check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}.#{decl.get_name} member", type
       else
         dbgPrint "struct member #{decl.get_name} #{type} #{decl.get_type} #{decl.get_type.get_original_type}\n"
-        if(decl.get_type.get_original_type.kind_of? ArrayType) then
+        if(decl.get_type.get_original_type.kind_of? ArrayType)
           dbgPrint "member array type #{decl.get_type.get_original_type.get_type} #{decl.get_type.get_original_type.get_type.get_original_type}\n"
           check_struct_member_array signature, fh, param, decl
         else
@@ -799,7 +799,7 @@ EOS
     # p "check_struct_member_array: #{member_decl.get_type.get_type_str}"
     type = member_decl.get_type.get_type
     ot = type.get_original_type
-    if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType) then
+    if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)
       # OK!
       check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}.#{member_decl.get_name} member", type
     else
@@ -814,7 +814,7 @@ EOS
       tstr = t.get_type_str
       tstr.sub!(/const /, "")
       tstr.sub!(/volatile /, "")
-      if tstr == "intptr_t" || tstr == "uintptr_t" then
+      if tstr == "intptr_t" || tstr == "uintptr_t"
         cdl_info("HSI0001 $1 type '$2' not checked by plugin", msg, type.get_type_str)
       end
       t = t.get_type

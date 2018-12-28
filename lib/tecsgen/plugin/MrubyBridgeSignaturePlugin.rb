@@ -159,24 +159,24 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
 
     @func_head_array = []
     fh_array = []
-    if @includes.length > 0 && @excludes.length > 0 then
+    if @includes.length > 0 && @excludes.length > 0
       cdl_error("MRB1011 both include && exclude are specified")
     end
 
-    if signature.get_function_head_array == nil then
+    if signature.get_function_head_array == nil
       return   # 以前に文法エラー発生
     end
 
     signature.get_function_head_array.each{ |func_head|
-      if @includes.length > 0 then
-        if @includes.index func_head.get_name then
+      if @includes.length > 0
+        if @includes.index func_head.get_name
           dbgPrint "MrubyBridgePlugin: #{func_head.get_name} INCLUDED\n"
           fh_array << func_head
         else
           dbgPrint "MrubyBridgePlugin: #{func_head.get_name} NOT included\n"
         end
-      elsif @excludes.length > 0 then
-        if @excludes.index(func_head.get_name) == nil then
+      elsif @excludes.length > 0
+        if @excludes.index(func_head.get_name) == nil
           dbgPrint "MrubyBridgePlugin: #{func_head.get_name} NOT excluded\n"
           fh_array << func_head
         else
@@ -191,14 +191,14 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     check_parameter_type fh_array
 
     fh_array.each{ |fh|
-      if @auto_exclude_list[fh.get_name] == nil then
+      if @auto_exclude_list[fh.get_name] == nil
         @func_head_array << fh
       else
         dbgPrint "MrubyBridgePlugin: auto_exclude #{fh.get_name}\n"
       end
     }
 
-    if @func_head_array.length == 0 then
+    if @func_head_array.length == 0
       cdl_error("MRB1012 '$1' no function remained by exclude", @signature.get_name)
     end
   end
@@ -207,17 +207,17 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   def check_name_and_return_type func_head_array
     b_init = false; b_init_cell = false
     func_head_array.each{ |func_head|
-      if(func_head.get_name == :initialize)then
+      if(func_head.get_name == :initialize)
         cdl_warning("MRW2001 initialize: internally defined. change to initialize_cell in ruby")
         b_init = true
-      elsif(func_head.get_name == :initialize_cell)then
+      elsif(func_head.get_name == :initialize_cell)
         b_init_cell = true
       end
       rtype = func_head.get_return_type.get_original_type
       case rtype
       when BoolType, IntType, FloatType, VoidType
       else
-        if @b_auto_exclude then
+        if @b_auto_exclude
           cdl_info("MRI0001 cannot return type $1, $2 automatcally excluded", rtype.get_type_str, func_head.get_name)
           @auto_exclude_list[func_head.get_name] = func_head
         else
@@ -225,7 +225,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
         end
       end
     }
-    if(b_init && b_init_cell)then
+    if(b_init && b_init_cell)
       cdl_warning("MRB1002 initialize: internally defined. change to initialize_cell in ruby")
     end
   end
@@ -237,7 +237,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       fh.get_paramlist.get_items.each{ |param_decl|
         case param_decl.get_direction
         when :SEND, :RECEIVE
-          if @b_auto_exclude then
+          if @b_auto_exclude
             cdl_info("MRI0002 $1: $2 parameter cannot be used in mruby Bridge, $3 automatcally excluded",
                       param_decl.get_name, param_decl.get_direction.to_s.downcase, fh.get_name)
             @auto_exclude_list[fh.get_name] = fh
@@ -265,10 +265,10 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
           ttype = ttype_org.get_original_type # 上記の typedef されている場合、元の型
           register_ptr_type ttype_org, fh
 
-          if(type_org.get_string.to_s == "-1") then
+          if(type_org.get_string.to_s == "-1")
             case param_decl.get_direction
             when :OUT, :INOUT
-              if @b_auto_exclude then
+              if @b_auto_exclude
                 cdl_info("MRB9999 string specifier without length cannot be used for out & inout parameter, $1 automatcally excluded", 
                         fh.get_name)
                 @auto_exclude_list[fh.get_name] = fh
@@ -287,8 +287,8 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
           when FloatType
           when BoolType
           when StructType
-            if(type_org.get_size || type_org.get_string || type_org.get_count) then
-              if @b_auto_exclude then
+            if(type_org.get_size || type_org.get_string || type_org.get_count)
+              if @b_auto_exclude
                 cdl_info("MRI9999 $1: size_is, count_is, string cannot be specified for struct pointer, $2 automatcally excluded",
                           param_decl.get_name, fh.get_name)
                 @auto_exclude_list[fh.get_name] = fh
@@ -305,8 +305,8 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
         else  # ArrayType, FuncType, EnumType, VoidType
           b_ng = true
         end
-        if b_ng then
-          if @b_auto_exclude then
+        if b_ng
+          if @b_auto_exclude
             cdl_info("MRI9999 $1: type $2 cannot be used in mruby Bridge, $3 automatcally excluded",
                       param_decl.get_name, type_str, fh.get_name)
             @auto_exclude_list[fh.get_name] = fh
@@ -323,8 +323,8 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     # p "tag name:#{struct_type.get_name}"
     # sttype = Namespace.find_tag( struct_type.get_name )
     sttype = struct_type.get_original_type
-    if sttype.get_name == nil then
-      if @b_auto_exclude then
+    if sttype.get_name == nil
+      if @b_auto_exclude
         cdl_info("MRI9999 tagless-struct cannot be handled, $1 automatcally excluded", fh.get_name)
         @auto_exclude_list[fh.get_name] = fh
         return  # 登録しないように打ち切る
@@ -337,7 +337,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       case t
       when IntType, FloatType, BoolType
       else
-        if @b_auto_exclude then
+        if @b_auto_exclude
           cdl_info("MRI9999 $1: type $2 not allowed for struct member, $3 automatcally excluded",
                     d.get_name, d.get_type.get_type_str + d.get_type.get_type_str_post, fh.get_name)
           @auto_exclude_list[fh.get_name] = fh
@@ -348,7 +348,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       end
     }
     st_name = :"t{}"
-    if @struct_list[sttype.get_name] == nil then
+    if @struct_list[sttype.get_name] == nil
       # print_msg "  MrubyBridgePlugin: [struct]   #{struct_type.get_type_str} => class TECS::Struct#{sttype.get_name}\n"
       print "  MrubyBridgePlugin: [struct]   #{struct_type.get_type_str} => class TECS::Struct#{sttype.get_name}\n"
       @struct_list[sttype.get_name] = sttype
@@ -358,17 +358,17 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   def register_ptr_type ttype, fh
     t_org = ttype.get_original_type
     tment = get_type_map_ent t_org
-    if tment == nil then
+    if tment == nil
       return
       # cdl_error( "MRB1008 unknown pointer type '$1'", ttype.get_type_str )
     end
     ptr_celltype_name = :"t#{tment[1]}Pointer"
-    if @@ptr_list[ptr_celltype_name] == nil then
+    if @@ptr_list[ptr_celltype_name] == nil
       # print_msg "  MrubyBridgePlugin: [pointer]  #{ttype.get_type_str}* => class TECS::#{tment[1]}Pointer\n"
       print "  MrubyBridgePlugin: [pointer]  #{ttype.get_type_str}* => class TECS::#{tment[1]}Pointer\n"
       @@ptr_list[ptr_celltype_name] = tment
     end
-    if @ptr_list[ptr_celltype_name] == nil then
+    if @ptr_list[ptr_celltype_name] == nil
       @ptr_list[ptr_celltype_name] = tment
     end
   end
@@ -380,7 +380,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     end
     tstr = ttype.get_type_str.sub(/const /, "")    # const は無視
     tstr = tstr.sub(/volatile /, "")               # volatile も無視
-    if @b_ignoreUnsigned then
+    if @b_ignoreUnsigned
       tstr = tstr.sub(/unsigned /, "")             # volatile も無視
       tstr = tstr.sub(/uint/, "int")               # volatile も無視
       tstr = tstr.sub(/[cs]char/, "char")          # volatile も無視
@@ -394,7 +394,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   def gen_cdl_file(file)
 
     # ブリッジセルタイプの生成
-    if @@celltypes[@celltype_name] == nil then
+    if @@celltypes[@celltype_name] == nil
       @@celltypes[@celltype_name] = [ self ]
       @@init_celltypes[@init_celltype_name] = true
       print_msg <<EOT
@@ -438,7 +438,7 @@ EOT
 
       # 構造体セルタイプの生成
       @struct_list.each{ |name, sttype|
-        if @@struct_list[name] == nil then
+        if @@struct_list[name] == nil
           file.print <<EOT
 namespace nMruby{
     [singleton]
@@ -460,18 +460,18 @@ EOT
   #=== gen_cdl_file で定義したセルタイプに 新しいセルが定義された
   # cell のセルタイプの名前は @celltype_name
   def new_cell cell
-    if cell.get_celltype.get_name != @celltype_name then
+    if cell.get_celltype.get_name != @celltype_name
       return
     end
 
     join = cell.get_join_list.get_item :VMname
-    if join then
+    if join
       vm_name = CDLString.remove_dquote(join.get_rhs.to_s).to_sym
     else
       vm_name = :"VM"
     end
 
-    if @@VM_list[vm_name] == nil then
+    if @@VM_list[vm_name] == nil
       @@VM_list[vm_name] = true
 
       initializer_celltype_cdl = "#{$gen}/#{cell.get_name}Initializer.cdl"
@@ -490,10 +490,10 @@ EOT
       Generator.parse(initializer_celltype_cdl, self)
     end
 
-    if @@VM_celltypes[vm_name] then
+    if @@VM_celltypes[vm_name]
       vma = @@VM_celltypes[vm_name]
 
-      if vma[@celltype_name] then
+      if vma[@celltype_name]
         vma[@celltype_name] << cell
       else
         vma[@celltype_name] = [cell]
@@ -506,14 +506,14 @@ EOT
     end
 
     @struct_list.each{ |stname, sttype|
-      if @@VM_struct_list[vm_name] then
+      if @@VM_struct_list[vm_name]
         @@VM_struct_list[vm_name][ sttype.get_name ] = sttype
       else
         @@VM_struct_list[vm_name] = { sttype.get_name => sttype }
       end
     }
     @ptr_list.each{ |ptr_celltype_name, tment|
-      if @@VM_ptr_list[vm_name] then
+      if @@VM_ptr_list[vm_name]
         @@VM_ptr_list[vm_name][ ptr_celltype_name ] = tment
       else
         @@VM_ptr_list[vm_name] = { ptr_celltype_name => tment }
@@ -526,7 +526,7 @@ EOT
   # tmp_plugin_post_code.cdl への出力
   def self.gen_post_code file
     dbgPrint "#{self.name}: gen_post_code\n"
-    if ! @@b_gen_post_code_by_dependent then
+    if ! @@b_gen_post_code_by_dependent
       gen_post_code_body file
     end
   end
@@ -573,7 +573,7 @@ EOT
     @@VM_celltypes.each{ |vm_name, instance_list|
       instance_list.each { |celltype_name, array|
         cell = array[0]
-  if cell.get_celltype then
+  if cell.get_celltype
     ct_name = cell.get_celltype.get_name
         file.print <<EOT
   cell nMruby::#{ct_name}_Initializer #{vm_name}_#{ct_name}_Initializer{ };
@@ -612,12 +612,12 @@ EOT
           file.print "    cInitialize[] = #{vm_name}_#{ct_name}_Initializer.eInitialize;\n"
 #        }
       }
-      if @@VM_ptr_list[vm_name] then
+      if @@VM_ptr_list[vm_name]
         @@VM_ptr_list[vm_name].each{ |name, tment|
           file.print "    cInitialize[] = C#{name}.eInitialize;\n"
         }
       end
-      if @@VM_struct_list[vm_name] then
+      if @@VM_struct_list[vm_name]
         @@VM_struct_list[vm_name].each{ |name, sttype|
           file.print "    cInitialize[] = C#{name}.eInitialize;\n"
         }
@@ -632,13 +632,13 @@ EOT
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
   # ct_name:: Symbol    (プラグインで生成された) セルタイプ名 ．Symbol として送られてくる
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-    if @@celltypes[ct_name] then
+    if @@celltypes[ct_name]
       gen_ep_func_body_bridge(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-    elsif @@init_celltypes[ct_name] then
+    elsif @@init_celltypes[ct_name]
       gen_ep_func_body_bridge_init(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-    elsif @@ptr_list[ct_name] then
+    elsif @@ptr_list[ct_name]
       gen_ep_func_body_ptr(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-    elsif @@struct_list[ct_name] then
+    elsif @@struct_list[ct_name]
       gen_ep_func_body_struct(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     else
       raise "MrubyBridgeSignaturePlugin: Unknown #{ct_name}"
@@ -660,10 +660,10 @@ EOT
 EOT
 
     @func_head_array.each{ |f|
-      if ! f.is_function? then
+      if ! f.is_function?
         next
       end
-      if f.get_name != :initialize then
+      if f.get_name != :initialize
         func_name = f.get_name
       else
         func_name = :initialize_cell
@@ -679,7 +679,7 @@ EOT
           raise "MrubyBridgeSignaturePlugin: send, receive"
         end
       }
-      if n_param > 0 then
+      if n_param > 0
         p_str = "MRB_ARGS_REQ( #{n_param} )"
       else
         p_str = "MRB_ARGS_NONE()"
@@ -709,7 +709,7 @@ EOT
     mrb_define_method(mrb, a, "length",          #{type}Pointer_size,         MRB_ARGS_NONE());
 EOT
 
-    if t[2] == :Char then
+    if t[2] == :Char
       file.print <<EOT
 	mrb_define_method(mrb, a, "to_s",            CharPointer_to_s, MRB_ARGS_NONE());
 	mrb_define_method(mrb, a, "from_s",          CharPointer_from_s, MRB_ARGS_REQ(1));
@@ -741,17 +741,17 @@ EOT
   # ct_name::        Symbol
   # global_ct_name:: string
   def gen_preamble(file, b_singleton, ct_name, global_ct_name)
-    if @@celltypes[ct_name] then
+    if @@celltypes[ct_name]
       gen_preamble_mruby(file, b_singleton, ct_name, global_ct_name)
       gen_preamble_instance(file, b_singleton, ct_name, global_ct_name)
       gen_preamble_instance_initialize(file, b_singleton, ct_name, global_ct_name)
       gen_preamble_bridge_func(file, b_singleton, ct_name, global_ct_name)
-    elsif @@init_celltypes[ct_name] then
+    elsif @@init_celltypes[ct_name]
       gen_preamble_mruby(file, b_singleton, ct_name, global_ct_name)
       gen_preamble_instance_proto(file, b_singleton, ct_name, global_ct_name)
-    elsif @@ptr_list[ct_name] then
+    elsif @@ptr_list[ct_name]
       gen_preamble_ptr(file, b_singleton, ct_name, global_ct_name)
-    elsif @@struct_list[ct_name] then
+    elsif @@struct_list[ct_name]
       gen_preamble_struct(file, b_singleton, ct_name, global_ct_name)
     else
       raise "MrubyBridgeSignaturePlugin: MrubyBridgeSignaturePlugin: Unknown #{ct_name}"
@@ -786,17 +786,17 @@ EOT
     nsp = NamespacePath.new(:nMruby, true)
     nsp.append! ct_name
     ct = Namespace.find nsp
-    if ct.idx_is_id_act? then
-      if ct.has_CB? then
+    if ct.idx_is_id_act?
+      if ct.has_CB?
         inib_cb = "CB"
-      elsif ct.has_INIB? then
+      elsif ct.has_INIB?
         inib_cb = "INIB"
       else
         inib_cb = nil
       end
-      if inib_cb then
+      if inib_cb
         ct.get_cell_list.each{ |cell|
-          if cell.is_generate? then
+          if cell.is_generate?
             name_array = ct.get_name_array(cell)
             file.print "extern #{ct.get_global_name}_CB  #{cell.get_global_name}_#{inib_cb};\n"
           end
@@ -838,10 +838,10 @@ EOT
     ct = Namespace.find nsp
 
     ct.get_cell_list.each{ |cell|
-      if cell.is_generate? then
+      if cell.is_generate?
         join_list = cell.get_join_list
         join = join_list.get_item(:bridgeName)
-        if join == nil then
+        if join == nil
           name = "\"#{cell.get_name}\""
         else
           rhs = join.get_rhs
@@ -923,10 +923,10 @@ mrb_value  MrubyBridge_#{@celltype_name}_initialize( mrb_state *mrb, mrb_value s
 EOT
 
     @func_head_array.each{ |f|
-      if ! f.is_function? then
+      if ! f.is_function?
         next
       end
-      if f.get_name != :initialize then
+      if f.get_name != :initialize
         func_name = f.get_name
       else
         func_name = :initialize_cell
@@ -980,10 +980,10 @@ EOT
   def gen_preamble_bridge_func(file, b_singleton, ct_name, global_ct_name)
 
     @func_head_array.each{ |f|
-      if ! f.is_function? then
+      if ! f.is_function?
         next
       end
-      if f.get_name != :initialize then
+      if f.get_name != :initialize
         func_name = f.get_name
       else
         func_name = :initialize_cell
@@ -1005,7 +1005,7 @@ MrubyBridge_#{ct_name}_#{func_name}( mrb_state *mrb, mrb_value self )
 EOT
       
       file.print "	/* variables for return & parameter (MBP110) */\n"
-      if ! b_void then
+      if ! b_void
         file.print "	", ret_type.get_type_str, "\tret_val", ret_type.get_type_str_post, ";\n"
       end
       arg_str = ""
@@ -1054,7 +1054,7 @@ EOT
         end
       }
 
-      if n_param > 0 then
+      if n_param > 0
         file.print "	/* retrieve arguments (MBP111) */\n"
         file.print "	mrb_get_args(mrb, \"#{arg_str}\""
         plist.each{ |param|
@@ -1079,7 +1079,7 @@ EOT
         }
         file.print " );\n"
 
-        if n_scalar > 0 || n_struct > 0 then
+        if n_scalar > 0 || n_struct > 0
           file.print "	/* convert mrb to C (MBP112) */\n"
         end
         plist.each{ |param|
@@ -1117,7 +1117,7 @@ EOT
           end
         }
 
-        if n_ptr > 0 then
+        if n_ptr > 0
           file.print "	/* convert mrb to C for pointer types (MBP113) */\n"
         end
         plist.each{ |param|
@@ -1150,7 +1150,7 @@ EOT
       end
 
       file.print "	/* calling target (MBP120) */\n"
-      if ! b_void then
+      if ! b_void
         file.print "	ret_val = "
       else
         file.print "	"
@@ -1158,7 +1158,7 @@ EOT
       delim = ""
       file.print "cTECS_", f.get_name, "( "
       plist.each{ |param|
-        if param.get_type.get_original_type.kind_of? StructType then
+        if param.get_type.get_original_type.kind_of? StructType
           aster = "*"
         else
           aster = ""
@@ -1224,15 +1224,15 @@ EOT
       raise "MrubyBridgeSignaturePlugin: not handle type 2 #{ttype}"
     end
 =end
-    if(param.get_size) then
+    if(param.get_size)
       sz_str = param.get_size.to_s
-    elsif param.get_string then      # mikan とりあえず size_is と string の同時指定 (二重ポインタ) はなし
+    elsif param.get_string      # mikan とりあえず size_is と string の同時指定 (二重ポインタ) はなし
       sz_str = param.get_string.to_s
     else
       sz_str = "1"
     end
     # unsigned 型の場合には cast が必要
-    if ttype.get_original_type.get_type_str != param.get_type.get_type.get_type_str then
+    if ttype.get_original_type.get_type_str != param.get_type.get_type.get_type_str
       cast_str = "(#{param.get_type.get_type_str})"
     else
       cast_str = ""
@@ -1246,7 +1246,7 @@ EOT
         modify = "Mod"
       end
     end
-    if param.is_nullable? then
+    if param.is_nullable?
       nullable = "Nullable"
     else
       nullable = ""
@@ -1263,7 +1263,7 @@ EOT
 
   #=== プラグイン引数 ignoreUnsigned
   def set_ignoreUnsigned rhs
-    if rhs == "true" || rhs == nil then
+    if rhs == "true" || rhs == nil
       @b_ignoreUnsigned = true
     end
   end
@@ -1274,11 +1274,11 @@ EOT
       found = false
       rhs_func.gsub!(/\s/, "")
       @signature.get_function_head_array.each{ |a|
-        if rhs_func.to_sym == a.get_name then
+        if rhs_func.to_sym == a.get_name
           found = true
         end
       }
-      if found == false then
+      if found == false
         cdl_error("MRB1009 include function '$1' not found in signagture '$2'", rhs, @signature.get_name)
       else
         @includes << rhs_func.to_sym
@@ -1291,7 +1291,7 @@ EOT
     funcs.each{ |rhs_func|
       rhs_func.gsub!(/\s/, "")
       func_head = @signature.get_function_head rhs_func.to_sym
-      if func_head == false then
+      if func_head == false
         cdl_error("MRB1010 exclude function '$1' not found in signagture '$2", rhs, @signature.get_name)
       else
         @excludes << rhs_func.to_sym
@@ -1300,9 +1300,9 @@ EOT
   end
   #=== プラグイン引数 auto_exclude
   def set_auto_exclude rhs
-    if rhs == "false" then
+    if rhs == "false"
       @b_auto_exclude = false
-    elsif rhs == "true" then
+    elsif rhs == "true"
       @b_auto_exclude = true     # auto_exclude = true by default 
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")

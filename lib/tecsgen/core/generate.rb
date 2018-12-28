@@ -126,15 +126,15 @@ class Namespace
     begin
       # root namespace ならば makefile を出力する(全セルタイプに関わるものだけ)
       # 先に出力する
-      if @name == "::" then
+      if @name == "::"
 
         gen_makefile_template
         gen_makefile_tecsgen
-        if $generating_region.get_n_cells == 0 then
+        if $generating_region.get_n_cells == 0
           dbgPrint "only makefile_template #{@name}\n"
           return
         end
-        if instance_of? Region then
+        if instance_of? Region
           @@domain_gen_factory_list = {}   # create hash
         end
       end
@@ -143,10 +143,10 @@ class Namespace
       # global_tecsgen.h (typedef, struct, const) の生成
       gen_global_header
 
-      if (instance_of? Region) && get_domain_type != nil then
+      if (instance_of? Region) && get_domain_type != nil
         # p "*******************  domain_type: #{get_domain_type.get_name}  ****************"
         domain_type = get_domain_type
-        if @@domain_gen_factory_list[domain_type] == nil then
+        if @@domain_gen_factory_list[domain_type] == nil
           @@domain_gen_factory_list[domain_type] = self
           domain_type.gen_factory
         end
@@ -176,7 +176,7 @@ class Namespace
 
   def generate_post
 
-    if $generating_region.get_n_cells == 0 then
+    if $generating_region.get_n_cells == 0
       return
     end
 
@@ -211,7 +211,7 @@ class Namespace
     # global_tecs.h の生成
     f = AppFile.open("#{$gen}/global_tecsgen.#{$h_suffix}")
 
-    if @name == "::" then
+    if @name == "::"
       print_note f
 
       # ガードコードを出力
@@ -222,7 +222,7 @@ class Namespace
 EOT
 
       # import_C で指定されたヘッダファイルの #include を出力
-      if Import_C.get_header_list2.length > 0 then
+      if Import_C.get_header_list2.length > 0
         # ヘッダ include の出力
         f.printf TECSMsg.get(:IMP_comment), "#_IMP_#"
         Import_C.get_header_list2.each{ |h|
@@ -238,13 +238,13 @@ EOT
     @decl_list.each { |d|
 
       # d は Typedef, StructType, EnumType のいずれか
-      if d.instance_of?(Typedef) then
+      if d.instance_of?(Typedef)
 
         # Typedef の場合、declarator の @type が　CType でないか
-        if ! d.get_declarator.get_type.kind_of?(CType) then
+        if ! d.get_declarator.get_type.kind_of?(CType)
           d.gen_gh f
         end
-      elsif ! d.kind_of?(CType) then
+      elsif ! d.kind_of?(CType)
 
         # CType ではない (StructType または EnumType)
         d.gen_gh f
@@ -253,9 +253,9 @@ EOT
       end
     }
 
-    if @name == "::" then
+    if @name == "::"
 
-      if $ram_initializer then
+      if $ram_initializer
         # Proc to judge the necessity of CB initializer
         b_inline_only_or_proc = Proc.new{ |ct|
           # print ct.get_name, ": ",  ct.need_CB_initializer?, "\n"
@@ -294,7 +294,7 @@ EOT
     # global_tecs.h を開く
     f = AppFile.open("#{$gen}/global_tecsgen.#{$h_suffix}")
 
-    if @name == "::" then
+    if @name == "::"
       f.print <<EOT
 
 #endif /* GLOBAL_TECSGEN_H */
@@ -329,13 +329,13 @@ EOT
 
     # TARGET の出力 (第一引数 $target に region 名および .exe を付加)
     target = $target
-    if $generating_region != @@root_namespace then
+    if $generating_region != @@root_namespace
       # 子 region のリンクターゲットの場合
       target += "-#{$generating_region.get_global_name}"
     end
     f.print "TARGET_BASE = #{target}\n"
 
-    if $generating_region == @@root_namespace then
+    if $generating_region == @@root_namespace
       f.print "BASE_DIR = .\n"
       vpath_lead = ""
     else
@@ -348,7 +348,7 @@ EOT
     f.print "INCLUDES ="
     search_path = $import_path + TECSGEN::Makefile.get_search_path
     search_path.each{ |path|
-      if TECSGEN.is_absolute_path? path then
+      if TECSGEN.is_absolute_path? path
         f.print(TECSGEN.subst_tecspath " -I #{path}")
       else
         f.print " -I $(BASE_DIR)/#{path}"
@@ -363,8 +363,8 @@ EOT
 
     vpath_add = ""
     search_path.each{ |path|
-      if path != "." then
-        if TECSGEN.is_absolute_path? path then
+      if path != "."
+        if TECSGEN.is_absolute_path? path
           vpath_add += " " + TECSGEN.subst_tecspath(path)
         else
           vpath_add += " " + vpath_lead + path
@@ -421,14 +421,14 @@ allall: tecs
 
 EOT
 
-    if $generating_region.get_n_cells != 0 then
+    if $generating_region.get_n_cells != 0
       all_target = "$(TARGET)"
     else
       all_target = ""
     end
 
-    if $generating_region == @@root_namespace then
-      if Region.get_link_roots.length > 1 then
+    if $generating_region == @@root_namespace
+      if Region.get_link_roots.length > 1
         all_target += " sub_regions"
       end
       timestamp = " $(TIMESTAMP)"
@@ -439,7 +439,7 @@ EOT
     f.print "all : #{all_target}\n\n"
     f.printf TECSMsg.get(:MDEP_comment), "#_MDEP_#"
     f.print "-include $(GEN_DIR)/Makefile.tecsgen\n"
-    if $generating_region.get_n_cells != 0 then
+    if $generating_region.get_n_cells != 0
       # Makefile.depend の include
       f.print "-include $(GEN_DIR)/Makefile.depend\n\n"
 
@@ -447,10 +447,10 @@ EOT
       f.print "	$(LD) -o $(TARGET) $(TECSGEN_COBJS) $(CELLTYPE_COBJS) $(PLUGIN_COBJS) $(OTHER_OBJS) $(LDFLAGS)\n\n"
     end
 
-    if Region.get_link_roots.length > 1 && $generating_region == @@root_namespace then
+    if Region.get_link_roots.length > 1 && $generating_region == @@root_namespace
       f.print "\nsub_regions:$(TIMESTAMP)\n"
       Region.get_link_roots.each {|region|
-        if region.get_global_name != "" then  # Root region: この Makefile 自身
+        if region.get_global_name != ""  # Root region: この Makefile 自身
           f.print "\tcd #{region.get_global_name}; make all\n"
         end
       }
@@ -459,21 +459,21 @@ EOT
 
     # clean: ターゲット
     f.print "clean :\n"
-    if $generating_region == @@root_namespace then
+    if $generating_region == @@root_namespace
       Region.get_link_roots.each {|region|
-        if region.get_global_name != "" then  # Root region: この Makefile 自身
+        if region.get_global_name != ""  # Root region: この Makefile 自身
           f.print "\tcd #{region.get_global_name}; make clean\n"
         end
       }
     end
     f.print "	rm -f $(CELLTYPE_COBJS) $(TECSGEN_COBJS) $(PLUGIN_COBJS) $(OTHER_OBJS) $(TARGET) #{timestamp}\n"
-    if $generating_region == @@root_namespace then
+    if $generating_region == @@root_namespace
       f.print "	rm -rf $(GEN_DIR)\n"
     end
     f.print "\n"
 
     # tecs: ターゲット
-    if $generating_region == @@root_namespace then
+    if $generating_region == @@root_namespace
       f.print "tecs : $(PRE_TECSGEN_TARGET) $(TIMESTAMP) $(POST_TECSGEN_TARGET)\n\n"
       f.print "$(TIMESTAMP) : $(TECS_IMPORTS)\n"
       f.print "	$(TECSGEN) #{TECSGEN.subst_tecspath($arguments, true)}\n"
@@ -489,7 +489,7 @@ EOT
     f.print "	$(CC) -c $(CFLAGS) -o $@ $<\n\n"
 
     lines = TECSGEN::Makefile.get_lines
-    if lines.length > 0 then
+    if lines.length > 0
       f.print("# additional lines\n")
       lines.each{ |line|
         f.print  line, "\n"
@@ -546,7 +546,7 @@ EOT
     f.print("TECS_IMPORT_CDLS =")
     Import.get_list.each{ |cdl_expand_path, import|
       path = import.get_cdl_path
-      if TECSGEN.is_absolute_path? path then
+      if TECSGEN.is_absolute_path? path
         path = TECSGEN.subst_tecspath path
       end
       f.print " "
@@ -555,7 +555,7 @@ EOT
     f.print("\n")
     f.print("TECS_IMPORT_HEADERS =")
     Import_C.get_header_list.each{ |header,path|
-      if TECSGEN.is_absolute_path? path then
+      if TECSGEN.is_absolute_path? path
         path = TECSGEN.subst_tecspath path
       end
       f.print " "
@@ -565,7 +565,7 @@ EOT
     f.print "TECS_IMPORTS = $(TECS_IMPORT_CDLS) $(TECS_IMPORT_HEADERS)\n\n"
 
     f.print "SIGNATURE_HEADERS = \\\n"
-    if $generating_region.get_n_cells != 0 then
+    if $generating_region.get_n_cells != 0
       @signature_list.each{ |s|
         f.print "\t$(GEN_DIR)/#{s.get_global_name}_tecsgen.#{$h_suffix} \\\n"
       }
@@ -600,21 +600,21 @@ EOT
       domain_regions = regions
       domain_type = dt
     }
-    if domain_regions == nil then
+    if domain_regions == nil
       # in case no 'domain' specified at region
       domain_regions = [ Region.get_root ]
     end
 
     hasDomainProc = Proc.new{
-      if domain_regions.length > 1 || domain_regions[0] != Region.get_root then
+      if domain_regions.length > 1 || domain_regions[0] != Region.get_root
         true
       else
         false
       end
     }
     decideDomainNameProc = Proc.new { |region|
-      if region.is_root? then
-        if hasDomainProc.call then
+      if region.is_root?
+        if hasDomainProc.call
           dn = "_Root_"
         else
           dn = ""
@@ -628,12 +628,12 @@ EOT
     f.print("TECS_COBJS = $(TECSGEN_COBJS) $(PLUGIN_COBJS) $(CELLTYPE_COBJS)\n\n")
 
     ### in case domain is used ###
-    if hasDomainProc.call then
+    if hasDomainProc.call
 
       f.print("# TECS_DOMAINS: list of domain names (names of 'domain' spacified region)\n")
       f.print("TECS_DOMAINS = ")
       domain_regions.each{ |r|
-        if r.get_domain_type.get_option != "OutOfDomain" then
+        if r.get_domain_type.get_option != "OutOfDomain"
           f.print(" #{r.get_namespace_path.get_global_name}")
         end
       }
@@ -642,7 +642,7 @@ EOT
       f.print("# TECS_KERNEL_COBJS: objects belong to kernel domain\n")
       f.print("TECS_KERNEL_COBJS = \\\n")
       domain_regions.each{ |r|
-        if r.get_domain_type.get_kind == :kernel then
+        if r.get_domain_type.get_kind == :kernel
           f.print("	$(TECSGEN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(PLUGIN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(CELLTYPE#{decideDomainNameProc.call r}_COBJS) \\\n")
@@ -653,7 +653,7 @@ EOT
       f.print("# TECS_USER_COBJS: objects belong to user domain\n")
       f.print("TECS_USER_COBJS = \\\n")
       domain_regions.each{ |r|
-        if r.get_domain_type.get_kind == :user then
+        if r.get_domain_type.get_kind == :user
           f.print("	$(TECSGEN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(PLUGIN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(CELLTYPE#{decideDomainNameProc.call r}_COBJS) \\\n")
@@ -664,7 +664,7 @@ EOT
       f.print("# TECS_OUTOFDOMAIN_COBJS: objects belong to OutOfDomain\n")
       f.print("TECS_OUTOFDOMAIN_COBJS = \\\n")
       domain_regions.each{ |r|
-        if r.get_domain_type.get_kind == :OutOfDomain then
+        if r.get_domain_type.get_kind == :OutOfDomain
           f.print("	$(TECSGEN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(PLUGIN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(CELLTYPE#{decideDomainNameProc.call r}_COBJS) \\\n")
@@ -770,7 +770,7 @@ EOT
       next if b_inline_only_or_proc == false && ct.is_all_entry_inline? && ! ct.is_active?
       # print "Proc:", b_inline_only_or_proc.kind_of?( Proc ), b_inline_only_or_proc.class, "\n"
       next if b_inline_only_or_proc.kind_of?(Proc) && (b_inline_only_or_proc.call(ct) == false)
-      if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin) then
+      if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin)
         f.print " #{prepend}#{ct.get_global_name}#{append}"
       end
     }
@@ -793,19 +793,19 @@ EOT
       next if ! ct.need_generate?
 #      next if b_inline_only == false && ct.is_all_entry_inline?
       next if b_inline_only == false && ct.is_all_entry_inline? && ! ct.is_active?
-      if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin) then
+      if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin)
         regions = ct.get_domain_roots[domain_type]
-        if regions.include?(region) then
+        if regions.include?(region)
           # p "BBB celltype:#{ct.get_name} domain:#{domain_type} append:#{append}"
-          if region.is_root? then
+          if region.is_root?
             nsp = ""
           else
             nsp = "_#{region.get_namespace_path.get_global_name}"
           end
           f.print " #{prepend}#{ct.get_global_name}#{nsp}#{append}"
-        elsif region.is_root? then
+        elsif region.is_root?
           # the case of domain_roots >= 2 && no cell in root region
-          if regions.length > 1 then
+          if regions.length > 1
             f.print " #{prepend}#{ct.get_global_name}#{append}"
           end
         end
@@ -829,14 +829,14 @@ EOT
       next if ! ct.need_generate?
 #      next if b_inline_only == false && ct.is_all_entry_inline?
       next if b_inline_only == false && ct.is_all_entry_inline? && ! ct.is_active?
-      if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin) then
+      if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin)
         # p "BBB celltype:#{ct.get_name} domain:#{domain_type} append:#{append}"
         regions = ct.get_domain_roots[domain_type]
-        if regions.include?(region) && regions.length == 1 then
+        if regions.include?(region) && regions.length == 1
           f.print " #{prepend}#{ct.get_global_name}#{append}"
-        elsif region.is_root? then
+        elsif region.is_root?
           # the case of domain_roots >= 2 && no cell in root region
-          if regions.length > 1 then
+          if regions.length > 1
             f.print " #{prepend}#{ct.get_global_name}#{append}"
           end
         end
@@ -905,7 +905,7 @@ class StructType < Type
 #    print "StructType.gen_gh\n"
 #    show_tree 1
 
-    if ! @b_define then
+    if ! @b_define
       return
     end
 
@@ -973,7 +973,7 @@ EOT
 
   def gen_sh_include f
     dl = get_descriptor_list
-    if dl.length > 0 then
+    if dl.length > 0
       f.printf TECSMsg.get(:SDI_comment), "#_SDI_#"
       dl.each{ |dt,param|
         f.print <<EOT
@@ -1009,7 +1009,7 @@ EOT
       f.print(" (*#{fun.get_name}__T)(")
       f.print(" const struct tag_#{@global_name}_VDES *edp") unless @singleton
 
-      if functype.get_paramlist then
+      if functype.get_paramlist
         items = functype.get_paramlist.get_items
         len = items.length
       else
@@ -1029,7 +1029,7 @@ EOT
       }
       f.print " );\n"
     }
-    if get_function_head_array.length == 0 then
+    if get_function_head_array.length == 0
       f.print("    void   (*dummy__)(void);\n")
     end
 
@@ -1113,7 +1113,7 @@ class Celltype
 
     gen_ph_include_cb_type f
 
-    if @n_entry_port_inline == 0 then
+    if @n_entry_port_inline == 0
       # inline がなければ CB_TYPE_ONLY とする
       # inline ありの場合、いったん define しておいて、後ですべて undef する
       ifndef_cb_type_only f
@@ -1129,7 +1129,7 @@ class Celltype
     gen_ph_cp_fun_macro f         if @n_call_port > 0
     # gen_ph_abstract_ep_des_type f
 
-    if @n_entry_port_inline == 0 then
+    if @n_entry_port_inline == 0
       endif_cb_type_only f
     end
 
@@ -1143,19 +1143,19 @@ class Celltype
     gen_ph_ep_skel_prototype f
 
     #--- CB_TYPE_ONLY の場合、ref_desc, set_desc 関数は含めない (マクロ参照するため)
-    if @n_entry_port_inline == 0 then
+    if @n_entry_port_inline == 0
       ifndef_cb_type_only f
     end
     gen_ph_ref_desc_func f
     gen_ph_set_desc_func f
-    if @n_entry_port_inline == 0 then
+    if @n_entry_port_inline == 0
       endif_cb_type_only f
     end
     end_extern_C f
     endif_macro_only f
 
     # 短縮形などのマクロ出力
-    if @n_entry_port_inline == 0 then
+    if @n_entry_port_inline == 0
       ifndef_cb_type_only f
     end
     gen_ph_valid_idx_abbrev f
@@ -1170,7 +1170,7 @@ class Celltype
     gen_ph_cb_initialize_macro f   # CB 初期化マクロの出力．消費しないので ram_initializer フラグに関わらず出力
     gen_ph_dealloc_code f, ""
     gen_ph_dealloc_code f, "_RESET"
-    if @n_entry_port_inline == 0 then
+    if @n_entry_port_inline == 0
       endif_cb_type_only f
     end
 
@@ -1185,7 +1185,7 @@ class Celltype
     gen_ph_inline f
     endif_macro_only f
 
-    if @n_entry_port_inline > 0 then
+    if @n_entry_port_inline > 0
       ifdef_cb_type_only f
       f.printf TECSMsg.get(:UDF_comment), "#_UDF_#"
       f.print "#undef VALID_IDX\n"
@@ -1215,7 +1215,7 @@ class Celltype
         next if p.get_port_type != :CALL
 
         # is_...joined は omit するケースでも出力されるため、omit を検査する前に出力
-        if p.is_optional? then
+        if p.is_optional?
           f.print("#undef is_#{p.get_name}_joined\n")
         end
 
@@ -1223,18 +1223,18 @@ class Celltype
 
         p.get_signature.get_function_head_array.each{ |fun|
           f.print("#undef #{@global_name}_#{p.get_name}_#{fun.get_name}\n")
-          if ! p.is_require? || p.has_name? then
+          if ! p.is_require? || p.has_name?
             f.print("#undef #{p.get_name}_#{fun.get_name}\n")
           else
             f.print("#undef #{fun.get_name}\n")
           end
         }
-        if p.is_dynamic? then
+        if p.is_dynamic?
           f.print("#undef #{p.get_name}_set_descriptor\n")
-          if p.is_optional? then
+          if p.is_optional?
             f.print("#undef #{p.get_name}_unjoin\n")
           end
-        elsif p.is_ref_desc? then
+        elsif p.is_ref_desc?
           f.print("#undef #{p.get_name}_refer_to_descriptor\n")
           f.print("#undef #{p.get_name}_ref_desc\n")
         end
@@ -1264,26 +1264,26 @@ class Celltype
     f = nil
     @domain_roots.each{ |domain_type_name, regions|
       regions.each{ |r|
-        if r.is_root? then
+        if r.is_root?
           nsp = ""
         else
           nsp = "_#{r.get_namespace_path.get_global_name}"
         end
         # p "celltype:#{@name} dn:#{domain_type_name} nsp:#{nsp}"
         fs[r] = AppFile.open("#{$gen}/#{@global_name}#{nsp}_tecsgen.#{$c_suffix}")
-        if r.is_root? then
+        if r.is_root?
           f = fs[r]
         end
       }
     }
 
     # in case that domain_roots does not include root region
-    if f == nil then
+    if f == nil
       regions = nil
       @domain_roots.each{ |domain_type_name, regions_|
         regions = regions_   # domain_type_name is unique
       }
-      if regions.length > 1 then 
+      if regions.length > 1 
         # if domain_roots.length >= 2 && no cell in root region
         # shared code are placed in root region
         f = AppFile.open("#{$gen}/#{@global_name}_tecsgen.#{$c_suffix}")
@@ -1301,7 +1301,7 @@ class Celltype
 
     # すべての _tecsgen.c に出力
     fs.each{ |r,f2|
-      if f == f2 then
+      if f == f2
         next
       end
       print_note f2
@@ -1325,17 +1325,17 @@ class Celltype
 
     # 一つの _tecsgen.c に出力
     gen_cell_cb_tab f
-    if $ram_initializer then
+    if $ram_initializer
       gen_cell_cb_initialize_code f
     end
 
     fs.each{ |r,f2|
       f2.close
-      if f == f2 then
+      if f == f2
         f = nil
       end
     }
-    if f then
+    if f
       f.close
     end
 
@@ -1391,7 +1391,7 @@ EOT
     @port.each { |p|
       next if p.is_omit?
       hname = "#{p.get_signature.get_global_name}_tecsgen.#{$h_suffix}".to_sym
-      if header_included?(hname) == false then
+      if header_included?(hname) == false
         f.print "#include \"#{hname}\"\n"
       end
     }
@@ -1400,7 +1400,7 @@ EOT
 
   def gen_ph_include_cb_type f
 
-    if ! @b_cp_optimized then
+    if ! @b_cp_optimized
       return
     end
 
@@ -1417,13 +1417,13 @@ EOT
       next if p.get_port_type != :CALL
       next if p.is_omit?
 
-      if p.is_skelton_useless? || p.is_cell_unique? || p.is_VMT_useless? then
+      if p.is_skelton_useless? || p.is_cell_unique? || p.is_VMT_useless?
         # 最適化コード (optimize) # スケルトン不要など
         p2 = p.get_real_callee_port
-        if p2 then
+        if p2
           ct = p2.get_celltype
           hname = "#{ct.get_global_name}_tecsgen.#{$h_suffix}".to_sym
-          if header_included?(hname) == false then
+          if header_included?(hname) == false
             f.print("#include \"#{hname}\"\n")
           end
         # else
@@ -1466,7 +1466,7 @@ EOT
     # mikan  最適化
     # IDX 正当性チェックマクロの出力
     f.printf(TECSMsg.get(:CVI_comment), "#_CVI_#")
-    if @idx_is_id_act then
+    if @idx_is_id_act
       f.print("#define #{@global_name}_VALID_IDX(IDX) (#{@global_name}_ID_BASE <= (IDX) && (IDX) < #{@global_name}_ID_BASE+#{@global_name}_N_CELL)\n\n")
     else
       f.print("#define #{@global_name}_VALID_IDX(IDX) (1)\n\n")
@@ -1494,17 +1494,17 @@ EOT
       next if p.is_omit?
       next if p.get_array_size == nil
 
-      if ! b_comment then
+      if ! b_comment
         f.printf(TECSMsg.get(:NCPA_comment), "#_NCPA_#")
         b_comment = true
       end
 
-      if p.get_array_size != "[]" then       # 固定長配列
+      if p.get_array_size != "[]"       # 固定長配列
         f.print("#define N_CP_#{p.get_name}    (#{p.get_array_size})\n")
         f.print("#define NCP_#{p.get_name}     (#{p.get_array_size})\n")
       else                                   # 可変長配列
-        if @singleton then
-          if has_INIB? then
+        if @singleton
+          if has_INIB?
             inib = "INIB"
           else
             inib = "CB"
@@ -1513,7 +1513,7 @@ EOT
           f.print("#define NCP_#{p.get_name}   (#{@global_name}_SINGLE_CELL_#{inib}.n_#{p.get_name})\n")
           # mikan singleton ならば、固定長化できる
         else
-          if has_CB? && has_INIB? then
+          if has_CB? && has_INIB?
             inib = "->_inib"
           else
             inib = ""
@@ -1536,16 +1536,16 @@ EOT
       # next if p.is_omit?                       # 受け口配列の個数は省略しない
       next if p.get_array_size == nil
 
-      if ! b_comment then
+      if ! b_comment
         f.printf(TECSMsg.get(:NEPA_comment), "#_NEPA_#")
         b_comment = true
       end
 
-      if p.get_array_size != "[]" then       # 固定長配列
+      if p.get_array_size != "[]"       # 固定長配列
         f.print("#define NEP_#{p.get_name}     (#{p.get_array_size})\n")
       else                                   # 可変長配列
-        if @singleton then
-          if has_INIB? then
+        if @singleton
+          if has_INIB?
             inib = "INIB"
           else
             inib = "CB"
@@ -1553,7 +1553,7 @@ EOT
           f.print("#define NEP_#{p.get_name}   (#{@global_name}_SINGLE_CELL_#{inib}.n_#{p.get_name})\n")
           # mikan singleton ならば、固定長化できる
         else
-          if has_CB? && has_INIB? then
+          if has_CB? && has_INIB?
             inib = "->_inib"
           else
             inib = ""
@@ -1568,14 +1568,14 @@ EOT
   def gen_ph_test_optional_call_port f
     b_comment = false
 
-    if @singleton then
-      if has_INIB? then
+    if @singleton
+      if has_INIB?
         inib = "INIB"
       else
         inib = "CB"
       end
     else
-      if has_CB? && has_INIB? then
+      if has_CB? && has_INIB?
         inib = "->_inib"
       else
         inib = ""
@@ -1587,33 +1587,33 @@ EOT
       next if ! p.is_optional?
       # next if p.is_omit?  # omit でも test コードは生成する
 
-      if b_comment == false then
+      if b_comment == false
         f.printf(TECSMsg.get(:TOCP_comment), "#_TOCP_#")
         b_comment = true
       end
 
-      if @singleton then
+      if @singleton
         param = ""
         delim = ""
       else
         param = "p_that"
         delim = ","
       end
-      if p.get_array_size != nil then
+      if p.get_array_size != nil
         param = param + delim + "subscript"
       end
       f.print("#define #{@global_name}_is_#{p.get_name}_joined(#{param}) \\\n")
 
-      if p.is_omit? then
+      if p.is_omit?
         f.print("   omit  is_#{p.get_name}_joined\n")
         next
       end
 
       # 関数名の出力(標準：受け口ディスクリプタから VMT の関数名、最適化：受け口関数 or 受け口ディスクリプタ)
       # mikan  全部つながっているかどうかで (1) を判定する
-      if ! p.is_VMT_useless? then
-        if p.is_dynamic? then
-          if @singleton then
+      if ! p.is_VMT_useless?
+        if p.is_dynamic?
+          if @singleton
             inib_tmp = "CB"
           else
             inib_tmp = ""
@@ -1623,15 +1623,15 @@ EOT
         end
 
         # 標準コード
-        if p.get_array_size == nil then
-          if @singleton then
+        if p.get_array_size == nil
+          if @singleton
             f.print("\t  (#{@global_name}_SINGLE_CELL_#{inib_tmp}.#{p.get_name}!=0)\n")
           else
             f.print("\t  ((p_that)#{inib_tmp}->#{p.get_name}!=0)\n")
           end
         else
           # 配列の場合
-          if @singleton then
+          if @singleton
             f.print("\t  ((#{@global_name}_SINGLE_CELL_#{inib_tmp}.#{p.get_name}!=0) \\\n")
             f.print("\t  &&(#{@global_name}_SINGLE_CELL_#{inib_tmp}.#{p.get_name}[subscript]!=0))\n")
           else
@@ -1642,9 +1642,9 @@ EOT
       else
         # 最適化コード (optimize) # VMT 不要（配列要素すべて同じ）
         p2 = p.get_real_callee_port
-        if p2 then
+        if p2
           ct = p2.get_celltype
-          if p.is_skelton_useless? then
+          if p.is_skelton_useless?
             # 受け口関数を直接呼出す
             f.print("\t  (1)\n")
           else
@@ -1668,12 +1668,12 @@ EOT
       next if ! p.is_optional?
       # next if p.is_omit?  # omit でも test コードは生成する
 
-      if b_comment == false then
+      if b_comment == false
         f.printf(TECSMsg.get(:TOCPA_comment), "#_TOCPA_#")
         b_comment = true
       end
 
-      if @singleton then
+      if @singleton
         param = ""
         delim = ""
       else
@@ -1681,7 +1681,7 @@ EOT
         delim = ","
       end
 
-      if p.get_array_size == nil then
+      if p.get_array_size == nil
         subscript = ""
       else
         subscript = "subscript"
@@ -1695,9 +1695,9 @@ EOT
   #   セルタイプヘッダへ出力
   def gen_ph_get_cellcb f
     f.printf(TECSMsg.get(:GCB_comment), "#_GCB_#")
-    if (! has_CB? && ! has_INIB?) || @singleton then
+    if (! has_CB? && ! has_INIB?) || @singleton
       f.print("#define #{@global_name}_GET_CELLCB(idx) ((void *)0)\n")
-    elsif @idx_is_id_act then   # mikan 単一のセルの場合の最適化, idx_is_id でない場合
+    elsif @idx_is_id_act   # mikan 単一のセルの場合の最適化, idx_is_id でない場合
       f.print("#define #{@global_name}_GET_CELLCB(idx) (#{@global_name}_CB_tab[(idx) - #{@global_name}_ID_BASE])\n")
     else
       f.print("#define #{@global_name}_GET_CELLCB(idx) (idx)\n")
@@ -1716,7 +1716,7 @@ EOT
     f.printf(TECSMsg.get(:CTIXA_comment), "#_CTIXA_#")
     f.print("#define CELLIDX\t#{@global_name}_IDX\n\n")
 
-    if @name != @global_name then
+    if @name != @global_name
       f.print("#define #{@name}_IDX  #{@global_name}_IDX\n")
     end
   end
@@ -1724,7 +1724,7 @@ EOT
   #===  attribute, var をアクセスするマクロを出力
   #    セルタイプヘッダへ出力
   def gen_ph_attr_access f
-    if @n_attribute_rw > 0 || @n_attribute_ro > 0 then
+    if @n_attribute_rw > 0 || @n_attribute_ro > 0
       f.printf(TECSMsg.get(:AAM_comment), "#_AAM_#")
     end
 
@@ -1734,8 +1734,8 @@ EOT
 
       # mikan const_value の場合
       f.print("#define ")
-      if @singleton then
-        if has_INIB? then
+      if @singleton
+        if has_INIB?
           inib = "INIB"
         else
           inib = "CB"
@@ -1744,7 +1744,7 @@ EOT
         f.print("\t(#{@global_name}_SINGLE_CELL_#{inib}.#{a.get_name})\n")
         # mikan ここでは cell ではなく celltype の名前
       else
-        if ! a.is_rw? && has_CB? && has_INIB? then
+        if ! a.is_rw? && has_CB? && has_INIB?
           inib = "->_inib"
         else
           inib = ""
@@ -1759,14 +1759,14 @@ EOT
 
       next if a.is_omit?
 
-      if @singleton then
-        if has_INIB? then
+      if @singleton
+        if has_INIB?
           inib = "INIB"
         else
           inib = "CB"
         end
       else
-        if ! a.is_rw? && has_CB? && has_INIB? then
+        if ! a.is_rw? && has_CB? && has_INIB?
           inib = "->_inib"
         else
           inib = ""
@@ -1775,7 +1775,7 @@ EOT
 
       # mikan const_value の場合
       f.print("#define ")
-      if @singleton then
+      if @singleton
         f.printf("%-20s", "#{@global_name}_GET_#{a.get_name}()")
         f.print("\t(#{@global_name}_SINGLE_CELL_#{inib}.#{a.get_name})\n")
         # mikan ここでは cell ではなく celltype の名前
@@ -1784,9 +1784,9 @@ EOT
         f.print("\t((p_that)#{inib}->#{a.get_name})\n")
       end
 
-      if a.is_rw? then
+      if a.is_rw?
         f.print("#define ")
-        if @singleton then
+        if @singleton
           f.printf("%-20s", "#{@global_name}_SET_#{a.get_name}(val)")
           f.print("\t(#{@global_name}_SINGLE_CELL_#{inib}.#{a.get_name} = (val))\n")
           # mikan ここでは cell ではなく celltype の名前
@@ -1799,7 +1799,7 @@ EOT
     }
     f.print("\n")
 
-    if @n_var > 0 then
+    if @n_var > 0
       f.printf(TECSMsg.get(:VAM_comment), "#_VAM_#")
     end
 
@@ -1807,14 +1807,14 @@ EOT
 
       next if v.is_omit?
 
-      if @singleton then
-        if v.get_size_is && has_INIB? then
+      if @singleton
+        if v.get_size_is && has_INIB?
           inib = "INIB"
         else
           inib = "CB"
         end
       else
-        if v.get_size_is && has_CB? && has_INIB? then
+        if v.get_size_is && has_CB? && has_INIB?
           inib = "->_inib"
         else
           inib = ""
@@ -1823,7 +1823,7 @@ EOT
 
       # mikan const_value の場合
       f.print("#define ")
-      if @singleton then
+      if @singleton
         f.printf("%-20s", "#{@global_name}_VAR_#{v.get_name}")
         f.print("\t(#{@global_name}_SINGLE_CELL_#{inib}.#{v.get_name})\n")
         # mikan ここでは cell ではなく celltype の名前
@@ -1839,7 +1839,7 @@ EOT
 
       # mikan const_value の場合
       f.print("#define ")
-      if @singleton then
+      if @singleton
         f.printf("%-20s", "#{@global_name}_GET_#{v.get_name}()")
         f.print("\t(#{@global_name}_SINGLE_CELL_CB.#{v.get_name})\n")
         # mikan ここでは cell ではなく celltype の名前
@@ -1849,7 +1849,7 @@ EOT
       end
 
       f.print("#define ")
-      if @singleton then
+      if @singleton
         f.printf("%-20s", "#{@global_name}_SET_#{v.get_name}(val)")
         f.print("\t(#{@global_name}_SINGLE_CELL_CB.#{v.get_name}=(val))\n")
         # mikan ここでは cell ではなく celltype の名前
@@ -1864,7 +1864,7 @@ EOT
 
   #===  attribute/var アクセスマクロ（短縮形）コードの生成
   def gen_ph_attr_access_abbrev f
-    if @n_attribute_rw > 0 || @n_attribute_ro > 0 then
+    if @n_attribute_rw > 0 || @n_attribute_ro > 0
       f.printf(TECSMsg.get(:AAMA_comment), "#_AAMA_#")
     end
 
@@ -1875,14 +1875,14 @@ EOT
       f.print("#define ")
       f.printf("%-20s", "ATTR_#{a.get_name}")
       f.print(" #{@global_name}_ATTR_#{a.get_name}")
-      if ! @singleton then
+      if ! @singleton
         f.print("( p_cellcb )")
       end
       f.print "\n"
     }
     f.print("\n")
 
-    if @n_var > 0 then
+    if @n_var > 0
       f.printf(TECSMsg.get(:VAMA_comment), "#_VAMA_#")
     end
 
@@ -1893,7 +1893,7 @@ EOT
       f.print("#define ")
       f.printf("%-20s", "VAR_#{v.get_name}")
       f.print(" #{@global_name}_VAR_#{v.get_name}")
-      if ! @singleton then
+      if ! @singleton
         f.print("( p_cellcb )")
       end
       f.print("\n")
@@ -1903,7 +1903,7 @@ EOT
   end
 
   def gen_ph_cp_fun_macro f
-    if @n_call_port >0 then
+    if @n_call_port >0
       f.printf(TECSMsg.get(:CPM_comment) , "#_CPM_#")
     end
 
@@ -1912,23 +1912,23 @@ EOT
       next if p.is_omit?
 
       p.get_signature.get_function_head_array.each{ |fun|
-        if @singleton then
-          if has_INIB? then
+        if @singleton
+          if has_INIB?
             inib = "INIB"
           else
             inib = "CB"
           end
-          if p.is_dynamic? && p.get_array_size == nil then
+          if p.is_dynamic? && p.get_array_size == nil
             # dynamic call port (not array)
             inib = "CB"
           end
         else
-          if has_CB? && has_INIB? then
+          if has_CB? && has_INIB?
             inib = "->_inib"
           else
             inib = ""
           end
-          if p.is_dynamic? && p.get_array_size == nil then
+          if p.is_dynamic? && p.get_array_size == nil
             # dynamic call port (not array)
             inib = ""
           end
@@ -1938,12 +1938,12 @@ EOT
         ft = fun.get_declarator.get_type
         delim = ""
 
-        if ! @singleton then
+        if ! @singleton
           f.print("#{delim} p_that")
           delim = ","
         end
 
-        if p.get_array_size then
+        if p.get_array_size
           f.print("#{delim} subscript")
           delim = ","
         end
@@ -1959,9 +1959,9 @@ EOT
         delim = ""
 
         # 関数名の出力(標準：受け口ディスクリプタから VMT の関数名、最適化：受け口関数 or 受け口ディスクリプタ)
-        if ! p.is_VMT_useless? then
+        if ! p.is_VMT_useless?
           # 標準コード
-          if @singleton then
+          if @singleton
             f.print("\t  #{@global_name}_SINGLE_CELL_#{inib}.#{p.get_name}")
           else
             f.print("\t  (p_that)#{inib}->#{p.get_name}")
@@ -1970,9 +1970,9 @@ EOT
         else
           # 最適化コード (optimize) # VMT 不要
           p2 = p.get_real_callee_port
-          if p2 then
+          if p2
             ct = p2.get_celltype
-            if p.is_skelton_useless? then
+            if p.is_skelton_useless?
               # 受け口関数を直接呼出す
               f.print("\t  #{ct.get_global_name}_#{p2.get_name}_#{fun.get_name}( \\\n")
             else
@@ -1985,7 +1985,7 @@ EOT
             f.print("\t  ((#{fun.get_declarator.get_type.get_type.get_type_str} (*)()")
             f.print("#{fun.get_declarator.get_type.get_type.get_type_str_post})0)()\n")
             f.print("\t  /* optional no entry port joined */\n")
-            if ! p.is_optional? then
+            if ! p.is_optional?
               raise "unjoined but not optional celltype: #{@name} #{p.get_name}"
             end
           end
@@ -1994,9 +1994,9 @@ EOT
         b_join = true    # optional で結合していない場合 false
 
         # 受け口情報の出力(標準：受け口ディスクリプタ、最適化：IDX など)
-        if ! p.is_skelton_useless? && ! p.is_cell_unique? then
+        if ! p.is_skelton_useless? && ! p.is_cell_unique?
           # 標準コード
-          if @singleton then
+          if @singleton
             f.print("\t  #{@global_name}_SINGLE_CELL_#{inib}.#{p.get_name}#{subsc}")
             delim = ","
           else
@@ -2007,11 +2007,11 @@ EOT
           # 最適化コード (optimize) # スケルトン不要
           c2 = p.get_real_callee_cell               # 唯一のセル(でない場合もある、複数セルがある場合)
           p2 = p.get_real_callee_port               # 唯一のポート(でない場合は、ない)
-          if p2 then
+          if p2
             ct = p2.get_celltype                    # 呼び先のセルタイプ
-            if ! ct.is_singleton? then
-              if ct.has_CB? || ct.has_INIB? then
-                if p.is_cell_unique? then
+            if ! ct.is_singleton?
+              if ct.has_CB? || ct.has_INIB?
+                if p.is_cell_unique?
                   name_array = ct.get_name_array(c2)
                   f.print("\t   #{name_array[7]}")
                 else
@@ -2032,7 +2032,7 @@ EOT
           end
         end
 
-        if b_join then
+        if b_join
           ft.get_paramlist.get_items.each{ |param|
             f.print("#{delim} (#{param.get_name})")
             delim = ","
@@ -2046,11 +2046,11 @@ EOT
 
   #=== ref_desc 指定された呼び口に対するディスクリプタ参照関数の生成
   def gen_ph_ref_desc_func f
-    if @n_call_port_ref_desc >0 then
+    if @n_call_port_ref_desc >0
       f.printf(TECSMsg.get(:CRD_comment), "#_CRD_#")
     end
 
-    if has_CB? && has_INIB? then
+    if has_CB? && has_INIB?
       inib = "->_inib"
     else
       inib = ""
@@ -2059,11 +2059,11 @@ EOT
       next if p.get_port_type != :CALL
       next if ! p.is_ref_desc?
 
-      if @singleton then
+      if @singleton
         p_that = ""
         p_cellcb = ""
         delim = ""
-        if has_INIB? then
+        if has_INIB?
           cb = "#{@global_name}_SINGLE_CELL_INIB."
         else
           cb = "#{@global_name}_SINGLE_CELL_CB."
@@ -2101,24 +2101,24 @@ EOT
 
   #=== dynamic 指定された呼び口に対するディスクリプタ設定関数の生成
   def gen_ph_set_desc_func f
-    if @n_call_port_dynamic >0 then
+    if @n_call_port_dynamic >0
       f.printf(TECSMsg.get(:SDF_comment), "#_SDF_#")
     end
 
     @port.each { |p|
       next if p.get_port_type != :CALL
       next if ! p.is_dynamic?
-      if has_CB? && has_INIB? && p.get_array_size then
+      if has_CB? && has_INIB? && p.get_array_size
         inib = "->_inib"
       else
         inib = ""
       end
-      if @singleton then
+      if @singleton
         # p "main== #{@global_name} #{p.get_name} #{p.get_array_size}"
         p_that = ""
         p_that2 = ""
         p_cellcb = ""
-        if p.get_array_size && $rom then
+        if p.get_array_size && $rom
           cb = "#{@global_name}_SINGLE_CELL_INIB."
         else
           cb = "#{@global_name}_SINGLE_CELL_CB."
@@ -2130,7 +2130,7 @@ EOT
         cb = "(p_cellcb)->#{inib}"
       end
 
-      if p.get_array_size then
+      if p.get_array_size
         array = "int_t  i, "
         array2 = "[ i ]"
         array3 = " int_t  i "
@@ -2152,8 +2152,8 @@ Inline void
 
 EOT
 
-      if p.is_optional? then
-        if p_that2 != "" && array3 != "" then
+      if p.is_optional?
+        if p_that2 != "" && array3 != ""
           delim = ", "
         else
           delim = ""
@@ -2216,7 +2216,7 @@ EOT
             b_msg = true
           end
           f.print "#define #{dealloc_macro_name}#{append_name}(#{name}#{count_str2})"
-          if append_name == "_RESET" then
+          if append_name == "_RESET"
             gen_dealloc_code_for_type(f, type, dealloc_func_name, pre, name, post, 0, true, count_str)
           else
             gen_dealloc_code_for_type(f, type, dealloc_func_name, pre, name, post, 0, false, count_str)
@@ -2230,7 +2230,7 @@ EOT
   end
 
   def gen_ph_cp_fun_macro_abbrev f
-    if @n_call_port >0 then
+    if @n_call_port >0
       f.printf(TECSMsg.get(:CPMA_comment), "#_CPMA_#")
     end
 
@@ -2239,7 +2239,7 @@ EOT
       # next if p.is_omit?  呼び出すとエラーを起こすコードを生成
 
       p.get_signature.get_function_head_array.each{ |fun|
-        if p.is_VMT_useless? && ! @singleton then
+        if p.is_VMT_useless? && ! @singleton
           dummy_p_cell_access_pre = "((void)p_cellcb, "
           dummy_p_cell_access_post = ")"
         else
@@ -2247,7 +2247,7 @@ EOT
           dummy_p_cell_access_post = ""
         end
  
-        if ! p.is_require? || p.has_name? then
+        if ! p.is_require? || p.has_name?
           f.print("#define #{p.get_name}_#{fun.get_name}(")
         else
           f.print("#define #{fun.get_name}(")
@@ -2260,7 +2260,7 @@ EOT
 #          delim = ","
 #        end
 
-        if p.get_array_size then
+        if p.get_array_size
           f.print("#{delim} subscript")
           delim = ","
         end
@@ -2271,7 +2271,7 @@ EOT
         }
         f.print(" ) \\\n")
 
-        if p.is_omit? then
+        if p.is_omit?
           f.print("          #{dummy_p_cell_access_pre}omitted #{p.get_name}_#{fun.get_name}(")
         else
           f.print("          #{dummy_p_cell_access_pre}#{@global_name}_#{p.get_name}_#{fun.get_name}(")
@@ -2279,12 +2279,12 @@ EOT
         ft = fun.get_declarator.get_type
         delim = ""
 
-        if ! @singleton then
+        if ! @singleton
           f.print("#{delim} p_cellcb")
           delim = ","
         end
 
-        if p.get_array_size then
+        if p.get_array_size
           f.print("#{delim} subscript")
           delim = ","
         end
@@ -2300,7 +2300,7 @@ EOT
   end
 
   def gen_ph_ref_desc_macro_abbrev f
-    if @n_call_port_ref_desc >0 then
+    if @n_call_port_ref_desc >0
       f.printf(TECSMsg.get(:CRDA_comment), "#_CRDA_#")
     end
 
@@ -2308,7 +2308,7 @@ EOT
       next if p.get_port_type != :CALL
       next if ! p.is_ref_desc?
 
-      if @singleton then
+      if @singleton
         p_cellcb = ""
         delim = ""
       else
@@ -2316,7 +2316,7 @@ EOT
         delim = ", "
       end
 
-      if p.get_array_size then
+      if p.get_array_size
         array = " i "
         array2 = "#{delim}i"
       else
@@ -2335,11 +2335,11 @@ EOT
   end
 
   def gen_ph_set_desc_macro_abbrev f
-    if @n_call_port_dynamic >0 then
+    if @n_call_port_dynamic >0
       f.printf(TECSMsg.get(:SDMA_comment), "#_SDMA_#")
     end
 
-    if @singleton then
+    if @singleton
       p_cellcb = ""
       delim = ""
     else
@@ -2350,7 +2350,7 @@ EOT
       next if p.get_port_type != :CALL
       next if ! p.is_dynamic?
 
-      if p.get_array_size then
+      if p.get_array_size
         subsc = "i, "
         subsc2 = "i"
         subsc3 = delim + subsc2
@@ -2370,7 +2370,7 @@ EOT
   end
 
   def gen_ph_ep_fun_macro f
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.printf(TECSMsg.get(:EPM_comment), "#_EPM_#")
     end
 
@@ -2390,12 +2390,12 @@ EOT
 
   def gen_ph_typedef_idx f
     f.printf(TECSMsg.get(:CTIX_comment), "#_CTIX_#")
-    if @idx_is_id_act then
+    if @idx_is_id_act
       f.print("typedef ID #{@global_name}_IDX;\n")
     else
-      if has_CB? then
+      if has_CB?
         f.print("typedef struct tag_#{@global_name}_CB *#{@global_name}_IDX;\n")
-      elsif has_INIB? then
+      elsif has_INIB?
         f.print("typedef const struct tag_#{@global_name}_INIB *#{@global_name}_IDX;\n")
       else
         f.print("typedef int   #{@global_name}_IDX;\n")
@@ -2405,12 +2405,12 @@ EOT
   end
 
   def gen_ph_idx_type f
-    if @idx_is_id_act then
+    if @idx_is_id_act
       f.print("ID")
     else
-      if has_CB? then
+      if has_CB?
         f.print("struct tag_#{@global_name}_CB *")
-      elsif has_INIB? then
+      elsif has_INIB?
         # f.print( "struct tag_#{@global_name}_INIB *" )  # const を出力していない
         f.print("const struct tag_#{@global_name}_INIB *")
       else
@@ -2421,7 +2421,7 @@ EOT
   end
 
   def gen_ph_ep_fun_prototype f
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.printf(TECSMsg.get(:EPP_comment), "#_EPP_#")
     end
 
@@ -2432,26 +2432,26 @@ EOT
       f.print("/* #{p.get_signature.get_global_name} */\n")
 
       p.get_signature.get_function_head_array.each{ |fun|
-        if p.is_inline? then
+        if p.is_inline?
           f.print("Inline ")
         end
         functype = fun.get_declarator.get_type
         f.printf("%-12s", functype.get_type_str)
 
         f.print(" #{@global_name}_#{p.get_name}_#{fun.get_name}(")
-        if @singleton then
+        if @singleton
            delim = ""
         else
           f.print("#{@global_name}_IDX idx")
           delim = ","
         end
 
-        if p.get_array_size then
+        if p.get_array_size
           f.print("#{delim} int_t subscript")     # mikan singleton 時の ',' の始末
           delim = ","
         end
 
-        if functype.get_paramlist then
+        if functype.get_paramlist
           items = functype.get_paramlist.get_items
           len = items.length
         else
@@ -2477,14 +2477,14 @@ EOT
 
   def gen_ph_ep_skel_prototype f
     # 受け口スケルトン関数のプロトタイプ宣言を出力
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.printf(TECSMsg.get(:EPSP_comment), "#_EPSP_#")
     end
     @port.each { |p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
 #      if p.is_skelton_useless? || ! p.is_VMT_useless? then    # 受け口最適化
-      if p.is_skelton_useless? then    # 受け口最適化
+      if p.is_skelton_useless?    # 受け口最適化
 #        f.print( "/* #{p.get_name} : omitted by entry port optimize */\n" )
         next
       end
@@ -2499,7 +2499,7 @@ EOT
         f.print " const struct tag_#{p.get_signature.get_global_name}_VDES *epd"
         delim = ","
 
-        if functype.get_paramlist then
+        if functype.get_paramlist
           items = functype.get_paramlist.get_items
           len = items.length
         else
@@ -2525,10 +2525,10 @@ EOT
 
   def gen_ph_cell_cb_type f
 
-    if ($rom)then
+    if ($rom)
       # 定数部は ROM, 変数部は RAM
 
-      if has_INIB? then
+      if has_INIB?
 
         f.printf(TECSMsg.get(:CIP_comment), "#_CIP_#")
         f.print("typedef const struct tag_#{@global_name}_INIB {\n")
@@ -2540,10 +2540,10 @@ EOT
 
       end
 
-      if has_CB? then
+      if has_CB?
         f.printf(TECSMsg.get(:CCTPA_comment), "#_CCTPA_#")
         f.print("typedef struct tag_#{@global_name}_CB {\n")
-        if has_INIB? then
+        if has_INIB?
           f.print "    #{@global_name}_INIB  *_inib;\n"
         end
         gen_cell_cb_type_port(f, :CB_DYNAMIC)
@@ -2552,7 +2552,7 @@ EOT
         f.print("}  #{@global_name}_CB;\n")
       end
 
-      if ! has_CB? && ! has_INIB? then
+      if ! has_CB? && ! has_INIB?
         f.printf(TECSMsg.get(:CCDP_comment), "#_CCDP_#")
         f.print("typedef struct tag_#{@global_name}_CB {\n")
         f.print("    int  dummy;\n")
@@ -2577,15 +2577,15 @@ EOT
   #===   attribute の型宣言出力
   # inib_cb::  :INIB または :CB
   def gen_cell_cb_type_attribute(f, inib_cb)
-    if inib_cb == :INIB && @n_attribute_ro > 0 then
+    if inib_cb == :INIB && @n_attribute_ro > 0
       f.print "    /* attribute(RO) #_ATO_# */ \n"
-    elsif inib_cb == :CB then
-      if $rom then
-        if @n_attribute_rw > 0 then
+    elsif inib_cb == :CB
+      if $rom
+        if @n_attribute_rw > 0
           f.print "    /* attribute(RW) #_ATW_# */ \n"
         end
       else
-        if @n_attribute_rw > 0 || @n_attribute_ro > 0 then
+        if @n_attribute_rw > 0 || @n_attribute_ro > 0
           f.print "    /* attribute #_AT_# */ \n"
         end
       end
@@ -2596,7 +2596,7 @@ EOT
       next if inib_cb == :INIB && a.is_rw?
       next if has_INIB? && inib_cb == :CB && ! a.is_rw?
 
-      if a.get_type.kind_of?(PtrType) && ! a.get_type.is_const? && a.get_size_is then
+      if a.get_type.kind_of?(PtrType) && ! a.get_type.is_const? && a.get_size_is
         const_str = "const "
       else
         const_str = ""
@@ -2618,7 +2618,7 @@ EOT
 
   def gen_cell_cb_type_var f
     # 変数の出力
-    if @n_var > 0 then
+    if @n_var > 0
       f.print "    /* var #_VA_# */ \n"
     end
 
@@ -2640,7 +2640,7 @@ EOT
 
   def gen_cell_cb_type_call_port(f, inib_cb)
     # 呼び口
-    if @n_call_port >0 then
+    if @n_call_port >0
       f.print "    /* call port #_TCP_# */\n"
     end
 
@@ -2653,9 +2653,9 @@ EOT
 
       ptr = p.get_array_size ? '*' : ''
 
-      if ! p.is_cell_unique? then
+      if ! p.is_cell_unique?
         const = p.is_dynamic?  ? '' : 'const'
-        if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && $ram_initializer then
+        if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && $ram_initializer
           init = '_init_'
           const2 = 'const'
         else
@@ -2663,26 +2663,26 @@ EOT
           const2 = 'const'
         end
 
-        if ! p.is_skelton_useless? then
+        if ! p.is_skelton_useless?
           # 標準形
-          if inib_cb == :INIB && p.is_dynamic? && p.get_array_size != nil && $ram_initializer then
+          if inib_cb == :INIB && p.is_dynamic? && p.get_array_size != nil && $ram_initializer
             f.print("    struct tag_#{p.get_signature.get_global_name}_VDES #{ptr}#{const2}*#{p.get_name;}_init_;\n")
           end
           f.print("    struct tag_#{p.get_signature.get_global_name}_VDES #{ptr}#{const}*#{p.get_name;}#{init};\n")
 #          f.print( "    struct tag_#{p.get_signature.get_global_name}_VDES #{ptr}*#{p.get_name;};\n" )
-          if p.get_array_size == "[]" then
+          if p.get_array_size == "[]"
             f.print("    int_t n_#{p.get_name};\n")
           end
         else
           # 最適化 skelton 関数を呼出さない(受け口関数を直接呼出す)
           # 呼び先セルタイプの CB の IDX 型
-          if p.get_real_callee_cell then
+          if p.get_real_callee_cell
             f.print("    ")
             p.get_real_callee_cell.get_celltype.gen_ph_idx_type f
             f.print(" #{ptr}#{p.get_name;};\n")
             # 相互参照に備えて、typedef した型を使わない
             # f.print( "    #{p.get_real_callee_cell.get_celltype.get_global_name}_IDX #{ptr}#{p.get_name;};\n" )
-            if p.get_array_size == "[]" then
+            if p.get_array_size == "[]"
               f.print("    int_t n_#{p.get_name};\n")
             end
           # else
@@ -2698,7 +2698,7 @@ EOT
   #=== Celltype#受け口配列添数を記憶する変数の定義
   def gen_cell_cb_type_entry_port(f, inib_cb)
     # 呼び口
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.print "    /* call port #_NEP_# */ \n"
     end
 
@@ -2711,23 +2711,23 @@ EOT
   end
 
   def gen_ph_extern_cell f
-    if @singleton then
+    if @singleton
       f.printf(TECSMsg.get(:SCP_comment),  "#_SCP_#")
-      if has_CB? then
+      if has_CB?
         f.print "extern  #{@global_name}_CB  #{@global_name}_SINGLE_CELL_CB;\n"
       end
-      if has_INIB? then
+      if has_INIB?
         f.print "extern  #{@global_name}_INIB  #{@global_name}_SINGLE_CELL_INIB;\n"
       end
       f.print "\n"
-    elsif @idx_is_id_act then
-      if has_CB? then
+    elsif @idx_is_id_act
+      if has_CB?
         f.print "extern #{@global_name}_CB  *#{@global_name}_CB_tab[];\n"
       elsif has_INIB?
         f.print "extern #{@global_name}_INIB  *const #{@global_name}_INIB_tab[];\n"
       end
     else
-      if has_CB? then
+      if has_CB?
         f.print "extern #{@global_name}_CB  #{@global_name}_CB_tab[];\n"
       elsif has_INIB?
         f.print "extern #{@global_name}_INIB  #{@global_name}_INIB_tab[];\n"
@@ -2737,9 +2737,9 @@ EOT
 
   def gen_ph_INIB_as_CB f
     # ここは、手抜きである。本来なら INIB を出力すべき
-    if ! has_CB? && has_INIB? then
+    if ! has_CB? && has_INIB?
       f.printf(TECSMsg.get(:DCI_comment),  "#_DCI_#")
-      if @singleton then
+      if @singleton
         f.print "#define #{@global_name}_SINGLE_CELL_CB   #{@global_name}_SINGLE_CELL_INIB\n"
       else
         f.print "#define #{@global_name}_CB_tab           #{@global_name}_INIB_tab\n"
@@ -2757,7 +2757,7 @@ EOT
 
     return if @singleton
 
-    if has_CB? || has_INIB? then
+    if has_CB? || has_INIB?
 
       if need_CB_initializer?
         necessity = ""
@@ -2767,7 +2767,7 @@ EOT
 
       f.printf(TECSMsg.get(:FEC_comment), "#_FEC_#")
 
-      if @idx_is_id_act then
+      if @idx_is_id_act
         amp = ''
       else
         amp = '&'
@@ -2801,9 +2801,9 @@ EOT
 
     @var.each { |v|
       init = v.get_initializer
-      if init.instance_of? Array then
+      if init.instance_of? Array
         type = v.get_type
-        if(type.kind_of? PtrType)then
+        if(type.kind_of? PtrType)
           # PtrType は ArrayType にすり替える
 
           # 初期化子の要素数とする (後は 0 である)
@@ -2814,7 +2814,7 @@ EOT
         f.print "extern const #{type.get_type_str} #{@global_name}_#{v.get_name}_VAR_INIT#{type.get_type_str_post};\n"
       end
     }
-    if @singleton then
+    if @singleton
       arg = "()"
       p_that = ""
       that = "#{@global_name}_SINGLE_CELL_CB."
@@ -2824,7 +2824,7 @@ EOT
       that = "(p_that)->"
     end
 
-    if @n_cell_gen > 0 && need_CB_initializer? then
+    if @n_cell_gen > 0 && need_CB_initializer?
       b_var_init = false
       f.print "#define INITIALIZE_CB#{arg}"
       @var.each { |v|
@@ -2836,11 +2836,11 @@ EOT
         f.print "\\\n"
 #        print v.get_name, type.class, "\n"
 #        if init.instance_of? Array || type.kind_of?( StructType ) then
-        if init.instance_of? Array then
-          if(type.kind_of?(ArrayType) || type.kind_of?(PtrType))then
+        if init.instance_of? Array
+          if(type.kind_of?(ArrayType) || type.kind_of?(PtrType))
             pre = "&"
             post = "[0]"
-          elsif type.kind_of? StructType then
+          elsif type.kind_of? StructType
             pre = "&"
             post = ""
 #          elsif type.kind_of? PtrType then
@@ -2849,11 +2849,11 @@ EOT
           end
           f.print "\tmemcpy((void*)#{pre}#{@global_name}_VAR_#{v.get_name}#{p_that}#{post}, "
           f.print "(void*)#{pre}#{@global_name}_#{v.get_name}_VAR_INIT#{post}, sizeof(#{@global_name}_#{v.get_name}_VAR_INIT));"
-        elsif init.instance_of? C_EXP then
+        elsif init.instance_of? C_EXP
           f.print "\t#{that}#{v.get_name} = #{init.get_c_exp_string};"
         else
           pre = "#{get_global_name}_ATTR_"
-          if @singleton then
+          if @singleton
             post = ""
           else
             post = "#{p_that}"
@@ -2866,21 +2866,21 @@ EOT
       b_dyn_port = false
       @port.each{ |p|
         next if p.get_port_type != :CALL
-        if p.is_dynamic? && $ram_initializer then
-          if p.get_array_size == nil then
+        if p.is_dynamic? && $ram_initializer
+          if p.get_array_size == nil
             f.print "\\\n\t#{that}#{p.get_name} = #{that}_inib->#{p.get_name}_init_;"
           else
-            if @singleton || p.get_array_size != "[]" then
+            if @singleton || p.get_array_size != "[]"
               p_that = ""
             else
               p_that = "(p_that)"
             end
-            if @singleton then
+            if @singleton
               that = "#{@global_name}_SINGLE_CELL_INIB."
             else
               that = "(p_that)->"
             end
-            if has_CB? then
+            if has_CB?
               init = '_init->'
             else
               init = ''
@@ -2895,18 +2895,18 @@ EOT
           b_dyn_port = true
         end
       }
-      if b_dyn_port then
+      if b_dyn_port
         f.print("\n")
       end
       
-      if b_var_init == false && b_dyn_port == false && ! @singleton then
+      if b_var_init == false && b_dyn_port == false && ! @singleton
         f.print "\t(void)(p_that);"
       end
       f.print "\n"
 
       f.print "#define SET_CB_INIB_POINTER(i,p_that)\\\n"
-      if has_CB? && has_INIB? then
-        if @singleton then
+      if has_CB? && has_INIB?
+        if @singleton
           f.print "\t#{that}_inib = &#{@global_name}_SINGLE_CELL_INIB;\n\n"
         elsif @idx_is_id_act
           f.print "\t#{that}_inib = #{@global_name}_INIB_tab[(i)];\n\n"
@@ -2926,7 +2926,7 @@ EOT
 
   def gen_ph_inline f
     # inline ポートが一つでもあれば、inline.h の include
-    if @n_entry_port_inline > 0 then
+    if @n_entry_port_inline > 0
       f.printf(TECSMsg.get(:INL_comment), "#_INL_#")
       f.print("#include \"#{@global_name}_inline.#{$h_suffix}\"\n\n")
     end
@@ -2970,7 +2970,7 @@ EOT
   end
 
   def gen_cell_ep_des_type f
-    if @n_entry_port > 0 then
+    if @n_entry_port > 0
       f.printf(TECSMsg.get(:EDT_comment), "#_EDT_#")
     end
 
@@ -2985,13 +2985,13 @@ EOT
       f.print("/* #{p.get_name} */\n")
       f.print("struct tag_#{@global_name}_#{p.get_name}_DES {\n")
       f.print("    const struct tag_#{p.get_signature.get_global_name}_VMT *vmt;\n")
-      if has_CB? || has_INIB? then
+      if has_CB? || has_INIB?
         f.print("    #{@name}_IDX  idx;\n")
       else
         # CB も INIB も存在しない (ので、idx として整数で初期化しておく)
         f.print("    int           idx;\n")
       end
-      if p.get_array_size then
+      if p.get_array_size
         f.print("    int_t  subscript;\n")
       end
       f.print("};\n\n")
@@ -2999,14 +2999,14 @@ EOT
   end
 
   def gen_cell_skel_fun f
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.printf(TECSMsg.get(:EPSF_comment), "#_EPSF_#")
     end
 
     @port.each { |p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
-      if p.is_skelton_useless? then    # 受け口最適化
+      if p.is_skelton_useless?    # 受け口最適化
         f.print("/* #{p.get_name} : omitted by entry port optimize */\n")
         next
       end
@@ -3021,7 +3021,7 @@ EOT
         f.print " const struct tag_#{p.get_signature.get_global_name}_VDES *epd"
         delim = ","
 
-        if functype.get_paramlist then
+        if functype.get_paramlist
           items = functype.get_paramlist.get_items
           len = items.length
         else
@@ -3042,26 +3042,26 @@ EOT
         f.print ")\n"
 
         f.print "{\n"
-        if (! @singleton || p.get_array_size != nil) then
+        if (! @singleton || p.get_array_size != nil)
           f.print "    struct tag_#{@global_name}_#{p.get_name}_DES *lepd\n"
           f.print "        = (struct tag_#{@global_name}_#{p.get_name}_DES *)epd;\n"
         end
 
-        if functype.get_type_str == "void" then # mikan "void" の typedef に未対応
+        if functype.get_type_str == "void" # mikan "void" の typedef に未対応
           f.print "    "
         else
           f.print "    return "
         end
 
         f.print "#{@global_name}_#{p.get_name}_#{fun.get_name}("
-        if @singleton then
+        if @singleton
           delim = ""
         else
           f.print " lepd->idx"
           delim = ","
         end
 
-        if p.get_array_size then
+        if p.get_array_size
           f.print "#{delim} lepd->subscript"
           delim = ","
         end
@@ -3077,20 +3077,20 @@ EOT
         f.print "}\n"
       }
     }
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.print("\n")
     end
   end
 
   def gen_cell_fun_table f
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.printf(TECSMsg.get(:EPSFT_comment), "#_EPSFT_#")
     end
 
     @port.each { |p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
-      if p.is_VMT_useless? then    # 受け口最適化
+      if p.is_VMT_useless?    # 受け口最適化
         f.print "/* #{p.get_name} : omitted by entry port optimize */\n"
         next
       end
@@ -3112,13 +3112,13 @@ EOT
   end
 
   def gen_cell_ep_vdes fs
-    if @n_cell_gen  >0 then
+    if @n_cell_gen  >0
       fs.each{ |r,f| f.printf(TECSMsg.get(:CPEPD_comment), "#_CPEPD_#") }
     end
 
     # このセルタイプのすべてのセルについて
     @ordered_cell_list.each{ |c|
-      if c.is_generate? then                           # 生成対象か？
+      if c.is_generate?                           # 生成対象か？
 
         f = fs[c.get_region.get_domain_root]
 
@@ -3143,12 +3143,12 @@ EOT
           am = j.get_array_member2
 
           # 呼び口配列か?
-          if am  then
+          if am
             i = 0
             while(i < am.length)
               j = am[i]
-              if j then
-                if am[i].get_rhs_cell.get_celltype == self then
+              if j
+                if am[i].get_rhs_cell.get_celltype == self
                   # 同じセルタイプへ結合している場合(VDES では type conflict になる)
                   p = am[i].get_rhs_port
                   des_type = "const struct tag_#{@global_name}_#{p.get_name}_DES"
@@ -3157,7 +3157,7 @@ EOT
                 end
 
                 # 右辺は受け口配列か？
-                if j.get_rhs_subscript then
+                if j.get_rhs_subscript
 
                   # 受け口の配列添数
                   subscript = j.get_rhs_subscript
@@ -3178,7 +3178,7 @@ EOT
             end
           else
             dbgPrint "me=#{@name} callee=#{j.get_rhs_cell.get_celltype.get_name} #{j.get_cell.get_celltype.get_name} \n"
-            if j.get_rhs_cell.get_celltype == self then
+            if j.get_rhs_cell.get_celltype == self
               # 同じセルタイプへ結合している場合(VDES では type conflict になる)
               p = j.get_rhs_port
               des_type = "const struct tag_#{@global_name}_#{p.get_name}_DES"
@@ -3186,7 +3186,7 @@ EOT
               des_type = "struct tag_#{definition.get_signature.get_global_name}_VDES"
             end
 
-            if j.get_rhs_subscript then
+            if j.get_rhs_subscript
               # 受け口配列
               subscript = j.get_rhs_subscript
               f.printf("extern %s %s%d;\n",
@@ -3208,12 +3208,12 @@ EOT
   end
 
   def gen_cell_ep_vdes_array fs
-    if @n_cell_gen >0 then
+    if @n_cell_gen >0
       fs.each{ |r, f| f.printf(TECSMsg.get(:CPA_comment), "#_CPA_#") }  # mikan 呼び口配列が無い場合も出てしまう
     end
 
     @ordered_cell_list.each{ |c|
-      if c.is_generate? then
+      if c.is_generate?
         f = fs[c.get_region.get_domain_root]
 
         jl = c.get_join_list
@@ -3235,26 +3235,26 @@ EOT
 
           b_array = false
           am = nil
-          if j then
+          if j
             am = j.get_array_member2
-            if am then
+            if am
               b_array = true
             end
           else
-            if port.get_array_size == "[]" then
+            if port.get_array_size == "[]"
               # this case is dynamic optional and nothing joined
               next
-            elsif port.get_array_size then
+            elsif port.get_array_size
               b_array = true
             end
           end
-          if b_array  then
+          if b_array
 #          if am then
             # 左辺は配列
             const = (port.is_dynamic? && ! $ram_initializer) ? '' : 'const '
             init = (port.is_dynamic? && $ram_initializer) ? '_init_' : ''
 
-            if ! port.is_skelton_useless? then
+            if ! port.is_skelton_useless?
               f.printf("struct %s * #{const}%s_%s[] = {\n",
                         "tag_#{port.get_signature.get_global_name}_VDES",
                         "#{c.get_global_name}",
@@ -3269,7 +3269,7 @@ EOT
                         "#{c.get_global_name}",
                         "#{j.get_name}")
             end
-            if port.get_array_size == "[]" then
+            if port.get_array_size == "[]"
               length = am.length
             else
               length = port.get_array_size
@@ -3277,7 +3277,7 @@ EOT
             # am.each { |j|
             i = 0
             while i < length
-              if am == nil then
+              if am == nil
                 f.print("    0,\n")
                 i += 1
                 next
@@ -3285,9 +3285,9 @@ EOT
               j = am[i]
               i += 1
 
-              if j then
+              if j
                 # 同一セルタイプの結合の場合、VDES 型へのキャストが必要
-                if j.get_rhs_cell.get_celltype == self then
+                if j.get_rhs_cell.get_celltype == self
                   definition = j.get_definition
                   des_type_cast = "(struct tag_#{definition.get_signature.get_global_name}_VDES *)"
                 else
@@ -3295,7 +3295,7 @@ EOT
                 end
 
                 
-                if j.get_rhs_subscript then
+                if j.get_rhs_subscript
                   # 右辺配列の場合(最適化はない)
                   subscript = j.get_rhs_subscript
                   f.printf("    %s%d,\n",
@@ -3306,7 +3306,7 @@ EOT
 
                 else
                   # 右辺非配列の場合 */
-                  if ! port.is_skelton_useless? then
+                  if ! port.is_skelton_useless?
                     f.printf("    %s,\n",
                               "#{des_type_cast}&#{j.get_port_global_name}_des")
                   else
@@ -3324,7 +3324,7 @@ EOT
             # mikan   cell の namespace 未対応、Join で Cell オブジェクトを引当ておく必要あり
             f.print "};\n"
             # dynamic の呼び口配列
-            if port.is_dynamic? && $ram_initializer then
+            if port.is_dynamic? && $ram_initializer
               f.printf("struct %s * %s_%s[ #{length} ];\n",
                         "tag_#{port.get_signature.get_global_name}_VDES",
                         "#{c.get_global_name}",
@@ -3349,7 +3349,7 @@ void
 #{@global_name}_CB_initialize()
 {
 EOT
-    if @singleton then
+    if @singleton
       f.print <<EOT
     SET_CB_INIB_POINTER(i,p_cb)
     INITIALIZE_CB()
@@ -3374,7 +3374,7 @@ EOT
   def gen_cell_cb_out_init fs
 
     # セルがなければ、出力しない
-    if @n_cell_gen == 0 then
+    if @n_cell_gen == 0
       return
     end
 
@@ -3392,38 +3392,38 @@ EOT
 
       # attribute, var のポインタ変数が配列により初期化される場合の、配列を出力
       av_list = ct.get_attribute_list + ct.get_var_list
-      if av_list.length != 0 then
+      if av_list.length != 0
         av_list.each{ |a|    # a: Decl
           j = jl.get_item(a.get_identifier)
-          if j then
+          if j
             init = j.get_rhs
           else
             init = a.get_initializer
           end
 
-          if(a.is_type?(PtrType) && ((init && init.instance_of?(Array)) || init == nil))then
+          if(a.is_type?(PtrType) && ((init && init.instance_of?(Array)) || init == nil))
             ptr_type = a.get_type
             size = ptr_type.get_size
 
-            if size then
+            if size
               # 式を評価する(attribute, var に含まれる変数を参照可能)
               sz = size.eval_const(c.get_join_list, c.get_celltype.get_name_list)
               # 式を生成しなおす (変数を含まない形にする)  不完全な形で Token を生成 (エラー発生しないから)
               size = Expression.new([:INTEGER_CONSTANT, Token.new(sz, nil, 0, 0)])
               array_type = ArrayType.new(size)
               type = a.get_type.get_referto
-              if ! type.is_const? && a.get_kind == :ATTRIBUTE then
+              if ! type.is_const? && a.get_kind == :ATTRIBUTE
                 type.set_qualifier :CONST
               end
               array_type.set_type(type)
-              if a.get_kind == :ATTRIBUTE then
+              if a.get_kind == :ATTRIBUTE
                 f.print "const "
               end
               f.printf("#{a.get_type.get_referto.get_type_str} #{name_array[3]}_#{a.get_identifier}_INIT[%d]#{a.get_type.get_referto.get_type_str_post}", sz)
               # name_array[3]: cell_CB_INIT
-              if !($ram_initializer && a.get_kind == :VAR) then
+              if !($ram_initializer && a.get_kind == :VAR)
                 # -R (ram initializer 使用) の場合 var は初期化コードを出力しない
-                if(init)then
+                if(init)
                   str = " = #{gen_cell_cb_init(f, c, name_array, array_type, init, a.get_identifier, 1, true)}"
                   str = str.sub(/\}$/, "};\n")
                 else
@@ -3446,20 +3446,20 @@ EOT
     n_init = 0
     @var.each { |v|
       init = v.get_initializer
-      if init && init.instance_of?(Array) then
+      if init && init.instance_of?(Array)
         n_init += 1
       end
     }
 
-    if n_init > 0 then
+    if n_init > 0
       f.printf(TECSMsg.get(:AVI_comment), "#_AVI_#")
       @var.each { |v|
         init = v.get_initializer
-        if init && init.instance_of?(Array) then
+        if init && init.instance_of?(Array)
           type = v.get_type
           org_type = v.get_type.get_original_type
 
-          if(org_type.kind_of? PtrType)then
+          if(org_type.kind_of? PtrType)
             # PtrType は ArrayType にすり替える
 
             # 初期化子の要素数だけとする（後は 0)
@@ -3473,10 +3473,10 @@ EOT
           name_array = get_name_array(c)
           # f.print "const #{type0.get_type_str}\t#{@global_name}_#{v.get_name}_VAR_INIT#{type0.get_type_str_post} = "
           f.print "const #{type.get_type_str}\t#{@global_name}_#{v.get_name}_VAR_INIT#{type.get_type_str_post} = "
-          if org_type.kind_of? StructType then
+          if org_type.kind_of? StructType
             # celltype の default の初期値あり
             str = gen_cell_cb_init(f, c, name_array, type, init, v.get_identifier, 1, true)
-          elsif(org_type.kind_of?(PtrType) || org_type.kind_of?(ArrayType)) then
+          elsif(org_type.kind_of?(PtrType) || org_type.kind_of?(ArrayType))
             str = "{ "
             type = org_type.get_type
             # mikan ポインタではなく、配列型としないと、ポインタ変数の領域の分、損する
@@ -3499,14 +3499,14 @@ EOT
   end
 
   def gen_cell_cb fs
-    if has_INIB? then
-      if @n_cell_gen > 0 then
+    if has_INIB?
+      if @n_cell_gen > 0
         fs.each{ |r, f| f.printf(TECSMsg.get(:INIB_comment), "#_INIB_#") }
       end
-      if @singleton then
+      if @singleton
         fs.each{ |r, f| f.print "#{@global_name}_INIB #{@global_name}_SINGLE_CELL_INIB = \n" }
         indent = 0
-      elsif ! @idx_is_id_act then
+      elsif ! @idx_is_id_act
         fs.each{ |r, f| f.print "#{@global_name}_INIB #{@global_name}_INIB_tab[] = {\n" }
         indent = 1
       else
@@ -3520,14 +3520,14 @@ EOT
 
         name_array = get_name_array(c)
 
-        unless @singleton then
+        unless @singleton
           print_indent(f, indent)
           f.print "/* cell: #{name_array[2]}:  #{name_array[1]} id=#{c.get_id} */\n"
           # name_array[2]: cell_CB_name
         end
 
         print_indent(f, indent)
-        if @idx_is_id_act then
+        if @idx_is_id_act
           f.print "const #{@global_name}_INIB #{name_array[5]} = "
         end
         f.print "{\n"
@@ -3535,31 +3535,31 @@ EOT
         gen_cell_cb_port(c, indent, f, name_array, :INIB)
         gen_cell_cb_attribute(c, indent, f, name_array, :INIB)
 
-        unless @singleton then
+        unless @singleton
           # 1 つの cell INIB の終わり
-          if @idx_is_id_act then
+          if @idx_is_id_act
             f.print("};\n\n")
           else
             f.print("    },\n")
           end
         end
       }
-      if ! @idx_is_id_act then
+      if ! @idx_is_id_act
         fs.each{ |r, f| f.print("};\n\n") }
       end
     end  # has_INIB?
 
-    if has_CB? then
-      if @n_cell_gen >0 then
+    if has_CB?
+      if @n_cell_gen >0
         fs.each{ |r, f| f.printf(TECSMsg.get(:CB_comment),  "#_CB_#") }
       end
 
       # RAM initializer を使用しない、または ROM 化しない
-      if $ram_initializer == false || $rom == false then
-        if @singleton then
+      if $ram_initializer == false || $rom == false
+        if @singleton
           fs.each{ |r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_SINGLE_CELL_CB = \n" }
           indent = 0
-        elsif ! @idx_is_id_act then
+        elsif ! @idx_is_id_act
           fs.each{ |r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_CB_tab[] = {\n" }
           indent = 1
         else
@@ -3573,25 +3573,25 @@ EOT
 
           name_array = get_name_array(c)
 
-          unless @singleton then
+          unless @singleton
             print_indent(f, indent)
             f.print "/* cell: #{name_array[2]}:  #{name_array[1]} id=#{c.get_id} */\n"
             # name_array[2]: cell_CB_name
           end
 
           print_indent(f, indent)
-          if @idx_is_id_act then
+          if @idx_is_id_act
             f.print "#{@global_name}_CB #{name_array[2]} = "
           end
           f.print "{\n"
 
-          if has_INIB? then
+          if has_INIB?
             print_indent(f, indent + 1)
             f.printf("&%-39s /* _inib */\n", "#{name_array[5]},")
           end
 
           # if ! has_INIB? then
-          if $rom == false then
+          if $rom == false
             gen_cell_cb_port(c, indent, f, name_array, :CB_ALL)
           else
             gen_cell_cb_port(c, indent, f, name_array, :CB_DYNAMIC)
@@ -3600,23 +3600,23 @@ EOT
           gen_cell_cb_attribute(c, indent, f, name_array, :CB)
           gen_cell_cb_var(c, indent, f, name_array)
 
-          unless @singleton then
+          unless @singleton
             # 1 つの cell CB の終わり
-            if @idx_is_id_act then
+            if @idx_is_id_act
               f.print("};\n\n")
             else
               f.print("    },\n")
             end
           end
         }
-        if ! @idx_is_id_act then
+        if ! @idx_is_id_act
           fs.each{ |r, f| f.print("};\n\n") }
         end
       else
-        if @singleton then
+        if @singleton
           fs.each{ |r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_SINGLE_CELL_CB;\n" }
           indent = 0
-        elsif @idx_is_id_act then
+        elsif @idx_is_id_act
           @ordered_cell_list.each{ |c|
             next if ! c.is_generate?
 
@@ -3635,11 +3635,11 @@ EOT
 
   def gen_cell_cb_tab f
     indent = 0
-    if @idx_is_id_act then
-      if has_INIB? && ($ram_initializer || ! has_CB?) then
+    if @idx_is_id_act
+      if has_INIB? && ($ram_initializer || ! has_CB?)
         f.print "/* ID to INIB table #_INTAB_# */\n"
         @ordered_cell_list.each{ |c|
-          if c.is_generate? && (c.get_region.get_domain_root != Region.get_root) then # 生成対象かつ、ルート以外か
+          if c.is_generate? && (c.get_region.get_domain_root != Region.get_root) # 生成対象かつ、ルート以外か
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
             f.print "extern #{@global_name}_INIB  #{name_array[5]};\n"
@@ -3648,7 +3648,7 @@ EOT
 
         f.print "#{@global_name}_INIB *const #{@global_name}_INIB_tab[] ={\n"
         @ordered_cell_list.each{ |c|
-          if c.is_generate? then                           # 生成対象か？
+          if c.is_generate?                           # 生成対象か？
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
             f.print "&#{name_array[5]},\n"
@@ -3656,10 +3656,10 @@ EOT
         }
         f.print "};\n"
       end
-      if has_CB? then
+      if has_CB?
         f.print "/* ID to CB table #_CBTAB_# */\n"
         @ordered_cell_list.each{ |c|
-          if c.is_generate? && (c.get_region.get_domain_root != Region.get_root) then # 生成対象かつ、ルート以外か
+          if c.is_generate? && (c.get_region.get_domain_root != Region.get_root) # 生成対象かつ、ルート以外か
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
             f.print "extern #{@global_name}_CB  #{name_array[2]};\n"
@@ -3668,7 +3668,7 @@ EOT
 
         f.print "#{@global_name}_CB *#{@global_name}_CB_tab[] ={\n"
         @ordered_cell_list.each{ |c|
-          if c.is_generate? then                           # 生成対象か？
+          if c.is_generate?                           # 生成対象か？
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
             f.print "&#{name_array[2]},\n"
@@ -3699,7 +3699,7 @@ EOT
   
   def get_name_array(cell)
 
-    if @singleton then
+    if @singleton
       cell_CB_name = "#{@global_name}_SINGLE_CELL_CB"
       cell_CB_INIT = cell_CB_name
       cell_CB_proto = "#{@global_name}_SINGLE_CELL_CB"
@@ -3707,7 +3707,7 @@ EOT
       cell_INIB_proto = cell_INIB_name
       cell_ID = 0
     else
-      if ! @idx_is_id_act then
+      if ! @idx_is_id_act
         index = cell.get_id - cell.get_celltype.get_id_base
         cell_CB_name = "#{@global_name}_CB_tab[#{index}]"
         cell_CB_INIT = "#{@global_name}_#{cell.get_name}_CB"
@@ -3723,15 +3723,15 @@ EOT
       end
       cell_ID = cell.get_id
     end
-    if @idx_is_id_act then
+    if @idx_is_id_act
       cell_IDX = cell_ID
     else
       cell_IDX = "&#{cell_CB_name}"
     end
 
-    if has_CB? then
+    if has_CB?
       cell_CBP = "&#{cell_CB_name}"
-    elsif has_INIB? then
+    elsif has_INIB?
       cell_CBP = "&#{cell_INIB_name}"
     else
       cell_CBP = "NULL"    # CB も INIB もなければ NULL に置換
@@ -3761,11 +3761,11 @@ EOT
     ct = self
     jl = cell.get_join_list
 
-    if cb_inib == :INIB then
+    if cb_inib == :INIB
       return if @n_attribute_ro == 0 && @n_var_size_is == 0
       print_indent(f, indent + 1)
       f.print "/* attribute(RO) */ \n"
-    elsif $rom then  # && cb_inib == CB
+    elsif $rom  # && cb_inib == CB
       # CB で rw と var
       return if @n_attribute_rw == 0
       print_indent(f, indent + 1)
@@ -3780,18 +3780,18 @@ EOT
     attribute = ct.get_attribute_list
     attribute.each{ |a|              # a: Decl
       next if a.is_omit?
-      if cb_inib == :INIB && a.is_rw? == true then
+      if cb_inib == :INIB && a.is_rw? == true
         # $rom == true でしか、ここへ来ない
         next
-      elsif cb_inib == :CB && $rom && ! a.is_rw? then
+      elsif cb_inib == :CB && $rom && ! a.is_rw?
         next
       end
 
       j = jl.get_item(a.get_identifier)
-      if j then
+      if j
         # cell の初期値指定あり
         gen_cell_cb_init(f, cell, name_array, a.get_type, j.get_rhs, a.get_identifier, indent + 1)
-      elsif a.get_initializer then
+      elsif a.get_initializer
         # celltype の default の初期値あり
         gen_cell_cb_init(f, cell, name_array, a.get_type, a.get_initializer, a.get_identifier, indent + 1)
       else
@@ -3803,7 +3803,7 @@ EOT
       next if v.is_omit?
       next if v.get_size_is == nil   # size_is 指定がある場合 attribute の一部として出力
 
-      if v.get_initializer && $ram_initializer == false then
+      if v.get_initializer && $ram_initializer == false
         gen_cell_cb_init(f, cell, name_array, v.get_type, v.get_initializer, v.get_identifier, indent + 1)
       else
         # 初期値未指定 または RAM initializer 使用
@@ -3816,7 +3816,7 @@ EOT
   def gen_cell_cb_var(cell, indent, f, name_array)
     jl = cell.get_join_list
     var = get_var_list
-    if @n_var - @n_var_size_is > 0 then
+    if @n_var - @n_var_size_is > 0
       print_indent(f, indent + 1)
       f.print "/* var */ \n"
       var.each{ |v|
@@ -3824,7 +3824,7 @@ EOT
         next if v.is_omit?
         next if v.get_size_is      # size_is 指定がある場合 attribute の一部として出力
 
-        if v.get_initializer && $ram_initializer == false then
+        if v.get_initializer && $ram_initializer == false
           gen_cell_cb_init(f, cell, name_array, v.get_type, v.get_initializer, v.get_identifier, indent + 1)
         else
           # 初期値未指定 または RAM initializer 使用
@@ -3848,7 +3848,7 @@ EOT
     if inib_cb == :INIB && (@n_call_port - @n_call_port_omitted_in_CB -
                              ($ram_initializer ? 0 : (@n_call_port_dynamic-@n_call_port_array_dynamic))  > 0) ||
        inib_cb == :CB_ALL && @n_call_port > 0 ||
-       inib_cb == :CB_DYNAMIC && (@n_call_port_dynamic - @n_call_port_array_dynamic) > 0 then
+       inib_cb == :CB_DYNAMIC && (@n_call_port_dynamic - @n_call_port_array_dynamic) > 0
       print_indent(f, indent + 1)
       f.print "/* call port (#{inib_cb}) #_CP_# */ \n"
       port.each{ |p|
@@ -3862,26 +3862,26 @@ EOT
         print_indent(f, indent + 1)
 
         # debug
-        if j == nil then
+        if j == nil
           dbgPrint "cell_cb_call_port: #{p.get_name} array size=#{p.get_array_size}\n"
           # optional 呼び口
           # cdl_error( "H1003 internal error: cell \'$1\' port \'$2\': initializer not found\n" , cell.get_name, p.get_name )
           # exit( 1 )
-          if p.get_array_size then
-            if p.is_dynamic? then
-              if inib_cb == :INIB then
-                if  $ram_initializer then
+          if p.get_array_size
+            if p.is_dynamic?
+              if inib_cb == :INIB
+                if  $ram_initializer
                   f.printf("%-40s /* #_CCP7_# _init_ */\n",  "#{cell.get_global_name}_#{p.get_name}_init_,")
                   print_indent(f, indent + 1)
                 end
                 f.printf("%-40s /* #_CCP7B_# */\n",  "#{cell.get_global_name}_#{p.get_name},")
-              elsif $rom == false then
+              elsif $rom == false
                 f.printf("%-40s /* #_CCP8_# */\n",  "#{cell.get_global_name}_#{p.get_name},")
               end
             else
               f.printf("%-40s /* #_CCP9_# */\n",  "0,")
             end
-            if p.get_array_size == "[]" then
+            if p.get_array_size == "[]"
               # 添数省略の呼び口配列
               print_indent(f, indent + 1)
               f.printf("%-40s /* %s #_CCP6_# */\n", "0,", "length of #{p.get_name} (n_#{p.get_name})")
@@ -3893,14 +3893,14 @@ EOT
         end
 
         am = j.get_array_member2
-        if am then
+        if am
           # 呼び口配列の場合
-          if inib_cb == :INIB && p.is_dynamic? && p.get_array_size != nil && $ram_initializer then
+          if inib_cb == :INIB && p.is_dynamic? && p.get_array_size != nil && $ram_initializer
             f.printf("%-40s /* #_CCP3_# _init_ */\n",  "#{cell.get_global_name}_#{j.get_name}_init_,")
             print_indent(f, indent + 1)
           end
           f.printf("%-40s /* #_CCP3B_# */\n",  "#{cell.get_global_name}_#{j.get_name},")
-          if p.get_array_size == "[]" then
+          if p.get_array_size == "[]"
             # 添数省略の呼び口配列
             print_indent(f, indent + 1)
             f.printf("%-40s /* %s #_CCP4_# */\n", "#{am.length},", "length of #{p.get_name} (n_#{p.get_name})")
@@ -3908,7 +3908,7 @@ EOT
         else
           # 同一セルタイプの結合の場合、VDES 型へのキャストが必要
           # print "CCP0/CCP1 #{p.get_name}, #{j.get_rhs_cell.get_celltype.get_name}, #{@name}\n"
-          if j.get_rhs_cell.get_celltype == self then
+          if j.get_rhs_cell.get_celltype == self
             definition = j.get_definition
             des_type_cast = "(struct tag_#{definition.get_signature.get_global_name}_VDES *)"
           else
@@ -3917,7 +3917,7 @@ EOT
 
           init = (p.is_dynamic? && inib_cb == :INIB) ? "_init_" : ""
 
-          if j.get_rhs_subscript then
+          if j.get_rhs_subscript
             # 受け口配列の場合
             subscript = j.get_rhs_subscript
             f.printf("%-40s /* %s #_CCP0_# */\n",
@@ -3926,7 +3926,7 @@ EOT
                       p.get_name.to_s + init)
           else
             # 呼び口配列でも、受け口配列でもない
-            if ! p.is_skelton_useless? then
+            if ! p.is_skelton_useless?
               f.printf("%-40s /* %s #_CCP1_# */\n",
                         "#{des_type_cast}&#{j.get_port_global_name}_des,",
                         p.get_name.to_s + init)
@@ -3934,7 +3934,7 @@ EOT
               # スケルトン不要最適化（CB (INIB) へのポインタを埋め込む）
               c = j.get_rhs_cell                    # 呼び先セル
               ct = c.get_celltype                   # 呼び先セルタイプ
-              if ct.has_INIB? || ct.has_CB? then
+              if ct.has_INIB? || ct.has_CB?
                 name_array = ct.get_name_array(c)   # 呼び先セルタイプで name_array を得る
                 f.printf("%-40s /* %s #_CCP2_# */\n", "#{name_array[7]},", p.get_name)
               else
@@ -3954,7 +3954,7 @@ EOT
     jl = cell.get_join_list
 
     port = get_port_list
-    if @n_entry_port != 0 then
+    if @n_entry_port != 0
       print_indent(f, indent + 1)
       f.print "/* entry port #_EP_# */ \n"
       @port.each{ |p|
@@ -3983,24 +3983,24 @@ EOT
       type = type.get_type
     end
 
-    if (init == nil) then
+    if (init == nil)
 
-      if f_get_str then
+      if f_get_str
         # 初期値未指定
-        if type.kind_of?(BoolType) then
+        if type.kind_of?(BoolType)
           str = "false"   # formerly tecs_false
-        elsif type.kind_of?(IntType) then
+        elsif type.kind_of?(IntType)
           str = "0"
-        elsif type.kind_of?(FloatType) then
+        elsif type.kind_of?(FloatType)
           str = "0.0"
-        elsif type.kind_of?(EnumType) then
+        elsif type.kind_of?(EnumType)
           str = "0"
-        elsif type.kind_of?(ArrayType) then
+        elsif type.kind_of?(ArrayType)
           str = "{}"
-        elsif type.kind_of?(StructType) then
+        elsif type.kind_of?(StructType)
           str = "{}"
-        elsif type.kind_of?(PtrType) then
-          if type.get_size then
+        elsif type.kind_of?(PtrType)
+          if type.get_size
             str = "#{cell_CB_INIT}_#{identifier}_INIT"
           else
             str = "0"
@@ -4011,26 +4011,26 @@ EOT
         return str
       else
         # 初期値未指定
-        if type.kind_of?(BoolType) then
+        if type.kind_of?(BoolType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "false,", identifier)   # formerly tecs_false
-        elsif type.kind_of?(IntType) then
+        elsif type.kind_of?(IntType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "0,", identifier)
-        elsif type.kind_of?(FloatType) then
+        elsif type.kind_of?(FloatType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "0.0,", identifier)
-        elsif type.kind_of?(EnumType) then
+        elsif type.kind_of?(EnumType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "0,", identifier)
-        elsif type.kind_of?(ArrayType) then
+        elsif type.kind_of?(ArrayType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "{},", identifier)
-        elsif type.kind_of?(StructType) then
+        elsif type.kind_of?(StructType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "{},", identifier)
-        elsif type.kind_of?(PtrType) then
-          if type.get_size then
+        elsif type.kind_of?(PtrType)
+          if type.get_size
             f.print "    " * indent
             f.printf("%-40s /* %s */\n", "#{cell_CB_INIT}_#{identifier}_INIT,", identifier)
           else
@@ -4046,14 +4046,14 @@ EOT
 
     # このメソッドは Celltype のものである必要は無い（上に続くのでここに置く）
     # 初期値指定あり
-    if type.kind_of?(BoolType) then
-      if init.instance_of?(C_EXP) then
+    if type.kind_of?(BoolType)
+      if init.instance_of?(C_EXP)
         init_str = subst_name(init.get_c_exp_string, name_array)
       else
         init_str = init.eval_const2(cell.get_join_list,@name_list)
       end
 
-      if f_get_str then
+      if f_get_str
         return "#{init_str}"
       else
         f.print "    " * indent
@@ -4065,36 +4065,36 @@ EOT
 #        f.print "    " * indent
 #        f.printf( "%-40s /* %s */\n", "#{init.eval_const2(nil)},", identifier )
 #      end
-    elsif type.kind_of?(IntType) then
-      if init.instance_of?(C_EXP) then
+    elsif type.kind_of?(IntType)
+      if init.instance_of?(C_EXP)
         init_str = subst_name(init.get_c_exp_string, name_array)
       else
         init_str = init.eval_const2(cell.get_join_list,@name_list)
       end
 
-      if f_get_str then
+      if f_get_str
         return "#{init_str}"
       else
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init_str},", identifier)
       end
-    elsif type.kind_of?(FloatType) then
+    elsif type.kind_of?(FloatType)
       # mikan C_EXP for FloatType
-      if f_get_str then
+      if f_get_str
         return "#{init.eval_const2(cell.get_join_list,@name_list)}"
       else
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list,@name_list)},", identifier)
       end
-    elsif type.kind_of?(EnumType) then
+    elsif type.kind_of?(EnumType)
       # mikan C_EXP for EnumType
-      if f_get_str then
+      if f_get_str
         return "#{init.eval_const2(cell.get_join_list,@name_list)}"
       else
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list,@name_list)},", identifier)
       end
-    elsif type.kind_of?(ArrayType) then
+    elsif type.kind_of?(ArrayType)
       if type.get_subscript
         len = type.get_subscript.eval_const(cell.get_join_list,@name_list)
       else
@@ -4103,7 +4103,7 @@ EOT
 
       at = type.get_type
       i = 0
-      if f_get_str then
+      if f_get_str
         str = "{ " 
       else
         f.print "    " * indent
@@ -4112,7 +4112,7 @@ EOT
 
       len.times {
         next if ! init[i]        # mikan この処置は適切？
-        if f_get_str then
+        if f_get_str
           str += gen_cell_cb_init(f, cell, name_array, at, init[i], "#{identifier}[#{i}]", indent + 1, f_get_str)
           str += ', '
         else
@@ -4121,17 +4121,17 @@ EOT
         i += 1
       }
 
-      if f_get_str then
+      if f_get_str
          str += "}"
       else
         f.print "    " * indent
         f.print("},\n")
       end
 
-    elsif type.kind_of?(StructType) then
+    elsif type.kind_of?(StructType)
       i = 0
       decls = type.get_members_decl.get_items
-      if f_get_str then
+      if f_get_str
         str = "{ "
       else
         f.print "    " * indent
@@ -4142,7 +4142,7 @@ EOT
         # p "#{d.get_identifier}: #{init}"
         next if ! init[i]
 
-        if f_get_str then
+        if f_get_str
           str += gen_cell_cb_init(f, cell, name_array, d.get_type, init[i], d.get_identifier, indent + 1, f_get_str)
           str += ', '
         else
@@ -4150,26 +4150,26 @@ EOT
         end
         i += 1
       }
-      if f_get_str then
+      if f_get_str
         str += "}"
       else
         f.print "    " * indent
         f.print("},\n")
       end
 
-    elsif type.kind_of?(PtrType) then
+    elsif type.kind_of?(PtrType)
 
-      if init.instance_of?(Array) then
-        if f_get_str then
+      if init.instance_of?(Array)
+        if f_get_str
           return "#{cell_CB_INIT}_#{identifier}_INIT"
         else
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "#{cell_CB_INIT}_#{identifier}_INIT,", identifier)
         end
-      elsif init.instance_of?(C_EXP) then
+      elsif init.instance_of?(C_EXP)
         init_str = subst_name(init.get_c_exp_string, name_array)
 
-        if f_get_str then
+        if f_get_str
           return "#{init_str}"
         else
           f.print "    " * indent
@@ -4177,7 +4177,7 @@ EOT
         end
 
       else
-        if f_get_str then
+        if f_get_str
           return "#{init.eval_const2(cell.get_join_list,@name_list)}"
         else
           f.print "    " * indent
@@ -4196,10 +4196,10 @@ EOT
   #== 関数テーブルの外部参照
   def gen_cell_extern_mt fs
     fs.each{ |r, f|
-      if ! r.is_root? then
+      if ! r.is_root?
         @port.each{ |p|
           next if p.is_omit?
-          if p.get_port_type == :ENTRY && ! p.is_VMT_useless? then
+          if p.get_port_type == :ENTRY && ! p.is_VMT_useless?
             f.print "extern const struct tag_#{p.get_signature.get_global_name}_VMT"
             f.print " #{@global_name}_#{p.get_name}_MT_;\n"
           end
@@ -4210,7 +4210,7 @@ EOT
 
   #=== 受け口ディスクリプタの定義を生成
   def gen_cell_ep_des fs
-    if @n_cell_gen >0 then
+    if @n_cell_gen >0
       fs.each{ |r, f|        f.printf(TECSMsg.get(:EPD_comment),  "#_EPD_#") }
     end
 
@@ -4225,7 +4225,7 @@ EOT
       jl = c.get_join_list
 
       port = ct.get_port_list
-      if port.length != 0 then
+      if port.length != 0
         port.each{ |p|
           next if p.get_port_type != :ENTRY
           next if p.is_omit?
@@ -4235,11 +4235,11 @@ EOT
           end
 
           len = p.get_array_size
-          if len == "[]" then
+          if len == "[]"
             len = c.get_entry_port_max_subscript(p) + 1
           end
 
-          if len != nil then
+          if len != nil
             # 受け口配列の場合
             i = 0
             while i < len
@@ -4248,23 +4248,23 @@ EOT
               f.print "const struct tag_#{@global_name}_#{p.get_name}_DES"
               # f.print " #{c.get_name}_#{p.get_name}_des#{i} = {\n"
               f.print " #{c.get_global_name}_#{p.get_name}_des#{i} = {\n"
-              if p.is_VMT_useless? then
+              if p.is_VMT_useless?
                 f.print "    0,\n"
               else
                 f.print "    &#{@global_name}_#{p.get_name}_MT_,\n"
               end
-              if(@idx_is_id_act)then
+              if(@idx_is_id_act)
                 f.print "    #{c.get_id},           /* ID */\n"
               else
-                if has_CB? then
-                  if @singleton then
+                if has_CB?
+                  if @singleton
                     f.print "    &#{@global_name}_SINGLE_CELL_CB,        /* CB 1 */\n"
                   else
                     # f.print "    &#{@global_name}_#{c.get_name}_CB,\n"
                     f.print "    &#{@global_name}_CB_tab[#{index}],      /* CB 2 */\n"
                   end
-                elsif has_INIB? then
-                  if @singleton then
+                elsif has_INIB?
+                  if @singleton
                     f.print "    &#{@global_name}_SINGLE_CELL_INIB,      /* INIB 1 */\n"
                   else
                     f.print "    &#{@global_name}_INIB_tab[#{index}],    /* INIB 2 */\n"
@@ -4283,23 +4283,23 @@ EOT
             f.print "const struct tag_#{@global_name}_#{p.get_name}_DES"
             # f.print " #{c.get_name}_#{p.get_name}_des = {\n"
             f.print " #{c.get_global_name}_#{p.get_name}_des = {\n"
-            if p.is_VMT_useless? then
+            if p.is_VMT_useless?
               f.print "    0,\n"
             else
               f.print "    &#{@global_name}_#{p.get_name}_MT_,\n"
             end
-            if @idx_is_id_act then
+            if @idx_is_id_act
               f.print "    #{c.get_id},     /* ID */\n"
             else
-              if has_CB? then
-                if @singleton then
+              if has_CB?
+                if @singleton
                   f.print "    &#{@global_name}_SINGLE_CELL_CB,       /* CB 3 */\n"
                 else
                   f.print "    &#{@global_name}_CB_tab[#{index}],     /* CB 4 */\n"
                   # f.print "    &#{@global_name}_#{c.get_name}_CB,\n"
                 end
-              elsif has_INIB? then
-                if @singleton then
+              elsif has_INIB?
+                if @singleton
                   f.print "    &#{@global_name}_SINGLE_CELL_INIB,     /* INIB 3 */\n"
                 else
                   f.print "    &#{@global_name}_INIB_tab[#{index}],   /* INIB 4 */\n"
@@ -4320,7 +4320,7 @@ EOT
 
     return if is_all_entry_inline?
     return if @b_reuse && ! $generate_all_template
-    if ! (@plugin && @plugin.gen_ep_func?) then
+    if ! (@plugin && @plugin.gen_ep_func?)
       return if $generate_no_template     # $generate_all_template より優先される
 
       # 参考として出力するテンプレートファイルであることを示すために "_templ" を付加する
@@ -4334,7 +4334,7 @@ EOT
 
     f = AppFile.open(fname)
 
-    unless (@plugin && @plugin.gen_ep_func?) then
+    unless (@plugin && @plugin.gen_ep_func?)
       f.printf(TECSMsg.get(:template_note), @name, @name)
     else
       print_note(f, true)
@@ -4348,7 +4348,7 @@ EOT
     f.printf TECSMsg.get(:PAC_comment), "#_PAC_#"
 
     gen_template_private_header f
-    if (@plugin) then
+    if (@plugin)
       # このメソッドの引数は plugin.rb の説明を見よ
       @plugin.gen_preamble(f, @singleton, @name, @global_name)
     end
@@ -4357,7 +4357,7 @@ EOT
 
     f.print TECSMsg.get(:postamble_note)
 
-    if (@plugin) then
+    if (@plugin)
       # このメソッドの引数は plugin.rb の説明を見よ
       @plugin.gen_postamble(f, @singleton, @name, @global_name)
     end
@@ -4380,7 +4380,7 @@ EOT
 
   def gen_template_attr_access f
 
-    if @n_attribute_rw > 0 || @n_attribute_ro > 0 || @n_var > 0 then
+    if @n_attribute_rw > 0 || @n_attribute_ro > 0 || @n_var > 0
       f.printf(TECSMsg.get(:CAAM_comment), "#_CAAM_#")
     end
 
@@ -4406,7 +4406,7 @@ EOT
   end
 
   def gen_template_cp_fun f
-    if @n_call_port >0 then
+    if @n_call_port >0
       f.print " *\n"
       f.printf(TECSMsg.get(:TCPF_comment), "#_TCPF_#")
     end
@@ -4417,13 +4417,13 @@ EOT
 
       sig_name = p.get_signature.get_global_name
       con_tmp = p.get_signature.get_context
-      if con_tmp then
+      if con_tmp
         context = " context:#{con_tmp}"
       else
         context = ""
       end
 
-      if p.is_optional? then
+      if p.is_optional?
         optional = " optional:true"
         if p.get_array_size
           is_join = " *   bool_t     is_#{p.get_name}_joined(int subscript)        check if joined\n"
@@ -4435,15 +4435,15 @@ EOT
         is_join = ""
       end
 
-      if p.is_omit? then
+      if p.is_omit?
         omit = " omit:true"
       else
         omit = ""
       end
 
-      if p.is_allocator_port? then
+      if p.is_allocator_port?
         f.print " * allocator port for #{p.get_port_type.to_s.downcase} port:#{p.get_allocator_port.get_name} func:#{p.get_allocator_func_decl.get_name} param: #{p.get_allocator_param_decl.get_name}\n"
-      elsif ! p.is_require? then
+      elsif ! p.is_require?
         f.print " * call port: #{p.get_name} signature: #{sig_name}#{context}#{optional}#{omit}\n#{is_join}"
       else
         f.print " * require port: signature:#{sig_name}#{context}\n"
@@ -4454,7 +4454,7 @@ EOT
         ft = fun.get_declarator.get_type
 
         f.printf(" *   %-14s ", ft.get_type.get_type_str)
-        if ! p.is_require? || p.has_name? then
+        if ! p.is_require? || p.has_name?
           f.print("#{p.get_name}_#{fun.get_name}(")
         else
           f.print("#{fun.get_name}(")
@@ -4466,7 +4466,7 @@ EOT
 #          delim = ","
 #        end
 
-        if p.get_array_size then
+        if p.get_array_size
           f.print("#{delim} subscript")
           delim = ","
         end
@@ -4496,11 +4496,11 @@ EOT
 
       }
 
-      if p.get_array_size then
+      if p.get_array_size
         f.print " *       subscript:  0...(NCP_#{p.get_name}-1)\n"
       end
 
-      if p.is_ref_desc? then
+      if p.is_ref_desc?
         subsc = p.get_array_size ? ' int_t subscript ' : ''
         f.print " *   [ref_desc]\n"
         f.printf(" *      %-14s %s;\n",
@@ -4510,10 +4510,10 @@ EOT
                   "Descriptor( #{p.get_signature.get_global_name} )", 
                   "#{p.get_name}_ref_desc(#{subsc})      (same as above; abbreviated version)")
       end
-      if p.is_dynamic? then
+      if p.is_dynamic?
         subsc = p.get_array_size ? 'int_t subscript, ' : ''
         subsc2 = p.get_array_size ? ' int_t subscript' : ''
-        if p.is_optional? then
+        if p.is_optional?
           f.print " *   [dynamic, optional]\n"
         else
           f.print " *   [dynamic]\n"
@@ -4521,7 +4521,7 @@ EOT
         f.printf(" *      %-14s %s;\n",
                   "void",
                   "#{p.get_name}_set_descriptor( #{subsc}Descriptor( #{p.get_signature.get_global_name} ) desc )")
-        if p.is_optional? then
+        if p.is_optional?
           f.printf(" *      %-14s %s;\n",
                     "void",
                     "#{p.get_name}_unjoin( #{subsc2} )")
@@ -4533,7 +4533,7 @@ EOT
 
   def gen_template_ep_fun(f, b_inline = false)
 
-    if @n_entry_port >0 then
+    if @n_entry_port >0
       f.printf(TECSMsg.get(:TEPF_comment), "#_TEPF_#")
     end
 
@@ -4556,7 +4556,7 @@ EOT
  * context:    #{p.get_signature.get_context}
 EOT
 
-      if p.get_array_size != nil then
+      if p.get_array_size != nil
         f.print <<EOT
  * entry port array size:  NEP_#{p.get_name}
 EOT
@@ -4576,25 +4576,25 @@ EOT
  * #[</ENTRY_FUNC>]# */
 EOT
 
-        if b_inline then
+        if b_inline
           f.print "Inline "
         end
         functype = fun.get_declarator.get_type
         f.printf "%s\n", functype.get_type_str
         f.print "#{inline_prefix}#{p.get_name}_#{fun.get_name}("
-        if @singleton then
+        if @singleton
           delim = ""
         else
           f.print "#{nCELLIDX} idx"
           delim = ", "
         end
 
-        if p.get_array_size then
+        if p.get_array_size
           f.print "#{delim}int_t subscript"
           delim = ", "
         end
 
-        if functype.get_paramlist then
+        if functype.get_paramlist
           items = functype.get_paramlist.get_items
           len = items.length
         else
@@ -4618,14 +4618,14 @@ EOT
 
         f.print "{\n"
 
-        if (@plugin && @plugin.gen_ep_func?) then
+        if (@plugin && @plugin.gen_ep_func?)
           # このメソッドの引数は plugin.rb の説明を見よ
           @plugin.gen_ep_func_body(f, @singleton, @name, @global_name, p.get_signature.get_global_name, p.get_name, fun.get_name, "#{@global_name}_#{p.get_name}_#{fun.get_name}", functype, items)
 
         else
-          if ! @singleton then
-            if functype.get_type.kind_of?(DefinedType) && (functype.get_type.get_type_str == "ER" || functype.get_type.get_type_str == "ER_UINT") then
-              if ! fun.is_oneway? then
+          if ! @singleton
+            if functype.get_type.kind_of?(DefinedType) && (functype.get_type.get_type_str == "ER" || functype.get_type.get_type_str == "ER_UINT")
+              if ! fun.is_oneway?
                 f.print "	ER\t\tercd = E_OK;\n"
                 er_cd = "return(E_ID);"
                 ret_cd = "return(ercd);"
@@ -4650,7 +4650,7 @@ EOT
             f.printf(TECSMsg.get(:TEFB_comment), "#_TEFB_#")
             f.printf("\n")
 
-            if ret_cd then
+            if ret_cd
               f.print "	#{ret_cd}\n"
             end
           else
@@ -4665,7 +4665,7 @@ EOT
   def generate_inline_template_code
     return if @n_entry_port_inline == 0
     return if @b_reuse && ! $generate_all_template
-    if ! (@plugin && @plugin.gen_ep_func?) then
+    if ! (@plugin && @plugin.gen_ep_func?)
       return if @b_reuse && ! $generate_all_template
       return if $generate_no_template     # $generate_all_template より優先される
 
@@ -4681,7 +4681,7 @@ EOT
 
     gen_ph_guard f, "_INLINE"
 
-    unless (@plugin && @plugin.gen_ep_func?) then
+    unless (@plugin && @plugin.gen_ep_func?)
       f.printf(TECSMsg.get(:inline_template_note), @name, @name)
     else
       print_note(f, true)
@@ -4696,7 +4696,7 @@ EOT
 
     f.print TECSMsg.get(:postamble_note)
 
-    if (@plugin) then
+    if (@plugin)
       # このメソッドの引数は plugin.rb の説明を見よ
       @plugin.gen_postamble(f, @singleton, @name, @global_name)
     end
@@ -4712,7 +4712,7 @@ EOT
   def generate_celltype_factory_code
 
     @ct_factory_list.each { |fa|
-      if fa.get_name == :write then
+      if fa.get_name == :write
 
         # 前後の " を取り除く
         # file_name = fa.get_file_name.sub( /^\"(.*)\"$/, "\\1" )
@@ -4730,13 +4730,13 @@ EOT
         format    = format.gsub(/(^|[^\$])\$ct_global\$/, "\\1#{@global_name}")   # $ct$ をセルタイプ名に置換
         format    = format.gsub(/\$\$/, "\$")                # $$ を $ に置換
 
-        if file_name[0] != ?/ then
+        if file_name[0] != ?/
           file_name = "#{$gen}/#{file_name}"
         end
 
         begin
           cfg_file = AppFile.open(file_name)
-          if $debug then
+          if $debug
             print "'#{@name}' : celltype factory format: "
             puts(format)
           end
@@ -4764,7 +4764,7 @@ EOT
 
       @factory_list.each { |fa|
 
-        if fa.get_name == :write then
+        if fa.get_name == :write
 
           # 前後の " を取り除く
           # file_name = fa.get_file_name.sub( /^\"(.*)\"$/, "\\1" )
@@ -4780,12 +4780,12 @@ EOT
 
           arg_list  = fa.get_arg_list
 
-          if file_name[0] != ?/ then
+          if file_name[0] != ?/
             file_name = "#{$gen}/#{file_name}"
           end
 
           na = []     # シンボルを attribute の値に置き換えた後の引数
-          if arg_list then
+          if arg_list
             arg_list.each { |a|
               case a[0]
               when :STRING_LITERAL   # 文字列定数
@@ -4802,7 +4802,7 @@ EOT
 
                 # cell の join のリストから名前を探す
                 j = c.get_join_list.get_item(param_name)
-                if j then    # param_name の cell のジョインがあるか
+                if j    # param_name の cell のジョインがあるか
                   init = j.get_rhs                    # cell で指定された初期値を優先
                 end
 
@@ -4819,7 +4819,7 @@ EOT
           begin
             cfg_file = AppFile.open(file_name)
 
-            if $debug then
+            if $debug
               print "'#{c.get_name}' : factory format: "
               print(format)
               print(" arg: ")
@@ -4879,7 +4879,7 @@ EOT
     headers = [ "$(GEN_DIR)/#{@global_name}_tecsgen.#{$h_suffix}", "$(GEN_DIR)/#{@global_name}_factory.#{$h_suffix}", "$(GEN_DIR)/global_tecsgen.#{$h_suffix}" ]
 
     # inline 受け口を持つか？
-    if @n_entry_port_inline > 0 then
+    if @n_entry_port_inline > 0
       headers << "#{@global_name}_inline.#{$h_suffix}"
     end
 
@@ -4917,7 +4917,7 @@ EOT
     indent = "	" + "  " * (level+1)
     if ! type.has_pointer?
       return
-    elsif type.kind_of?(ArrayType) then
+    elsif type.kind_of?(ArrayType)
       if type.get_type.has_pointer?
         loop_str = "i#{level}__"
         count_str = "#{type.get_subscript.eval_const(nil)}"
@@ -4933,17 +4933,17 @@ EOT
         f.print " \\\n"
         f.print "#{indent}}"
       end
-    elsif type.kind_of?(StructType) then
+    elsif type.kind_of?(StructType)
       members_decl = type.get_members_decl
       members_decl.get_items.each { |md|
         pre2 = pre + name.to_s + post + "."
         name2 = md.get_name
         post2 = ""
         type2 = md.get_type.get_original_type
-        if type2.kind_of? PtrType then   # mikan typedef された型
-          if type2.get_count then
+        if type2.kind_of? PtrType   # mikan typedef された型
+          if type2.get_count
             count_str = type2.get_count.to_str(members_decl, pre2, post2)
-          elsif type2.get_size then
+          elsif type2.get_size
             count_str = type2.get_size.to_str(members_decl, pre2, post2)
           else
             count_str = nil
@@ -4954,11 +4954,11 @@ EOT
         gen_dealloc_code_for_type(f, md.get_type, dealloc_func_name, pre2, name2, post2, level, b_reset, count_str)
       }
 
-    elsif type.kind_of?(PtrType) then
+    elsif type.kind_of?(PtrType)
 
-      if b_reset || type.is_nullable? then
+      if b_reset || type.is_nullable?
         nullable = ""
-        if(!b_reset && type.is_nullable?)then
+        if(!b_reset && type.is_nullable?)
           nullable = "\t/* nullable */"
         end
         level2 = level + 1
@@ -4971,7 +4971,7 @@ EOT
       end
 
       if type.get_type.has_pointer?
-        if count_str then
+        if count_str
           loop_str = "i#{level}__"
           f.print " \\\n"
           f.print "#{indent2}{ int_t  #{loop_str};"
@@ -4991,7 +4991,7 @@ EOT
       f.print " \\\n"
       f.print "#{indent2}#{dealloc_func_name}( #{pre}#{name}#{post} ); "
 
-      if b_reset || type.is_nullable? then
+      if b_reset || type.is_nullable?
         f.print " \\\n"
         f.print "#{indent}}"
       end
@@ -5007,7 +5007,7 @@ EOT
   def get_depend_header_list_(celltype_list)
     headers = []
 
-    if celltype_list.include? self then
+    if celltype_list.include? self
       return headers
     else
       celltype_list << self
@@ -5019,13 +5019,13 @@ EOT
       next if p.get_port_type != :CALL
       next if p.is_omit?
 
-      if p.is_skelton_useless? || p.is_cell_unique? || p.is_VMT_useless? then
+      if p.is_skelton_useless? || p.is_cell_unique? || p.is_VMT_useless?
         # 最適化コード (optimize) # スケルトン不要など
         p2 = p.get_real_callee_port
-        if p2 then
+        if p2
           ct = p2.get_celltype
           headers << " $(GEN_DIR)/#{ct.get_global_name}_tecsgen.#{$h_suffix}"
-          if p2.is_inline? then
+          if p2.is_inline?
             headers << " #{ct.get_global_name}_inline.#{$h_suffix}"
           end
           headers += ct.get_depend_header_list_(celltype_list)
@@ -5066,7 +5066,7 @@ EOT
 
     str = str.gsub(/(^|[^\$])\$ct\$/, "\\1#{ct}")
     str = str.gsub(/(^|[^\$])\$ct_global\$/, "\\1#{ct_global}")
-    if cell then
+    if cell
       str = str.gsub(/(^|[^\$])\$cell\$/, "\\1#{cell}")
       str = str.gsub(/(^|[^\$])\$cb\$/, "\\1#{cb}")
       # str = str.gsub( /(^|[^\$])\$id\$/, "\\1#{ct}_#{cell}" )
@@ -5097,14 +5097,14 @@ class AppFile
     end
 
 # 2.0
-    if $b_no_kcode then 
+    if $b_no_kcode 
       mode = ":" + $Ruby19_File_Encode
     else
       mode = ""
     end
 
     # 既に開いているか？
-    if @@file_name_list[name] then
+    if @@file_name_list[name]
 # 2.0
       mode = "a" + mode
       # 追記モードで開く
@@ -5130,7 +5130,7 @@ class AppFile
       if File.readable? name
         old_lines = File.readlines name
         new_lines = File.readlines name + ".tmp"
-        if old_lines.length == new_lines.length then
+        if old_lines.length == new_lines.length
           i = 0
           len = old_lines.length
           while i < len
@@ -5144,14 +5144,14 @@ class AppFile
           end
         end
       end
-      if b_identical == false then
-        if $verbose then
+      if b_identical == false
+        if $verbose
           print "#{name} updated\n"
           print "renaming '#{name}.tmp' => '#{name}'\n"
         end
         File.rename name+".tmp", name
       else
-        if $verbose then
+        if $verbose
           print "#{name} not updated\n"
         end
         File.delete name+".tmp"

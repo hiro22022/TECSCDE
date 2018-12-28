@@ -101,7 +101,7 @@ end
 class Signature
   def gen_XML file, nest
     indent = XML_INDENT * nest
-    if is_imported? then
+    if is_imported?
       file.print <<EOT
 #{indent}<import path='#{@import.get_cdl_name}'>
 EOT
@@ -134,7 +134,7 @@ EOT
     file.print <<EOT
 #{indent}</signature>
 EOT
-    if is_imported? then
+    if is_imported?
       nest -= 1
       indent = XML_INDENT * nest
       file.print <<EOT
@@ -147,7 +147,7 @@ end
 class Celltype
   def gen_XML file, nest
     indent = XML_INDENT * nest
-    if is_imported? then
+    if is_imported?
       file.print <<EOT
 #{indent}<import path='#{@import.get_cdl_name}'>
 EOT
@@ -159,12 +159,12 @@ EOT
 #{indent}<celltype>
 #{indent}#{XML_INDENT}<name> #{@name} </name>
 EOT
-    if @active then
+    if @active
       file.print <<EOT
 #{indent}#{XML_INDENT}<active />
 EOT
     end
-    if @singleton then
+    if @singleton
       file.print <<EOT
 #{indent}#{XML_INDENT}<singleton />
 EOT
@@ -176,13 +176,13 @@ EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<name> #{attr.get_name} </name>
 #{indent}#{XML_INDENT}#{XML_INDENT}<type> #{attr.get_type.get_type_str}#{attr.get_type.get_type_str_post} </type>
 EOT
-      if attr.get_initializer then
+      if attr.get_initializer
         file.print <<EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<initializer> #{attr.get_initializer.to_CDL_str} </initializer>
 EOT
       end
 
-      if attr.get_choice_list then
+      if attr.get_choice_list
         file.print <<EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<choice>
 EOT
@@ -209,7 +209,7 @@ EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<name> #{port.get_name} </name>
 #{indent}#{XML_INDENT}#{XML_INDENT}<signame> #{port.get_signature.get_name} </signame>
 EOT
-      if port.get_array_size then
+      if port.get_array_size
         file.print <<EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<subscript> #{port.get_array_size} </subscript>
 EOT
@@ -221,7 +221,7 @@ EOT
     file.print <<EOT
 #{indent}</celltype>
 EOT
-    if is_imported? then
+    if is_imported?
       nest -= 1
       indent = XML_INDENT * nest
       file.print <<EOT
@@ -241,7 +241,7 @@ end
 class CompositeCelltype
   def gen_XML file, nest
     indent = XML_INDENT * nest
-    if is_imported? then
+    if is_imported?
       file.print <<EOT
 #{indent}<import path='#{@import.get_cdl_name}'>
 EOT
@@ -257,19 +257,19 @@ EOT
 #{indent}#{XML_INDENT}<composite />
 EOT
 
-    if @b_active then
+    if @b_active
       file.print <<EOT
 #{indent}#{XML_INDENT}<active />
 EOT
     end
-    if @b_singleton then
+    if @b_singleton
       file.print <<EOT
 #{indent}#{XML_INDENT}<singleton />
 EOT
     end
 
     @name_list.get_items.each{ |attr|
-      if ! attr.instance_of? Decl then
+      if ! attr.instance_of? Decl
         next
       end
       file.print <<EOT
@@ -277,7 +277,7 @@ EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<name> #{attr.get_name} </name>
 #{indent}#{XML_INDENT}#{XML_INDENT}<type> #{attr.get_type.get_type_str}#{attr.get_type.get_type_str_post} </type>
 EOT
-      if attr.get_initializer then
+      if attr.get_initializer
         file.print <<EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<initializer> #{attr.get_initializer.to_CDL_str} </initializer>
 EOT
@@ -287,7 +287,7 @@ EOT
 EOT
     }
     @name_list.get_items.each{ |port|
-      if ! port.instance_of? Port then
+      if ! port.instance_of? Port
         next
       end
       port_type = port.get_port_type == :CALL ? "call" : "entry"
@@ -296,7 +296,7 @@ EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<name> #{port.get_name} </name>
 #{indent}#{XML_INDENT}#{XML_INDENT}<signame> #{port.get_signature.get_name} </signame>
 EOT
-      if port.get_array_size then
+      if port.get_array_size
         file.print <<EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<subscript> #{port.get_array_size} </subscript>
 EOT
@@ -308,7 +308,7 @@ EOT
     file.print <<EOT
 #{indent}</celltype>
 EOT
-    if is_imported? then
+    if is_imported?
       nest -= 1
       indent = XML_INDENT * nest
       file.print <<EOT
@@ -323,7 +323,7 @@ class Cell
   def gen_XML file, nest
     indent = XML_INDENT * nest
 
-    if is_imported? then
+    if is_imported?
       file.print <<EOT
 #{indent}<import path='#{@import.get_cdl_name}'>
 EOT
@@ -336,14 +336,14 @@ EOT
 #{indent}#{XML_INDENT}<name> #{@name} </name>
 EOT
     @join_list.get_items.each{ |join|
-      if join.get_definition.kind_of? Port then
+      if join.get_definition.kind_of? Port
         kind = "call_join"
-      elsif join.get_definition.kind_of? Decl then
+      elsif join.get_definition.kind_of? Decl
         kind = "attr_join"
       else
         raise "Unknown"
       end
-      if join.get_array_member2 then
+      if join.get_array_member2
         join.get_array_member2.each { |j2|
           file.print <<EOT
 #{indent}#{XML_INDENT}<#{kind}>
@@ -365,7 +365,7 @@ EOT
     file.print <<EOT
 #{indent}</cell>
 EOT
-    if is_imported? then
+    if is_imported?
       nest -= 1
       indent = XML_INDENT * nest
       file.print <<EOT

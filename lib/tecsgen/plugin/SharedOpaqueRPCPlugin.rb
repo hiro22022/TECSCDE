@@ -82,13 +82,13 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
     @shared_channel_server_ct_name = :"#{@shared_channel_ct_name}_Server"
     @shared_channel_client_ct_name = :"#{@shared_channel_ct_name}_Client"
     @shared_channel_ct_file_name = "#{$gen}/#{@shared_channel_ct_name}.cdl"
-    if @sharedChannelName == nil then
+    if @sharedChannelName == nil
       cdl_error("'sharedChannelName' option: mandatory")
     else
       @shared_channel_cell = @sharedChannelName
     end
 
-    if @@shared_channel_list[@shared_channel_cell] == nil then
+    if @@shared_channel_list[@shared_channel_cell] == nil
       @@shared_channel_list[@shared_channel_cell] = [ self ]
     else
       @@shared_channel_list[@shared_channel_cell] << self
@@ -96,13 +96,13 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
     @sub_channel_no = (@@shared_channel_list[@shared_channel_cell].length) -1
 
     prev_start = @@shared_channel_list[@shared_channel_cell][0].start_region
-    if @start_region != prev_start then
+    if @start_region != prev_start
       # 初出と start リージョン不一致 (初出は、自分自身とチェックされる。無駄だが小さいので放置)
       cdl_error("SharedRPCPlugin: start region mismatch current: #{@region.get_name} previous: #{prev_start.get_name}")
     end
 
     prev_end = @@shared_channel_list[@shared_channel_cell][0].end_region
-    if @end_region != prev_end then
+    if @end_region != prev_end
       # 初出と end リージョン不一致  (初出は、自分自身とチェックされる。無駄だが小さいので放置)
       cdl_error("SharedRPCPlugin: end region mismatch current: #{@region.get_name} previous: #{prev_end.get_name}")
     end
@@ -126,7 +126,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@shared_channel_server_ct_name] == nil then
+    if @@generated_celltype[@shared_channel_server_ct_name] == nil
       @@generated_celltype[@shared_channel_server_ct_name] = [ self ]
     else
       @@generated_celltype[@shared_channel_server_ct_name] << self
@@ -136,7 +136,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
 
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
-    if @PPAllocatorSize then
+    if @PPAllocatorSize
       alloc_call_port = "  call sPPAllocator cPPAllocator;\n"
       alloc_call_port_join = "  cPPAllocator => composite.cPPAllocator;\n"
     else
@@ -220,7 +220,7 @@ EOT
     nest = @start_region.gen_region_str_pre file
     indent_str = "  " * nest
     nest_str = "  " * nest
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
@@ -238,7 +238,7 @@ EOT
 
     # マーシャラセルの生成（アロケータコードの生成から）
     # アロケータの指定があるか？
-    if cell.get_allocator_list.length > 0 then
+    if cell.get_allocator_list.length > 0
 
       file.print "#{indent_str}[allocator("
 
@@ -248,14 +248,14 @@ EOT
         alloc_str = alloc.to_s
         subst = @substituteAllocator[alloc_str.to_sym]
 
-        if subst then
+        if subst
           alloc_str = subst[2]+"."+subst[3]
         end
 
         file.print delim
         delim = ",\n#{indent_str}           "        # 最終行には出さない
 
-        if subsc then        # 配列添数
+        if subsc        # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
@@ -290,8 +290,8 @@ EOT
 EOT
 
     # PPAllocator が必要か?
-    if @PPAllocatorSize then
-      if @sub_channel_no == 0 then
+    if @PPAllocatorSize
+      if @sub_channel_no == 0
         file.print <<EOT
 #{indent_str}cell tPPAllocator PPAllocator_#{@shared_channel_cell}{
 #{indent_str}  heapSize = #{@PPAllocatorSize};

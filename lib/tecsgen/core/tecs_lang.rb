@@ -84,13 +84,13 @@ class TECS_LANG
   # RETURN:
   #  [ lang, charset, result ]::　　result = false の場合 lang, charset は不適切
   def self.resolve_alias_and_check(lang, charset)
-    if LANG_ALIAS[lang.to_s.upcase] then
+    if LANG_ALIAS[lang.to_s.upcase]
       ln = LANG_ALIAS[lang.to_s.upcase]
     else
       ln = lang
     end
 
-    if CHARSET_ALIAS[charset.to_s.upcase] then
+    if CHARSET_ALIAS[charset.to_s.upcase]
       cs = CHARSET_ALIAS[charset.to_s.upcase]
     else
       cs = charset
@@ -118,7 +118,7 @@ class TECS_LANG
 
   #=== codepage から LANG の設定文字列に変換
   def self.codepage_to_lang cp
-    if cp == "932" then
+    if cp == "932"
       "ja_JP.sjis"
     else
       "en_US"
@@ -135,7 +135,7 @@ class TECS_LANG
   #   ・-k オプション (ファイルの文字コードのみ)
   def self.set_lang_var
 
-    if $IN_EXERB && (ENV['TERM'] == nil || ENV['TERM'] == "cygwin") then
+    if $IN_EXERB && (ENV['TERM'] == nil || ENV['TERM'] == "cygwin")
       # exerb 版で端末 cygwin の時は codepage のみを見る
       cp = get_win_codepage
       lang = codepage_to_lang cp
@@ -143,7 +143,7 @@ class TECS_LANG
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
 
-    elsif ENV['LANG']then
+    elsif ENV['LANG']
       # 非 exerb 版では LANG 環境変数を見る
       # cygwin console では codepage に従って出力した方が平和なため
 
@@ -152,13 +152,13 @@ class TECS_LANG
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
-    if ENV['TECSGEN_LANG']then
+    if ENV['TECSGEN_LANG']
       $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['TECSGEN_LANG'])
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
-    if ENV['TECSGEN_FILE_LANG']then
+    if ENV['TECSGEN_FILE_LANG']
       $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['TECSGEN_FILE_LANG'])
     end
 
@@ -174,7 +174,7 @@ class TECS_LANG
     code = $kcode
     found = false
     res = $CODE_TYPE_ARRAY.index(code)
-    if res == nil then
+    if res == nil
       print "-k: illegal kcode type #{code}. (#{$CODE_TYPE_ARRAY.join(", ")})\n"
       exit 1
     end
@@ -246,12 +246,12 @@ class TECS_LANG
   def self.set_kcode_binary
 
     # 2.0
-    if $b_no_kcode then
+    if $b_no_kcode
       return
     end
 
     $KCODE_BACK = $KCODE
-    if $KCODE != "SJIS" then
+    if $KCODE != "SJIS"
       set_kcode "BINARY"
     end
   end
@@ -287,13 +287,13 @@ class TECS_LANG
   # 言語、コードのチェックと正規化
   lang_file, charset_file, res =
     self.resolve_alias_and_check($LANG_FILE, $CHARSET_FILE)
-  if res == false then
+  if res == false
     # lang_file, charset_file = lang_file_default, charset_file_default
     lang_file, charset_file = $LANG_FILE_DEFAULT, $CHARSET_FILE_DEFAULT
   end
   lang_console, charset_console, res =
     self.resolve_alias_and_check($LANG_CONSOLE, $CHARSET_CONSOLE)
-  if res == false then
+  if res == false
     # lang_console, charset_console = lang_console_default, charset_console_default
     lang_console, charset_console = $LANG_CONSOLE_DEFAULT, $CHARSET_CONSOLE_DEFAULT
   end
@@ -320,7 +320,7 @@ class TECS_LANG
   dbgPrint "Ruby19_File_Encode=#{$Ruby19_File_Encode}\n"
 
   #=== 単体テスト実行
-  if $unit_test then
+  if $unit_test
     print "unit test: set_lang_var\n"
     require "kconv"
     self.set_lang_var
@@ -336,14 +336,14 @@ end
 # 文字コードを変換する
 class Console
   def self.print str
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       STDOUT.print str
     else
       STDOUT.print str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
     end
   end
   def self.puts str
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       STDOUT.puts str
     else
       STDOUT.puts str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
@@ -353,7 +353,7 @@ end
 
 # Copy from original tecgen.rb
 def set_kcode kcode
-  if ! $b_no_kcode then
+  if ! $b_no_kcode
     $KCODE = kcode
   end
 end

@@ -46,7 +46,7 @@ class TECSMsg
   def self.get(msg)
     str = @@comment[msg]
 # 2.0    if $KCONV_TECSGEN == $KCONV_CDL
-    if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Kconv::BINARY then
+    if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Kconv::BINARY
       return str
     else
       return str.kconv($KCONV_CDL, $KCONV_TECSGEN)
@@ -60,12 +60,12 @@ class TECSMsg
  def self.get_error_message(body)
    body =~ /^[A-Z0-9]+/    # エラー番号を取り出す
    num = $&
-   if num then
+   if num
      msg = @@error_message[num.to_sym]
    else
      msg = nil
    end
-   if msg == nil then
+   if msg == nil
      m = body
    else
      m = num + " " + msg
@@ -79,7 +79,7 @@ class TECSMsg
    body =~ /^[A-Z0-9]+/    # ウォーニング番号を取り出す
    num = $&
    msg = @@warning_message[num.to_sym]
-   if msg == nil then
+   if msg == nil
      m = body
    else
      m = num + " " + msg
@@ -93,7 +93,7 @@ class TECSMsg
    body =~ /^[A-Z0-9]+/    # 情報番号を取り出す
    num = $&
    msg = @@info_message[num.to_sym]
-   if msg == nil then
+   if msg == nil
      m = body
    else
      m = num + " " + msg

@@ -95,63 +95,63 @@ class ATK1KernelPlugin < CelltypePlugin
 
         # STATUS
         join = cell.get_join_list.get_item(:status)
-        if join then
+        if join
           str = join.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
           file2.print "\t\tSTATUS = #{str};\n"
         end
 
         # STARTUPHOOK
         join = cell.get_join_list.get_item(:useStartupHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tSTARTUPHOOK = #{str};\n"
         end
 
         # ERRORHOOK
         join = cell.get_join_list.get_item(:useErrorHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tERRORHOOK = #{str};\n"
         end
 
         # SHUTDOWNHOOK
         join = cell.get_join_list.get_item(:useShutdownHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tSHUTDOWNHOOK = #{str};\n"
         end
 
         # PRETASKHOOK
         join = cell.get_join_list.get_item(:usePreTaskHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tPRETASKHOOK = #{str};\n"
         end
 
         # POSTASKHOOK
         join = cell.get_join_list.get_item(:usePostTaskHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tPOSTTASKHOOK = #{str};\n"
         end
 
         # USEGETSERVICEID
         join = cell.get_join_list.get_item(:useGetServiceId)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tUSEGETSERVICEID = #{str};\n"
         end
 
         # USEPARAMETERACCESS
         join = cell.get_join_list.get_item(:useParameterAccess)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tUSEPARAMETERACCESS = #{str};\n"
         end
 
         # USERESSCHEDULER
         join = cell.get_join_list.get_item(:useResourceScheduler)
-        if join then
+        if join
           str = join.get_rhs.to_s
           file2.print "\t\tUSERESSCHEDULER = #{str};\n"
         end
@@ -172,9 +172,9 @@ class ATK1KernelPlugin < CelltypePlugin
         name_array = @celltype.get_name_array(cell)
 
         join = cell.get_join_list.get_item(:useStartupHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
-          if str == "TRUE" then
+          if str == "TRUE"
             file2.print <<EOT
 #ifdef USE_STARTUPHOOK
 void StartupHook(void)
@@ -191,9 +191,9 @@ EOT
         end
 
         join = cell.get_join_list.get_item(:useErrorHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
-          if str == "TRUE" then
+          if str == "TRUE"
             file2.print <<EOT
 #ifdef USE_ERRORHOOK
 void ErrorHook(StatusType ercd)
@@ -208,9 +208,9 @@ EOT
         end
 
         join = cell.get_join_list.get_item(:useShutdownHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
-          if str == "TRUE" then
+          if str == "TRUE"
             file2.print <<EOT
 #ifdef USE_SHUTDOWNHOOK
 void ShutdownHook(StatusType ercd)
@@ -228,9 +228,9 @@ EOT
         end
 
         join = cell.get_join_list.get_item(:usePreTaskHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
-          if str == "TRUE" then
+          if str == "TRUE"
             file2.print <<EOT
 #ifdef USE_PRETASKHOOK
 void PreTaskHook(void)
@@ -245,9 +245,9 @@ EOT
         end
 
         join = cell.get_join_list.get_item(:usePostTaskHook)
-        if join then
+        if join
           str = join.get_rhs.to_s
-          if str == "TRUE" then
+          if str == "TRUE"
             file2.print <<EOT
 #ifdef USE_POSTTASKHOOK
 void PostTaskHook(void)
@@ -272,9 +272,9 @@ EOT
 
   @@cell_list.each { |cell|
     join =  cell.get_join_list.get_item(:useResourceScheduler)
-    if join then
+    if join
       flag = join.get_rhs.to_s
-      if flag == "TRUE" then
+      if flag == "TRUE"
         file.print <<EOT
 cell tResource RES_SCHEDULER {
 	property = "STANDARD";

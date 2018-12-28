@@ -56,7 +56,7 @@ class TracePlugin < ThroughPlugin
     @plugin_arg_check_proc_tab = TracePluginArgProc
     parse_plugin_arg
 
-    if @cellEntry_list.length > 0 then
+    if @cellEntry_list.length > 0
       @cellEntry_list.each{ |ce|
         if "#{next_cell.get_name}.#{next_cell_port_name}".to_sym == ce.to_sym
           @b_generate = true
@@ -66,7 +66,7 @@ class TracePlugin < ThroughPlugin
       @b_generate = true
     end
 
-    if @b_generate == false then
+    if @b_generate == false
       # 元々呼び出すセルに結合するものとする
       @entry_port_name = next_cell_port_name
       @cell_name = next_cell.get_name
@@ -80,7 +80,7 @@ class TracePlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@ct_name] == nil then
+    if @@generated_celltype[@ct_name] == nil
       @@generated_celltype[@ct_name] = [ self ]
     else
       @@generated_celltype[@ct_name] << self
@@ -90,7 +90,7 @@ class TracePlugin < ThroughPlugin
     file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
 
     send_receive = []
-    if @signature != nil then
+    if @signature != nil
       @signature.each_param{ |fd,param|
         dir =param.get_direction
         case dir
@@ -104,7 +104,7 @@ class TracePlugin < ThroughPlugin
 celltype #{@ct_name} {
 EOT
 
-    if send_receive.length > 0 then
+    if send_receive.length > 0
       file2.print "  [ allocator(\n"
       delim = ""
       send_receive.each { |a|
@@ -136,21 +136,21 @@ EOT
 
     gen_plugin_decl_code(file)
 
-    if @b_generate != false then
+    if @b_generate != false
       nest = @region.gen_region_str_pre file
       indent_str =  "  " * nest
-      if @next_cell_port_subscript then
+      if @next_cell_port_subscript
         subscript = '[' + @next_cell_port_subscript.to_s + ']'
       else
         subscript = ""
       end
 
-      if @probeName then
+      if @probeName
         probeName_str = "#{indent_str}  probeName_str = \"" + @probeName + ": \";\n"
       else
         probeName_str = ""
       end
-      if @caller_cell then
+      if @caller_cell
         caller_cell_str = "#{indent_str}  from_str = \"#{@caller_cell.get_name}\";\n"
       else
         caller_cell_str = ""
@@ -169,13 +169,13 @@ EOT
 
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
-    if ! func_type.get_type.is_void? then
+    if ! func_type.get_type.is_void?
       file.print("\t#{func_type.get_type_str}\tretval;\n")
     end
 
     file.print("\tSYSUTM\tutime;\n")
 
-    if ! b_singleton then
+    if ! b_singleton
 
       file.print <<EOT
 \t#{ct_name}_CB *p_cellcb;
@@ -200,7 +200,7 @@ EOT
     print_params(params, file, 0, :IN)
 
     delim = ""
-    if ! func_type.get_type.is_void? then
+    if ! func_type.get_type.is_void?
       file.print("\tretval = ")
     else
       file.print("\t")
@@ -213,7 +213,7 @@ EOT
       delim = ","
     }
     file.print(" );\n")
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
@@ -226,7 +226,7 @@ EOT
 
     print_params(params, file, 0, :OUT)
 
-    if(! func_type.get_type.is_void?) then
+    if(! func_type.get_type.is_void?)
       print_param("retval", func_type.get_type, file, 0, :RETURN, func_type.get_type.get_type_str, nil, nil)
       file.print("\treturn retval;\n")
     end
@@ -236,7 +236,7 @@ EOT
   def print_params(params, file, nest, direction)
     params.each{ |param|
       dir = param.get_direction
-      if(direction == :IN)then
+      if(direction == :IN)
         case dir
         when :IN, :INOUT, :SEND
           print_param(param.get_name, param.get_type, file, nest, dir, param.get_type.get_type_str, nil, nil)
@@ -295,11 +295,11 @@ EOT
       max_loop = @maxArrayDisplay
       loop_count = nil
 
-      if se then
+      if se
         loop_count = "(((#{se.to_str(name_list, outer, outer2)})>#{max_loop}) ? #{max_loop} : (#{se.to_str(name_list, outer, outer2)}))"
         file.print("#{indent}syslog( LOG_INFO, \"#{indent}size_is(#{se.to_str(name_list, outer, outer2)})=%d\", #{se.to_str(name_list, outer, outer2)} );\n")
         size = "#{se.to_str(name_list, outer, outer2)}"
-      elsif ce then
+      elsif ce
         loop_count = "(((#{ce.to_str(name_list, outer, outer2)})>#{max_loop}) ? #{max_loop} : (#{ce.to_str(name_list, outer, outer2)})) "
         file.print("#{indent}syslog( LOG_INFO, \"#{indent}count_is(#{ce.to_str(name_list, outer, outer2)})=%d\", #{ce.to_str(name_list, outer, outer2)} );\n")
         size = "#{ce.to_str(name_list, outer, outer2)}"
@@ -311,11 +311,11 @@ EOT
       type0 = type
       type = referto
       type_str = type.get_type_str
-      if type.kind_of?(DefinedType) then
+      if type.kind_of?(DefinedType)
         type = type.get_original_type
       end
 
-      if type0.is_nullable? then
+      if type0.is_nullable?
         nest += 1
         indent0 = indent
         outer0 = outer
@@ -324,7 +324,7 @@ EOT
         file.print"#{indent0}if( #{outer}#{name}#{outer2} ){\n"
       end
 
-      if loop_count == nil then
+      if loop_count == nil
         case type
         when StructType
           members = type.get_members_decl
@@ -345,7 +345,7 @@ EOT
           print_param(name, type, file, nest, direction, type_str, outer, outer2)
         end
       else # loop_count != nil
-        if type.kind_of?(PtrType) || type.kind_of?(StructType) then
+        if type.kind_of?(PtrType) || type.kind_of?(StructType)
           num_per_loop = 1
         else
           num_per_loop = 4
@@ -418,7 +418,7 @@ EOT
 EOT
       end # loop_count == nil
 
-      if type0.is_nullable? then
+      if type0.is_nullable?
         file.print <<EOT
 #{indent0}} else {
 #{indent0}    syslog( LOG_INFO, \"#{indent0}[#{direction}]#{outer0}#{name}#{outer20} = NULL\" );
@@ -445,7 +445,7 @@ EOT
   def set_cellEntry rhs
     ces = rhs.to_s.split /\s*,\s*/
     ces.each{ |ce|
-      if ce =~ /^[A-Za-z_]\w*\.[A-Za-z_]\w*$/ then
+      if ce =~ /^[A-Za-z_]\w*\.[A-Za-z_]\w*$/
         # OK
       else
         cdl_error("#{ce}: TracePlugin arg not in \"symbol.symbol\" form")
@@ -473,7 +473,7 @@ EOT
     @kernelCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@kernelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("TracePlugin: kernelCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -483,7 +483,7 @@ EOT
     @syslogCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@syslogCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("TracePlugin: syslogCelltype '#{rhs}' not celltype or not defined")
     end
   end

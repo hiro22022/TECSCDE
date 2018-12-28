@@ -75,7 +75,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@serverChannelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: serverChannelCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -87,7 +87,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@clientChannelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: clientChanneclCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -131,7 +131,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@taskCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: taskCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -153,7 +153,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@TDRCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found")
     end
   end
@@ -169,7 +169,7 @@ module GenOpaqueMarshaler
       str.strip!
       token = nil
       res = str.sub!(regexp){ |matched|  token = matched;  "" }
-      if ! token then
+      if ! token
         cdl_error("syntax error in substituteAllocator option near '#{str}', expected '#{expected}'")
       end
       return token
@@ -234,7 +234,7 @@ module GenOpaqueMarshaler
     rhs = rhs.to_sym
     if rhs == :true
       @noServerChannelOpenerCode = true
-    elsif rhs == :false then
+    elsif rhs == :false
       @noServerChannelOpenerCode = false
     else
       cdl_error("RPCPlugin: specify true or false for noServerChannelOpenerCode")
@@ -246,7 +246,7 @@ module GenOpaqueMarshaler
     @semaphoreCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: clientSemaphoreCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -305,11 +305,11 @@ module GenOpaqueMarshaler
 
     # signature で対応できないものをチェック
     @signature.each_param{ |func_decl, param_decl|
-      if param_decl.get_direction == :OUT then
-        if param_decl.get_count && ! param_decl.get_size then
+      if param_decl.get_direction == :OUT
+        if param_decl.get_count && ! param_decl.get_size
           cdl_error("#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: size_is must be specified for out parameter of Opaque RPC")
         end
-        if param_decl.get_string == -1 then
+        if param_decl.get_string == -1
           cdl_error("#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: string length must be specified for out parameter of Opaque RPC")
         end
       end
@@ -323,26 +323,26 @@ module GenOpaqueMarshaler
     # scct = Namespace.find ["::", @serverChannelCelltype] # mikan namespace
     nsp = NamespacePath.analyze(@serverChannelCelltype.to_s)
     scct = Namespace.find nsp
-    if scct then
+    if scct
       obj = scct.find(:"eOpener")
-      if obj.instance_of? Port then
-        if obj.get_signature.get_name.to_sym == :sServerChannelOpener then
-          if @noServerChannelOpenerCode == false then
+      if obj.instance_of? Port
+        if obj.get_signature.get_name.to_sym == :sServerChannelOpener
+          if @noServerChannelOpenerCode == false
             @b_genOpener = true
             @taskMainCelltype = :"tRPCDedicatedTaskMainWithOpener"
           end
         end
       end
     end
-    if @noServerChannelOpenerCode == false && @taskMainCelltype != :"tRPCDedicatedTaskMainWithOpener" then
+    if @noServerChannelOpenerCode == false && @taskMainCelltype != :"tRPCDedicatedTaskMainWithOpener"
       cdl_warning("O9999 ServerChannelOpener code not generated, not found 'entry sServerChannelOpener eOpener'")
     end
   end
 
   #=== GenOpaqueMarshaler# PPAllocator の必要性をチェックする
   def check_PPAllocator
-    if @signature.need_PPAllocator?(true) then
-      if @PPAllocatorSize == nil then
+    if @signature.need_PPAllocator?(true)
+      if @PPAllocatorSize == nil
         cdl_error("PPAllocatorSize must be speicified for size_is array")
       end
     end
@@ -354,7 +354,7 @@ module GenOpaqueMarshaler
     f = CFile.open(@marshaler_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
-    if @PPAllocatorSize then
+    if @PPAllocatorSize
       alloc_call_port = "  call sPPAllocator cPPAllocator;\n"
     else
       alloc_call_port = ""
@@ -386,7 +386,7 @@ EOT
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     # unmarshaler クラスか?
-    if ct_name == @unmarshaler_celltype_name.to_sym then
+    if ct_name == @unmarshaler_celltype_name.to_sym
       gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     else
       gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
@@ -403,9 +403,9 @@ EOT
     type = func_type.get_type.get_original_type
 
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
-    if ! type.is_void? then
+    if ! type.is_void?
       file.print("\t#{func_type.get_type.get_type_str}\t\tretval_;\n")
-      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT") then
+      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
         b_ret_er = true
       end
     else
@@ -421,7 +421,7 @@ EOT
     file.print("\tint16_t\tfunc_id_ = #{func_id};	/* (id of '#{func_name}') = #{fid}*/\n")
 
     # シングルトンでないか？
-    if ! b_singleton then
+    if ! b_singleton
 
       # singleton でなければ p_cellcb 取得コードを出力
       file.print <<EOT
@@ -432,7 +432,7 @@ EOT
 EOT
 
       # エラーを返すか？
-      if b_ret_er then
+      if b_ret_er
         file.print <<EOT
 	}else{
 		return ERCD( E_RPC, E_ID );
@@ -448,10 +448,10 @@ EOT
       end
     end
 
-    if func_type.has_receive? then
+    if func_type.has_receive?
       file.print "	/* initialize receive parameters */\n"
       params.each{ |param|
-        if param.get_direction == :RECEIVE then
+        if param.get_direction == :RECEIVE
           file.print "	*#{param.get_name} = 0;\n"
         end
       }
@@ -484,7 +484,7 @@ EOT
     b_marshal = true  # marshal
 
     # in 方向の入出力を出力
-    if func_type.has_inward? then
+    if func_type.has_inward?
       file.print "	/* 入力引数送出 */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_SEND_BODY );\n"
       print_params(params, file, 1, b_marshal, b_get, true, "eClientEntry", func_name)
@@ -492,7 +492,7 @@ EOT
     end
     print_out_nullable(params, file, 1, b_marshal);
 
-    if ! func_type.is_oneway? then
+    if ! func_type.is_oneway?
       b_continue = "true"
     else
       b_continue = "false"
@@ -503,7 +503,7 @@ EOT
     file.print "		goto error_reset;\n\n"
 
     # send のメモリをデアロケート
-    if func_type.has_send? then
+    if func_type.has_send?
       file.print "	/* dealloc send parameter while executing */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_EXEC );\n"
       dir = :SEND; nest = 1; dealloc_cp = "eClientEntry_#{func_name}"
@@ -511,7 +511,7 @@ EOT
       file.print "\n"
     end
 
-    if ! func_type.is_oneway? then
+    if ! func_type.is_oneway?
 
       file.print "	/* パケットの始まりをチェック */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_RECV_SOP );\n"
@@ -522,8 +522,8 @@ EOT
       file.print "	/* 戻り値の受け取り */\n"
       print_param("retval_", func_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
 
-      if func_type.has_outward? then
-        if b_ret_er then
+      if func_type.has_outward?
+        if b_ret_er
           indent_level = 2
           file.print "	if( MERCD( retval_ ) != E_RPC ){\n"
         else
@@ -536,7 +536,7 @@ EOT
         print_params(params, file, indent_level, b_marshal, b_get, true, "eClientEntry", func_name)
         print_params(params, file, indent_level, b_marshal, b_get, false, "eClientEntry", func_name)
 
-        if b_ret_er then
+        if b_ret_er
           file.print "	}\n"
         end
       end
@@ -556,7 +556,7 @@ EOT
 		cLockChannel_signal();
 EOT
 
-    if(b_void == false)then
+    if(b_void == false)
       # 呼び元に戻り値をリターン
       file.print("	return retval_;\n")
     else
@@ -568,7 +568,7 @@ EOT
 error_reset:
 EOT
     # send のメモリをデアロケート
-    if func_type.has_send? then
+    if func_type.has_send?
       file.print "	/* dealloc send parameter */\n"
       file.print "	if( state_ < RPCSTATE_CLIENT_EXEC ){\n"
       dir = :SEND; nest = 2; dealloc_cp = "eClientEntry_#{func_name}"
@@ -577,7 +577,7 @@ EOT
     end
 
     # receive のメモリをデアロケート
-    if func_type.has_receive? then
+    if func_type.has_receive?
       file.print("	/* receive parameter */\n")
       dir = :RECEIVE; nest = 1; dealloc_cp = "eClientEntry_#{func_name}"
       dealloc_for_params(params, file, nest, dir, dealloc_cp, true)
@@ -598,7 +598,7 @@ EOT
 		cErrorHandler_errorOccured( func_id_, ercd_, state_ );
 EOT
 
-    if(b_ret_er != false)then
+    if(b_ret_er != false)
       # 呼び元に戻り値をリターン
       file.print("	return ERCD( E_RPC, MERCD( ercd_ ) );\n")
     else
@@ -625,7 +625,7 @@ EOT
 		p_cellcb = GET_CELLCB(idx);
 EOT
 
-    if b_ret_er then
+    if b_ret_er
         file.print <<EOT
 	}else{
 		return E_ID;
@@ -672,7 +672,7 @@ EOT
 
     } #
 
-    if @PPAllocatorSize then
+    if @PPAllocatorSize
       ppallocator_dealloc_str = "	/* PPAllocator のすべてを解放 */\n	cPPAllocator_dealloc_all();"
     else
       ppallocator_dealloc_str = ""
@@ -699,7 +699,7 @@ EOT
   #=== PREAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、アンマーシャラ関数のプロトタイプ宣言を生成
   def gen_preamble file, b_singleton, ct_name, global_name
-    if ct_name != @unmarshaler_celltype_name.to_sym then
+    if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end
 
@@ -721,7 +721,7 @@ EOT
   #=== POSTAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、個々のアンマーシャラ関数の生成
   def gen_postamble file, b_singleton, ct_name, global_name
-    if ct_name != @unmarshaler_celltype_name.to_sym then
+    if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end
 
@@ -734,11 +734,11 @@ EOT
       # 関数は返り値を持つか?
       b_ret_er = false
       init_retval = ""
-      if f_type.get_type.is_void? then
+      if f_type.get_type.is_void?
         b_void = true
       else
         b_void = false
-        if f_type.get_type.get_type_str == "ER" || f_type.get_type.get_type_str == "ER_INT" then
+        if f_type.get_type.get_type_str == "ER" || f_type.get_type.get_type_str == "ER_INT"
           b_ret_er = true
           init_retval = " = E_OK"
         end
@@ -763,17 +763,17 @@ EOT
         type = par.get_type.get_original_type
 
         dir = par.get_direction
-        if(dir == :RECEIVE)then
+        if(dir == :RECEIVE)
           # type は PtrType で、それを取り除いた型
           type = type.get_type
         end
-        if(dir == :SEND || dir == :RECEIVE)then
+        if(dir == :SEND || dir == :RECEIVE)
           init = " = 0"
         else
           init = ""
         end
 
-        if type.kind_of? ArrayType then
+        if type.kind_of? ArrayType
           type = type.get_type
           aster = "(*"
           aster2 = ")"
@@ -785,12 +785,12 @@ EOT
         type_str = type.get_type_str.gsub(/\bconst\b */, "") # "const" を外す
         file.printf("	%-12s %s%s%s%s%s;\n", type_str, aster, name, aster2, type.get_type_str_post, init)
 
-        if dir == :OUT && type.is_nullable? then
+        if dir == :OUT && type.is_nullable?
           file.print("	int8_t\tb_#{name}_null_;\n")
         end
       }
 
-      if ! b_void then
+      if ! b_void
         file.printf("	%-12s retval_%s%s;\n", f_type.get_type.get_type_str, f_type.get_type.get_type_str_post, init_retval)
       end
 
@@ -807,7 +807,7 @@ EOT
       # パケットの受信完了
       file.print "	/* パケット終わりをチェック */\n"
       file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_RECV_EOP );\n"
-      if ! f_type.is_oneway? then
+      if ! f_type.is_oneway?
         b_continue = "true"
       else
         b_continue = "false"
@@ -822,7 +822,7 @@ EOT
       # 対象関数を呼出す
       file.print "	/* 対象関数の呼出し */\n"
       file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_EXEC );\n"
-      if b_void then
+      if b_void
         file.print("	cServerCall_#{f_name}(")
       else
         file.print("	retval_ = cServerCall_#{f_name}(")
@@ -832,7 +832,7 @@ EOT
       params.each{ |par|
         file.print delim
         delim = ", "
-        if par.get_direction == :RECEIVE then
+        if par.get_direction == :RECEIVE
           file.print "&"
         end
         file.print par.get_name
@@ -842,7 +842,7 @@ EOT
       # 戻り値、出力引数の受取コードの生成
 
       # oneway の場合出力、戻り値が無く、受取を待たない（非同期な呼出し）
-      if ! f.is_oneway? then
+      if ! f.is_oneway?
 
         file.print "\n	/* SOPの送出 */\n"
         file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_SEND_SOP );\n"
@@ -851,13 +851,13 @@ EOT
         file.print "		goto error_reset;\n"
 
         b_get = false     # unmarshaler は put
-        if(! b_void)then
+        if(! b_void)
           file.print "	/* 戻り値の送出 */\n"
           print_param("retval_", f_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
         end
 
-        if f_type.has_outward? then
-          if b_ret_er then
+        if f_type.has_outward?
+          if b_ret_er
             indent_level = 2
             file.print "	if( MERCD( retval_ ) != E_RPC ){\n"
           else
@@ -871,13 +871,13 @@ EOT
           print_params(params, file, indent_level, b_marshal, b_get, false, "cServerCall", f_name)
 
           # receive のメモリをデアロケート
-          if f_type.has_receive? then
+          if f_type.has_receive?
             file.print "#{indent}/* dealloc receive parameter */\n"
             dir = :RECEIVE; dealloc_cp = "cServerCall_#{f_name}"
             dealloc_for_params(params, file, indent_level, dir, dealloc_cp)
           end
 
-          if b_ret_er then
+          if b_ret_er
             file.print "	}\n"
           end
         end
@@ -894,7 +894,7 @@ EOT
 error_reset:
 EOT
       # send のリセット用デアロケート
-      if f_type.has_send? then
+      if f_type.has_send?
         file.print "	/* dealloc send parameter */\n"
         file.print "	if( *state_ < RPCSTATE_SERVER_EXEC ){\n"
         dir = :SEND; indent_level = 2; dealloc_cp = "cServerCall_#{f_name}"
@@ -903,7 +903,7 @@ EOT
       end
 
       # receive のメモリをデアロケート
-      if f_type.has_receive? && b_ret_er then
+      if f_type.has_receive? && b_ret_er
         file.print "	/* dealloc receive parameter */\n"
         file.print "	if( MERCD( retval_ ) != E_RPC ){\n"
         dir = :RECEIVE; indent_level = 2; dealloc_cp = "cServerCall_#{f_name}"
@@ -929,12 +929,12 @@ EOT
   def print_params(params, file, nest, b_marshal, b_get, b_referenced, port_name, func_name)
     params.each{ |param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
-      if ! (b_referenced == param.is_referenced?) then
+      if ! (b_referenced == param.is_referenced?)
         next
       end
 
       dir = param.get_direction
-      if(b_get == false && b_marshal == true || b_get == true && b_marshal == false)then
+      if(b_get == false && b_marshal == true || b_get == true && b_marshal == false)
         case dir
         when :IN, :INOUT
           alloc_cp = "cPPAllocator_alloc"
@@ -954,7 +954,7 @@ EOT
         when :RECEIVE
           alloc_cp = "#{port_name}_#{func_name}_#{param.get_name}_alloc"
           alloc_cp_extra = nil
-          if b_get then
+          if b_get
             outer = "(*"         # マーシャラ側では、ポインタが (send と比べ) 一つ多い
             outer2 = ")"
           else
@@ -972,7 +972,7 @@ EOT
   def alloc_for_out_params(params, file, nest, dir, alloc_cp, alloc_cp_extra)
     params.each{ |param|
       dir = param.get_direction
-      if dir == :OUT then
+      if dir == :OUT
         alloc_for_out_param(param.get_name, param.get_type, file, nest, nil, nil, alloc_cp, alloc_cp_extra)
       end
     }
@@ -981,7 +981,7 @@ EOT
   #=== アロケータコードを生成 (out のアンマーシャラ用個別パラメータの生成)
   def alloc_for_out_param(name, type, file, nest, outer, outer2, alloc_cp, alloc_cp_extra)
     org_type = type.get_original_type
-    if org_type.is_nullable? then
+    if org_type.is_nullable?
       indent = "\t" * nest
       file.print "#{indent}if( ! b_#{name}_null_  ){\n"
       nest += 1
@@ -990,14 +990,14 @@ EOT
     when PtrType
       indent = "\t" * nest
       count = type.get_count; size = type.get_size; string = type.get_string
-      if count || size || string then
+      if count || size || string
         loop_counter_type = IntType.new(16)   # mikan 方を size_is, count_is の引数の型とする
-        if count then
+        if count
           len = type.get_count.to_s
-        elsif size then
+        elsif size
           len = type.get_size.to_s
-        elsif string then
-          if  type.get_string.instance_of? Expression then
+        elsif string
+          if  type.get_string.instance_of? Expression
             len = type.get_string.to_s
           else
             raise "unsuscripted string used for out parameter #{name}"
@@ -1005,7 +1005,7 @@ EOT
         end
 
         # size_is に max 指定がある場合、length が max を超えているかチェックするコードを生成
-        if org_type.get_max != nil && string == nil then
+        if org_type.get_max != nil && string == nil
           file.print "#{indent}if( #{len} > #{type.get_max} ){\t/* GenOpaqueMarshaler max check 2 */\n"
           file.print "#{indent}	ercd_ = E_PAR;\n"
           file.print "#{indent}	goto error_reset;\n"
@@ -1017,7 +1017,7 @@ EOT
 #{indent}	goto error_reset;
 EOT
 
-        if type.get_type.kind_of? PtrType then
+        if type.get_type.kind_of? PtrType
           file.print "#{indent}{\n"
           file.print "#{indent}	#{loop_counter_type.get_type_str}  i__#{nest}, length__#{nest} = #{len};\n"
           file.print "#{indent}	for( i__#{nest} = 0; i__#{nest} < length__#{nest}; i__#{nest}++ ){\n"
@@ -1033,7 +1033,7 @@ EOT
 EOT
       end
     end
-    if org_type.is_nullable? then
+    if org_type.is_nullable?
       nest -= 1
       indent = "\t" * nest
       file.print "#{indent}} else {\n"
@@ -1046,28 +1046,28 @@ EOT
   #=== 引数の一括デアロケートコードの生成
   # send：マーシャラの最後、receive：アンマーシャラの最後で一括して引数をデアロケートする
   def dealloc_for_params(params, file, nest, dir, dealloc_cp, b_reset = false)
-    if b_reset then
+    if b_reset
       reset_str = "_reset"
     else
       reset_str = ""
     end
 
     params.each{ |param|
-      if dir == param.get_direction then
+      if dir == param.get_direction
         indent = "\t" * nest
         type = param.get_type.get_original_type
         aster = ""
-        if dir == :RECEIVE then
+        if dir == :RECEIVE
           type = type.get_type.get_original_type   # ポインタを一つ外す
-          if b_reset then
+          if b_reset
             aster = "*"
           end
         end
         count = type.get_count; size = type.get_size
-        if (size || count) && type.get_type.has_pointer? then
-          if count then
+        if (size || count) && type.get_type.has_pointer?
+          if count
             len = ", #{type.get_count.to_s}"
-          elsif size then
+          elsif size
             len = ", #{type.get_size.to_s}"
           end
         else
@@ -1086,7 +1086,7 @@ EOT
     params.each{ |param|
       next if param.get_direction != :OUT
       next if ! param.is_nullable?
-      if b_marshal then
+      if b_marshal
         file.print "#{indent}if( (ercd_=cTDR_putInt8( (int8_t)(#{param.get_name} == NULL) )) != E_OK )\n"
         file.print "#{indent}\tgoto error_reset;\n"
       else

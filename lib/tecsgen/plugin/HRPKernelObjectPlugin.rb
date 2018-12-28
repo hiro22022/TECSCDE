@@ -171,7 +171,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                     dbgPrint "~~~~~ #{cell_domain_root.get_namespace_path} is OutOfDomain\n"
                     # print "~~~~~ #{cell_domain_root.get_namespace_path} is OutOfDomain\n"
                     # p cell_domain_root.get_name
-                    if cell_domain_root.get_name == "::" then
+                    if cell_domain_root.get_name == "::"
                       print_cfg_cre(file2, cell, val, "")
                     else
 #                      if !HRPKernelObjectPlugin.include_region(cell_domain_root.get_name.to_s)
@@ -203,7 +203,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                     acv_tmp = []
                     domain_roots = HRPPlugin.get_inter_domain_join_roots cell
                     # 結合先セルのドメインを加える
-                    if cell_domain_type.get_kind != :OutOfDomain then
+                    if cell_domain_type.get_kind != :OutOfDomain
                       domain_roots << cell_domain_root
                     end
                     domain_roots.each{ |dr|
@@ -213,14 +213,14 @@ class HRPKernelObjectPlugin < CelltypePlugin
                       when :kernel
                         acv_tmp << "TACP_KERNEL"
                       when :OutOfDomain
-                        if cell_domain_type.get_kind == :OutOfDomain then
+                        if cell_domain_type.get_kind == :OutOfDomain
                           # 呼び元も、呼び先も OutOfDomain の場合
                           acv_tmp << "TACP_SHARED"
                         end
                       end
                     }
                     acv_tmp.uniq!
-                    if acv_tmp.length == 0 then
+                    if acv_tmp.length == 0
                       # 呼び先セルが無所属かつ、呼び元も無所属のみ、または結合無しの場合
                       acv_tmp = [ "TACP_SHARED" ]
                     end
@@ -239,13 +239,13 @@ class HRPKernelObjectPlugin < CelltypePlugin
                                 when :user
                                   if dr.get_namespace_path != cell.get_region.get_domain_root.get_namespace_path
                                     # 他のユーザードメインからの結合
-                                    if(b_warn == false) then
+                                    if(b_warn == false)
                                       cdl_error("HRP9999 '$1': kernel object joined from other user domain. kernel object joined from multi-user-domain must be placed out of domain", cell.get_name)
                                       b_warn = true
                                     end
                                   end
                                 when :OutOfDomain
-                                  if(b_info == false) then
+                                  if(b_info == false)
                                     # 無所属からの結合
                                     # cdl_error( "HRP9999 kernel object joined from out of domain" )
                                     if cell_domain_type.get_kind == :OutOfDomain

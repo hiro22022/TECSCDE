@@ -91,7 +91,7 @@ module MrubyBridgeCelltypePluginModule
     end
 
     # include_inner_cell option
-    if cell.is_cloned? && @include_inner_cell == false then
+    if cell.is_cloned? && @include_inner_cell == false
     #   p "#{cell.get_name} excluded"
       cdl_info("I9999 MrubyBridgeCelltypePlugin: inner cell $1 is excluded", cell.get_name)
       return
@@ -100,7 +100,7 @@ module MrubyBridgeCelltypePluginModule
     end
 
     # exclude_cell option
-    if @exclude_cells.include?(cell.get_name) then
+    if @exclude_cells.include?(cell.get_name)
       return
     end
 
@@ -175,7 +175,7 @@ EOT
   def self.gen_post_code(file)
     dbgPrint "#{self.name}: gen_post_code_body\n"
 
-    if @@b_gen_post_code_called == false then
+    if @@b_gen_post_code_called == false
       @@b_gen_post_code_called = true
       MrubyBridgeCellPlugin.gen_post_code_body file
     end
@@ -205,13 +205,13 @@ EOT
 
   #=== プラグイン引数 ignoreUnsigned
   def set_ignoreUnsigned rhs
-    if rhs == "true" || rhs == nil then
+    if rhs == "true" || rhs == nil
       @b_ignoreUnsigned = true
     end
   end
 
   def set_include_inner_cell rhs
-    if rhs == "true" || rhs == nil then
+    if rhs == "true" || rhs == nil
       @include_inner_cell = true
     end
   end
@@ -229,7 +229,7 @@ EOT
     return if ct == nil    # error case
     ports.each{ |rhs_port|
       obj = ct.find(rhs_port.to_sym)
-      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY) then
+      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port '$1' not found or not entry in celltype '$2'", rhs_port, ct.get_name)
       else
         # print "MRBBridgeCellPlugin: exclude #{rhs_port}\n"
@@ -245,18 +245,18 @@ EOT
     return if ct == nil    # error case
     port_funcs.each{ |rhs_port_func|
       port_func = rhs_port_func.split('.')
-      if port_func.length != 2 then
+      if port_func.length != 2
         cdl_error("MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func)
       end
       obj = ct.find(port_func[0].to_sym)
-      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY) then
+      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port_func, ct.get_name)
       else
         signature = obj.get_signature
         next if signature == nil     # error case
         if signature.get_function_head port_func[1].to_sym
           # print "MRBBridgeCellPlugin: #{port_func[0]}.#{port_func[1]} exclude\n"
-          if @exclude_port_func[port_func[0]] then
+          if @exclude_port_func[port_func[0]]
             @exclude_port_func[port_func[0]] <<  port_func[1]
           else
             @exclude_port_func[port_func[0]] = [ port_func[1] ]
@@ -272,9 +272,9 @@ EOT
   #=== プラグイン引数 auto_exclude
   def set_auto_exclude rhs
     # print "MrubyBridgeCellPlugin: auto_exclude=#{rhs}\n"
-    if rhs == "false" then
+    if rhs == "false"
       @b_auto_exclude = false
-    elsif rhs == "true" then
+    elsif rhs == "true"
       @b_auto_exclude = true     # auto_exclude = true by default 
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")

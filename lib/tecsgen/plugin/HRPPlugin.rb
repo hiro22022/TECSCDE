@@ -170,7 +170,7 @@ class HRPPlugin < DomainPlugin
       file = AppFile.open("#{$gen}/tecsgen.cfg")
       file.print "/* HRPPlugin 002 */\n"
       regions.each{ |region|
-        if ! region.is_root? then
+        if ! region.is_root?
           nsp = "#{region.get_global_name}"
           file2 = AppFile.open("#{$gen}/tecsgen_#{nsp}.cfg")
           file2.close
@@ -278,14 +278,14 @@ class HRPPlugin < DomainPlugin
     rhs_cell = join.get_cell
     dbgPrint "--------- add_inter_domain:#{join.get_owner.get_namespace_path} => #{join.get_cell.get_namespace_path}-----\n"
     domain_root = join.get_owner.get_region.get_domain_root   # lhs cell's domain root
-    if @@inter_domain_join_set[rhs_cell] == nil then
+    if @@inter_domain_join_set[rhs_cell] == nil
       @@inter_domain_join_set[rhs_cell] = []
     end
     # 左辺のドメインルートを記録
     @@inter_domain_join_set[rhs_cell] << join
   end
   def self.get_inter_domain_join_set rhs_cell
-    if @@inter_domain_join_set[rhs_cell] then
+    if @@inter_domain_join_set[rhs_cell]
       @@inter_domain_join_set[rhs_cell].uniq!
     else
       @@inter_domain_join_set[rhs_cell] = []
@@ -310,7 +310,7 @@ class HRPPlugin < DomainPlugin
     delim = ""
     acv = ""
     cell_domain_root = cell.get_region.get_domain_root
-    if cell_domain_root.get_domain_type.get_kind != :OutOfDomain then
+    if cell_domain_root.get_domain_type.get_kind != :OutOfDomain
       domain_roots << cell.get_region.get_domain_root  # 結合先のドメインも含める
     end
     domain_roots.each{ |dr|
@@ -322,11 +322,11 @@ class HRPPlugin < DomainPlugin
         acv += "#{delim}TACP(#{dr.get_name})"
         delim = "|"
         if cell_domain_root.get_domain_type.get_kind != :OutOfDomain &&
-           dr.get_namespace_path != cell_domain_root.get_namespace_path then
+           dr.get_namespace_path != cell_domain_root.get_namespace_path
           cdl_error("HRP9999 '$1': kernel object joined from other user domain. kernel object joined from multi-user-domain must be placed out of domain", cell.get_name)
         end
       when :OutOfDomain
-        if cell_domain_root.get_domain_type.get_kind == :OutOfDomain then
+        if cell_domain_root.get_domain_type.get_kind == :OutOfDomain
           acv += "#{delim}TACP_SHARED"
           delim = "|"
         end
@@ -334,7 +334,7 @@ class HRPPlugin < DomainPlugin
         raise "unkown domain kind"
       end
     }
-    if acv == "" then
+    if acv == ""
       # 呼び先セルが無所属かつ、呼び元も無所属のみ、または結合無しの場合
       acv = "TACP_SHARED"
     end

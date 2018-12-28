@@ -55,7 +55,7 @@ class Plugin < Node
   #=== Plugin#cdl_error
   # set_locale が呼び出されるまで @error_backlog に保存し保留する
   def cdl_error *arg
-    if @locale then
+    if @locale
       Generator.error2(@locale, *arg)
     else
       @error_backlog << arg
@@ -157,7 +157,7 @@ class Plugin < Node
       arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
       #  識別子取得
-      if arg =~ /\A[a-zA-Z_]\w*/ then
+      if arg =~ /\A[a-zA-Z_]\w*/
         ident = $~
         arg = $'
       else
@@ -168,7 +168,7 @@ class Plugin < Node
       # 前の空白読み飛ばす
       arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
-      if arg =~ /=/ then
+      if arg =~ /=/
         arg = $'
       else
         cdl_error("P1002 plugin arg: expecting \'=\' not \'$1\'" , arg)
@@ -179,43 +179,43 @@ class Plugin < Node
       arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
       # 右辺文字列
-      if arg =~ /\A\\"(.*?)\\"\s*,/ then      # \"  \" で囲まれている場合
+      if arg =~ /\A\\"(.*?)\\"\s*,/      # \"  \" で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A%(.*?)%\s*,/ then      # %   % で囲まれている場合
+      elsif arg =~ /\A%(.*?)%\s*,/      # %   % で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A!(.*?)!\s*,/ then    # $   $ で囲まれている場合
+      elsif arg =~ /\A!(.*?)!\s*,/    # $   $ で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A'(.*?)'\s*,/ then    # $   $ で囲まれている場合
+      elsif arg =~ /\A'(.*?)'\s*,/    # $   $ で囲まれている場合
         rhs = $1
         remain = $'
-      elsif  arg =~ /\A\\"(.*?)\\"\s*,/ then  # || にも [,$] にもできなかった
+      elsif  arg =~ /\A\\"(.*?)\\"\s*,/  # || にも [,$] にもできなかった
         rhs = $1
         remain = $'
       # elsif arg =~ /\A(.*?)\s*$/ then
-      elsif arg =~ /\A\\"(.*?)\\"\s*\z/ then      # \"  \" で囲まれている場合
+      elsif arg =~ /\A\\"(.*?)\\"\s*\z/      # \"  \" で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A%(.*?)%\s*\z/ then      # %   % で囲まれている場合
+      elsif arg =~ /\A%(.*?)%\s*\z/      # %   % で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A!(.*?)!\s*\z/ then    # $   $ で囲まれている場合
+      elsif arg =~ /\A!(.*?)!\s*\z/    # $   $ で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A'(.*?)'\s*\z/ then    # $   $ で囲まれている場合
+      elsif arg =~ /\A'(.*?)'\s*\z/    # $   $ で囲まれている場合
         rhs = $1
         remain = $'
-      elsif  arg =~ /\A\\"(.*?)\\"\s*\z/ then  # || にも [,$] にもできなかった
+      elsif  arg =~ /\A\\"(.*?)\\"\s*\z/  # || にも [,$] にもできなかった
         rhs = $1
         remain = $'
-      elsif arg =~ /\A(.*?),/ then
+      elsif arg =~ /\A(.*?),/
         rhs = $1
         remain = $'
         # 前の空白読み飛ばす
         rhs.sub!(/\A\s*(.*)\s*\z/, '\1')
-      elsif arg =~ /\A(.*?)\s*\z/ then
+      elsif arg =~ /\A(.*?)\s*\z/
         rhs = $1
         remain = $'
       else
@@ -224,7 +224,7 @@ class Plugin < Node
       end
 
       # 0文字の文字列を to_sym すると例外発生するので空白文字とする
-      if rhs == "" then
+      if rhs == ""
         rhs = " "
       end
 
@@ -250,13 +250,13 @@ class Plugin < Node
 
     dbgPrint "check_plugin_arg: #{ident} #{rhs.to_str}\n"
     proc = nil
-    if @plugin_arg_check_proc_tab  then
+    if @plugin_arg_check_proc_tab
       proc = @plugin_arg_check_proc_tab[ident.to_s]
     end
-    if proc == nil then
+    if proc == nil
       proc = PluginArgProc[ident.to_s]
     end
-    if proc.instance_of? Proc then
+    if proc.instance_of? Proc
       dbgPrint "calling: #{self.class.name}.#{proc.to_s}\n"
       proc.call(self, rhs)
     else
@@ -272,7 +272,7 @@ class Plugin < Node
 
   #=== プラグインのメッセージ出力
   def print_msg(msg)
-    if @b_silent == true then
+    if @b_silent == true
       return
     end
     print msg
@@ -280,7 +280,7 @@ class Plugin < Node
 
   #=== プラグイン引数 silent
   def set_silent rhs
-    if rhs == "true" || rhs == nil then
+    if rhs == "true" || rhs == nil
       @b_silent = true
     end
   end
@@ -299,14 +299,14 @@ class CFile
   end
 
   def initialize(path, mode)
-    if $b_no_kcode then 
+    if $b_no_kcode 
       mode += ":" + $Ruby19_File_Encode
     end
     @file = File.open(path, mode)
   end
 
   def print str
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       @file.print(str)
     else
       @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
@@ -314,7 +314,7 @@ class CFile
   end
 
   def puts str
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       @file.print(str)
     else
       @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
@@ -323,7 +323,7 @@ class CFile
   end
 
   def printf(format, *arg)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       @file.print(sprintf(format, *arg))
     else
       @file.print(sprintf(format, *arg).kconv($KCONV_CDL, $KCONV_TECSGEN))

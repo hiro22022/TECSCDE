@@ -63,14 +63,14 @@ class RepeatCellPlugin < CellPlugin
   end
 
   def gen_cdl_file(file)
-    if $verbose then
+    if $verbose
       print "#{self.class}: repeat #{@cell.get_name} #(num} times\n"
     end
 
     nest = @cell.get_region.gen_region_str_pre file
     indent_str = "  " * nest
     @cell.get_name.to_s =~ /.*[^0-9]([0-9]+)\z/
-    if $1 then
+    if $1
       tail_zero = $1
       bname = @cell.get_name.to_s.gsub(/[0-9]+\z/, "")
     else
@@ -86,7 +86,7 @@ class RepeatCellPlugin < CellPlugin
 
       # セル名のカウント
       count_str = (count + base_count).to_s
-      if tail_zero.length > count_str.length then
+      if tail_zero.length > count_str.length
         leading_zero = "0" * (tail_zero.length - count_str.length)
       else
         leading_zero = ""
@@ -101,11 +101,11 @@ class RepeatCellPlugin < CellPlugin
 
         # Join の右辺の解析
         res = j.get_rhs.analyze_cell_join_expression
-        if res then
+        if res
           nsp, subscript, port_name = res[0], res[1], res[2]
         else
           nsp = j.get_rhs.analyze_single_identifier
-          if nsp then
+          if nsp
             subscript, port_name = nil, nil
           else
             file.print "#{indent_str}  #{j.get_name} = #{j.get_rhs.to_s};\n"
@@ -115,10 +115,10 @@ class RepeatCellPlugin < CellPlugin
 
         # 右辺のセル名 (末尾の数字をカウントアップ)
         nsp.get_name.to_s =~ /(.*[^0-9])([0-9]+)\z/
-        if $2 then
+        if $2
           rhs_tail_num = $2
           rhs_name_count = count + rhs_tail_num.to_i
-          if rhs_tail_num.length > rhs_name_count.to_s.length then
+          if rhs_tail_num.length > rhs_name_count.to_s.length
             leading_zero = "0" * (rhs_tail_num.length - rhs_name_count.to_s.length)
           else
             leading_zero = ""
@@ -128,9 +128,9 @@ class RepeatCellPlugin < CellPlugin
         end
 
         # Join 文字列の出力
-        if port_name then
+        if port_name
           # 右辺は セルの結合
-          if subscript then
+          if subscript
             file.print "#{indent_str}  #{j.get_name} = #{nsp.get_path_str}.#{port_name}[#{(count+subscript).to_s}];\n"
           else
             file.print "#{indent_str}  #{j.get_name} = #{nsp.get_path_str}.#{port_name};\n"
@@ -156,7 +156,7 @@ class RepeatCellPlugin < CellPlugin
       nsp = NamespacePath.new(rhs.to_sym, true)
       expr = Expression.create_single_identifier(nsp, nil)
       res = expr.eval_const(nil)
-      if res == nil then
+      if res == nil
         cdl_error("count value ($1): not single identifier or integer number", rhs.to_s)
         @count = 0
       else

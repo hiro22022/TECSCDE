@@ -105,7 +105,7 @@ class HRP2SVCPlugin < ThroughPlugin
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
-    if @@generated_celltype[@ct_name_body] == nil then
+    if @@generated_celltype[@ct_name_body] == nil
         @@generated_celltype[@ct_name_body] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
         file2.print <<EOT
@@ -122,7 +122,7 @@ EOT
     end
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@ct_name] == nil then
+    if @@generated_celltype[@ct_name] == nil
         @@generated_celltype[@ct_name] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
@@ -216,7 +216,7 @@ EOT
     ##### サーバー側のセルの生成 #####
     nest = @end_region.gen_region_str_pre file
     nest_str = "  " * nest
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
@@ -245,7 +245,7 @@ EOT
     ##### クライアント側のセルの生成 #####
     nest = @start_region.gen_region_str_pre file
     nest_str = "  " * nest
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
@@ -284,11 +284,11 @@ EOT
 
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
         # 拡張サービスコール呼出し
-        if ! func_type.get_type.kind_of?(VoidType) then
+        if ! func_type.get_type.kind_of?(VoidType)
             file.print("  #{func_type.get_type_str}  retval;\n")
         end
 
-        if ! b_singleton then
+        if ! b_singleton
 
             file.print <<EOT
   #{ct_name}_CB    *p_cellcb;
@@ -305,7 +305,7 @@ EOT
         # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
         delim = ""
-        if ! func_type.get_type.kind_of?(VoidType) then
+        if ! func_type.get_type.kind_of?(VoidType)
             file.print("  retval = (#{func_type.get_type_str})")
         else
             file.print("  ")
@@ -342,7 +342,7 @@ EOT
 
         file.print(" );\n")
 
-        if ! func_type.get_type.kind_of?(VoidType) then
+        if ! func_type.get_type.kind_of?(VoidType)
             file.print("  return retval;\n")
         end
 
@@ -375,7 +375,7 @@ EOT
 # EOT
 #             end
 
-            if func_type.get_type.kind_of?(VoidType) then
+            if func_type.get_type.kind_of?(VoidType)
                 retval_assign = ""
                 retval_return = ""
             else
@@ -404,15 +404,15 @@ EOT
 
             num = 1
             params.each{ |param|
-                if param.get_declarator.get_ptr_level > 0 then
-                    if param.get_direction == :IN then
+                if param.get_declarator.get_ptr_level > 0
+                    if param.get_direction == :IN
                         file2.print <<EOT
     if(prb_mem((void *)par#{num.to_s}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_READ) != E_OK){
         return E_MACV;
     }
 EOT
 
-                    elsif param.get_direction == :OUT then
+                    elsif param.get_direction == :OUT
                         file2.print <<EOT
     if(prb_mem((void *)par#{num.to_s}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_WRITE) != E_OK){
         return E_MACV;
@@ -439,7 +439,7 @@ EOT
 
             file2.print ");\n"
 
-            if !func_type.get_type.kind_of?(VoidType) then
+            if !func_type.get_type.kind_of?(VoidType)
                 file2.print "\n    return #{retval_return};\n"
             end
             file2.print "}\n\n"

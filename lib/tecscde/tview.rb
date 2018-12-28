@@ -485,7 +485,7 @@ module TECSCDE
 
       gap = mm2dot GapActive
       gap = 2 if gap < 2  # if less than 2 dots, let gap 2 dots
-      if cell.get_celltype && cell.get_celltype.is_active? then
+      if cell.get_celltype && cell.get_celltype.is_active?
 #        @drawTarget.draw_rectangle( @canvasGc, false, x1 + gap, y1 + gap, w1 - 2 * gap, h1 - 2 * gap )
         @cairo_context_target.rectangle(x1 + gap + 0.5, y1 + gap + 0.5, w1 - 2 * gap, h1 - 2 * gap)
         @cairo_context_target.set_line_width(1)
@@ -729,7 +729,7 @@ module TECSCDE
       @cairo_context_target.move_to xm, ym
       #----- draw bars -----#
       bars.each{ |bar|
-        if bar.instance_of? TECSModel::HBar then
+        if bar.instance_of? TECSModel::HBar
           xm2 = mm2dot(bar.get_position) + 0.5
           # @drawTarget.draw_line( @canvasGc, xm, ym, xm2, ym )
           @cairo_context_target.line_to xm2, ym
@@ -789,7 +789,7 @@ module TECSCDE
         @canvasGc.foreground = color
         @cairo_context_target.set_source_color color
 
-        if bar2.instance_of? TECSModel::HBar then
+        if bar2.instance_of? TECSModel::HBar
           xm2 = mm2dot(bar2.get_position)
           @gdkWindow.draw_line(@canvasGc, xm, ym, xm2, ym)
           xm = xm2
@@ -809,7 +809,7 @@ module TECSCDE
     #----- draw and utility for text  -----#
 
     def get_text_extent(text, obj_type, alignment, direction)
-      if direction != TEXT_VERTICAL then
+      if direction != TEXT_VERTICAL
         pc = @pango_context
         plo = @pango_layout
         pc.matrix = nil
@@ -844,7 +844,7 @@ module TECSCDE
     # obj_type::CELL_NAME, SIGNATURE_NAME, PORT_NAME
     # alignment::ALIGN_CENTER, ALIGN_LEFT
     def draw_text(x, y, text, obj_type, alignment, direction)
-      if direction == TEXT_VERTICAL then
+      if direction == TEXT_VERTICAL
         draw_text_v(x, y, text, obj_type, alignment)
       else
         draw_text_h(x, y, text, obj_type, alignment)

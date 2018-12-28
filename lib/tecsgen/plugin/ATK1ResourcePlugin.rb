@@ -85,7 +85,7 @@ class ATK1ResourcePlugin < CelltypePlugin
 
       str = cell.get_name
 
-      if str.to_s == "RES_SCHEDULER" then
+      if str.to_s == "RES_SCHEDULER"
 
         cell.set_specified_id(1)
 
@@ -97,10 +97,10 @@ class ATK1ResourcePlugin < CelltypePlugin
 
         # PROPERTY
         join = cell.get_join_list.get_item(:property)
-        if join then
+        if join
           str = join.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
 
-          if str == "LINKED" then
+          if str == "LINKED"
             file2.print "\t\tRESOURCEPROPERTY = #{str} {\n"
             join2 = cell.get_join_list.get_item(:linkedResource)
             str2 = join2.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')

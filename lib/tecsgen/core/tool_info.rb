@@ -67,7 +67,7 @@ class TOOL_INFO
 
     # __tool_info__( "tecsgen" ): validate & reflect immediately
     p "tool_info: tecsgen #{name}"
-    if name == :tecsgen then
+    if name == :tecsgen
       set_tecsgen_tool_info
     end
   end

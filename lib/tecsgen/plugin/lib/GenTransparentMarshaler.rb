@@ -64,7 +64,7 @@ module GenTransparentMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@channelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: channeclCelltype '#{rhs}' not celltype or not found")
     end
   end
@@ -76,7 +76,7 @@ module GenTransparentMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@TDRCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found")
     end
   end
@@ -84,7 +84,7 @@ module GenTransparentMarshaler
   #=== プラグイン引数 channelCellName のチェック
   def set_channelCellName(rhs)
     @channelCellName = rhs
-    if @channelCellName =~ /\A[a-zA-Z_]\w*/ then
+    if @channelCellName =~ /\A[a-zA-Z_]\w*/
       # OK
     else
       cdl_error("RPCPlugin: channeclCellName '#{rhs}' unsuitable for identifier")
@@ -111,7 +111,7 @@ module GenTransparentMarshaler
 
   def gen_marshaler_celltype 
 
-    if @PPAllocatorSize then
+    if @PPAllocatorSize
       alloc_call_port = "  call sPPAllocator cPPAllocator;\n"
     else
       alloc_call_port = ""
@@ -144,7 +144,7 @@ EOT
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     # unmarshaler クラスか?
-    if ct_name == @unmarshaler_celltype_name.to_sym then
+    if ct_name == @unmarshaler_celltype_name.to_sym
       gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     else
       gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
@@ -161,8 +161,8 @@ EOT
     type = func_type.get_type.get_original_type
 
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
-    if ! type.is_void? then
-      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT") then
+    if ! type.is_void?
+      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
         file.print("    #{func_type.get_type.get_type_str}  retval_ = E_OK;\n")
         b_ret_er = true
       else
@@ -183,7 +183,7 @@ EOT
     file.print("    int16_t  func_id_ = #{func_id};    /* id of #{func_name}: #{func_id} */\n")
 
     # シングルトンでないか？
-    if ! b_singleton then
+    if ! b_singleton
 
       # singleton でなければ p_cellcb 取得コードを出力
       file.print <<EOT
@@ -194,7 +194,7 @@ EOT
 EOT
 
       # エラーを返すか？
-      if b_ret_er then
+      if b_ret_er
         file.print <<EOT
     }else{
          return ERCD( E_RPC, E_ID );
@@ -237,13 +237,13 @@ EOT
     file.print "    /* 入力引数送出 */\n"
     print_params(params, file, 1, b_marshal, b_get, true, func_type.is_oneway?)
     print_params(params, file, 1, b_marshal, b_get, false, func_type.is_oneway?)
-    if ! b_void && ! func_type.is_oneway? then
+    if ! b_void && ! func_type.is_oneway?
       ret_ptr_type = PtrType.new(func_type.get_type)
       print_param_nc("retval_", ret_ptr_type, file, 1, :RETURN, "&", nil, b_get)
     end
 
     file.print "    /* EOPの送出（パケットの掃きだし） */\n"
-    if ! func_type.is_oneway? then
+    if ! func_type.is_oneway?
       b_continue = "true"
     else
       b_continue = "false"
@@ -251,7 +251,7 @@ EOT
     file.print "    if( (ercd_=cTDR_sendEOP(#{b_continue})) != E_OK )\n"
     file.print "        goto error_reset;\n\n"
 
-    if ! func_type.is_oneway? then
+    if ! func_type.is_oneway?
       file.print <<EOT
     if( (ercd_=cEventflag_wait( 0x01, TWF_ANDW, &flgptn )) != E_OK ){
       ercd_ = ERCD(E_RPC,ercd_);
@@ -270,7 +270,7 @@ EOT
       cLockChannel_signal();
 EOT
 
-    if(b_void == false)then
+    if(b_void == false)
       # 呼び元に戻り値をリターン
       file.print("    return retval_;\n")
     else
@@ -292,7 +292,7 @@ EOT
 
 EOT
 
-    if(b_ret_er != false)then
+    if(b_ret_er != false)
       # 呼び元に戻り値をリターン
       file.print("    return ercd_;\n")
     else
@@ -319,7 +319,7 @@ EOT
         p_cellcb = GET_CELLCB(idx);
 EOT
 
-    if b_ret_er then
+    if b_ret_er
         file.print <<EOT
     }else{
         return ERCD( E_RPC, E_ID );
@@ -360,7 +360,7 @@ EOT
       id = signature.get_id_from_func_name(f_name)
 
       # 関数は返り値を持つか?
-      if f_type.get_type.is_void? then
+      if f_type.get_type.is_void?
         b_void = true
       else
         b_void = false
@@ -374,7 +374,7 @@ EOT
 
     } # 
 
-    if @PPAllocatorSize then
+    if @PPAllocatorSize
       ppallocator_dealloc_str = "    /* PPAllocator のすべてを解放 */\n    cPPAllocator_dealloc_all();"
     else
       ppallocator_dealloc_str = ""
@@ -405,19 +405,19 @@ EOT
   def print_params(params, file, nest, b_marshal, b_get, b_referenced, b_oneway = false)
     params.each{ |param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
-      if ! (b_referenced == param.is_referenced?) then
+      if ! (b_referenced == param.is_referenced?)
         next
       end
 
       dir = param.get_direction
       type = param.get_type
-      if b_oneway && dir == :IN && type.get_original_type.kind_of?(PtrType) || type.get_original_type.kind_of?(ArrayType) then
+      if b_oneway && dir == :IN && type.get_original_type.kind_of?(PtrType) || type.get_original_type.kind_of?(ArrayType)
         # oneway, in, PtrType の場合コピー
         alloc_cp = "cPPAllocator_alloc"
         alloc_cp_extra = nil
         print_param(param.get_name, type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra)
       else
-        if(b_get == false && b_marshal == true || b_get == true && b_marshal == false)then
+        if(b_get == false && b_marshal == true || b_get == true && b_marshal == false)
           case dir
 #          when :IN, :INOUT, :SEND
           when :IN, :INOUT, :OUT, :SEND, :RECEIVE
@@ -453,7 +453,7 @@ EOT
           signC = "U"
           sign  = "u"
         when :SIGNED
-          if bit_size == -1 || bit_size == -11 then
+          if bit_size == -1 || bit_size == -11
             # signed char の場合、signed を指定する
             signC = "S"
             sign  = "s"
@@ -492,7 +492,7 @@ EOT
 
       when FloatType
         bit_size = type.get_bit_size
-        if bit_size == 32 then
+        if bit_size == 32
           type_str = "Float32"
           cast_str = "float32_t"
         else
@@ -508,13 +508,13 @@ EOT
         cast_str = "intptr_t"
       end
 
-      if type.get_type_str == cast_str then
+      if type.get_type_str == cast_str
         cast_str = ""
       else
         cast_str = "(" + cast_str + ")"
       end
 
-      if(b_get)then
+      if(b_get)
         cast_str.gsub!(/\)$/, "*)")
         file.print "    " * nest
         file.print "if( ( ercd_ = cTDR_get#{type_str}( #{cast_str}&(#{outer}#{name}#{outer2}) ) ) != E_OK )\n"
@@ -530,12 +530,12 @@ EOT
     when StructType
       members_decl =type.get_members_decl
       members_decl.get_items.each { |m|
-        if m.is_referenced? then
+        if m.is_referenced?
           print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)
         end
       }
       members_decl.get_items.each { |m|
-        if ! m.is_referenced? then
+        if ! m.is_referenced?
           print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)
         end
       }
@@ -550,7 +550,7 @@ EOT
   #=== PREAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、アンマーシャラ関数のプロトタイプ宣言を生成
   def gen_preamble file, b_singleton, ct_name, global_name
-    if ct_name != @unmarshaler_celltype_name.to_sym then
+    if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end
 
@@ -568,7 +568,7 @@ EOT
   #=== POSTAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、アンマーシャラ関数の生成
   def gen_postamble file, b_singleton, ct_name, global_name
-    if ct_name != @unmarshaler_celltype_name.to_sym then
+    if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end
 
@@ -579,7 +579,7 @@ EOT
       id = @signature.get_id_from_func_name(f_name)
 
       # 関数は返り値を持つか?
-      if f_type.get_type.is_void? then
+      if f_type.get_type.is_void?
         b_void = true
       else
         b_void = false
@@ -603,7 +603,7 @@ EOT
       param_list.each{ |par|
         name = par.get_name
         type = par.get_type
-        if type.kind_of? ArrayType then
+        if type.kind_of? ArrayType
           type = type.get_type
           aster = "(*"
           aster2 = ")"
@@ -618,8 +618,8 @@ EOT
       }
 
       # 戻り値を受け取る変数の定義
-      if ! b_void then
-        if f.is_oneway? then
+      if ! b_void
+        if f.is_oneway?
           retval_ptr = ""   # oneway の場合、受け取るが捨てられる
         else
           retval_ptr = "*"
@@ -633,7 +633,7 @@ EOT
       b_marshal  = false
       print_params(param_list, file, 1, b_marshal, b_get, true, f.is_oneway?)
       print_params(param_list, file, 1, b_marshal, b_get, false, f.is_oneway?)
-      if ! b_void && ! f.is_oneway? then
+      if ! b_void && ! f.is_oneway?
         ret_ptr_type = PtrType.new(f_type.get_type)
         print_param_nc("retval_", ret_ptr_type, file, 2, :RETURN, nil, nil, b_get)
       end
@@ -641,7 +641,7 @@ EOT
       # パケットの受信完了
       # mikan 本当は、対象関数を呼出す後に実施したい．呼出しパケットの使用終わりを宣言する目的として
       file.print "        /* パケット終わりをチェック */\n"
-      if ! f.is_oneway? then
+      if ! f.is_oneway?
         b_continue = "true"
       else
         b_continue = "false"
@@ -651,7 +651,7 @@ EOT
 
       # 対象関数を呼出す
       file.print "    /* 対象関数の呼出し */\n"
-      if b_void then
+      if b_void
         file.print("    cServerCall_#{f_name}(")
       else
         file.print("    #{retval_ptr}retval_ = cServerCall_#{f_name}(")
@@ -668,7 +668,7 @@ EOT
       # 戻り値、出力引数の受取コードの生成
 
       # oneway の場合出力、戻り値が無く、受取を待たない（非同期な呼出し）
-      if ! f.is_oneway? then
+      if ! f.is_oneway?
         file.print <<EOT
     /* 関数処理の終了を通知 */
     if( ( ercd_ = cEventflag_set( 0x01 ) ) != E_OK ){

@@ -55,7 +55,7 @@ class TECS2CBridgePlugin < SignaturePlugin
   end
 
   def gen_cdl_file file
-    if @@signature_list[@signature.get_global_name] then
+    if @@signature_list[@signature.get_global_name]
       @@signature_list[@signature.get_global_name] << self
       cdl_warning("T2CW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return
@@ -99,11 +99,11 @@ EOT
     ret_type = func_type.get_type
     b_ret_void = ret_type.is_void?
 
-    if ! b_ret_void then
+    if ! b_ret_void
       file.print("  #{ret_type.get_type_str}  retval;\n")
     end
 
-    if ! b_singleton then
+    if ! b_singleton
 
       file.print <<EOT
   #{ct_name}_CB    *p_cellcb;
@@ -119,7 +119,7 @@ EOT
     # p "celltype_name, sig_name, func_name, func_global_name"
     # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
-    if ! b_ret_void then
+    if ! b_ret_void
       file.print("  retval = ")
     else
       file.print("  ")
@@ -135,7 +135,7 @@ EOT
 
     file.print(" );\n")
 
-    if ! b_ret_void then
+    if ! b_ret_void
       file.print("  return retval;\n")
     end
 

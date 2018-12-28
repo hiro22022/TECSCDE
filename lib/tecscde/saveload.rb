@@ -141,15 +141,15 @@ module TECSCDE
 =end
 
       cell_list = { }  # ::Cell => TmCell
-      if tecsgen_cell_list then
+      if tecsgen_cell_list
         p "=== create cell ==="
         tecsgen_cell_list.each{ |cell|
           # p cell.get_owner.get_namespace
           # p cell.get_owner.get_namespace_path
-          if @cell_hash[cell.get_name] then    # duplicate cell in cdl file
+          if @cell_hash[cell.get_name]    # duplicate cell in cdl file
             next
           end
-          if cell.get_celltype == nil then       # celltype not found error in cdl (tecsgen)
+          if cell.get_celltype == nil       # celltype not found error in cdl (tecsgen)
             p "add_cell: celltype not found: #{cell.get_name} #{cell.get_owner.get_namespace_path}"
             next
           end
@@ -239,9 +239,9 @@ module TECSCDE
       # p join.get_name
       object = cell.get_celltype.find join.get_name
       # p "OBJECT CLASS #{object.class}"
-      if object.instance_of?(::Port) then
-        if object.get_port_type == :CALL then
-          if ! object.is_require? then
+      if object.instance_of?(::Port)
+        if object.get_port_type == :CALL
+          if ! object.is_require?
             lhs_cell = cell_list[cell]
             cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
             if cport == nil
@@ -249,7 +249,7 @@ module TECSCDE
               return
             end
             rhs_cell = cell_list[join.get_cell]
-            if rhs_cell == nil then      # not joined in cdl (tecsgen)
+            if rhs_cell == nil      # not joined in cdl (tecsgen)
               return
             end
             # eport = rhs_cell.get_eports[ join.get_port_name ]
@@ -303,7 +303,7 @@ module TECSCDE
           next
         end
         cell = @cell_hash[name]
-        if cell then
+        if cell
           # p "apply location: #{cell.get_name}"
           cell.set_geometry(*loc)
 
@@ -381,7 +381,7 @@ module TECSCDE
         cp_cell = @cell_hash[cp_cell_nspath]
         ep_cell = @cell_hash[ep_cell_nspath]
         # check existance of cells
-        if cp_cell != nil && ep_cell != nil then
+        if cp_cell != nil && ep_cell != nil
           cport = cp_cell.get_cports[cp_name]
           if cport.kind_of? TmCPortArray
             if cp_subscript == nil
@@ -410,11 +410,11 @@ module TECSCDE
 
           # check existance of cport & eport and direction of bar & edge (must be in right angle)
           # mikan necessary more than 2 bars
-          if cport != nil && eport != nil && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2 then
+          if cport != nil && eport != nil && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2
             # p "2"
             b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0].to_sym
-            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar) then
+            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
 
@@ -425,16 +425,16 @@ module TECSCDE
               # check if normal_pos & tan_pos can be evaluated and the position of bars goal
               if normal_pos != nil && tan_pos != nil &&
                   ((normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR) &&
-                  ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN) then
+                  ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN)
                 # p "4"
                 bars = []
                 bar_list.each{ |bar_info|
                   # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
                   pos = bar_info[1]
-                  if pos != nil && bar_info[0].to_sym == :HBar then
+                  if pos != nil && bar_info[0].to_sym == :HBar
                     bar = HBar.new(pos, cport.get_join)
                     bars << bar
-                  elsif pos != nil && bar_info[0].to_sym == :VBar then
+                  elsif pos != nil && bar_info[0].to_sym == :VBar
                     bar = VBar.new(pos, cport.get_join)
                     bars << bar
                   else
@@ -444,7 +444,7 @@ module TECSCDE
                 }
                 # mikan length more than 2
                 len = bars.length
-                if len >= 0.1 then
+                if len >= 0.1
                   bars[len - 1].set_position eport.get_position_in_normal_dir
                   bars[len - 2].set_position eport.get_position_in_tangential_dir
                   # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
@@ -556,9 +556,9 @@ module TECSCDE
           if cport.is_array?
             cport.get_ports.each{ |cport|
               join = cport.get_join
-              if join then
+              if join
                 eport = join.get_eport
-                if eport.get_subscript then
+                if eport.get_subscript
                   subscript = "[ #{eport.get_subscript} ]"
                 else
                   subscript = ""
@@ -568,9 +568,9 @@ module TECSCDE
             }
           else
             join = cport.get_join
-            if join then
+            if join
               eport = join.get_eport
-              if eport.get_subscript then
+              if eport.get_subscript
                 subscript = "[ #{eport.get_subscript} ]"
               else
                 subscript = ""
@@ -680,12 +680,12 @@ EOT
       index = 0
       @join_list.each{ |join|
         cport, eport, bars = join.get_ports_bars
-        if cport.get_subscript then
+        if cport.get_subscript
           cp_subsc = "            \"call_port_subscript\" : #{cport.get_subscript},\n"
         else
           cp_subsc = ""
         end
-        if eport.get_subscript then
+        if eport.get_subscript
           ep_subsc = "            \"entry_port_subscript\" : #{eport.get_subscript},\n"
         else
           ep_subsc = ""
@@ -736,7 +736,7 @@ EOT
         cell_nspath, x, y, w, h, port_location_list = cl.get_location
         # p "set_location_from_tecsgen", cell_nspath, x, y, w, h, port_location_list
         cell = @cell_hash[cell_nspath.to_s.to_sym]
-        if cell then
+        if cell
           # p "apply location: #{cell.get_name}"
           cell.set_geometry(x, y, w, h)
         end
@@ -751,18 +751,18 @@ EOT
         cp_cell = @cell_hash[cp_cell_nspath.to_s.to_sym]
         ep_cell = @cell_hash[ep_cell_nspath.to_s.to_sym]
         # check existance of cells
-        if cp_cell != nil && ep_cell != nil then
+        if cp_cell != nil && ep_cell != nil
           cport = cp_cell.get_cports[cp_name.to_sym]
           eport = ep_cell.get_eports[ep_name.to_sym]
            # p "1 #{cp_name} #{ep_name} #{cport} #{eport}"
 
           # check existance of cport & eport and direction of bar & edge (must be in right angle)
           # mikan necessary more than 2 bars
-          if cport != nil && eport != nil && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2 then
+          if cport != nil && eport != nil && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2
             # p "2"
             b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0]
-            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar) then
+            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
               # bar_list: [ [:HBar, pos]
@@ -773,16 +773,16 @@ EOT
               # check if normal_pos & tan_pos can be evaluated and the position of bars goal
               if normal_pos != nil && tan_pos != nil &&
                   ((normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR) &&
-                  ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN) then
+                  ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN)
                 # p "4"
                 bars = []
                 bar_list.each{ |bar_info|
                   # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
                   pos = bar_info[1].eval_const nil
-                  if pos != nil && bar_info[0] == :HBar then
+                  if pos != nil && bar_info[0] == :HBar
                     bar = HBar.new(pos, cport.get_join)
                     bars << bar
-                  elsif pos != nil && bar_info[0] == :VBar then
+                  elsif pos != nil && bar_info[0] == :VBar
                     bar = VBar.new(pos, cport.get_join)
                     bars << bar
                   else
@@ -792,7 +792,7 @@ EOT
                 }
                 # mikan length more than 2
                 len = bars.length
-                if len >= 2 then
+                if len >= 2
                   bars[len - 1].set_position eport.get_position_in_normal_dir
                   bars[len - 2].set_position eport.get_position_in_tangential_dir
                   # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
@@ -840,12 +840,12 @@ EOT
       }
       @join_list.each{ |join|
         cport, eport, bars = join.get_ports_bars
-        if cport.get_subscript then
+        if cport.get_subscript
           cp_subsc = "[ #{cport.get_subscript} ]"
         else
           cp_subsc = ""
         end
-        if eport.get_subscript then
+        if eport.get_subscript
           ep_subsc = "[ #{eport.get_subscript} ]"
         else
           ep_subsc = ""

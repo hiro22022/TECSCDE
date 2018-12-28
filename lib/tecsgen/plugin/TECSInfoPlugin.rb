@@ -48,7 +48,7 @@ class TECSInfoPlugin < CelltypePlugin
   # celltype::     Celltype        セルタイプ（インスタンス）
   def initialize(celltype, option)
     super
-    if $unopt_entry == false then
+    if $unopt_entry == false
       cdl_info("TIF0001 forcely set --unoptimize-entry by TECSInfoPlugin (by importing TECSInfo.cdl)")
       $unopt_entry = true
     end
@@ -81,7 +81,7 @@ EOT
     Import.new fn
 
     # セルに cTECSInfo の結合があるか？
-    if cell.get_join_list.get_item(:cTECSInfo) == nil then
+    if cell.get_join_list.get_item(:cTECSInfo) == nil
       # cTECSInfo = rTECSInfo::TECSInfosub.eTECSInfo; の追加
       nsp = NamespacePath.new(:rTECSInfo, false)
       nsp.append! :TECSInfoSub
@@ -130,7 +130,7 @@ EOT
  */
 #{ str=""; undefs.each{|u| str += "#undef #{u}\n" }; str }
 EOT
-    if $ram_initializer then
+    if $ram_initializer
       undefs2.each{|u|
         f.print "#undef #{u}\n"
       }
@@ -142,7 +142,7 @@ EOT
 #define tVarDeclInfo_IDX  nTECSInfo_tVarDeclInfo_IDX
 
 EOT
-    if $ram_initializer then
+    if $ram_initializer
       f.print <<EOT
 #define FOREACH_CELL(i,p_cb)   { (void)(i);
 #define END_FOREACH_CELL   }
@@ -216,7 +216,7 @@ EOT
  */
 #{ str=""; undefs.each{|u| str += "#undef #{u}\n" }; str }
 EOT
-    if $ram_initializer then
+    if $ram_initializer
       undefs2.each{|u|
         f.print "#undef #{u}\n"
       }
@@ -229,7 +229,7 @@ EOT
 #define tCallInfo_IDX  nTECSInfo_tCallInfo_IDX
 
 EOT
-    if $ram_initializer then
+    if $ram_initializer
       f.print <<EOT
 #define FOREACH_CELL(i,p_cb)   { (void)(i);
 #define END_FOREACH_CELL   }
@@ -265,7 +265,7 @@ EOT
   # プラグインの後ろの CDL コードを生成
   # file:: File:
   def self.gen_post_code(file)
-    if Generator.get_n_error > 0 then
+    if Generator.get_n_error > 0
       Generator.info("I9999 TECSInfoPlugin does not generate TECSInfo code because of early error")
       return
     end

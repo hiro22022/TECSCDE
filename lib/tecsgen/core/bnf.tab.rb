@@ -5150,7 +5150,7 @@ end
 class TECSIO
   def self.foreach(file) # ブロック引数 { |line| }
     pr = Proc.new   # このメソッドのブロック引数を pr に代入
-    if $b_no_kcode then
+    if $b_no_kcode
       msg = "E".encode $Ruby19_File_Encode
       if($Ruby19_File_Encode == "Shift_JIS")
 
@@ -5190,10 +5190,10 @@ class TECSIO
   #
   # msg_enc::Encode | String
   def self.str_code_convert(msg, str)
-    if $b_no_kcode == false then
+    if $b_no_kcode == false
       return str                          # Ruby V1.8 まで
     end
-    if msg.encoding != str.encoding then
+    if msg.encoding != str.encoding
       option = { :invalid => :replace, :undef => :replace }   # 例外を発生させず、'?' に変換する(utf-8 は 0xfffd)
       # return str.encode( msg.encoding, option )
       str = str.encode("utf-8", option)

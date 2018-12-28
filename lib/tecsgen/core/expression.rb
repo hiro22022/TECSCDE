@@ -41,7 +41,7 @@ class Expression < Node
 
   def initialize(elements, locale = nil)
     super()
-    if locale then
+    if locale
       @locale = locale
     end
 
@@ -90,13 +90,13 @@ class Expression < Node
 
   def eval_const(name_list, name_list2 = nil)
     val = elements_eval_const(@elements, name_list, name_list2, 0)
-    if val.kind_of? IntegerVal then
+    if val.kind_of? IntegerVal
       return val.to_i
-    elsif val.kind_of? FloatVal then
+    elsif val.kind_of? FloatVal
       return val.to_f
-    elsif val.kind_of? BoolVal then
+    elsif val.kind_of? BoolVal
       return val.to_i
-    elsif val.kind_of? PointerVal then
+    elsif val.kind_of? PointerVal
       return val.to_i           # mikan エラー V1008 が発生してしまう
       # elsif val.kind_of? EnumVal then
       # enum mikan
@@ -142,7 +142,7 @@ class Expression < Node
   #=== 式を文字列に変換
   # name_list:: attribute (Celltype::@attribute_list), struct の @member_list を仮定している
   def elements_to_s(elements, name_list = nil, pre = nil, post = nil)
-    if elements.instance_of? Token then
+    if elements.instance_of? Token
       return elements.to_s    # OP_DOT, OP_REF の右辺
     end
 
@@ -150,7 +150,7 @@ class Expression < Node
     when :IDENTIFIER
       nsp = elements[1]
       # if nsp.is_name_only? && name_list && name_list.get_item( nsp.get_name ) then
-      if nsp.is_name_only? && name_list && name_list.get_item(nsp.get_name) then
+      if nsp.is_name_only? && name_list && name_list.get_item(nsp.get_name)
         return "#{pre}#{nsp.get_name}#{post}"
       else
         # return  elements[1].get_global_name
@@ -237,7 +237,7 @@ class Expression < Node
   #=== Expression# 逆ポーランド文字列化 (private)
   # name_list:: ParamlList  関数の引数リスト
   def elements_rpn(elements, name_list = nil, name_list2 = nil)
-    if elements.instance_of? Token then
+    if elements.instance_of? Token
       print "rpn: #{elements.to_s}\n"
       return elements.to_s    # OP_DOT, OP_REF の右辺
     end
@@ -246,12 +246,12 @@ class Expression < Node
     when :IDENTIFIER
       nsp = elements[1]
       # if nsp.is_name_only? && name_list && name_list.find( nsp.get_name ) then
-      if nsp.is_name_only? then
+      if nsp.is_name_only?
         count = 0
         # p "search: #{nsp.get_name}"
         name_list.get_items.each{ |nm,val|
           # p "    : #{nm.get_name} #{nsp.get_name.class} #{nm.get_name.class}"
-          if nsp.get_name == nm.get_name then
+          if nsp.get_name == nm.get_name
             return " $#{count}"
           end
           count += 1
@@ -359,18 +359,18 @@ class Expression < Node
       #   cdl_error( "E9999: '$1' too many reference (maybe loop) max=$1" , nsp.to_s, MAX_NEST_LEVEL )
       #   return
       # end
-      if nsp.is_name_only? then
-        if name_list then
+      if nsp.is_name_only?
+        if name_list
           object = name_list.get_item(nsp.get_name)
         end
 
-        if object == nil && name_list2 then
+        if object == nil && name_list2
           object = name_list2.get_item(nsp.get_name)
         end
       end
 
       # 見つからなければ定数定義から探す
-      if object == nil then
+      if object == nil
         object = Namespace.find(nsp)# mikan namespace の対応 #1
       end
 
@@ -381,21 +381,21 @@ class Expression < Node
 # 以下のエラーチェックでは、これらがごっちゃになって誤りを検出しようとしている
 
       # IDENTIFIER は見つからなかった？
-      if object == nil then
+      if object == nil
         cdl_error("E1001 $1: not found" , nsp.get_path_str)
         # raise  "E1001"  # bug trap
         return nil
-      elsif object.instance_of?(Join) then
+      elsif object.instance_of?(Join)
         # Join の場合： cell の中の attribute, var, call のどれかが見つかった
         # Decl (attribute, var) でない？
-        if ! object.get_definition.instance_of?(Decl) then
+        if ! object.get_definition.instance_of?(Decl)
           cdl_error("E1002 $1: not constant (port)" , nsp.get_path_str)
           return nil
         end
         return object.get_rhs.eval_const2(name_list, name_list2, nest)
-      elsif ! object.instance_of?(Decl) then
+      elsif ! object.instance_of?(Decl)
         # Decl でない場合： 定数でもない
-        if (! object.instance_of?(ParamDecl)) then
+        if (! object.instance_of?(ParamDecl))
                                                       # mikan paramdecl は無視する
                                                       # ParamList から呼ばれたとき
           cdl_error("E1003 $1: not constant" , nsp.get_path_str)
@@ -406,13 +406,13 @@ class Expression < Node
         return nil
       else # Decl
         object.referenced
-        if object.get_initializer == nil then
+        if object.get_initializer == nil
           # 初期化子の存在しない変数   # mikan ここへくるのは、通常ありえないはず（未検証）
           return IntegerVal.new(0)
         else
           # Decl の右辺の評価
           # mikan size_is 引数に現れる変数の型が適切かのチェックする
-          if object.get_initializer.instance_of?(Expression) || object.get_initializer.instance_of?(C_EXP) then
+          if object.get_initializer.instance_of?(Expression) || object.get_initializer.instance_of?(C_EXP)
             return object.get_initializer.eval_const2(name_list, name_list2, nest)
           else
             # Array の場合
@@ -421,9 +421,9 @@ class Expression < Node
         end
       end
     when :BOOL_CONSTANT
-      if(elements[1].instance_of?(TrueClass))then
+      if(elements[1].instance_of?(TrueClass))
         return BoolVal.new(true)
-      elsif(elements[1].instance_of?(FalseClass))then
+      elsif(elements[1].instance_of?(FalseClass))
         return  BoolVal.new(false)
       else
         throw("BOOL constant error")
@@ -439,18 +439,18 @@ class Expression < Node
     when :CHARACTER_LITERAL
       str =  elements[1].val.gsub(/'/, "")
 # 2.0      if str.jlength == 1
-      if $b_no_kcode then
+      if $b_no_kcode
         len = str.length
       else
         len = str.jlength
       end
-      if len == 1 then
+      if len == 1
         sum = 0
         str.each_byte { |b| sum = sum * 256 + b }
         return IntegerVal.new(sum, elements[1].val)
       else
 # 2.0        if str[0] == 92 then
-        if str[0] == 92 || str[0] == "\\" then
+        if str[0] == 92 || str[0] == "\\"
           case str[1]
 # 2.0          when 48 # '0'
           when 48, "0" # '0'
@@ -488,14 +488,14 @@ class Expression < Node
       cdl_error("E1006 cannot evaluate \'->\' operator")
       return nil
     when :OP_SIZEOF_EXPR
-      if Generator.parsing_C? then
+      if Generator.parsing_C?
         cdl_info("I9999 cannot evaluate \'sizeof\' operator. this might causes later error.")
       else
         cdl_error("E1007 cannot evaluate \'sizeof\' operator")
       end
       return nil
     when :OP_SIZEOF_TYPE
-      if Generator.parsing_C? then
+      if Generator.parsing_C?
         cdl_info("I9999 cannot evaluate \'sizeof\' operator. this might causes later error.")
       else
         cdl_error("E1008 cannot evaluate \'sizeof\' operator")
@@ -512,7 +512,7 @@ class Expression < Node
     when :OP_U_PLUS
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
       return nil if ! evaluable?(val)
-      if val.respond_to?("+@") then
+      if val.respond_to?("+@")
         return + val
       else
         cdl_error("E1011 cannot evaluate unary + for $1" , val.class)
@@ -521,7 +521,7 @@ class Expression < Node
     when :OP_U_MINUS
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
       return nil if ! evaluable?(val)
-      if val.respond_to?("-@") then
+      if val.respond_to?("-@")
         return - val
       else
         return nil
@@ -532,7 +532,7 @@ class Expression < Node
 # p "val.respond_to?( \"-@\" )=#{val.respond_to?( "-@" )} #{val.class}"
 # p "val.respond_to?( \"~@\" )=#{val.respond_to?( "~@" )}"
 # 2.0      if val.respond_to?( "~@" ) then  # Ruby 1.9, 2.0 preview 版では例外が発生してしまう
-      if val.kind_of? IntegerVal then
+      if val.kind_of? IntegerVal
         return ~ val
       else
         return nil
@@ -541,7 +541,7 @@ class Expression < Node
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
       return nil if ! evaluable?(val)
       val = val.cast(BoolType.new)
-      if val.respond_to?("not") then
+      if val.respond_to?("not")
         return val.not
       else
         return nil
@@ -666,7 +666,7 @@ class Expression < Node
       rhs = elements_eval_const(elements[3], name_list, name_list2, nest)
       # return nil if( rhs == nil || mhs == nil || lhs == nil )
       return nil if ! evaluable?(rhs, mhs, lhs)
-      if lhs.cast(BoolType.new).val then
+      if lhs.cast(BoolType.new).val
           return mhs
       else
           return rhs
@@ -678,7 +678,7 @@ class Expression < Node
   def elements_get_type(elements, namedList)
     type = elements_get_type_sub(elements, namedList)
     # 返された方が DefinedType の場合 元の型を返す
-    if type.kind_of?(DefinedType) then
+    if type.kind_of?(DefinedType)
       type = type.get_type
     end
     return type
@@ -688,12 +688,12 @@ class Expression < Node
     case elements[0]
     when :IDENTIFIER
       nsp = elements[1]
-      if nsp.is_name_only? then
+      if nsp.is_name_only?
         paramdecl = namedList.get_item(nsp.get_name)
       else
         paramdecl = nil
       end
-      unless paramdecl then
+      unless paramdecl
         cdl_error("E1012 $1: not found in parameter list" , nsp.get_path_str)
         return IntType.new(32)        # dummy result
       end
@@ -714,7 +714,7 @@ class Expression < Node
 #    when :OP_U_AMP
     when :OP_U_ASTER
       type = elements_get_type(elements[1], namedList)
-      unless type.kind_of?(PtrType) then
+      unless type.kind_of?(PtrType)
         cdl_error("E1013 \'*\': operand is not pointer value")
         return IntType.new(8)    # IntType を返しておく
       end
@@ -753,7 +753,7 @@ class Expression < Node
     case elements[0]
     when :IDENTIFIER
       nsp = elements[1]
-      if nsp.is_name_only? then
+      if nsp.is_name_only?
         paramdecl = namedList.get_item(nsp.get_name)
       else
         paramdecl = nil
@@ -788,7 +788,7 @@ class Expression < Node
         end
       end
 
-      if judge == false then
+      if judge == false
         cdl_error("E1015 \'$1\': direction mismatch for $2, $3 required" , nsp.get_path_str, spec, req_direct)
       end
 
@@ -824,7 +824,7 @@ class Expression < Node
     ele = @elements
     case alloc_type 
     when :NORMAL_ALLOC
-      if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER then   # 1
+      if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER   # 1
         cdl_error("E1017 $1: rhs not \'Cell.ePort\' form" , ele[0].to_s)
         return nil
       end
@@ -832,8 +832,8 @@ class Expression < Node
       port_name = elements[2].val
       return [ cell_nsp, port_name ]
     when :INTERNAL_ALLOC
-      if(ele[0] == :IDENTIFIER)then
-        if ele[1].is_name_only? then
+      if(ele[0] == :IDENTIFIER)
+        if ele[1].is_name_only?
           return [ ele[1].get_path[0] ]  # mikan a::b
         else
           cdl_error("E1018 $1: namespace cannot be specified", ele[1].to_s)
@@ -844,7 +844,7 @@ class Expression < Node
     when :RELAY_ALLOC
       if(ele[0] != :OP_DOT ||
           ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || ! ele[1][1][1].is_name_only? ||
-          ! ele[1][2].instance_of?(Token) || ! ele[2].instance_of?(Token))then   # 1
+          ! ele[1][2].instance_of?(Token) || ! ele[2].instance_of?(Token))   # 1
         cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)" , ele[0].to_s)   # S1086
       end
       func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
@@ -887,7 +887,7 @@ class Expression < Node
   def analyze_cell_join_expression
     # 右辺の Expression の要素を取り出す
     elements = @elements
-    if elements[0] == :OP_SUBSC then  # 右辺：受け口配列？
+    if elements[0] == :OP_SUBSC  # 右辺：受け口配列？
       # elements = [ :OP_SUBSC, [ :OP_DOT, [ :IDENTIFIER, token ], token ], expression ]
       subscript = elements[2].eval_const(nil)  # 受け口配列の添数
       elements  = elements[1]          # mikan 配列だった場合
@@ -896,7 +896,7 @@ class Expression < Node
     end
 
     # elements = [ :OP_DOT, [ :IDENTIFIER, token ], token ]
-    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER then   # 1
+    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER   # 1
       return nil
     end
 
@@ -912,11 +912,11 @@ class Expression < Node
   # port_name:: Symbol
   # analyze_cell_join_expression と対になっている
   def self.create_cell_join_expression(nsp, subscript, port_name, locale = nil)
-    if ! port_name.instance_of?(Symbol) then
+    if ! port_name.instance_of?(Symbol)
       raise "port_name: not Symbol"
     end
 
-    if subscript then
+    if subscript
       elements = [ :OP_SUBSC, [ :OP_DOT, [ :IDENTIFIER, nsp ],
                                 Token.new(port_name, nil, nil, nil) ],
                    Expression.create_integer_constant(subscript, @locale) ]
@@ -929,7 +929,7 @@ class Expression < Node
   #=== Expression#整数定数の式を生成する
   # val:: Integer : 値： 整数
   def self.create_integer_constant(val, locale = nil)
-    if val != Integer(val) || val < 0 then
+    if val != Integer(val) || val < 0
       raise "create_integer_constant: not integer or negative: #{val}"
     end
     Expression.new([ :INTEGER_CONSTANT, Token.new(val, nil, nil, nil) ], locale)
@@ -951,7 +951,7 @@ class Expression < Node
   #=== Expression#
   # nsp:: NamespacePath :  参照するもの識別子
   def self.create_single_identifier(nsp, locale)
-    if ! nsp.instance_of?(NamespacePath) then
+    if ! nsp.instance_of?(NamespacePath)
       raise "create_single_identifier: not NamespacePath: #{nsp.to_s}"
     end
     Expression.new([ :IDENTIFIER, nsp ])
@@ -962,7 +962,7 @@ class Expression < Node
   # すべてが BaseVal の子クラス（値）であれば、評価可能と判断する
   def evaluable?(*v)
     v.each{ |val|
-      if ! val.kind_of?(BaseVal) then
+      if ! val.kind_of?(BaseVal)
         return false
       end
     }
@@ -980,7 +980,7 @@ class C_EXP < Node
   # c_exp_string::String
   # b_renew::Bool  : true なら C_EXP の clone 作成（エスケープ処理等をしない）
   def initialize(c_exp_string, b_renew = false)
-    if b_renew then
+    if b_renew
       @c_exp_string = c_exp_string
     else
       # 前後の " を取り除く

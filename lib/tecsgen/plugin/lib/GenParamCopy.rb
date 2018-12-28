@@ -47,7 +47,7 @@ module  GenParamCopy
   #=== 引数の転送コードを生成
 
   def print_param(name, type, file, nest, dir, outer, outer2, b_marshal, b_get, alloc_cp = nil, alloc_cp_extra = nil, name_list = nil)
-    if type.get_original_type.kind_of?(ArrayType) && b_get && dir != :OUT then
+    if type.get_original_type.kind_of?(ArrayType) && b_get && dir != :OUT
       indent = "	" * nest
       subsc = type.get_subscript
       if subsc == nil
@@ -58,7 +58,7 @@ module  GenParamCopy
 #{indent}if((ercd_=#{alloc_cp}(sizeof(#{type.get_type.get_type_str}#{type.get_type.get_type_str_post})*(#{size_str}),(void **)&#{outer}#{name}#{outer2}#{alloc_cp_extra}))!=E_OK)\t/* GenParamCopy 1 */
 #{indent}	goto error_reset;
 EOT
-        if (dir == :SEND || dir == :RECEIVE) && type.get_type.has_pointer? then
+        if (dir == :SEND || dir == :RECEIVE) && type.get_type.has_pointer?
           # send, receive の場合は、エラーリセットに備え NULL にする
           file.print <<EOT
 #{indent}memset( (void *)#{outer}#{name}#{outer2}#{alloc_cp_extra}, 0, sizeof(#{type.get_type.get_type_str}#{type.get_type.get_type_str_post})*(#{size_str});   /* GenParamCopy Alloc1 */
@@ -85,7 +85,7 @@ EOT
         when :UNSIGNED
           sign = "U"
         when :SIGNED
-          if bit_size == -1 || bit_size == -11 then
+          if bit_size == -1 || bit_size == -11
             sign = "S"   # signed char の場合のみ S がつく
           else
             sign = ""
@@ -113,7 +113,7 @@ EOT
 
       when FloatType
         bit_size = type.get_bit_size
-        if bit_size == 32 then
+        if bit_size == 32
           type_str = "Float32"
         else
           type_str = "Double64"
@@ -121,7 +121,7 @@ EOT
 
       end
 
-      if(b_get)then
+      if(b_get)
         file.print indent
         file.print "if( ( ercd_ = cTDR_get#{type_str}( &(#{outer}#{name}#{outer2}) ) ) != E_OK )\t/* GenParamCopy 2 */\n"
         file.print indent
@@ -136,19 +136,19 @@ EOT
     when PtrType
 
       count = type.get_count; size = type.get_size; string = type.get_string
-      if count || size || string then
+      if count || size || string
         nest = print_nullable_pre(name, type, file, nest, dir, outer, outer2, b_marshal, b_get)
         indent = "\t" * nest
         loop_counter_type = IntType.new(32)   # mikan 型を size_is, count_is の引数の型とする
         file.print "#{indent}{\t/* GenParamCopy 4 */\n"
         file.print "#{indent}	#{loop_counter_type.get_type_str}  i__#{nest}, length__#{nest};\n"
 
-        if size || count then
-          if size then
+        if size || count
+          if size
             size_str = size.to_str(name_list, outer, outer2)
           end
 
-          if count then
+          if count
             count_str = count.to_str(name_list, outer, outer2)
           else
             # size_is は必須. count_is はオプション
@@ -158,7 +158,7 @@ EOT
 
           # size_is に max 指定がある場合、length が max を超えているかチェックするコードを生成
               # alloc_cp == nil のとき dir は INOUT, OUT のはず (条件が冗長)。試験が終わっているので、次回見直し時に外す
-          if b_get && type.get_max != nil && ! ((dir == :INOUT || dir == :OUT) && alloc_cp == nil) then
+          if b_get && type.get_max != nil && ! ((dir == :INOUT || dir == :OUT) && alloc_cp == nil)
             file.print "#{indent}	if( length__#{nest} > #{type.get_max.to_s} ){\t/* GenParamCopy max check 1 */\n"
             file.print "#{indent}		ercd_ = E_PAR;\n"
             file.print "#{indent}		goto error_reset;\n"
@@ -175,8 +175,8 @@ EOT
             cdl_error("R9999 $1: string specifier cannot be specified to '$2' in current implementation",
                        name, type.get_type.get_type_str + type.get_type.get_type_str_post)
           end
-          if ! b_get then
-            if  string.instance_of? Expression then
+          if ! b_get
+            if  string.instance_of? Expression
               len = string.to_str(name_list, outer, outer2)
               file.print "#{indent}	length__#{nest} = STRNLEN#{b_size}(#{outer}#{name}#{outer2},(#{len}-1))+1;\t/* GenParamCopy 6 */\n"
               file.print "#{indent}	if( length__#{nest} < #{len})\tlength__#{nest} += 1;\n"
@@ -185,8 +185,8 @@ EOT
             end
             size_str = "length__#{nest}"     # string の場合、strnlen 以上の領域を確保しない
           else
-            if (dir == :INOUT) then
-              if (string.instance_of? Expression) then
+            if (dir == :INOUT)
+              if (string.instance_of? Expression)
                 len = string.to_str(name_list, outer, outer2)
                 size_str = "#{len}"              # string(len) の場合 len を確保する
               else
@@ -199,12 +199,12 @@ EOT
           print_param0("length__#{nest}", loop_counter_type, file, nest + 1, dir, nil, nil, b_marshal, b_get)
         end
 
-        if b_get && (dir == :IN || dir == :INOUT || dir == :SEND || dir == :RECEIVE) && alloc_cp then
+        if b_get && (dir == :IN || dir == :INOUT || dir == :SEND || dir == :RECEIVE) && alloc_cp
           file.print <<EOT
 #{indent}	if((ercd_=#{alloc_cp}(sizeof(#{type.get_type.get_type_str}#{type.get_type.get_type_str_post})*(#{size_str}),(void **)&#{outer}#{name}#{outer2}#{alloc_cp_extra}))!=E_OK)\t/* GenParamCopy 8 */
 #{indent}		goto error_reset;
 EOT
-          if (dir == :SEND || dir == :RECEIVE) && type.get_type.has_pointer? then
+          if (dir == :SEND || dir == :RECEIVE) && type.get_type.has_pointer?
             # send, receive の場合は、エラーリセットに備え NULL にする
             file.print <<EOT
 #{indent}	memset( (void *)#{outer}#{name}#{outer2}#{alloc_cp_extra}, 0, sizeof(#{type.get_type.get_type_str}#{type.get_type.get_type_str_post})*(#{size_str}) );   /* GenParamCopy Alloc2 */
@@ -226,12 +226,12 @@ EOT
         indent = "	" * nest
 
         # allocate memory for getting value
-        if b_get && (dir == :IN || dir == :INOUT || dir == :SEND || dir == :RECEIVE) && alloc_cp then
+        if b_get && (dir == :IN || dir == :INOUT || dir == :SEND || dir == :RECEIVE) && alloc_cp
           file.print <<EOT
 #{indent}if((ercd_=#{alloc_cp}(sizeof(#{type.get_type.get_type_str}#{type.get_type.get_type_str_post}),(void **)&#{outer}#{name}#{outer2}#{alloc_cp_extra}))!=E_OK)\t/* GenParamCopy 10 */
 #{indent}	 goto error_reset;
 EOT
-          if (dir == :SEND || dir == :RECEIVE) && type.get_type.has_pointer? then
+          if (dir == :SEND || dir == :RECEIVE) && type.get_type.has_pointer?
             # send, receive の場合は、エラーリセットに備え NULL にする
             file.print <<EOT
 #{indent}memset( (void *)#{outer}#{name}#{outer2}#{alloc_cp_extra}, 0, sizeof(#{type.get_type.get_type_str}#{type.get_type.get_type_str_post}) );   /* GenParamCopy Alloc3 */
@@ -281,20 +281,20 @@ EOT
 
   #=== nullable (pre)
   def print_nullable_pre(name, type, file, nest, dir, outer, outer2, b_marshal, b_get)
-    if type.is_nullable? then
+    if type.is_nullable?
       indent = "	" * nest
-      if dir == :OUT then  # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
+      if dir == :OUT  # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
         # 'null or not' is sent in the function 'print_out_nullable'
-        if b_get then
+        if b_get
           file.print "#{indent}if( #{outer}#{name}#{outer2} ){\t/* GenParamCopy Null 10 */\n"
         else
           file.print "#{indent}if( ! b_#{name}_null_ ){\t/* GenParamCopy Null 11 */\n"
         end
         nest += 1
       else # dir = :IN, :INOUT, :SEND, :RECEIVE
-        if b_get then
+        if b_get
           file.print "#{indent}{\n"
-          if ! (dir == :INOUT && b_marshal == true) then
+          if ! (dir == :INOUT && b_marshal == true)
             file.print <<EOT
 #{indent}	int8_t  b_null_;
 #{indent}	if((ercd_=cTDR_getInt8( &b_null_ )) != E_OK )\t/* GenParamCopy Null 20 */
@@ -313,7 +313,7 @@ EOT
 #{indent}	int8_t  b_null_ = (int8_t)(#{outer}#{name}#{outer2} == NULL);\t/* GenParamCopy Null 31 */
 EOT
 
-          if ! (dir == :INOUT && b_marshal == false) then
+          if ! (dir == :INOUT && b_marshal == false)
             # dir = :INOUT, b_marshal = false, b_get = false の場合
             file.print <<EOT
 #{indent}	if((ercd_=cTDR_putInt8( b_null_ )) != E_OK )\t/* GenParamCopy Null 32 */
@@ -333,16 +333,16 @@ EOT
 
   #== nullable (post)
   def print_nullable_post(name, type, file, nest, dir, outer, outer2, b_marshal, b_get)
-    if type.is_nullable? then
-      if dir == :OUT then  # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
+    if type.is_nullable?
+      if dir == :OUT  # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
         nest -= 1
         indent = "	" * nest
         file.print "#{indent}}  /* ! b_#{name}_null_   GenParamCopy Null 50 */\n"
       else # ( dir == :IN || dir == :INOUT || dir == :SEND || dir == :RECEIVE )
         nest -= 2
         indent = "	" * nest
-        if b_get then
-          if ! (dir == :INOUT && b_marshal == true) then
+        if b_get
+          if ! (dir == :INOUT && b_marshal == true)
             file.print <<EOT
 
 #{indent}	} else { /* null  GenParamCopy Null 51 */

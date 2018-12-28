@@ -55,15 +55,15 @@ class RepeatJoinPlugin < CellPlugin
 
       # Join の右辺を解析
       ret = j.get_rhs.analyze_cell_join_expression
-      if ret == nil then
+      if ret == nil
         next
       end
       rhs_nsp = ret[0]; rhs_subscript = ret[1]; rhs_port_name = ret[2]
 
       # 呼び口配列で、添数が 0 の場合にのみカウントアップさせる
-      if j.get_subscript == 0 then
+      if j.get_subscript == 0
         rhs_name = rhs_nsp.get_name.to_s
-        if rhs_name =~ /(.*[^0-9])([0-9]+)\z/ then
+        if rhs_name =~ /(.*[^0-9])([0-9]+)\z/
           b_rhs_name_count = true
           rhs_name = $1
           n_digits = $2.length
@@ -73,7 +73,7 @@ class RepeatJoinPlugin < CellPlugin
           rhs_count_base = 0
         end
 
-        if rhs_subscript && rhs_subscript == 0 then
+        if rhs_subscript && rhs_subscript == 0
           b_rhs_subscript_count = true
         else
           b_rhs_subscript_count = false
@@ -83,12 +83,12 @@ class RepeatJoinPlugin < CellPlugin
         while count < @count
           count_str = (count+rhs_count_base).to_s
 
-          if b_rhs_subscript_count then
+          if b_rhs_subscript_count
             rhs_subscript = count
           end
 
-          if b_rhs_name_count then
-            if n_digits - count_str.length > 0 then
+          if b_rhs_name_count
+            if n_digits - count_str.length > 0
               leading_zero = "0" * (n_digits - count_str.length)
             else
               leading_zero = ""
@@ -118,7 +118,7 @@ class RepeatJoinPlugin < CellPlugin
       nsp = NamespacePath.new(rhs.to_sym, true)
       expr = Expression.create_single_identifier(nsp, nil)
       res = expr.eval_const(nil)
-      if res == nil then
+      if res == nil
         cdl_error("count value ($1): not single identifier or integer number", rhs.to_s)
         @count = 0
       else

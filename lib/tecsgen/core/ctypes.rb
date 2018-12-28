@@ -62,9 +62,9 @@ module CType
     #     return self
     #   end
     # elsif self.instance_of?( CIntType ) && another.instance_of?( CIntType )then
-    if self.instance_of?(CIntType) && another.instance_of?(CIntType)then
-      if another.get_bit_size != -3 then
-        if @bit_size == -4 && another.get_bit_size == -4 then
+    if self.instance_of?(CIntType) && another.instance_of?(CIntType)
+      if another.get_bit_size != -3
+        if @bit_size == -4 && another.get_bit_size == -4
           @bit_size = -5  # long long
         else
           # self は int 型、another の bit_size が (int 以外であれば)そちらにする
@@ -73,7 +73,7 @@ module CType
         end
       end
 
-      if another.get_sign then
+      if another.get_sign
         # another で sign が指定されていれば、そちらのものを採用する mikan 矛盾のチェック
         @sign = another.get_sign
       end
@@ -82,22 +82,22 @@ module CType
 #        # another で qualifier が指定されていれば、そちらのものを採用する mikan 矛盾のチェック
 #        @qualifier = another.get_qualifier
 #      end
-      if another.is_const? then
+      if another.is_const?
         @b_const = true
       end
-      if another.is_volatile? then
+      if another.is_volatile?
         @b_volatile = true
       end
 
       return self
-    elsif self.instance_of?(CIntType) then
+    elsif self.instance_of?(CIntType)
       return another.merge self
-    elsif self.instance_of?(CDefinedType) then
+    elsif self.instance_of?(CDefinedType)
       # mikan unsigned などとの merge の不正検出
-      if another.is_const? then
+      if another.is_const?
         @b_const = true
       end
-      if another.is_volatile? then
+      if another.is_volatile?
         @b_volatile = true
       end
 
@@ -108,15 +108,15 @@ module CType
 #        cdl_error( "C1002 $1 not compatible with previous one $2" , self.get_type_str, another.get_type_str )
 #      end
       return self
-    elsif self.instance_of?(CStructType) then
-      if another.is_const? then
+    elsif self.instance_of?(CStructType)
+      if another.is_const?
         @b_const = true
       end
-      if another.is_volatile? then
+      if another.is_volatile?
         @b_volatile = true
       end
       return self
-    elsif self.instance_of?(CFloatType) then
+    elsif self.instance_of?(CFloatType)
       # mikan long double
       #   TECS には long double を表現する手段がない (double80_t を定義すればよいか?)
 #      cdl_warning( "C1003 $1 & $2 incompatible (\'long double\' is not supported.). Treated as $3." , self.class, another.class, self.class )
@@ -132,7 +132,7 @@ module CType
   #     元の Type クラスでは矛盾チェックしない（TECSの本来の文法では重複指定できないため）
   def set_qualifier(qual)
 
-    if @qualifier then
+    if @qualifier
       cdl_error("C1004 $1: qualifier redefined. previous one: $2" , qual, @qualifier)
     end
     super(qual)
@@ -185,7 +185,7 @@ class CFloatType < FloatType
   end
 
   def to_long
-    if @bit_size != -64 then
+    if @bit_size != -64
       cdl_warning("W9999 long specified for $1" , get_type_str)
     else
       @bit_size = -128  # @bit_size = -128 : long double

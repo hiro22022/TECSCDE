@@ -55,26 +55,26 @@ module PluginModule
 
     dbgPrint "PluginModule: load_plugin: #{plugin_name}\n"
     begin
-      unless @@loaded_plugin_list[plugin_name.to_sym] then
+      unless @@loaded_plugin_list[plugin_name.to_sym]
         @@loaded_plugin_list[plugin_name.to_sym] = 0
-        if ($verbose) then
+        if ($verbose)
           print("load '#{plugin_name}.rb'\n")
         end
         # "#{plugin_name}.rb" をロード（システム用ではないので、fatal エラーにしない）
-        if require_tecsgen_lib("#{plugin_name}.rb", false) == false then
+        if require_tecsgen_lib("#{plugin_name}.rb", false) == false
           cdl_error("P2001 $1.rb : fail to load plugin" , plugin_name)
           return nil
         end
       end
 
       plClass = Object.const_get plugin_name
-      if (plClass <= superClass) then       # plClass inherits superClass
+      if (plClass <= superClass)       # plClass inherits superClass
         return plClass
-      elsif (plClass <= MultiPlugin) then     # plClass inherits MultiPlugin
+      elsif (plClass <= MultiPlugin)     # plClass inherits MultiPlugin
         dbgPrint "pluginClass=#{plClass}\n"
         plugin_object = plClass.get_plugin superClass
         dbgPrint "pluginClass=#{plugin_object}\n"
-        if plugin_object == nil then
+        if plugin_object == nil
           cdl_error("P9999 '$1': MultiPlugin not support '$2'", plugin_name, superClass.name)
         end
         @@loaded_plugin_list[plugin_name.to_sym] = :MultiPlugin
@@ -84,7 +84,7 @@ module PluginModule
         return nil
       end
     rescue Exception => evar
-      if $debug then
+      if $debug
         p evar.class
         pp evar.backtrace
       end
@@ -101,10 +101,10 @@ module PluginModule
       return
     end
     plugin_name = plugin_object.class.name.to_sym
-    if @@loaded_plugin_list[plugin_name] == :MultiPlugin then
+    if @@loaded_plugin_list[plugin_name] == :MultiPlugin
       p "#{plugin_name}: MultiPlugin"
       return
-    elsif @@loaded_plugin_list[plugin_name] == nil then
+    elsif @@loaded_plugin_list[plugin_name] == nil
       # raise "#{plugin_name} might have different name "
       ## プラグインのファイル名と、プラグインのクラス名が相違する場合
       # MultiPlugin の get_plugin で返されたケースでは nil になっている
@@ -145,12 +145,12 @@ module PluginModule
   def self.gen_plugin_post_code file
     dbgPrint "PluginModule #{@@loaded_plugin_list}\n"
     @@loaded_plugin_list.each{ |plugin_name,count|
-      if count == :MultiPlugin then
+      if count == :MultiPlugin
         next
       end
       dbgPrint "PluginModule: #{plugin_name}\n"
       eval_str = "#{plugin_name}.gen_post_code( file )"
-      if $verbose then
+      if $verbose
         print "gen_plugin_post_code: #{eval_str}\n"
       end
       begin

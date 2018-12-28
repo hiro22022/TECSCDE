@@ -1010,7 +1010,7 @@ class NotifierPlugin < CelltypePlugin
         # 呼び口の結合を取得
         call_join = cell.get_join_list.get_item(handler.call_port_name.to_sym)
         domain_root = cell.get_region.get_domain_root
-        if cell.get_region.get_domain_root.get_domain_type then
+        if cell.get_region.get_domain_root.get_domain_type
           # print "cell=#{cell.get_name} domain_root=#{domain_root.get_name} domain_type=#{domain_root.get_domain_type.get_name} domain_option=#{domain_root.get_domain_type.get_option}\n"
         else
           # print "cell=#{cell.get_name} domain_root=#{cell.get_region.get_domain_root.get_name}\n"
@@ -1036,8 +1036,8 @@ class NotifierPlugin < CelltypePlugin
 
       # ドメインプラグインが指定されている場合、所属ドメインのチェック
       domain_root = cell.get_region.get_domain_root
-      if domain_root.get_domain_type then
-        if domain_root.get_domain_type.get_name == :HRP then
+      if domain_root.get_domain_type
+        if domain_root.get_domain_type.get_name == :HRP
           option = domain_root.get_domain_type.get_option
           matches.each{ |match|
             # p "match:#{match}"
@@ -1047,18 +1047,18 @@ class NotifierPlugin < CelltypePlugin
                   IncrementVariableHandlerType,  SignalSemaphoreHandlerType, 
                  SetEventflagHandlerType,       SendToDataqueueHandlerType,
                  SendErrorCodeToDataqueueHandlerType
-              if option == "OutOfDomain" then
+              if option == "OutOfDomain"
                 cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 cannot be placed out of domain", cell.get_name)
               elsif call_join.get_cell.get_region.get_domain_root == nil ||
-                    call_join.get_cell.get_region.get_domain_root != domain_root then
+                    call_join.get_cell.get_region.get_domain_root != domain_root
                 cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 and $2 must be placed in same domain", cell.get_name, call_join.get_cell.get_name)
               end
               dbgPrint "#{self.class.name}: match pattern 1.\n"
             when UserHandlerType
-              if option != "kernel" then
+              if option != "kernel"
                 cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 can be placed in kernel domain only, because notify target is handler", cell.get_name)
               elsif call_join.get_cell.get_region.get_domain_root == nil ||
-                    call_join.get_cell.get_region.get_domain_root != domain_root then
+                    call_join.get_cell.get_region.get_domain_root != domain_root
                 cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 and $2 must be placed in same domain", cell.get_name, call_join.get_cell.get_name)
               end
               dbgPrint "#{self.class.name}: match pattern 2.\n"
@@ -1072,7 +1072,7 @@ class NotifierPlugin < CelltypePlugin
             pre_text  = "KERNEL_DOMAIN{\n"
             post_text = "}\n"
             indent    =  "\t"
-          elsif option != "OutOfDomain" then
+          elsif option != "OutOfDomain"
             pre_text  = "DOMAIN(#{domain_root.get_name.to_s}){\n"
             post_text = "}\n"
             indent    =  "\t"
@@ -1170,7 +1170,7 @@ class NotifierPlugin < CelltypePlugin
 
    def gen_sac file, cell, indent
      domain_root = cell.get_region.get_domain_root
-     if domain_root.get_domain_type then
+     if domain_root.get_domain_type
        id = (cell.get_attr_initializer :id).to_s
                  name_array = cell.get_celltype.get_name_array(cell)
        case cell.get_celltype.get_name

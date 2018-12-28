@@ -44,7 +44,7 @@ class TECSGEN
   #=== import パス (-I) を末尾に追加
   # 既に登録済みであれば、追加しない
   def self.add_import_path path
-    if $import_path.index(path) == nil then
+    if $import_path.index(path) == nil
       dbgPrint "add_import_path: '#{path}'\n"
       $import_path << path
     end
@@ -54,7 +54,7 @@ class TECSGEN
   # 環境変数 TECSPATH が cygwin スタイルだと、exerb 版では扱えない
   # $import_path と $TECSPATH を調整する
   def self.adjust_exerb_path
-    if $IN_EXERB then
+    if $IN_EXERB
       new_tecspath = cygpath($tecspath, $tecspath)
       pattern = /\A#{$tecspath}/
       paths = []
@@ -78,7 +78,7 @@ class TECSGEN
     tp.gsub!(/\\/, "\\\\\\\\")
     pattern = /#{tp}/
       substr = "$(TECSPATH)"
-    if b_global then
+    if b_global
       str =  path.gsub(pattern, substr)
     else
       str = path.sub(pattern, substr)
@@ -92,7 +92,7 @@ class TECSGEN
   # '/' または '$' で始まる場合、絶対パスと判定する
   def self.is_absolute_path?(path)
     pa = path[0..0]; pa2 = path[0..1]
-    if pa == '/' || pa == '$' || pa2 =~ /[A-Za-z]:/ then
+    if pa == '/' || pa == '$' || pa2 =~ /[A-Za-z]:/
       res = true
     else
       res = false
@@ -135,7 +135,7 @@ class TECSGEN
       if @@fixed_vars[var]
         raise "fixed var '#{var}' cannot be changed"
       end
-      if @@config_mode then
+      if @@config_mode
         @@vars_default[var.to_sym] = val
         @@var_comments_default[var.to_sym] = comment
       else
@@ -171,7 +171,7 @@ class TECSGEN
       return @@objs.uniq
     end
     def self.get_vars  # Array を返す
-      if RUBY_VERSION >= '1.9' then
+      if RUBY_VERSION >= '1.9'
         return (@@vars.keys + @@vars_default.keys).sort.uniq
       else
         # V1.8 では、Symbol の sort ができないので、一旦 String に置換する
@@ -261,7 +261,7 @@ class TECSGEN
     ####  post コードの生成と構文解析 ####
     @@b_post_coded = true     # ポストコード生成開始後 true
     # 引数がなければ、プラグインのポストコードを出力しない
-    if ARGV.length > 0 then
+    if ARGV.length > 0
       dbgPrint("## Generating Post Code\n")
       # プラグインのポストコードの出力と import
       tmp_file_name = "#{$gen}/tmp_plugin_post_code.cdl"
@@ -272,7 +272,7 @@ class TECSGEN
         Generator.error("G9999 fail to create #{tmp_file_name}")
       end
 
-      if file then
+      if file
         # through プラグインのポストコード生成
         PluginModule.gen_plugin_post_code file
 
@@ -339,8 +339,8 @@ class TECSGEN
         dbgPrint "Region.path_str: #{region.get_namespace_path.get_path_str}\n"
       end
 
-      if $region_list.length > 0 then
-        if $region_list[region.get_namespace_path.get_path_str] then
+      if $region_list.length > 0
+        if $region_list[region.get_namespace_path.get_path_str]
           $region_list[region.get_namespace_path.get_path_str] = false
         else
           next
@@ -349,23 +349,23 @@ class TECSGEN
 
       # セルが一つもなければ生成しない
       # セルの生成がない場合
-      if region.get_n_cells == 0 then
-        if $region_list.length > 0 then
+      if region.get_n_cells == 0
+        if $region_list.length > 0
           Generator.warning("W9999 $1: specified to generate but has no cell", region.get_name)
         end
-        if region != @root_namespace then
+        if region != @root_namespace
           next
         end
       end
 
       $generating_region = region
-      if Region.get_link_roots.length > 1 then
-        if region.get_name == "::" then
+      if Region.get_link_roots.length > 1
+        if region.get_name == "::"
           $gen = $gen_base
         else
           $gen = $gen_base + "/" + region.get_global_name.to_s
           begin
-            if ! File.directory?($gen) then
+            if ! File.directory?($gen)
               Dir.mkdir($gen)
             end
           rescue
@@ -380,19 +380,19 @@ class TECSGEN
       dbgPrint("## Unset optimize variables\n")
       @root_namespace.reset_optimize   # 最適化をリセットする
 
-      if Generator.get_n_error == 0 then
+      if Generator.get_n_error == 0
         # エラーが発生していたら、設定しない
         dbgPrint("## Set cell id\n")
         @root_namespace.set_cell_id_and_domain      # セルの ID とドメイン情報を設定（linkunit 毎に0からつける）
 
         # エラーが発生していたら、最適化は実施しない
-        if ! $unopt then
+        if ! $unopt
           dbgPrint("## Optimizing: Link Region=#{@root_namespace.get_name}\n")
           @root_namespace.optimize
         end
       end
 
-      if $show_tree then
+      if $show_tree
         # エラーが発生していても表示（エラー発生時は最適化されていないので注意）
         print "##### show_tree LinkRegion=#{region.get_name} #####\n"
         @root_namespace.show_tree(0)
@@ -400,7 +400,7 @@ class TECSGEN
       end
 
       # 構文解釈、意味解析でエラー発生していたら、コード生成をしない
-      if Generator.get_n_error != 0 then
+      if Generator.get_n_error != 0
         print_report
         exit 1
       end
@@ -425,7 +425,7 @@ class TECSGEN
     # Namespace.gen_XML  @root_namespace
 
     $region_list.each{ |region_path_str, val|
-      if val == true then
+      if val == true
         Generator.warning("W9999 $1: not link root, -G ignored", region_path_str)
       end
     }
@@ -434,7 +434,7 @@ class TECSGEN
     # APPFile で生成されたファイルは、もし変化があれば、ここで更新する
     # コード生成段階でエラーが発生すれば、更新しない
     # CFile で生成されたものは、更新されている
-    if Generator.get_n_error == 0 then
+    if Generator.get_n_error == 0
       begin
         AppFile.update
       rescue => evar
@@ -444,7 +444,7 @@ class TECSGEN
     end
 
     print_report
-    if Generator.get_n_error != 0 then
+    if Generator.get_n_error != 0
       STDERR.print "error occurred while generating. some file can be corrupt in #{$gen_base}\n"
       exit 1
     end

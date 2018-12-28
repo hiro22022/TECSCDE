@@ -86,26 +86,26 @@ class ATK1ISRPlugin < CelltypePlugin
 
       # CATEGORY
       join = cell.get_join_list.get_item(:category)
-      if join then
+      if join
         file2.print "\t\tCATEGORY = #{join.get_rhs.to_s};\n"
       end
 
       # PRIORITY
       join = cell.get_join_list.get_item(:priority)
-      if join then
+      if join
         file2.print "\t\tPRIORITY = #{join.get_rhs.to_s};\n"
       end
 
       # ENTRY (entryはtecsgenの予約語のためNumberを付加)
       join = cell.get_join_list.get_item(:entryNumber)
-      if join then
+      if join
         file2.print "\t\tENTRY = #{join.get_rhs.to_s};\n"
       end
 
       # RESOURCE
       join2 = cell.get_join_list.get_item(:resource)
       delim = ""
-      if join2 then
+      if join2
         join2.get_rhs.each { |res|
           str = res.to_s.gsub(/^"(.*)"$/, '\1')
           file2.print "\t\tRESOURCE = #{str};\n"
@@ -116,7 +116,7 @@ class ATK1ISRPlugin < CelltypePlugin
       # MESSAGE
       join2 = cell.get_join_list.get_item(:message)
       delim = ""
-      if join2 then
+      if join2
         join2.get_rhs.each { |msg|
           str = msg.to_s.gsub(/^"(.*)"$/, '\1')
           file2.print "\t\tMESSAGE = #{str};\n"
@@ -139,9 +139,9 @@ class ATK1ISRPlugin < CelltypePlugin
     if cell.is_generate?
       name_array = @celltype.get_name_array(cell)
       join2 = cell.get_join_list.get_item(:category)
-      if join2 then
+      if join2
         str = join2.get_rhs.to_s
-        if str == "1" then
+        if str == "1"
           file.print <<EOT
 #if defined( OMIT_ISR1_ENTRY )
 EOT

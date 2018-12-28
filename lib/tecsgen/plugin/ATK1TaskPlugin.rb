@@ -95,12 +95,12 @@ class ATK1TaskPlugin < CelltypePlugin
 
       # AUTOSTART
       join = cell.get_join_list.get_item(:autoStart)
-      if join then
+      if join
         str = join.get_rhs.to_s
 
-        if str == "TRUE" then
+        if str == "TRUE"
           join2 = cell.get_join_list.get_item(:appMode)
-          if join2 then
+          if join2
             file2.print "\t\tAUTOSTART = TRUE {\n"
             delim = ""
             join2.get_rhs.each { |mode|
@@ -112,7 +112,7 @@ class ATK1TaskPlugin < CelltypePlugin
           else
             file2.print "\t\tAUTOSTART = TRUE;\n"
           end
-        elsif str == "FALSE" then
+        elsif str == "FALSE"
           file2.print "\t\tAUTOSTART = FALSE;\n"
         else
         end
@@ -120,19 +120,19 @@ class ATK1TaskPlugin < CelltypePlugin
 
       # PRIORITY
       join = cell.get_join_list.get_item(:priority)
-      if join then
+      if join
         file2.print "\t\tPRIORITY = #{join.get_rhs.to_s};\n"
       end
 
       # ACTIVATION
       join = cell.get_join_list.get_item(:activation)
-      if join then
+      if join
         file2.print "\t\tACTIVATION = #{join.get_rhs.to_s};\n"
       end
 
       # SCHEDULE
       join = cell.get_join_list.get_item(:schedule)
-      if join then
+      if join
         str = join.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
         file2.print "\t\tSCHEDULE = #{str};\n"
       end
@@ -140,7 +140,7 @@ class ATK1TaskPlugin < CelltypePlugin
       # EVENT
       join = cell.get_join_list.get_item(:event)
       delim = ""
-      if join then
+      if join
         join.get_rhs.each { |evt|
           str = evt.to_s.gsub(/^"(.*)"$/, '\1')
           if !(str == "OMISSIBLE")
@@ -161,7 +161,7 @@ class ATK1TaskPlugin < CelltypePlugin
       # RESOURCE
       join = cell.get_join_list.get_item(:resource)
       delim = ""
-      if join then
+      if join
         join.get_rhs.each { |res|
           str = res.to_s.gsub(/^"(.*)"$/, '\1')
           if !(str == "OMISSIBLE")
@@ -174,7 +174,7 @@ class ATK1TaskPlugin < CelltypePlugin
       # MESSAGE
       join = cell.get_join_list.get_item(:message)
       delim = ""
-      if join then
+      if join
         join.get_rhs.each { |msg|
           str = msg.to_s.gsub(/^"(.*)"$/, '\1')
           if !(str == "OMISSIBLE")
@@ -186,7 +186,7 @@ class ATK1TaskPlugin < CelltypePlugin
 
       # STACKSIZE
       join = cell.get_join_list.get_item(:stackSize)
-      if join then
+      if join
         file2.print "\t\tSTACKSIZE = #{join.get_rhs.to_s};\n"
       end
 

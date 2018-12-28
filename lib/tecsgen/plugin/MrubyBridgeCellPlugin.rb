@@ -85,11 +85,11 @@ class MrubyBridgeCellPlugin < CellPlugin
     return if ct == nil     # error case
 
     port_list = ct.get_port_list
-    if @exclude_port.length > 0 then
+    if @exclude_port.length > 0
       # この実装では、存在しない port を指定されてもチェックできない
       # print "MRBBridgeCellPlugin: exclude list\n"
       port_list.each{ |port|
-        if ! @exclude_port.include?(port.get_name.to_s) then
+        if ! @exclude_port.include?(port.get_name.to_s)
           # print "MRBBridgeCellPlugin: #{port.get_name} included\n"
           @port_list[port] = ""
         else
@@ -102,10 +102,10 @@ class MrubyBridgeCellPlugin < CellPlugin
       }
     end
 
-    if @exclude_port_func.length > 0 then
+    if @exclude_port_func.length > 0
       @port_list.each{ |port, opt_str|
         delim = ""
-        if @exclude_port_func.include?(port.get_name.to_s) then
+        if @exclude_port_func.include?(port.get_name.to_s)
           @exclude_port_func[port.get_name.to_s].each{ |func_name|
             opt_str += delim + "exclude=" + func_name
             delim = ","
@@ -123,7 +123,7 @@ class MrubyBridgeCellPlugin < CellPlugin
 /* MrubyBridgeCellPlugin: generate for cell=#{@cell.get_name} */
 EOT
 
-    if @@cell_list[@cell] then
+    if @@cell_list[@cell]
       file.print <<EOT
 
 /*
@@ -145,9 +145,9 @@ EOT
         next
       end
 
-      if port.get_port_type == :ENTRY then
+      if port.get_port_type == :ENTRY
         print "  MrubyBridgeCellPlugin: [cell.port] #{@cell.get_name}.#{port.get_name} => [mruby instance] TECS::T#{port.get_signature.get_name}.new( '#{@cell.get_name}#{port.get_name}Bridge' ) \n"
-        if @@signature_list[port.get_signature] == nil then
+        if @@signature_list[port.get_signature] == nil
           opt_str = "ignoreUnsigned=#{@b_ignoreUnsigned}, auto_exclude=#{@b_auto_exclude}, " + opt_str
           # p "opt_str=#{opt_str}"
 
@@ -179,7 +179,7 @@ EOT
   # file:: File: 
   def self.gen_post_code(file)
     dbgPrint "#{self.name}: gen_post_code\n"
-    if ! @@b_gen_post_code_by_dependent then
+    if ! @@b_gen_post_code_by_dependent
       gen_post_code_body file
     end
   end
@@ -199,7 +199,7 @@ EOT
 
   #=== プラグイン引数 ignoreUnsigned
   def set_ignoreUnsigned rhs
-    if rhs == "true" || rhs == nil then
+    if rhs == "true" || rhs == nil
       @b_ignoreUnsigned = true
     end
   end
@@ -211,7 +211,7 @@ EOT
     return if ct == nil    # error case
     ports.each{ |rhs_port|
       obj = ct.find(rhs_port.to_sym)
-      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY) then
+      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port '$1' not found or not entry in celltype '$2'", rhs_port, ct.get_name)
       else
         # print "MRBBridgeCellPlugin: exclude #{rhs_port}\n"
@@ -227,18 +227,18 @@ EOT
     return if ct == nil    # error case
     port_funcs.each{ |rhs_port_func|
       port_func = rhs_port_func.split '.'
-      if port_func.length != 2 then
+      if port_func.length != 2
         cdl_error("MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func)
       end
       obj = ct.find(port_func[0].to_sym)
-      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY) then
+      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port, ct.get_name)
       else
         signature = obj.get_signature
         next if signature == nil     # error case
         if signature.get_function_head port_func[1].to_sym
           # print "MRBBridgeCellPlugin: #{port_func[0]}.#{port_func[1]} exclude\n"
-          if @exclude_port_func[port_func[0]] then
+          if @exclude_port_func[port_func[0]]
             @exclude_port_func[port_func[0]] <<  port_func[1]
           else
             @exclude_port_func[port_func[0]] = [ port_func[1] ]
@@ -253,9 +253,9 @@ EOT
   #=== プラグイン引数 auto_exclude
   def set_auto_exclude rhs
     # print "MrubyBridgeCellPlugin: auto_exclude=#{rhs}\n"
-    if rhs == "false" then
+    if rhs == "false"
       @b_auto_exclude = false
-    elsif rhs == "true" then
+    elsif rhs == "true"
       @b_auto_exclude = true     # auto_exclude = true by default 
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")

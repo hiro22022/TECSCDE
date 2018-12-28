@@ -365,7 +365,7 @@ module TECSCDE
           TECSCDE.message_box("'#{new_name}' has unsuitable character for identifier", nil)
           return false
         end
-        if @cell_hash[new_name] then
+        if @cell_hash[new_name]
           TECSCDE.message_box("'#{new_name}' already exists", nil)
           return false
         end
@@ -449,7 +449,7 @@ module TECSCDE
 
     #=== TECSModel#get_celltype_list ***
     def get_celltype_list
-      if @tecsgen then
+      if @tecsgen
         @tecsgen.get_celltype_list
       end
     end
@@ -595,7 +595,7 @@ module TECSCDE
 
         @celltype.get_port_list.each{ |port_def|
           # p "celltype:#{@celltype.get_name} port:#{port_def.get_name}"
-          if port_def.get_port_type == :ENTRY then
+          if port_def.get_port_type == :ENTRY
             # if ! port_def.is_reverse_required? then
             if port_def.get_array_size == nil
               @eports[port_def.get_name] = TmEPort.new(self, port_def)
@@ -604,7 +604,7 @@ module TECSCDE
             end
             # end
           else
-            if ! port_def.is_require? then
+            if ! port_def.is_require?
               if port_def.get_array_size == nil
                 @cports[port_def.get_name] = TmCPort.new(self, port_def)
               else
@@ -719,7 +719,7 @@ module TECSCDE
       #=== TmCell::is_near?( x, y )  ***
       def is_near?(x, y)
         # p "is_near? @x=#{@x} @width=#{@width} @y=#{@y} @height=#{@height} x=#{x} y=#{y}"
-        if(@x < x) &&(x < (@x+@width))&&(@y < y)&&(y < (@y+@height))then
+        if(@x < x) &&(x < (@x+@width))&&(@y < y)&&(y < (@y+@height))
           true
         else
           false
@@ -763,7 +763,7 @@ module TECSCDE
 
       #=== TmCell#get_right_angle_edges_position
       def get_right_angle_edges_position(edge_side)
-       if TECSModel.is_vertical?(edge_side) then
+       if TECSModel.is_vertical?(edge_side)
           [@y, @y+@height]
        else
           [@x, @x+@width]
@@ -1203,7 +1203,7 @@ module TECSCDE
       #=== TmPortArray#delete_hilited
       # this method is called from Control
       def delete_hilited port
-        if @port_def.get_array_size != "[]" then
+        if @port_def.get_array_size != "[]"
           TECSCDE::message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
 Cannot delete array member.
@@ -1234,7 +1234,7 @@ EOT
       #=== TmPortArray#insert
       # this method is called from Control
       def insert port, before_after
-        if @port_def.get_array_size != "[]" then
+        if @port_def.get_array_size != "[]"
           TECSCDE::message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
 Cannot insert array member.
@@ -1351,7 +1351,7 @@ EOT
         # p "TmEPortArray port_def:#{port_def}"
         @port_def = port_def
         @owner = cell
-        if port_def.get_array_size == "[]" then
+        if port_def.get_array_size == "[]"
           @actual_size = 1
         else
           @actual_size = port_def.get_array_size
@@ -1465,7 +1465,7 @@ EOT
       end
 
       def get_cell
-        if @owner.kind_of? TmCell then
+        if @owner.kind_of? TmCell
           @owner
         else
           @owner.get_owner
@@ -1583,7 +1583,7 @@ EOT
       end
 
       def moved(x_inc, y_inc)
-        if @join then
+        if @join
           @join.moved_cport(x_inc, y_inc)
         end
       end
@@ -1824,7 +1824,7 @@ EOT
       end
 
       def moved_cport(x_inc, y_inc)
-        if @bars[0].instance_of? VBar then
+        if @bars[0].instance_of? VBar
           @bars[0].moved y_inc
         else
           @bars[0].moved x_inc
@@ -1836,7 +1836,7 @@ EOT
         len = @bars.length
 
         if len >= 5
-          if @bars[len-4].instance_of? VBar then
+          if @bars[len-4].instance_of? VBar
             @bars[len-4].moved y_inc
           else
             @bars[len-4].moved x_inc
@@ -1844,7 +1844,7 @@ EOT
         end
 
         if len >= 4
-          if @bars[len-3].instance_of? VBar then
+          if @bars[len-3].instance_of? VBar
             @bars[len-3].moved y_inc
           else
             @bars[len-3].moved x_inc
@@ -1852,14 +1852,14 @@ EOT
         end
 
         if len >= 3
-          if @bars[len-2].instance_of? VBar then
+          if @bars[len-2].instance_of? VBar
             @bars[len-2].moved y_inc
           else
             @bars[len-2].moved x_inc
           end
         end
 
-        if @bars[len-1].instance_of? VBar then
+        if @bars[len-1].instance_of? VBar
           @bars[len-1].moved y_inc
         else
           @bars[len-1].moved x_inc
@@ -1877,7 +1877,7 @@ EOT
             xe = bar.get_position
             if is_between?(xm, xs, xe) && is_near?(ym, ys)
               dist = (ym-ys).abs
-              if dist < min_dist then
+              if dist < min_dist
                 min_dist = dist
                 min_bar = bar
               end
@@ -1886,7 +1886,7 @@ EOT
             ye = bar.get_position
             if is_between?(ym, ys, ye) && is_near?(xm, xs)
               dist = (xm-xs).abs
-              if dist < min_dist then
+              if dist < min_dist
                 min_dist = dist
                 min_bar = bar
               end
@@ -1997,13 +1997,13 @@ EOT
           bar_prev = nil
           bars = @owner.get_bars
 
-          if bars.length >= 1 && bars[bars.length - 1] == self then
+          if bars.length >= 1 && bars[bars.length - 1] == self
             @owner.get_eport.move(x_inc, y_inc)
             return   # last bar
           end
 
           bars.each{ |bar|
-            if bar.equal? self then
+            if bar.equal? self
               break
             end
             bar_prev = bar

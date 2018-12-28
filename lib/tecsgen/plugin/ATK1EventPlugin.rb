@@ -77,11 +77,11 @@ class ATK1EventPlugin < CelltypePlugin
         join = cell.get_join_list.get_item(:mask)
 
         # AUTO type search and change to zero
-        if join then
+        if join
           # mask_bit = join.get_rhs.to_s.eval_cnst( nil )
           mask_bit = join.get_rhs.to_s.to_i
           mask_str = join.get_rhs.to_s
-          if mask_str == "AUTO" then
+          if mask_str == "AUTO"
             new_rhs = Expression.create_integer_constant(32, @locale)
             join.change_rhs new_rhs
           else
@@ -108,9 +108,9 @@ class ATK1EventPlugin < CelltypePlugin
         # bit place to mask pattern
         file2.print "\tEVENT #{cell.get_name} {\n"
         join = cell.get_join_list.get_item(:mask)
-        if join then
+        if join
           mask_bit = join.get_rhs.to_s.to_i
-          if mask_bit == 32 then
+          if mask_bit == 32
             while 1
     p("mask_count, current_mask")
     p mask_count

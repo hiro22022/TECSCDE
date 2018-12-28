@@ -86,14 +86,14 @@ class ATK1AlarmPlugin < CelltypePlugin
 
       # COUNTER
       join = cell.get_join_list.get_item(:counter)
-      if join then
+      if join
         str = join.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
         file2.print "\t\tCOUNTER = #{str};\n"
       end
 
       # ACTION
       join = cell.get_join_list.get_item(:action)
-      if join then
+      if join
         str = join.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
       end
 
@@ -101,12 +101,12 @@ class ATK1AlarmPlugin < CelltypePlugin
       when "SETEVENT"
         file2.print "\t\tACTION = #{str} {\n"
         join2 = cell.get_join_list.get_item(:task)
-        if join2 then
+        if join2
           str = join2.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
           file2.print "\t\t\tTASK = #{str};\n"
         end
         join2 = cell.get_join_list.get_item(:event)
-        if join2 then
+        if join2
           str = join2.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
           file2.print "\t\t\tEVENT = #{str};\n"
         end
@@ -114,7 +114,7 @@ class ATK1AlarmPlugin < CelltypePlugin
       when "ACTIVATETASK"
         file2.print "\t\tACTION = #{str} {\n"
         join2 = cell.get_join_list.get_item(:task)
-        if join2 then
+        if join2
           str = join2.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
           file2.print "\t\t\tTASK = #{str};\n"
         end
@@ -122,7 +122,7 @@ class ATK1AlarmPlugin < CelltypePlugin
       when "ALARMCALLBACK"
         file2.print "\t\tACTION = #{str} {\n"
         join2 = cell.get_join_list.get_item(:callbackName)
-        if join2 then
+        if join2
           str = join2.get_rhs.to_s
           file2.print "\t\t\tALARMCALLBACKNAME = #{str};\n"
         end
@@ -132,25 +132,25 @@ class ATK1AlarmPlugin < CelltypePlugin
 
       # AUTOSTART
       join = cell.get_join_list.get_item(:autoStart)
-      if join then
+      if join
         str = join.get_rhs.to_s
       end
 
-      if str == "TRUE" then
+      if str == "TRUE"
         file2.print "\t\tAUTOSTART = TRUE {\n"
         join2 = cell.get_join_list.get_item(:alarmTime)
-        if join2 then
+        if join2
         str = join2.get_rhs.to_s
         file2.print "\t\t\tALARMTIME = #{str};\n"
         end
         join2 = cell.get_join_list.get_item(:cycleTime)
-        if join2 then
+        if join2
           str = join2.get_rhs.to_s
           file2.print "\t\t\tCYCLETIME = #{str};\n"
         end
         join2 = cell.get_join_list.get_item(:appMode)
         delim = ""
-        if join2 then
+        if join2
           join2.get_rhs.each { |mode|
             str = mode.to_s.gsub(/^"(.*)"$/, '\1')
             file2.print "\t\t\tAPPMODE = #{str};\n"
@@ -177,7 +177,7 @@ class ATK1AlarmPlugin < CelltypePlugin
     if cell.is_generate?
       name_array = @celltype.get_name_array(cell)
       join2 = cell.get_join_list.get_item(:callbackName)
-      if join2 then
+      if join2
         str = join2.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
         file.print <<EOT
 ALARMCALLBACK( #{str} );

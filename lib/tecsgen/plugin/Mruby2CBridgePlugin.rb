@@ -48,12 +48,12 @@ class Mruby2CBridgePlugin < SignaturePlugin
   end
 
   def gen_cdl_file(file)
-    if(@@signature_list.length == 0)then
+    if(@@signature_list.length == 0)
       print_msg "  Mruby2CBridgePlugin: [initialize function] 'void initializeBridge( mrb_state *mrb )' must be called from VM.\n"
       c2tecs = "generate( C2TECSBridgePlugin, nMruby::sInitializeBridge, \"silent=true\" );\n"
     end
 
-    if @@signature_list[@signature.get_global_name] then
+    if @@signature_list[@signature.get_global_name]
       @@signature_list[@signature.get_global_name] << self
       cdl_warning("MRCW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return

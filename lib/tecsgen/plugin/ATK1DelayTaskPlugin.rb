@@ -90,9 +90,9 @@ class ATK1DelayTaskPlugin < CelltypePlugin
         name_array = @celltype.get_name_array(cell)
 
         join = cell.get_join_list.get_item(:event)
-        if join then
+        if join
           str = join.get_rhs.to_s
-          if str =~ /&(.*)/ then
+          if str =~ /&(.*)/
               str = $1
           end
 

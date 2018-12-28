@@ -110,7 +110,7 @@ composite #{@rpc_client_channel_celltype_name} {
 EOT
     f.close
 
-    if @PPAllocatorSize then
+    if @PPAllocatorSize
       alloc_cell = "  cell tPPAllocator PPAllocator {\n    heapSize = #{@PPAllocatorSize};\n  };\n"
       alloc_call_port_join = "    cPPAllocator = PPAllocator.ePPAllocator;\n"
     else
@@ -172,7 +172,7 @@ EOT
     nest_str = "  " * nest
 
     # セマフォの生成
-    if @b_noClientSemaphore == false then
+    if @b_noClientSemaphore == false
       file.print <<EOT
 
 #{nest_str}  //  Semaphore for Multi-task use ("specify noClientSemaphore" option to delete this)
@@ -193,7 +193,7 @@ EOT
 EOT
 
     # セマフォの結合文
-    if @b_noClientSemaphore == false then
+    if @b_noClientSemaphore == false
       semaphore = "#{nest_str}    cLockChannel = #{@serverChannelCell}_Semaphore.eSemaphore;\n"
     else
       semaphore = ""
@@ -201,7 +201,7 @@ EOT
 
     ### クライアント側チャンネル (マーシャラ+TDR)の生成 ###
     # アロケータの指定があるか？
-    if cell.get_allocator_list.length > 0 then
+    if cell.get_allocator_list.length > 0
 
       file.print nest_str
       file.print "[allocator("
@@ -211,14 +211,14 @@ EOT
 
         alloc_str = alloc.to_s
         subst = @substituteAllocator[alloc_str.to_sym]
-        if subst then
+        if subst
           alloc_str = subst[2]+"."+subst[3]
         end
 
         file.print delim
         delim = ",\n"        # 最終行には出さない
 
-        if subsc then        # 配列添数
+        if subsc        # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
@@ -232,7 +232,7 @@ EOT
       file.puts ")]"
     end
 
-    if @clientErrorHandler then
+    if @clientErrorHandler
       clientErrorHandler_str = "#{nest_str}    cErrorHandler = #{@clientErrorHandler};\n"
     else
       clientErrorHandler_str = ""
@@ -252,19 +252,19 @@ EOT
     ##### サーバー側のセルの生成 #####
     nest = @end_region.gen_region_str_pre file
     nest_str = "  " * nest
-    if @next_cell_port_subscript then
+    if @next_cell_port_subscript
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
       subscript = ""
     end
 
-    if @serverErrorHandler then
+    if @serverErrorHandler
       serverErrorHandler_str = "#{nest_str}    cErrorHandler = #{@serverErrorHandler};\n"
     else
       serverErrorHandler_str = ""
     end
 
-    if @b_genOpener then
+    if @b_genOpener
       opener = "#{nest_str}    cOpener       = #{@serverChannelCell}.eOpener;\n"
     else
       opener = ""
@@ -315,9 +315,9 @@ EOT
   #=== プラグイン引数 noClientSemaphore のチェック
   def set_noClientSemaphore rhs
     rhs = rhs.to_sym
-    if rhs == :true then
+    if rhs == :true
       @b_noClientSemaphore = true
-    elsif rhs == :false then
+    elsif rhs == :false
       @b_noClientSemaphore = false
     else
       cdl_error("RPCPlugin: specify true or false for noClientSemaphore")

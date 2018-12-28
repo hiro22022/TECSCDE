@@ -105,7 +105,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
       [ "", "tecslib/plugin/" ].each { |lp|
         lib = File.expand_path(path) + '/' + lp + fname
         
-        if File.exist? lib then  # ファイル存否と他のエラーを区別するため存在確認をする
+        if File.exist? lib  # ファイル存否と他のエラーを区別するため存在確認をする
           begin
             require(lib)
             b_require = true
@@ -116,12 +116,12 @@ def require_tecsgen_lib(fname, b_fatal = true)
           break
         end
       }
-      if b_require then
+      if b_require
         break
       end
     }
 
-    if b_require == false && b_exception == false then
+    if b_require == false && b_exception == false
       # exerb 対応 "." をサーチパスの最初に加える
       #   "tecslib/" は RPCPlugin.rb, TracePlugin.rb のために用意してある
       #   RPCPlugin.rb, TracePlugin.rb が tecslib 下でなければ不要になるが、このようにしておく
@@ -143,13 +143,13 @@ def require_tecsgen_lib(fname, b_fatal = true)
       }
     end
 
-    if b_require == false then
+    if b_require == false
       # 見つからなかった
-      if b_exception == false then
+      if b_exception == false
         STDERR << "tecsgen: Fail to load #{fname}. Check $RUBYLIB environment variable or -L option\n"
       end
       # tecsgen を構成するファイルの場合は中止する
-      if b_fatal then
+      if b_fatal
         STDERR << "tecsgen: Exit because of unrecoverble error\n"
         exit 1
       end
@@ -169,7 +169,7 @@ def print_exception(evar)
   print "*** Begin Ruby exception message ***\n"
   puts(evar.to_s)
 
-  if $debug then
+  if $debug
     puts "#### stack trace ####"
     pp evar.backtrace
   end
@@ -177,13 +177,13 @@ def print_exception(evar)
 end
 
 def dbgPrint(str)
-  if $debug then
+  if $debug
     print str
   end
 end
 
 def dbgPrintf(*param)
-  if $debug then
+  if $debug
     printf *param
   end
 end
@@ -192,12 +192,12 @@ end
 def print_report
   msg = nil
 
-  if Generator.get_n_error != 0 then
+  if Generator.get_n_error != 0
     msg = "#{Generator.get_n_error} error"
     msg = "#{msg}s" if Generator.get_n_error >= 2
   end
 
-  if Generator.get_n_warning != 0 then
+  if Generator.get_n_warning != 0
     msg = "#{msg}  " if msg
     msg = "#{msg}#{Generator.get_n_warning} warning"
     msg = "#{msg}s" if Generator.get_n_warning >= 2
@@ -208,7 +208,7 @@ end
 
 #=== $KCODE を設定
 def set_kcode kcode
-  if ! $b_no_kcode then
+  if ! $b_no_kcode
     $KCODE = kcode
   end
 end
@@ -270,7 +270,7 @@ class TECSGEN
     require 'kconv'
     $b_no_kcode = RUBY_VERSION >= "1.9.0" ? true : false
     # Use Ruby 1.9 M17N code (use Ruby 1.8 code if false).
-    if ! $b_no_kcode then
+    if ! $b_no_kcode
       require 'jcode'
     end
     require 'pp'
@@ -315,32 +315,32 @@ class TECSGEN
     $c_suffix  = "c"       # suffix for C progorams (for C++ source)
     $h_suffix  = "h"       # suffix for C progoram headers (for C++ source)
 
-    if ENV['TECSGEN_DEFAULT_RAM'] then
+    if ENV['TECSGEN_DEFAULT_RAM']
       rom_ram_defalult = "ram"
     else
       rom_ram_defalult = "rom"
     end
-    if rom_ram_defalult == "rom" then
+    if rom_ram_defalult == "rom"
       $rom       = true      # bool:   ROM support : generate CB separately
     else
       $rom       = false     # bool:   ROM support : generate CB separately
     end
     $b_cpp_specified = false
-    if $cpp == nil then
+    if $cpp == nil
       $cpp       = "gcc -E -DTECSGEN"
     end
-    if ENV['TECS_CPP']then
+    if ENV['TECS_CPP']
       $cpp = ENV['TECS_CPP']
       $b_cpp_specified = true
     end
-    if ENV['TECSPATH'] then
+    if ENV['TECSPATH']
       $tecspath = ENV['TECSPATH']
     else
       $tecspath = "#{$tecsgen_base_path}/tecs"
     end
 
     # # 文字コードの設定
-    if $IN_EXERB then
+    if $IN_EXERB
       # KCODE_CDL, $KCONV_CDL を仮に設定する (tecs_lang.rb ですぐに再設定される)
       $KCODE_CDL = "SJIS"          # string: "EUC" | "SJIS" | "NONE" | "UTF8"
       $KCONV_CDL = Kconv::SJIS     # const: NONE には ASCII を対応させる
@@ -364,7 +364,7 @@ class TECSGEN
         $define << define
       }
       parser.on('-G', '--generate-region=path', 'generate region') { |path|
-        if path =~ /^::/ then
+        if path =~ /^::/
           gen_path = path
         else
           gen_path = "::" + path
@@ -484,12 +484,12 @@ class TECSGEN
     # これを実行するまで tecsgen のバージョンを表示できない
     # このファイルを誤って読み込むと、異なるバージョン名を表示してしまう
     require 'tecsgen/version'
-    if $tecscde_version then
+    if $tecscde_version
       STDERR << "tecscde version #{$tecscde_version} (tecsgen version #{$version})  #{$Copyright}\n"
     elsif ! $no_banner || $print_version
       STDERR << "tecsgen  version #{$version}  #{$Copyright}\n"
     end
-    if $verbose then
+    if $verbose
       STDERR << "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE} patchlevel #{RUBY_PATCHLEVEL}) [#{RUBY_PLATFORM}]\n"
     end
     if $print_version && ARGV.empty?
@@ -499,7 +499,7 @@ class TECSGEN
     # 文字コード決定のため最初に読みこむ
     require 'tecsgen/core/tecs_lang'
 
-    unless $yydebug then
+    unless $yydebug
       require 'tecsgen/core/bnf.tab'
     else
       require 'tecsgen/core/bnf-deb.tab'
@@ -532,7 +532,7 @@ class TECSGEN
     require 'tecsgen/core/C_parser.tab'
     require 'tecsgen/core/ctypes'
 
-    if $unit_test then
+    if $unit_test
       exit 1
     end
 
@@ -543,14 +543,14 @@ class TECSGEN
     TECSGEN.adjust_exerb_path
 
     # $import_path に環境変数 $TECSGEN およびその直下を追加
-    if $no_default_import_path == false then
+    if $no_default_import_path == false
       # $TECSGEN および、その直下のディレクトリをパスに追加
-      if $tecspath != "." then
+      if $tecspath != "."
         TECSGEN.add_import_path $tecspath
         dir = nil
         begin
           Dir.foreach($tecspath){ |f|
-            if f != "." && f != ".." && File.directory?($tecspath + '/' + f) then
+            if f != "." && f != ".." && File.directory?($tecspath + '/' + f)
               TECSGEN.add_import_path($tecspath + '/' + f)
             end
           }
@@ -566,17 +566,17 @@ class TECSGEN
     # $target の設定
     $target = ARGV[0]
     pos = $target.rindex(/[:\\\/]/)
-    if pos then
+    if pos
       $target = $target[pos+1..-1]  # ディレクトリ区切りを除いた文字列
     end
     pos = $target.rindex(/\./)
-    if pos then
+    if pos
       $target = $target[0..pos-1]   # 拡張子を取り除いた文字列
     end
 
     # gen ディレクトリの作成
     begin
-      if ! File.directory?($gen_base) then
+      if ! File.directory?($gen_base)
         Dir.mkdir($gen_base)
       end
     rescue
@@ -603,7 +603,7 @@ end # TECSGEN
 # 複数のジェネレータインスタンスを生成することは、可能だが、以下の問題がある
 #  クラス変数のリセットを確実に行う必要がある
 
-if $TECSCDE != true then
+if $TECSCDE != true
   begin
     TECSGEN.init
     tecsgen = TECSGEN.new

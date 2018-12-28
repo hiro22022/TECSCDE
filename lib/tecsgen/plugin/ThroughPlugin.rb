@@ -151,7 +151,7 @@ class ThroughPlugin < Plugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@ct_name] == nil then
+    if @@generated_celltype[@ct_name] == nil
       @@generated_celltype[@ct_name] = [ self ]
     else
       @@generated_celltype[@ct_name] << self
@@ -161,7 +161,7 @@ class ThroughPlugin < Plugin
     file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
 
     send_receive = []
-    if @signature != nil then
+    if @signature != nil
       @signature.each_param{ |fd,param|
         dir =param.get_direction
         case dir
@@ -175,7 +175,7 @@ class ThroughPlugin < Plugin
 celltype #{@ct_name} {
 EOT
 
-    if send_receive.length > 0 then
+    if send_receive.length > 0
       file2.print "  [ allocator(\n"
       delim = ""
       send_receive.each { |a|
@@ -244,11 +244,11 @@ EOT
     ret_type = func_type.get_type
     b_ret_void = ret_type.is_void?
 
-    if ! b_ret_void then
+    if ! b_ret_void
       file.print("  #{ret_type.get_type_str}  retval;\n")
     end
 
-    if ! b_singleton then
+    if ! b_singleton
 
       file.print <<EOT
   #{ct_name}_CB    *p_cellcb;
@@ -265,7 +265,7 @@ EOT
     # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
     delim = ""
-    if ! b_ret_void then
+    if ! b_ret_void
       file.print("  retval = ")
     end
 
@@ -283,7 +283,7 @@ EOT
 
     file.print(" );\n")
 
-    if ! b_ret_void then
+    if ! b_ret_void
       file.print("  return retval;\n")
     end
   end

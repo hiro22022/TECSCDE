@@ -65,7 +65,7 @@ class C2TECSBridgePlugin < SignaturePlugin
   end
 
   def gen_cdl_file file
-    if @@signature_list[@signature.get_global_name] then
+    if @@signature_list[@signature.get_global_name]
       @@signature_list[@signature.get_global_name] << self
       cdl_warning("C2TW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return
@@ -162,7 +162,7 @@ EOT
       header_file.print(" );\n")
 
       # call function in call port
-      if ! ret_type.is_void? then
+      if ! ret_type.is_void?
         file.print("  #{ret_type.get_type_str}  retval;\n")
         file.print("  retval = ")
       else
@@ -178,7 +178,7 @@ EOT
       }
       file.print(" );\n")
 
-      if ! ret_type.is_void? then
+      if ! ret_type.is_void?
         file.print("  return retval;\n")
       end
       file.print("}\n\n")
@@ -204,7 +204,7 @@ EOT
   #===  set_header_name - header_name プラグインオプション
   def set_header_name rhs
     @header_name = "#{$gen}/" + rhs.to_s
-    if ! (@header_name =~ /\.h\Z/) then
+    if ! (@header_name =~ /\.h\Z/)
       @header_name += ".h"
     end
   end
