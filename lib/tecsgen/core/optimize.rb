@@ -159,7 +159,7 @@ class Celltype
     # ID 指定されていないセルに id 番号を与える
     i = 0
     no_id_specified_cells.each{ |c|
-      while(@ordered_cell_list[i] != nil)
+      while(!@ordered_cell_list[i].nil?)
         i += 1
       end
       @ordered_cell_list[i] = c

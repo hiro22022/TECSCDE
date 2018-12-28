@@ -143,7 +143,7 @@ class Namespace
       # global_tecsgen.h (typedef, struct, const) の生成
       gen_global_header
 
-      if (instance_of? Region) && get_domain_type != nil
+      if (instance_of? Region) && !get_domain_type.nil?
         # p "*******************  domain_type: #{get_domain_type.get_name}  ****************"
         domain_type = get_domain_type
         if @@domain_gen_factory_list[domain_type] == nil
@@ -1596,7 +1596,7 @@ EOT
         param = "p_that"
         delim = ","
       end
-      if p.get_array_size != nil
+      if !p.get_array_size.nil?
         param = param + delim + "subscript"
       end
       f.print("#define #{@global_name}_is_#{p.get_name}_joined(#{param}) \\\n")
@@ -2622,7 +2622,7 @@ EOT
     @var.each{ |v|
 
       next if v.is_omit?
-      next if v.get_size_is != nil    # size_is 指定された var は attribute へ出力する
+      next if !v.get_size_is.nil?    # size_is 指定された var は attribute へ出力する
 
       f.print "    "
       f.printf("%-14s", v.get_type.get_type_str)
@@ -2645,7 +2645,7 @@ EOT
       next if p.get_port_type != :CALL
       next if p.is_omit?
       next if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && ! $ram_initializer
-      next if inib_cb == :CB_DYNAMIC && (! p.is_dynamic? || p.get_array_size != nil)
+      next if inib_cb == :CB_DYNAMIC && (! p.is_dynamic? || !p.get_array_size.nil?)
       # bprint "cb_type #{inib_cb} #{p.get_name} dynamic=#{p.is_dynamic?}\n"
 
       ptr = p.get_array_size ? "*" : ""
@@ -2662,7 +2662,7 @@ EOT
 
         if ! p.is_skelton_useless?
           # 標準形
-          if inib_cb == :INIB && p.is_dynamic? && p.get_array_size != nil && $ram_initializer
+          if inib_cb == :INIB && p.is_dynamic? && !p.get_array_size.nil? && $ram_initializer
             f.print("    struct tag_#{p.get_signature.get_global_name}_VDES #{ptr}#{const2}*#{p.get_name;}_init_;\n")
           end
           f.print("    struct tag_#{p.get_signature.get_global_name}_VDES #{ptr}#{const}*#{p.get_name;}#{init};\n")
@@ -3039,7 +3039,7 @@ EOT
         f.print ")\n"
 
         f.print "{\n"
-        if (! @singleton || p.get_array_size != nil)
+        if (! @singleton || !p.get_array_size.nil?)
           f.print "    struct tag_#{@global_name}_#{p.get_name}_DES *lepd\n"
           f.print "        = (struct tag_#{@global_name}_#{p.get_name}_DES *)epd;\n"
         end
@@ -3853,7 +3853,7 @@ EOT
         next if p.is_omit?
         next if p.is_cell_unique?        # 最適化（単一セルで呼び口マクロに埋め込まれる）
         next if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && ! $ram_initializer
-        next if inib_cb == :CB_DYNAMIC && (! p.is_dynamic? || p.get_array_size != nil)
+        next if inib_cb == :CB_DYNAMIC && (! p.is_dynamic? || !p.get_array_size.nil?)
 
         j = jl.get_item(p.get_name)
         print_indent(f, indent + 1)
@@ -3892,7 +3892,7 @@ EOT
         am = j.get_array_member2
         if am
           # 呼び口配列の場合
-          if inib_cb == :INIB && p.is_dynamic? && p.get_array_size != nil && $ram_initializer
+          if inib_cb == :INIB && p.is_dynamic? && !p.get_array_size.nil? && $ram_initializer
             f.printf("%-40s /* #_CCP3_# _init_ */\n",  "#{cell.get_global_name}_#{j.get_name}_init_,")
             print_indent(f, indent + 1)
           end
@@ -4236,7 +4236,7 @@ EOT
             len = c.get_entry_port_max_subscript(p) + 1
           end
 
-          if len != nil
+          if !len.nil?
             # 受け口配列の場合
             i = 0
             while i < len
@@ -4553,7 +4553,7 @@ EOT
  * context:    #{p.get_signature.get_context}
 EOT
 
-      if p.get_array_size != nil
+      if !p.get_array_size.nil?
         f.print <<EOT
  * entry port array size:  NEP_#{p.get_name}
 EOT

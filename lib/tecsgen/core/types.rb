@@ -458,7 +458,7 @@ class IntType < Type
     min = get_min
     dbgPrint "sign=#{@sign} ident=#{ident} val=#{val} max=#{max} min=#{min}\n"
 
-    if max != nil
+    if !max.nil?
       if val > max
         if @sign == :SIGNED || @sign == nil
           cdl_error2(locale, "T1013 $1: too large (max=$2)" , ident, max)
@@ -468,7 +468,7 @@ class IntType < Type
       end
     end
 
-    if min != nil
+    if !min.nil?
       if val < min
         if @sign == :SIGNED || @sign == nil
           cdl_error2(locale, "T1014 $1: too large negative value (min=$2)" , ident, min)
@@ -1469,7 +1469,7 @@ class PtrType < Type
       @string = string
     end
 
-    if (@size != nil) && (@b_nullable != false)
+    if (!@size.nil?) && (@b_nullable != false)
       cdl_error("T9999 size_is & nullable cannot be specified simultaneously. If size is zero, pointer must be null")
     end
   end
@@ -1509,7 +1509,7 @@ class PtrType < Type
   end
 
   def has_sized_pointer?
-    @size != nil || @count != nil || @string.instance_of?(Expression) || @type.has_sized_pointer?
+    !@size.nil? || !@count.nil? || @string.instance_of?(Expression) || @type.has_sized_pointer?
   end
 
   def has_unsized_string?

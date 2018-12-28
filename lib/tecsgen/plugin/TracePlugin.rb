@@ -90,7 +90,7 @@ class TracePlugin < ThroughPlugin
     file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
 
     send_receive = []
-    if @signature != nil
+    if !@signature.nil?
       @signature.each_param{ |fd,param|
         dir =param.get_direction
         case dir

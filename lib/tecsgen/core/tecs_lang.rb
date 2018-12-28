@@ -66,14 +66,14 @@ class TECS_LANG
   def self.parse_lang(lang)
     lang =~ /([^\.@]*)(\.([^@]*))?(@(.*))?/
 
-    lang_terri = $1.to_sym if $1 != nil && $1 != ""
+    lang_terri = $1.to_sym if !$1.nil? && $1 != ""
     # set_kcode_binary により、C.UTF-8 のみを特別扱いする必要がなくなった
     # if lang_terri == :C then    # LANG=C.* は、すべて 1 byte 文字コードとして扱う
     #  codeset = nil
     #  modifier = nil
     # else
-      codeset = $3.to_sym if $3 != nil && $3 != ""
-      modifier = $5.to_sym if $5 != nil && $5 != ""
+      codeset = $3.to_sym if !$3.nil? && $3 != ""
+      modifier = $5.to_sym if !$5.nil? && $5 != ""
     # end
     [ lang_terri, codeset, modifier ]
   end

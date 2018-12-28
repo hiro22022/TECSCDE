@@ -722,18 +722,18 @@ class Celltype < NSBDNode # < Nestable
     @name_list.add_item(port)
     if port.get_port_type == :CALL
       @n_call_port += 1
-      @n_call_port_array += 1 if port.get_array_size != nil
+      @n_call_port_array += 1 if !port.get_array_size.nil?
       if port.is_dynamic?
         @n_call_port_dynamic += 1
-        @n_call_port_array_dynamic += 1 if port.get_array_size != nil
+        @n_call_port_array_dynamic += 1 if !port.get_array_size.nil?
       end
       if port.is_ref_desc?
         @n_call_port_ref_desc += 1
-        @n_call_port_array_ref_desc += 1 if port.get_array_size != nil
+        @n_call_port_array_ref_desc += 1 if !port.get_array_size.nil?
       end
     else
       @n_entry_port += 1
-      @n_entry_port_array += 1 if port.get_array_size != nil
+      @n_entry_port_array += 1 if !port.get_array_size.nil?
       @n_entry_port_array_ns += 1 if port.get_array_size == "[]"
       @n_entry_port_inline += 1 if port.is_inline?
     end
@@ -1215,7 +1215,7 @@ class Celltype < NSBDNode # < Nestable
       # debug
       dbgPrint "distance #{d} from #{region.get_name} to #{c.get_name} in #{c.get_region.get_name}\n"
       # print "DOMAIN: distance #{d} from #{region.get_name} to #{c.get_name} in #{c.get_region.get_name}\n"
-      if d != nil
+      if !d.nil?
         if d < dist
           cell = c
           dist = d
@@ -2017,7 +2017,7 @@ class Cell < NSBDNode # < Nestable
     @my_clone.set_cloned(name, global_name, namespacePath, join_array, ct_name, region, plugin, locale)
 
     # @celltype == nil は以前にセルタイプ未定義エラー
-    if @b_defined == true && @celltype != nil
+    if @b_defined == true && !@celltype.nil?
       if @celltype.instance_of?(Celltype)
         # celltype に登録（コード生成の対象となる）
         @celltype.new_cell(@my_clone)
@@ -2831,7 +2831,7 @@ class Cell < NSBDNode # < Nestable
               remain = exprs
               inner_to_export = {}
               ### exprs に含まれる識別子を抜き出し、対応する export される名前を探す
-              while remain != "" && remain != nil
+              while remain != "" && !remain.nil?
                 ### p "remain ", remain
                 remain =~ /([^\w]*)([_A-Za-z][\w\d]*)/   # 変数名文字列を取り出す 
                 if $2 == nil
@@ -3237,7 +3237,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     # singleton に関するチェック
     if @b_singleton && @real_singleton == nil
       cdl_warning("W1004 $1 : specified singleton but has no singleton in this celltype" , @name)
-    elsif ! @b_singleton && @real_singleton != nil
+    elsif ! @b_singleton && !@real_singleton.nil?
       if ! @b_singleton
         cdl_error("S1053 $1 must be singleton. inner cell \'$2\' is singleton" , @name, @real_singleton.get_name)
       end
@@ -3246,7 +3246,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     # active に関するチェック
     if @b_active && @real_active == nil
       cdl_error("S1054 $1 : specified active but has no active in this celltype" , @name)
-    elsif ! @b_active && @real_active != nil
+    elsif ! @b_active && !@real_active.nil?
       cdl_error("S1055 $1 must be active. inner cell \'$2\' is active" , @name, @real_active.get_name)
     end
 
@@ -3431,7 +3431,7 @@ class CompositeCelltype < NSBDNode # < Nestable
         if(obj.get_port_type != obj2.get_port_type)
           cdl_error("S1065 $1 : port type $2 mismatch with previous definition $3" , export_name, obj.get_port_type, obj2.get_port_type)
         elsif obj.get_signature != obj2.get_signature
-          if obj.get_signature != nil && obj2.get_signature != nil
+          if !obj.get_signature.nil? && !obj2.get_signature.nil?
             # nil ならば既にエラーなので報告しない
             cdl_error("S1066 $1 : signature \'$2\' mismatch with previous definition \'$3\'" , export_name, obj.get_signature.get_name, obj2.get_signature.get_name)
           end
@@ -4599,7 +4599,7 @@ class Namespace < NSBDNode
     @name = name
 
     if(name == "::")
-      if(@@root_namespace != nil)
+      if(!@@root_namespace.nil?)
         # root は一回のみ生成できる
         raise "try to re-create root namespace"
       end
@@ -4798,7 +4798,7 @@ class Namespace < NSBDNode
     # これは出すぎ
     # dbgPrint "in '#{@name}' find '#{name}' object #{object ? object.class : "Not found"}\n"
 
-    if object != nil
+    if !object.nil?
       return object
     elsif @name != "::"
       return @owner.find_one(name)
@@ -4933,7 +4933,7 @@ class Namespace < NSBDNode
   def new_structtype(struct)
     # struct.set_owner self   # StructType (Namespace) # StructType は BDNode ではない
     dup = @struct_tag_list.get_item(struct.get_name)
-    if dup != nil
+    if !dup.nil?
       if struct.same? dup
         # 同じものが typedef された
         # p "#{struct.get_name}"
@@ -4953,7 +4953,7 @@ class Namespace < NSBDNode
   def new_typedef(typedef)
     typedef.set_owner self   # TypeDef (Namespace)
     dup = @name_list.get_item(typedef.get_name)
-    if dup != nil
+    if !dup.nil?
       typedef_type = typedef.get_declarator.get_type.get_original_type
       dup_type = dup.get_declarator.get_type.get_original_type
       # print "typedef: #{typedef.get_name} = #{typedef_type.get_type_str} #{typedef_type.get_type_str_post}\n"
@@ -5173,7 +5173,7 @@ class Join < BDNode
     if @subscript == -1
       @array_member  = [self]
       @array_member2 = [self]
-    elsif @subscript != nil
+    elsif !@subscript.nil?
       @array_member = []
       @array_member2 = []
       @array_member[@subscript]  = self
@@ -5252,9 +5252,9 @@ class Join < BDNode
 #      # 配列添数の整合性チェック
 #      # 呼び口の定義で、非配列なら添数なし、添数なし配列なら添数なし、添数あり配列なら添数あり
     as = @definition.get_array_size
-    if (@subscript == nil && as != nil)
+    if (@subscript == nil && !as.nil?)
       cdl_error("S1102 $1: must specify array subscript here" , @name)
-    elsif (@subscript != nil && as == nil)
+    elsif (!@subscript.nil? && as == nil)
       cdl_error("S1103 $1: cannot specify array subscript here" , @name)
     end
 #    if @subscript == nil then
@@ -6096,7 +6096,7 @@ class Join < BDNode
         # join2 左辺は非配列または添数なし
         # 配列が不一致
         cdl_error("S1128 \'$1\' inconsistent array definition", @name)
-      elsif @array_member[subscript2] != nil
+      elsif !@array_member[subscript2].nil?
         # 同じ添数が既に定義済み
         cdl_error("S1129 \'$1\' redefinition of subscript $2" ,@name, subscript2)
       else
@@ -6137,7 +6137,7 @@ class Join < BDNode
     if @array_member2
       i = 0
       while i < @array_member2.length
-        if @array_member2[i] != self && @array_member[i] != nil
+        if @array_member2[i] != self && !@array_member[i].nil?
           # @array_member2[i] が nil になるのは optional の時と、
           # Join の initialize で無駄に @array_member2 が設定されている場合
           # 無駄に設定されているものについては、再帰的に呼び出す必要はない（clone_for_composite では対策している）
@@ -6201,7 +6201,7 @@ class Join < BDNode
         # @array_member2[i] が nil になるのは optional の時と、
         # Join の initialize で無駄に @array_member2 が設定されている場合
         # 無駄に設定されているものについては、再帰的に呼び出す必要はない（clone_for_composite では対策している）
-        if @array_member2[i] != self && @array_member[i] != nil
+        if @array_member2[i] != self && !@array_member[i].nil?
           dbgPrint "change_rhs array_member #{i}: #{@name}  #{@cell_name}\n"
           @array_member2[i].change_rhs_port(clone_cell_list, celltype)
         end
@@ -6858,7 +6858,7 @@ class Region < Namespace
 
         # 再出現時に specifier が指定されているか？
         if(@in_through_list.length != 0 || @out_through_list.length != 0 || @to_through_list.length != 0 ||
-            @region_type != nil || @domain_type != nil)
+            !@region_type.nil? || !@domain_type.nil?)
           cdl_error("S1140 $1: region specifier must place at first appearence" , name)
         end
         return
@@ -6944,7 +6944,7 @@ class Region < Namespace
       @link_root = @owner.get_link_root
     end
 
-    if @domain_type != nil || @owner == nil
+    if !@domain_type.nil? || @owner == nil
       @domain_root = self
     else
       @domain_root = @owner.get_domain_root

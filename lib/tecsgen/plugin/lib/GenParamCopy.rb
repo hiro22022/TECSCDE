@@ -158,7 +158,7 @@ EOT
 
           # size_is に max 指定がある場合、length が max を超えているかチェックするコードを生成
               # alloc_cp == nil のとき dir は INOUT, OUT のはず (条件が冗長)。試験が終わっているので、次回見直し時に外す
-          if b_get && type.get_max != nil && ! ((dir == :INOUT || dir == :OUT) && alloc_cp == nil)
+          if b_get && !type.get_max.nil? && ! ((dir == :INOUT || dir == :OUT) && alloc_cp == nil)
             file.print "#{indent}	if( length__#{nest} > #{type.get_max.to_s} ){\t/* GenParamCopy max check 1 */\n"
             file.print "#{indent}		ercd_ = E_PAR;\n"
             file.print "#{indent}		goto error_reset;\n"

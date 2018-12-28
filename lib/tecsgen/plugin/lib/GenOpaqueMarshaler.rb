@@ -1005,7 +1005,7 @@ EOT
         end
 
         # size_is に max 指定がある場合、length が max を超えているかチェックするコードを生成
-        if org_type.get_max != nil && string == nil
+        if !org_type.get_max.nil? && string == nil
           file.print "#{indent}if( #{len} > #{type.get_max} ){\t/* GenOpaqueMarshaler max check 2 */\n"
           file.print "#{indent}	ercd_ = E_PAR;\n"
           file.print "#{indent}	goto error_reset;\n"

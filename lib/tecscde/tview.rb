@@ -615,7 +615,7 @@ module TECSCDE
         direction = TEXT_HORIZONTAL
       end
       name = port.get_name.to_s
-      if port.get_subscript != nil
+      if !port.get_subscript.nil?
         name += "[#{port.get_subscript}]"
       end
       name = port.get_name.to_s
@@ -1145,7 +1145,7 @@ module TECSCDE
     end
 
     def self.setup_colormap
-      if @@colors != nil
+      if !@@colors.nil?
         return
       end
 

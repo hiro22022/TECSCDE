@@ -178,7 +178,7 @@ class NSBDNode < BDNode
   def get_namespace
     if @owner.kind_of? Namespace
       return @owner
-    elsif @owner != nil
+    elsif !@owner.nil?
       return @owner.get_namespace
     else
       # @owner == nil なら "::"
@@ -895,7 +895,7 @@ class ParamDecl < BDNode
       end
     else
       # 非ポインタタイプ
-      if @size != nil || @count != nil || @string != nil || @max != nil || @b_nullable
+      if !@size.nil? || !@count.nil? || !@string.nil? || !@max.nil? || @b_nullable
         type.set_scs(@size, @count, @string, @max, @b_nullable)
       end
     end
@@ -1080,7 +1080,7 @@ class ParamList < BDNode
         end
       end
 
-      if val != nil && val2 != nil
+      if !val.nil? && !val2.nil?
         if val < val2
           cdl_warning("W3005 '$1' size_is always lower than max. max is ignored", i.get_name)
           i.clear_max

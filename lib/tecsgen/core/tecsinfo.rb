@@ -568,7 +568,7 @@ EOT
 #{indent}    b_omit            = #{@b_omit};
 #{indent}    b_dynamic         = #{@b_dynamic};
 #{indent}    b_ref_desc        = #{@b_ref_desc};
-#{indent}    b_allocator_port  = #{@allocator_port!=nil ? true : false};
+#{indent}    b_allocator_port  = #{!@allocator_port.nil? ? true : false};
 #{indent}    b_require_port    = #{@b_require};
 #{indent}    place             = C_EXP( "#{ct_global}_#{@name}__place" );
 #{indent}    b_VMT_useless     = C_EXP( "#{ct_global}_#{@name}__b_VMT_useless" );
