@@ -64,13 +64,13 @@ $tecsgen_base_path = File.dirname( File.expand_path __FILE__ )
 
 require "gtk2"
 require "date"
-require "#{$tecsgen_base_path}/cdelib/version"
-require "#{$tecsgen_base_path}/cdelib/tmodel"
-require "#{$tecsgen_base_path}/cdelib/tview"
-require "#{$tecsgen_base_path}/cdelib/tcontrol"
-require "#{$tecsgen_base_path}/cdelib/saveload"
-require "#{$tecsgen_base_path}/cdelib/cell_plugin_dialog"
-require "#{$tecsgen_base_path}/cdelib/palette.rb"
+require "tecscde/version"
+require "tecscde/tmodel"
+require "tecscde/tview"
+require "tecscde/tcontrol"
+require "tecscde/saveload"
+require "tecscde/cell_plugin_dialog"
+require "tecscde/palette.rb"
 
 def dbgPrint( message, *args )
   printf( message, *args )
@@ -173,7 +173,7 @@ end
 
 $TECSCDE = true
 $Title = "tecscde"
-require "#{$tecsgen_base_path}/tecsgen.rb"
+require "tecsgen.rb"
 
 begin
 

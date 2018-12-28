@@ -37,6 +37,8 @@
 #   $Id: tecs_lang.rb 2061 2014-05-31 22:15:33Z okuma-top $
 #++
 
+require "kconv" # TODO remove kconv
+
 #== 言語に関する変数を設定
 # メッセージファイルの読み込みも行う (読み込みに失敗した場合、デフォルトの文字コードに変更する)
 class TECS_LANG
@@ -235,7 +237,7 @@ class TECS_LANG
 
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const: 
-    set_kcode $KCODE_TECSGEN     # このファイルの文字コードを設定
+    #set_kcode $KCODE_TECSGEN     # このファイルの文字コードを設定
   end
 
   #=== 一時的に KCODE を BINARY に変更する
@@ -298,17 +300,17 @@ class TECS_LANG
   end
 
   # メッセージモジュールをロード
-  if require_tecsgen_lib( "tecslib/messages/messages_console_#{lang_console}.rb", false ) == false then
-    require_tecsgen_lib( "tecslib/messages/messages_console_#{$LANG_CONSOLE_DEFAULT}.rb" )
-    $LANG_CONSOLE, $CHARSET_CONSOLE = $LANG_CONSOLE_DEFAULT, $CHARSET_CONSOLE_DEFAULT
-  else
+  if require("tecsgen/messages/messages_console_#{lang_console}")
     $LANG_CONSOLE, $CHARSET_CONSOLE = lang_console, charset_console
-  end
-  if require_tecsgen_lib( "tecslib/messages/messages_file_#{lang_file}.rb", false ) == false then
-    require_tecsgen_lib( "tecslib/messages/messages_file_#{$LANG_FILE_DEFAULT}.rb" )
-    $LANG_FILE, $CHARSET_FILE = $LANG_FILE_DEFAULT, $CHARSET_FILE_DEFAULT
   else
+    require("tecsgen/messages/messages_console_#{$LANG_CONSOLE_DEFAULT}")
+    $LANG_CONSOLE, $CHARSET_CONSOLE = $LANG_CONSOLE_DEFAULT, $CHARSET_CONSOLE_DEFAULT
+  end
+  if require("tecsgen/messages/messages_file_#{lang_file}")
     $LANG_FILE, $CHARSET_FILE = lang_file, charset_file
+  else
+    require("tecslib/messages/messages_file_#{$LANG_FILE_DEFAULT}")
+    $LANG_FILE, $CHARSET_FILE = $LANG_FILE_DEFAULT, $CHARSET_FILE_DEFAULT
   end
 
   # Kconv クラスのための変数を設定
@@ -347,5 +349,12 @@ class Console
     else
       STDOUT.puts str.kconv( $KCONV_CONSOLE, $KCONV_TECSGEN )
     end
+  end
+end
+
+# Copy from original tecgen.rb
+def set_kcode kcode
+  if ! $b_no_kcode then
+    $KCODE = kcode
   end
 end
