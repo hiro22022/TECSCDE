@@ -54,7 +54,7 @@ class Plugin < Node
 
   #=== Plugin#cdl_error
   # set_locale が呼び出されるまで @error_backlog に保存し保留する
-  def cdl_error *arg
+  def cdl_error(*arg)
     if @locale
       Generator.error2(@locale, *arg)
     else
@@ -66,7 +66,7 @@ class Plugin < Node
   # Node は initialize で locale を設定するが、plugin は parse とは
   # 異なるタイミング new されるため、locale を再設定する
   # このメソッドを2度呼び出すと @error_backlog のエラーが2度出力されてしまう
-  def set_locale locale
+  def set_locale(locale)
     @locale = locale
     @error_backlog.each { |arg|
       Generator.error2(locale, *arg)
@@ -83,7 +83,7 @@ class Plugin < Node
   #      すでに生成されている場合は出力しないこと。
   #      もしくは同名の import により、重複を避けること。
   # file::        FILE       生成するファイル
-  def gen_cdl_file file
+  def gen_cdl_file(file)
   end
 
 
@@ -140,7 +140,7 @@ class Plugin < Node
   # b_singleton::    bool        true if singleton
   # ct_name::        Symbol
   # global_ct_name:: string
-  def new_cell cell
+  def new_cell(cell)
     # デフォルトでは何もしない
   end
 
@@ -279,7 +279,7 @@ class Plugin < Node
   end
 
   #=== プラグイン引数 silent
-  def set_silent rhs
+  def set_silent(rhs)
     if rhs == "true" || rhs == nil
       @b_silent = true
     end
@@ -305,7 +305,7 @@ class CFile
     @file = File.open(path, mode)
   end
 
-  def print str
+  def print(str)
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       @file.print(str)
     else
@@ -313,7 +313,7 @@ class CFile
     end
   end
 
-  def puts str
+  def puts(str)
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       @file.print(str)
     else

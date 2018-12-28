@@ -37,7 +37,7 @@
 
 #== MrubyBridgePlugin クラス
 class MrubyBridgePlugin < MultiPlugin
-  def self.get_plugin superClass
+  def self.get_plugin(superClass)
     # case when (つまりは ===) では、期待したように一致しない模様
     if superClass == SignaturePlugin
       dbgPrint "MrubyBridgePlugin: SignaturePlugin"

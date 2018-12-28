@@ -49,20 +49,20 @@ class SVCManage
     # デフォルトの拡張サービスコール（syslogなど）もコンポーネント化するまで
     @@id = 20
     @@func_ids = {}
-    def self.get_func_id func_name
+    def self.get_func_id(func_name)
         return @@func_ids[func_name]
     end
-    def self.set_func_id func_name
+    def self.set_func_id(func_name)
         @@func_ids[func_name] = self.assign_id
         puts @@func_ids[func_name]
     end
-    def self.include_func_id? func_name
+    def self.include_func_id?(func_name)
         return @@func_ids.has_key?(func_name)
     end
     def self.get_id
         return @@id
     end
-    def self.set_id id
+    def self.set_id(id)
         @@id = id
     end
     def self.assign_id

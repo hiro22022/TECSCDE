@@ -242,7 +242,7 @@ module GenOpaqueMarshaler
   end
 
   #=== プラグイン引数 clientSemaphoreCelltype のチェック
-  def set_clientSemaphoreCelltype rhs
+  def set_clientSemaphoreCelltype(rhs)
     @semaphoreCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
     obj = Namespace.find(nsp)
@@ -252,17 +252,17 @@ module GenOpaqueMarshaler
   end
 
   #=== プラグイン引数 clientSemaphoreInitializer のチェック
-  def set_clientSemaphoreInitializer rhs
+  def set_clientSemaphoreInitializer(rhs)
     @semaphoreInitializer = rhs.to_sym
   end
 
   #=== プラグイン引数 clientErrorHandler のチェック
-  def set_clientErrorHandler rhs
+  def set_clientErrorHandler(rhs)
     @clientErrorHandler = rhs.to_sym
   end
 
   #=== プラグイン引数 serverErrorHandler のチェック
-  def set_serverErrorHandler rhs
+  def set_serverErrorHandler(rhs)
     @serverErrorHandler = rhs.to_sym
   end
 
@@ -698,7 +698,7 @@ EOT
 
   #=== PREAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、アンマーシャラ関数のプロトタイプ宣言を生成
-  def gen_preamble file, b_singleton, ct_name, global_name
+  def gen_preamble(file, b_singleton, ct_name, global_name)
     if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end
@@ -720,7 +720,7 @@ EOT
 
   #=== POSTAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、個々のアンマーシャラ関数の生成
-  def gen_postamble file, b_singleton, ct_name, global_name
+  def gen_postamble(file, b_singleton, ct_name, global_name)
     if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end

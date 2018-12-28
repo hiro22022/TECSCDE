@@ -163,7 +163,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
         raise "called virtual method string_cfg_cre in #{@celltype.get_name} plugin"
     end
 
-    def gen_factory file
+    def gen_factory(file)
         puts "===== begin #{@celltype.get_name.to_s} plugin ====="
 
         # 対象となるすべてのセルについて、受け口に結合されている

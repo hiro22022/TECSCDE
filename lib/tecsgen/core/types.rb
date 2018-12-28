@@ -159,7 +159,7 @@ class Type < Node
   #=== struct の tag をチェック
   #    正当な型定義かどうか、チェックする
   # kind:: Decl の @kind を参照
-  def check_struct_tag kind
+  def check_struct_tag(kind)
     # tag が存在しなければエラーを出力する
     # 配列型では、要素の型を再帰的にチェック
     # ポインタ型では、指す先の tag チェックはしない
@@ -192,7 +192,7 @@ class Type < Node
   #=== 型が一致するかのチェック
   # 型名の字面でチェック．
   # typedef された型も字面で一致を見るため、元の型が同じでも型名が異なれば不一致となる
-  def equal? type2
+  def equal?(type2)
     return (get_type_str == type2.get_type_str) && (get_type_str_post == type2.get_type_str_post)
   end
 
@@ -228,7 +228,7 @@ class Type < Node
     false
   end
 
-  def show_tree indent
+  def show_tree(indent)
     indent.times { print "  " }
     puts "const=#{@b_const} volatile=#{@b_volatile} #{locale_str}"
     indent.times { print "  " }
@@ -803,7 +803,7 @@ class StructType < Type
   #=== 構造体のタグをチェック
   #  declarator の時点でチェックする
   # kind:: Decl の @kind を参照
-  def check_struct_tag kind
+  def check_struct_tag(kind)
     if @tag == nil
       return
     end
@@ -982,7 +982,7 @@ class StructType < Type
   #=== 同じ構造体かどうかチェックする
   # tag のチェックは行わない
   # すべてのメンバの名前と型が一致することを確認する
-  def same? another
+  def same?(another)
     md = another.get_members_decl
     if @members_decl == nil || md == nil
       return false
@@ -1082,7 +1082,7 @@ class FuncType < Type
     # パラメータの型のチェックは ParamList#check_param で行う
   end
 
-  def check_struct_tag kind
+  def check_struct_tag(kind)
     @type.check_struct_tag kind
     # ParamDecl でもチェックされるので、ここではチェックしない
     # @paramlist.check_struct_tag kind
@@ -1265,7 +1265,7 @@ class ArrayType < Type
     return @type.check    # 配列要素の型をチェック
   end
 
-  def check_struct_tag kind
+  def check_struct_tag(kind)
     @type.check_struct_tag kind
   end
 
@@ -1368,7 +1368,7 @@ class PtrType < Type
     @type.check
   end
 
-  def check_struct_tag kind
+  def check_struct_tag(kind)
     if kind != :MEMBER  # 構造体メンバーの場合、ポインタの先の構造体タグをチェックしない
       @type.check_struct_tag kind
     end

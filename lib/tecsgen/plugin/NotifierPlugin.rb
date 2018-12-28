@@ -928,7 +928,7 @@ class NotifierPlugin < CelltypePlugin
       @output_file = output_file
     end
 
-    def gen_factory file
+    def gen_factory(file)
         # puts "===== begin #{@celltype.get_name.to_s} plugin ====="
 
         kernelCfg = AppFile.open("#{$gen}/#{@output_file}")
@@ -1163,7 +1163,7 @@ class NotifierPlugin < CelltypePlugin
      kernelCfg.print post_text
    end
 
-   def gen_sac file, cell, indent
+   def gen_sac(file, cell, indent)
      domain_root = cell.get_region.get_domain_root
      if domain_root.get_domain_type
        id = (cell.get_attr_initializer :id).to_s

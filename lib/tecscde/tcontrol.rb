@@ -100,7 +100,7 @@ Structure of Palette Window
                     :SM_MOVING_CELL_BAR, :SM_MOVING_CPORT, :SM_MOVING_EPORT, :SM_MOVING_CELL_EDGE,
                     :SM_EDIT_CELL_NAME ]
 
-    def initialize model
+    def initialize(model)
       @nest = -1
       @model = model
       @hilite_objs = Hilite_objs.new
@@ -151,33 +151,33 @@ Structure of Palette Window
     def on_quit
       flush_print "quit\n";Gtk.main_quit
     end
-    def on_cell_name_entry_active entry
+    def on_cell_name_entry_active(entry)
       @b_cell_renaming = true
       @hilite_objs.change_cell_name entry.text
       @b_cell_renaming = false
       update
     end
-    def on_cell_name_entry_focus_out entry
+    def on_cell_name_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
       if ! @b_cell_renaming
         @hilite_objs.change_cell_name entry.text
         update
       end
     end
-    def on_cell_region_entry_active entry
+    def on_cell_region_entry_active(entry)
 #      @b_cell_renaming = true
 #      @hilite_objs.change_cell_name entry.text
 #      @b_cell_renaming = false
 #      update
     end
-    def on_cell_region_entry_focus_out entry
+    def on_cell_region_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
 #      if ! @b_cell_renaming
 #        @hilite_objs.change_cell_name entry.text
 #        update
 #      end
     end
-    def set_attrOperationWidgets window, ctv, attrTreeView, cell_name_entry, cell_region_entry, cell_frame
+    def set_attrOperationWidgets(window, ctv, attrTreeView, cell_name_entry, cell_region_entry, cell_frame)
       @window = window
       @celltypeTreeView = ctv
       @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame = attrTreeView, cell_name_entry, cell_region_entry, cell_frame
@@ -193,7 +193,7 @@ Structure of Palette Window
 
     #----- end of palette operations -----#
 
-    def set_view view
+    def set_view(view)
       @view = view
       @attrTreeView.set_view view
 
@@ -212,7 +212,7 @@ Structure of Palette Window
     # state::GdkModifierType: modifier key state
     # time::Integer: milli second
     # click_count::Integer: 1=single click, 2=double click
-    def pressed_on_canvas xm, ym, state, button, time, click_count
+    def pressed_on_canvas(xm, ym, state, button, time, click_count)
       # p "button=#{button} state=#{state} time=#{time} sub_mode=#{@sub_mode}"
       if @sub_mode == :SM_EDIT_CELL_NAME
         name = @view.end_edit_name
@@ -294,7 +294,7 @@ EOT
     end
 
     #=== mouse moved on canvas
-    def motion_on_canvas xm, ym, state
+    def motion_on_canvas(xm, ym, state)
       x_inc = xm - @last_xm
       y_inc = ym - @last_ym
 
@@ -341,7 +341,7 @@ EOT
     end
 
     #=== mouse released on canvas
-    def released_on_canvas xm, ym, state, button
+    def released_on_canvas(xm, ym, state, button)
       case @sub_mode
       when :SM_MOVING_CELL_BAR
         # update
@@ -366,7 +366,7 @@ EOT
       end
     end
 
-    def key_pressed keyval, state
+    def key_pressed(keyval, state)
       if @sub_mode == :SM_EDIT_CELL_NAME
         
         return
@@ -419,7 +419,7 @@ EOT
 
     #=== find_near object
     # RETURN::TmCell, TmPort, TmJoin
-    def find_near xm, ym
+    def find_near(xm, ym)
       @model.get_cell_list.each{ |cell|
         port = cell.get_near_port(xm, ym)
         if !port.nil?
@@ -476,7 +476,7 @@ EOT
     COL_NSPATH = 1
 
     #=== initialize
-    def initialize treeView
+    def initialize(treeView)
       @treeView = treeView
 
       # create data model
@@ -498,7 +498,7 @@ EOT
       liststore.set_sort_column_id(COL_NAME)
     end
 
-    def add celltype
+    def add(celltype)
       iter = @treeView.model.append
       iter[COL_NAME]  = celltype.get_name
       iter[COL_NSPATH]  = celltype.get_owner.get_namespace_path.to_s
@@ -513,7 +513,7 @@ EOT
       end
     end
 
-    def delete item
+    def delete(item)
     end
 
     def clear
@@ -542,7 +542,7 @@ EOT
     COL_VALUE = 2
 
     #=== initialize
-    def initialize tv
+    def initialize(tv)
       @treeView = tv
 
       combo_list = Gtk::ListStore.new(String)
@@ -686,7 +686,7 @@ EOT
 
     #=== AttrTreeView#set_cell
     # cell::TmCell
-    def set_cell cell
+    def set_cell(cell)
       clear
       @cell = cell
       @choice_list = {}
@@ -731,7 +731,7 @@ EOT
 
     #=== AttrTreeView#set_view
     # view::MainView
-    def set_view view
+    def set_view(view)
       @view = view
     end
 
@@ -749,7 +749,7 @@ EOT
       @hilite_objs = []
     end
 
-    def add obj
+    def add(obj)
       reset_if_ncessary obj
       @hilite_objs << obj
       @hilite_objs.uniq!
@@ -758,7 +758,7 @@ EOT
 
     #=== hilite_objs#add_del
     # add if not include, delete if include
-    def add_del obj
+    def add_del(obj)
       reset_if_ncessary obj
       if @hilite_objs.include? obj
         @hilite_objs.delete obj
@@ -768,7 +768,7 @@ EOT
       update_attrTreeView
     end
 
-    def reset obj = nil
+    def reset(obj = nil)
       @hilite_objs = []
       if obj
         @hilite_objs << obj
@@ -780,7 +780,7 @@ EOT
     # Port and ( Cell or Bar ) cannot be hilited simultaneously.
     # Ports belonging to diferent Cell cannot be hilited simultaneously.
     # obj::TmCell | TmBar | TmPort: new object to be hilited
-    def reset_if_ncessary obj
+    def reset_if_ncessary(obj)
       if @hilite_objs.length > 0
         if @hilite_objs[0].kind_of? TECSModel::TmPort
           if obj.kind_of? TECSModel::TmPort
@@ -809,18 +809,18 @@ EOT
       @hilite_objs.empty?
     end
 
-    def include? object
+    def include?(object)
       @hilite_objs.include? object 
     end
 
-    def set_attrTreeView treeview, name_entry, region_entry, frame
+    def set_attrTreeView(treeview, name_entry, region_entry, frame)
       @cell_property_frame = frame
       @cell_name_entry = name_entry
       @cell_region_entry = region_entry
       @attrTreeView = treeview
     end
 
-    def change_cell_name name
+    def change_cell_name(name)
      if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
        @hilite_objs[0].change_name name.to_sym
        @hilite_objs[0].get_model.set_undo_point

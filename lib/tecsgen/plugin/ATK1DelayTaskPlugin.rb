@@ -55,7 +55,7 @@ class ATK1DelayTaskPlugin < CelltypePlugin
 #  def gen_cdl_file file
 #  end
 
-  def new_cell cell
+  def new_cell(cell)
 #    join_list = cell.get_join_list
 #    a = join_list.get_item( :resource )
 #    if a == nil
@@ -80,7 +80,7 @@ class ATK1DelayTaskPlugin < CelltypePlugin
 #  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
 #  end
 
-  def gen_factory file
+  def gen_factory(file)
 
     # 追記するために AppFile を使う（文字コード変換されない）
     file2 = AppFile.open("#{$gen}/tDelayTaskBody_factory.#{$h_suffix}")

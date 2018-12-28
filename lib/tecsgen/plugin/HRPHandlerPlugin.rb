@@ -42,7 +42,7 @@ require_tecsgen_lib "HRPKernelObjectPlugin.rb"
 class HRPHandlerPlugin < HRPKernelObjectPlugin
     ##
     # oyama: add to avoid Ruby exception in code generation phase.
-    def new_cell cell
+    def new_cell(cell)
         domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
         if (domainOption == "OutOfDomain") || (domainOption != "kernel")
           cdl_error("HRP9999 HRP handler '$1' must belong to kernel domain", cell.get_name)

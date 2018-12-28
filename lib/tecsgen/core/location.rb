@@ -38,20 +38,20 @@
 
 class TECSGEN
   #------ manupulate location information --------#
-  def self.new_cell_location cell_location
+  def self.new_cell_location(cell_location)
     @@current_tecsgen.new_cell_location cell_location
   end
-  def new_cell_location cell_location
+  def new_cell_location(cell_location)
     @cell_location_list << cell_location
   end
   def get_cell_location_list
     @cell_location_list
   end
 
-  def self.new_join_location join_location
+  def self.new_join_location(join_location)
     @@current_tecsgen.new_join_location join_location
   end
-  def new_join_location join_location
+  def new_join_location(join_location)
     @join_location_list << join_location
   end
   def get_join_location_list

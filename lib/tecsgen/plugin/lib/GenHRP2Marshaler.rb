@@ -97,7 +97,7 @@ module GenTransparentMarshaler
   end
 
   #=== marshaler のセルタイプ名を設定する
-  def initialize_transparent_marshaler cell_name
+  def initialize_transparent_marshaler(cell_name)
     @task_priority = 8
     @channelCelltype = "tDataqueueOWChannel"
     @TDRCelltype     = "tTDR"
@@ -615,7 +615,7 @@ EOT
 
   #=== PREAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、アンマーシャラ関数のプロトタイプ宣言を生成
-  def gen_preamble file, b_singleton, ct_name, global_name
+  def gen_preamble(file, b_singleton, ct_name, global_name)
     if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end
@@ -635,7 +635,7 @@ EOT
 
   #=== POSTAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、アンマーシャラ関数の生成
-  def gen_postamble file, b_singleton, ct_name, global_name
+  def gen_postamble(file, b_singleton, ct_name, global_name)
     if ct_name != @unmarshaler_celltype_name.to_sym
       return
     end

@@ -148,7 +148,7 @@ class RepeatCellPlugin < CellPlugin
   end
 
   #=== count オプションの解析
-  def set_count rhs
+  def set_count(rhs)
     if rhs =~ /\A\d+\z/
       @count = rhs.to_i
     else

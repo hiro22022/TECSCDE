@@ -214,7 +214,7 @@ class Signature < NSBDNode  # < Nestable
   end
 
   #=== Signature# 関数名から signature 内の id を得る
-  def get_id_from_func_name func_name
+  def get_id_from_func_name(func_name)
     @func_name_to_id[func_name]
   end
 
@@ -334,7 +334,7 @@ class Signature < NSBDNode  # < Nestable
   end
 
   #== Signature#apply_plugin
-  def apply_plugin plugin_name, option
+  def apply_plugin(plugin_name, option)
     if is_empty?
       cdl_warning("S9999 $1 is empty. cannot apply signature plugin. ignored" , @name)
       return
@@ -512,7 +512,7 @@ module CelltypePluginModule
     return plugin_object
   end
 
-  def apply_plugin_cell plugin, cell
+  def apply_plugin_cell(plugin, cell)
     begin
       plugin.new_cell cell
     rescue Exception => evar
@@ -521,7 +521,7 @@ module CelltypePluginModule
     end
   end
 
-  def celltype_plugin_new_cell cell
+  def celltype_plugin_new_cell(cell)
     @generate_list.each{ |generate|
       celltype_plugin = generate[2]
       begin
@@ -1062,7 +1062,7 @@ class Celltype < NSBDNode # < Nestable
     }
   end
 
-  def find_dynamic_port signature
+  def find_dynamic_port(signature)
     dbgPrint "[DYNAMIC] find_dynamic_port signature=#{signature.get_name}"
     @port.each{ |port|
       dbgPrint "[DYNAMIC] port=#{port.get_name} signature=#{port.get_signature.get_name} dynamic=#{port.is_dynamic?}"
@@ -1070,7 +1070,7 @@ class Celltype < NSBDNode # < Nestable
     }
     return nil
   end
-  def find_ref_desc_port signature
+  def find_ref_desc_port(signature)
     if signature == nil  # すでにエラー
       return nil
     end
@@ -1083,7 +1083,7 @@ class Celltype < NSBDNode # < Nestable
   end
   #=== Celltype#ディスクリプタ型でシグニチャが一致し dyn_ref に対応づく引数を探す
   # dyn_ref::Symbol: :DYNAMIC=ディスクリプタを得る手段となる引数を探す．:REF_DESC=渡す手段となる引数を探す
-  def find_descriptor_param signature, dyn_ref
+  def find_descriptor_param(signature, dyn_ref)
     param_list = []
     @port.each{ |port|
       port.each_param{ |port, func, param|
@@ -1195,7 +1195,7 @@ class Celltype < NSBDNode # < Nestable
   end
 
   #=== Celltype# 逆require の結合を生成する
-  def create_reverse_require_join cell
+  def create_reverse_require_join(cell)
     @port.each{ |p|
       p.create_reverse_require_join cell
     }
@@ -1205,7 +1205,7 @@ class Celltype < NSBDNode # < Nestable
   # region:: Region   : singleton を探す Region
   # 距離が最も近いものを返す
   # mikan 本当は region の範囲の singleton を探す必要がある
-  def get_singleton_cell region
+  def get_singleton_cell(region)
     cell = nil
     dist = 999999999 # mikan 制限値（これは十分すぎるほどデカイが）
     # require: celltype で指定
@@ -1807,14 +1807,14 @@ class Cell < NSBDNode # < Nestable
     CompositeCelltype.new_join(export_name, @name,  internal_cell_elem_name, :CALL)
   end
 
-  def self.end_of_parse f_def
+  def self.end_of_parse(f_def)
     cell = @@current_object
     cell.end_of_parse f_def
     @@current_object = nil
     return cell
   end
 
-  def end_of_parse f_def
+  def end_of_parse(f_def)
     if @b_prototype  # prototype 指定子あったか?
       f_def = false       # プロトタイプ宣言とする
       @b_prototype = false
@@ -1837,7 +1837,7 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# プロトタイプ宣言(false)か定義(true)かを設定
   #    このメソッドは構文解釈の最後に呼出される
   # f_def::     bool     false if prototype, true if definition
-  def set_f_def f_def
+  def set_f_def(f_def)
     if ! f_def
       return
     end
@@ -1955,7 +1955,7 @@ class Cell < NSBDNode # < Nestable
   #=== id 指定子の値を設定
   # このメソッドは、プラグインで cell の生成順序を制御したい場合のために設けた
   # 通常の id 指定子では使っていない
-  def set_specified_id id
+  def set_specified_id(id)
     if Integer(id) != id || id <= 0
       cdl_error("S1164 '$1' set_specified_id: id not positive integer '$2'", @name, id)
     elsif @id_specified
@@ -1972,7 +1972,7 @@ class Cell < NSBDNode # < Nestable
     @generate[2] = apply_plugin plugin_name, option
   end
 
-  def apply_plugin plugin_name, option
+  def apply_plugin(plugin_name, option)
     if ! @b_defined
       cdl_error("S9999 plugin cannot apply to prototype cell '$1'", @name)
     end
@@ -1994,7 +1994,7 @@ class Cell < NSBDNode # < Nestable
     return  plugin_object
   end
 
-  def add_compositecelltypejoin join
+  def add_compositecelltypejoin(join)
     @compositecelltypejoin_list.add_item join
   end
 
@@ -2088,7 +2088,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# clone された cell の join_list の右辺の変更
   #  呼び口の右辺の cell を他の clone された cell に置換え
-  def change_rhs_port cloned_cell_list
+  def change_rhs_port(cloned_cell_list)
 
     # debug
     dbgPrint "=====   Cell#change_rhs_port: name=#{@name}   =====\n"
@@ -2172,7 +2172,7 @@ class Cell < NSBDNode # < Nestable
   end
 
   # composite cell の port に対応する内部の cell の port の名前（リンク時に必要な名前）
-  def get_real_global_name port_name
+  def get_real_global_name(port_name)
     if @celltype.instance_of?(CompositeCelltype)
 
       # debug
@@ -2201,7 +2201,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# セルの受け口 port_name に対する実際のセル名、受け口名を '_' で連結
   #    namespace 名 + '_' + セル名 + '_' + 受け口名   （このセルが composite ならば展開後のセル名、受け口名）
-  def get_real_global_port_name port_name
+  def get_real_global_port_name(port_name)
 
     # composite か？
     if @celltype.instance_of?(CompositeCelltype)
@@ -2283,7 +2283,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# 受け口のport の参照カウントをアップする
   # port_name:: Symbol  : ポート名
-  def port_referenced port
+  def port_referenced(port)
     if @referenced_port_list[port]
       @referenced_port_list[port] += 1
     else
@@ -2308,7 +2308,7 @@ class Cell < NSBDNode # < Nestable
     end
   end
 
-  def get_internal_port_name port_name
+  def get_internal_port_name(port_name)
     if @celltype.instance_of?(CompositeCelltype)
       cj = @celltype.find_export(port_name)
 #      return "#{@name}_#{cj.get_cell.get_internal_port_name cj.get_cell_elem_name}"
@@ -2324,7 +2324,7 @@ class Cell < NSBDNode # < Nestable
 
   # Cell#属性の初期値を得る
   # attr_name::Symbol  必ず初期化されていないと Ruby 例外となる
-  def get_attr_initializer attr_name
+  def get_attr_initializer(attr_name)
     val = @join_list.get_item(attr_name)
     if val == nil
       val = (@celltype.find  attr_name).get_initializer
@@ -2342,7 +2342,7 @@ class Cell < NSBDNode # < Nestable
     @join_list
   end
 
-  def set_id id
+  def set_id(id)
     @id = id
   end
 
@@ -3360,7 +3360,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
  ### CompositeCelltype#new_cell
-  def new_cell cell
+  def new_cell(cell)
     @cell_list << cell
 
     # セルタイププラグインの適用
@@ -3534,20 +3534,20 @@ class CompositeCelltype < NSBDNode # < Nestable
     return obj2
   end
 
-  def self.has_attribute? attr
+  def self.has_attribute?(attr)
     @@current_object.has_attribute? attr
   end
 
-  def has_attribute? attr
+  def has_attribute?(attr)
     @name_list.get_item(attr) != nil
   end
 
-  def self.new_port port
+  def self.new_port(port)
     @@current_object.new_port port
   end
 
   #=== CompositeCelltype# new_port
-  def new_port port
+  def new_port(port)
     port.set_owner self   # Port (CompositeCelltype)
     dbgPrint "new_port: #{@owner.get_name}.#{port.get_name}\n"
     @name_list.add_item port
@@ -3591,7 +3591,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     }
   end
 
-  def self.new_attribute attr
+  def self.new_attribute(attr)
     @@current_object.new_attribute attr
   end
 
@@ -3612,7 +3612,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
   #=== CompositeCelltype# 逆require の結合を生成する
-  def create_reverse_require_join cell
+  def create_reverse_require_join(cell)
     @name_list.get_items.each{ |n|
       if n.instance_of? Port
         n.create_reverse_require_join cell
@@ -3628,7 +3628,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     @@current_object.find name
   end
 
-  def find name
+  def find(name)
     dbgPrint "CompositeCelltype: find in composite: #{name}\n"
     cell = @cell_list_in_composite.get_item(name)
     return cell if cell
@@ -3649,7 +3649,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   #=== CompositeCelltype# export する CompositeCelltypeJoin を得る
   # name:: string:
   # attribute の場合、同じ名前に対し複数存在する可能性があるが、最初のものしか返さない
-  def find_export name
+  def find_export(name)
     return @export_name_list.get_item(name)
   end
 
@@ -4033,7 +4033,7 @@ class Port < BDNode
     end
 end
 
-  def set_celltype celltype
+  def set_celltype(celltype)
     @celltype = celltype
   end
 
@@ -4130,7 +4130,7 @@ end
 
   #=== Port# 呼び口/受け口の指定子の設定
   # inline, allocator の指定
-  def set_specifier spec_list
+  def set_specifier(spec_list)
     spec_list.each { |s|
       case s[0]
       when :INLINE
@@ -4416,7 +4416,7 @@ end
 
   #=== Port# 逆require の結合を生成する
   # STAGE: S
-  def create_reverse_require_join cell
+  def create_reverse_require_join(cell)
     if @reverse_require_cell_path == nil
       return
     end
@@ -4579,7 +4579,7 @@ class Namespace < NSBDNode
   end
 
   # namespace 階層用スタックの push, pop (インスタンスメソッド)
-  def push ns
+  def push(ns)
     @@namespace_sp += 1
     @@namespace_stack[@@namespace_sp] = self
     dbgPrint "Namespace.PUSH #{@@namespace_sp} #{@name}\n"
@@ -5776,7 +5776,7 @@ class Join < BDNode
   end
 
   @@through_count = { }
-  def get_through_count name
+  def get_through_count(name)
     sym = name.to_sym
     if @@through_count[sym]
       @@through_count[sym] += 1
@@ -5847,7 +5847,7 @@ class Join < BDNode
   #=== Join# ThroughPlugin の追加情報を設定する
   # このメソッドは ThroughPlugin#initialize から呼び出される
   # plugin_object を生成する際の引数では不足する情報を追加する
-  def self.set_through_info plugin_object
+  def self.set_through_info(plugin_object)
     plugin_object.set_through_info(@@start_region, @@end_region, @@through_type,
                                     @@plugin_creating_join,
                                     @@plugin_creating_join.get_cell,
@@ -6080,7 +6080,7 @@ class Join < BDNode
   #     一番最初に定義された配列要素が全要素の初期値の配列を持つ
   #     このメソッドは非配列の場合も呼出される（join 重複エラーの場合）
   # join2:: Join  呼び口配列要素の Join
-  def add_array_member join2
+  def add_array_member(join2)
 
     # subscript2: join2 の左辺添数
     subscript2 = join2.get_subscript
@@ -6128,7 +6128,7 @@ class Join < BDNode
     @array_member2
   end
 
-  def change_name name
+  def change_name(name)
     # debug
     dbgPrint "change_name: #{@name} to #{name}\n"
 
@@ -6273,7 +6273,7 @@ class Join < BDNode
   # 右辺を入れ換える．
   # このメソッドは、composite で cell の属性の初期値を attribute の値で置き換えるのに使われる
   # このメソッドは composite 内の cell の属性の初期値が定数ではなく式になった場合、不要になる
-  def change_rhs rhs
+  def change_rhs(rhs)
     @rhs = rhs
   end
 
@@ -6997,7 +6997,7 @@ class Region < Namespace
   end
 
   #== Region#ドメインを設定する
-  def set_domain_type domain_type
+  def set_domain_type(domain_type)
     if @region_type == :NODE
       if @domain_type
         if @domain_type.get_name != domain_type.get_name
@@ -7251,7 +7251,7 @@ module Importable
   # file::String : file name to find
   # return::String | Nil: path to file or nil if not found
   # find file in 
-  def find_file file
+  def find_file(file)
     $import_path.each{ |path|
       if path == "."
         pt = file
@@ -7480,7 +7480,7 @@ class Import_C < Node
 
   end
 
-  def print_defines file
+  def print_defines(file)
     if ! $b_no_gcc_extension_support
       
     file.print <<EOT
@@ -7550,7 +7550,7 @@ class Import < Node
   @@nest_stack = []
   @@current_object = nil
 
-  def self.push object
+  def self.push(object)
     @@nest_stack_index += 1
     @@nest_stack[@@nest_stack_index] = @@current_object
     @@current_object = object
@@ -7754,7 +7754,7 @@ class NamespacePath < Node
   end
 
   #=== NamespacePath#クローンを作成して名前を変更する
-  def change_name name
+  def change_name(name)
     cl = self.clone
     cl.set_clone
     cl.change_name_no_clone name
@@ -7764,7 +7764,7 @@ class NamespacePath < Node
 
   #=== NamespacePath#名前を変更する
   # このインスタンスを参照するすべてに影響を与えることに注意
-  def change_name_no_clone name
+  def change_name_no_clone(name)
     @path[@path.length - 1] = name
     nil
   end

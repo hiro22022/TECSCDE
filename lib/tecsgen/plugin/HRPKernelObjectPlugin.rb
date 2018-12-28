@@ -79,7 +79,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
     #   - 静的APIの生成
     #  file:: FILE:     出力先ファイル
     #
-    def gen_factory file
+    def gen_factory(file)
         dbgPrint "===== begin #{@celltype.get_name.to_s} plugin =====\n"
 
         #

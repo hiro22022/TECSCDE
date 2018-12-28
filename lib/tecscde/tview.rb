@@ -382,7 +382,7 @@ module TECSCDE
       # p "color = #{@canvasGc.foreground.red}, #{@canvasGc.foreground.green}, #{@canvasGc.foreground.blue}"
     end
 
-    def set_cursor cursor
+    def set_cursor(cursor)
       @canvas.window.cursor = cursor 
     end
 
@@ -448,7 +448,7 @@ module TECSCDE
 
     #------ Draw Contents on CANVAS  ------#
 
-    def drawCell cell
+    def drawCell(cell)
       #----- calc position in dot -----#
       x, y, w, h = cell.get_geometry
       x1 = mm2dot x
@@ -555,7 +555,7 @@ module TECSCDE
     end
 
     #=== set_port_color
-    def set_port_color port, cell
+    def set_port_color(port, cell)
       if port.complete?
         if cell.is_editable?
           color_name = Color_editable
@@ -629,7 +629,7 @@ module TECSCDE
     end
 
     #=== TView#draw_hilite_objects
-    def draw_hilite_objects obj_list
+    def draw_hilite_objects(obj_list)
       obj_list.each{|obj|
         if obj.kind_of? TECSModel::TmCell
           drawCellRectDirect  obj
@@ -646,7 +646,7 @@ module TECSCDE
 
     #=== TView#drawCellRectDirect
     # directly draw on Window hilited cell rect
-    def drawCellRectDirect cell
+    def drawCellRectDirect(cell)
       drawTargetDirect
 
       #----- set line width -----#
@@ -677,7 +677,7 @@ module TECSCDE
       drawTargetReset
     end
 
-    def drawPortDirect port
+    def drawPortDirect(port)
       drawTargetDirect
 
       #----- set line width -----#
@@ -714,7 +714,7 @@ module TECSCDE
       drawTargetReset
     end
 
-    def drawJoin join
+    def drawJoin(join)
       cport, eport, bars = join.get_ports_bars
       x, y = cport.get_position
       xm = mm2dot(x) + 0.5
@@ -767,7 +767,7 @@ module TECSCDE
 
     #=== TView#drawBarDirect
     # directly draw on Window
-    def drawBarDirect bar
+    def drawBarDirect(bar)
       drawTargetDirect
 
       join = bar.get_join
@@ -1062,7 +1062,7 @@ module TECSCDE
       @entryWin.hide
     end
 
-    def begin_edit_name cell, time
+    def begin_edit_name(cell, time)
       @entry.set_text cell.get_name
 
       x, y, w, h = get_cell_name_edit_area cell
@@ -1078,7 +1078,7 @@ module TECSCDE
       return name
     end
 
-    def get_cell_name_edit_area cell
+    def get_cell_name_edit_area(cell)
       name = cell.get_name
       obj_type = CELL_NAME
       alignment = ALIGN_CENTER
@@ -1097,18 +1097,18 @@ module TECSCDE
     #------ Convert Unit  ------#
 
     #=== convert mm to dot
-    def mm2dot mm
+    def mm2dot(mm)
       (@scale_val * mm * DPI / 25.4 / 100).to_i
     end
 
     #=== convert dot to mm
-    def dot2mm dot
+    def dot2mm(dot)
       dot * 100 * 25.4 / DPI / @scale_val
     end
 
     #=== font_size
     # obj_type::Integer CELL_NAME, SIGNATURE_NAME, PORT_NAME
-    def font_size obj_type
+    def font_size(obj_type)
       case obj_type
       when CELL_NAME
         base_size = 10500
@@ -1137,7 +1137,7 @@ module TECSCDE
       @cairo_context_target.matrix = @cairo_matrix
     end
 
-    def canvasGC_set_line_width width
+    def canvasGC_set_line_width(width)
       line_attr = @canvasGc.line_attributes
       line_width = line_attr[0]
       line_attr[0] = width
@@ -1171,19 +1171,19 @@ module TECSCDE
 
     end
 
-    def self.setup_colormap_1 name
+    def self.setup_colormap_1(name)
       color = Gdk::Color.parse(name.to_s)        
       self.setup_colormap_2 name, color
     end
 
-    def self.setup_colormap_2 name, color
+    def self.setup_colormap_2(name, color)
       @@colors[name] = color
       @@colormap.alloc_color(color, false, true)
     end
 
     #----- cell paint colors -----#
 
-    def get_cell_paint_color cell
+    def get_cell_paint_color(cell)
       if @b_color_by_region
         region = cell.get_region
         color = @@cell_file_to_color[region]
@@ -1214,7 +1214,7 @@ module TECSCDE
     end
 
     #------ export ------#
-    def export fname
+    def export(fname)
       begin
         if File.exist?(fname)
           File.unlink fname

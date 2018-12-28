@@ -466,7 +466,7 @@ module TECSCDE
     end
 
     #=== save data ***
-    def save fname
+    def save(fname)
       begin
         Dir.chdir $run_dir
         f = open(fname, "w")
@@ -481,7 +481,7 @@ module TECSCDE
 
     #=== TECSModel#save_tecsgen
     # output __tool_info__ ("tecsgen")
-    def save_tecsgen f
+    def save_tecsgen(f)
       f.print "__tool_info__ (\"tecsgen\") {\n"
 
       f.print "    \"tecscde_version\"     : \"#{$tecscde_version}\",\n"
@@ -540,7 +540,7 @@ module TECSCDE
 
     #=== TECSModel#save_cells
     # output cell definition
-    def save_cells f
+    def save_cells(f)
       @cell_list.each{ |cell|                           # mikan region
         if ! cell.is_editable?
           next
@@ -593,7 +593,7 @@ module TECSCDE
 
     #=== TECSModel#save_info
     # output location information
-    def save_info f
+    def save_info(f)
       f.print "\n"
       f.print "/*************************************************\n"
       f.print " *         TOOL INFORMATION FOR TECSCDE          *\n"
@@ -611,7 +611,7 @@ module TECSCDE
 
     #=== TECSModel#save_cell_info
     # output cell location information
-    def save_paper_info f
+    def save_paper_info(f)
       f.print <<EOT
     "paper" : {
        "type" : "paper",
@@ -623,7 +623,7 @@ EOT
 
     #=== TECSModel#save_cell_info
     # output cell location information
-    def save_cell_info f
+    def save_cell_info(f)
       f.print "    \"cell_list\" : [\n"
       delim_1 = ""
       index = 0
@@ -673,7 +673,7 @@ EOT
 
     #=== TECSModel#save_join_info
     # output join location information
-    def save_join_info f
+    def save_join_info(f)
       f.print "    \"join_list\" : [\n"
       delim_1 = ""
       index = 0
@@ -804,7 +804,7 @@ EOT
       }
     end
 
-    def save_old_info f
+    def save_old_info(f)
       f.print "//////////  TECSCDE  ///////////\n"
       f.print "\n"
       f.print "/*************************************************\n"
@@ -861,7 +861,7 @@ EOT
     end
 
     #=== TECSModel#get_edge_side_val
-    def get_edge_side_val edge_side_name
+    def get_edge_side_val(edge_side_name)
       case edge_side_name
       when "EDGE_TOP"
         EDGE_TOP

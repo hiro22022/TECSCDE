@@ -45,7 +45,7 @@ module CType
   # const, unsigned, long などは、単体で int (CIntType) 型になりうる
   #
   # mikan C の文法を厳密にはチェックしていない  long struct 等もできてしまう
-  def merge another
+  def merge(another)
 
     # p "self: #{self.class} kind_of( IntType ): #{self.kind_of?( IntType )}  another: #{another.class}"
 

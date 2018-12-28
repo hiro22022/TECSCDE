@@ -54,7 +54,7 @@ class TECS2CBridgePlugin < SignaturePlugin
     parse_plugin_arg
   end
 
-  def gen_cdl_file file
+  def gen_cdl_file(file)
     if @@signature_list[@signature.get_global_name]
       @@signature_list[@signature.get_global_name] << self
       cdl_warning("T2CW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)

@@ -138,7 +138,7 @@ class HRPPlugin < DomainPlugin
     return @option.to_sym
   end
   
-  def self.gen_post_code file
+  def self.gen_post_code(file)
   end
 
   # ATT_MODを生成済みかどうか                   # 2017.8.27
@@ -274,7 +274,7 @@ class HRPPlugin < DomainPlugin
 
   #----- Inter Domain Join Set -----#
   @@inter_domain_join_set = {}      # {entry_cell =>{domain_root=>count} }  Hash of inter domain join
-  def self.add_inter_domain_join_set join
+  def self.add_inter_domain_join_set(join)
     rhs_cell = join.get_cell
     dbgPrint "--------- add_inter_domain:#{join.get_owner.get_namespace_path} => #{join.get_cell.get_namespace_path}-----\n"
     domain_root = join.get_owner.get_region.get_domain_root   # lhs cell's domain root
@@ -284,7 +284,7 @@ class HRPPlugin < DomainPlugin
     # 左辺のドメインルートを記録
     @@inter_domain_join_set[rhs_cell] << join
   end
-  def self.get_inter_domain_join_set rhs_cell
+  def self.get_inter_domain_join_set(rhs_cell)
     if @@inter_domain_join_set[rhs_cell]
       @@inter_domain_join_set[rhs_cell].uniq!
     else
@@ -292,7 +292,7 @@ class HRPPlugin < DomainPlugin
     end
     return @@inter_domain_join_set[rhs_cell]
   end
-  def self.get_inter_domain_join_roots rhs_cell
+  def self.get_inter_domain_join_roots(rhs_cell)
     dbgPrint "--------- get_inter_domain #{rhs_cell.get_namespace_path} -----\n"
     domain_roots = []
     set = get_inter_domain_join_set rhs_cell
@@ -305,7 +305,7 @@ class HRPPlugin < DomainPlugin
     return domain_roots.uniq
   end
 
-  def self.get_sac_str cell
+  def self.get_sac_str(cell)
     domain_roots = self.get_inter_domain_join_roots cell
     delim = ""
     acv = ""

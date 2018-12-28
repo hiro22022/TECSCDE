@@ -54,7 +54,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 module TECSCDE
   class Palette
     # control::TECSCDE::Control
-    def initialize control
+    def initialize(control)
       @control = control
       Dir.chdir("#{$tecsgen_base_path}/../glade"){
         setup
@@ -147,7 +147,7 @@ module TECSCDE
       @control.set_attrOperationWidgets @window, @celltypeTreeView, @attrTreeView, @entry_cell_name, @entry_cell_region, @frame_cell
     end
 
-    def set_view view
+    def set_view(view)
       @window.set_transient_for(view.get_window)
       @window.window.set_group view.get_window.window
       @window.window.raise

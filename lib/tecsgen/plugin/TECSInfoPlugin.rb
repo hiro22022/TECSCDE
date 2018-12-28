@@ -93,7 +93,7 @@ EOT
   #=== tCelltype_factory.h に挿入するコードを生成する
   # file 以外の他のファイルにファクトリコードを生成してもよい
   # セルタイププラグインが指定されたセルタイプのみ呼び出される
-  def gen_factory file
+  def gen_factory(file)
     File.open("#{$gen}/include_all_signature_header.h", "w"){ |f|
       f.print <<EOT
 #ifndef include_all_signature_header_h

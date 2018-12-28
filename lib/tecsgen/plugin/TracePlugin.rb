@@ -438,11 +438,11 @@ EOT
     "syslogCelltype"     => Proc.new { |obj,rhs| obj.set_syslogCelltype rhs },
   }
 
-  def set_maxArrayDisplay rhs
+  def set_maxArrayDisplay(rhs)
     @maxArrayDisplay = rhs
   end
 
-  def set_cellEntry rhs
+  def set_cellEntry(rhs)
     ces = rhs.to_s.split /\s*,\s*/
     ces.each{ |ce|
       if ce =~ /^[A-Za-z_]\w*\.[A-Za-z_]\w*$/
@@ -454,11 +454,11 @@ EOT
     @cellEntry_list.concat ces
   end
 
-  def set_probeName rhs
+  def set_probeName(rhs)
     @probeName = rhs.to_s
   end
 
-  def set_displayTime rhs
+  def set_displayTime(rhs)
     if rhs.to_s == "true"
       @b_diplayTime = true
     elsif rhs.to_s == "false"

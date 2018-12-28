@@ -97,7 +97,7 @@ class Node
     @locale
   end
 
-  def set_locale locale
+  def set_locale(locale)
     @locale = locale
   end
 
@@ -151,7 +151,7 @@ class BDNode < Node
   end
 
   #=== owner を設定する
-  def set_owner owner
+  def set_owner(owner)
     dbgPrint "set_owner: #{owner.class.name}\n"
     @owner = owner
   end
@@ -311,7 +311,7 @@ class NamedList
     @names = names
   end
 
-  def assert_name item
+  def assert_name(item)
     if ! item.get_name.kind_of? Symbol
       raise "Not symbol for NamedList item"
     end
@@ -908,7 +908,7 @@ class ParamDecl < BDNode
 
   end
 
-  def check_struct_tag kind
+  def check_struct_tag(kind)
     @declarator.get_type.check_struct_tag :PARAMETER
   end
 
@@ -1131,7 +1131,7 @@ class ParamList < BDNode
     }
   end
 
-  def check_struct_tag kind
+  def check_struct_tag(kind)
     @param_list.get_items.each{ |p|
       p.check_struct_tag kind
     }
@@ -1180,7 +1180,7 @@ end
 # CDL の文字列リテラルそのものではない
 class CDLString
   # エスケープ文字を変換
-  def self.escape str
+  def self.escape(str)
     str = str.dup
     str.gsub!(/\\a/, "\x07")
     str.gsub!(/\\b/, "\x08")
@@ -1196,7 +1196,7 @@ class CDLString
   end
 
   #=== CDLString#前後の " を取り除く
-  def self.remove_dquote str
+  def self.remove_dquote(str)
     s = str.sub(/\A"/, "")
     s.sub!(/"\z/, "")
     return s

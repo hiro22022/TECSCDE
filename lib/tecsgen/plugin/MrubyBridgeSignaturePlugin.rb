@@ -203,7 +203,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   end
 
   #=== check function name & return type
-  def check_name_and_return_type func_head_array
+  def check_name_and_return_type(func_head_array)
     b_init = false; b_init_cell = false
     func_head_array.each{ |func_head|
       if(func_head.get_name == :initialize)
@@ -230,7 +230,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   end
 
   #=== check paramter type
-  def check_parameter_type func_head_array
+  def check_parameter_type(func_head_array)
     # check type of parameters
     func_head_array.each{ |fh|
       fh.get_paramlist.get_items.each{ |param_decl|
@@ -318,7 +318,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   end
 
   #=== 構造体のメンバーの型のチェック
-  def check_struct_member struct_type, fh
+  def check_struct_member(struct_type, fh)
     # p "tag name:#{struct_type.get_name}"
     # sttype = Namespace.find_tag( struct_type.get_name )
     sttype = struct_type.get_original_type
@@ -354,7 +354,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     end
   end
 
-  def register_ptr_type ttype, fh
+  def register_ptr_type(ttype, fh)
     t_org = ttype.get_original_type
     tment = get_type_map_ent t_org
     if tment == nil
@@ -372,7 +372,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     end
   end
 
-  def get_type_map_ent ttype
+  def get_type_map_ent(ttype)
     # structure type is registerd in check_struct_member
     if ttype.kind_of? StructType
       return
@@ -458,7 +458,7 @@ EOT
 
   #=== gen_cdl_file で定義したセルタイプに 新しいセルが定義された
   # cell のセルタイプの名前は @celltype_name
-  def new_cell cell
+  def new_cell(cell)
     if cell.get_celltype.get_name != @celltype_name
       return
     end
@@ -523,7 +523,7 @@ EOT
 
   #=== プラグインが CDL の POST コードを生成
   # tmp_plugin_post_code.cdl への出力
-  def self.gen_post_code file
+  def self.gen_post_code(file)
     dbgPrint "#{self.name}: gen_post_code\n"
     if ! @@b_gen_post_code_by_dependent
       gen_post_code_body file
@@ -535,7 +535,7 @@ EOT
     @@b_gen_post_code_by_dependent = true
   end
 
-  def self.gen_post_code_body file
+  def self.gen_post_code_body(file)
     dbgPrint "#{self.name}: gen_post_code_body\n"
 
 #     file.print <<EOT
@@ -1185,7 +1185,7 @@ EOT
     }
   end
 
-  def ptrMrb2C file, type, param
+  def ptrMrb2C(file, type, param)
     ttype = type.get_type.get_original_type
     tment = get_type_map_ent ttype
     tstr = tment[1]
@@ -1261,13 +1261,13 @@ EOT
   end
 
   #=== プラグイン引数 ignoreUnsigned
-  def set_ignoreUnsigned rhs
+  def set_ignoreUnsigned(rhs)
     if rhs == "true" || rhs == nil
       @b_ignoreUnsigned = true
     end
   end
   #=== プラグイン引数 include
-  def set_include rhs
+  def set_include(rhs)
     funcs = rhs.split ","
     funcs.each{ |rhs_func|
       found = false
@@ -1285,7 +1285,7 @@ EOT
     }
   end
   #=== プラグイン引数 exclude
-  def set_exclude rhs
+  def set_exclude(rhs)
     funcs = rhs.split ","
     funcs.each{ |rhs_func|
       rhs_func.gsub!(/\s/, "")
@@ -1298,7 +1298,7 @@ EOT
     }
   end
   #=== プラグイン引数 auto_exclude
-  def set_auto_exclude rhs
+  def set_auto_exclude(rhs)
     if rhs == "false"
       @b_auto_exclude = false
     elsif rhs == "true"

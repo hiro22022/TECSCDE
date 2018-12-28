@@ -116,7 +116,7 @@ EOT
     #  gen_factory実行時には，すべてのセルタイププラグインを生成済みのはずなので，
     #  カーネルAPIコードのメモリ保護を省略できる．
     #
-    def gen_factory file
+    def gen_factory(file)
         super
         if @@generate_memory_module == false
             check_celltype_list = []

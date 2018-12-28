@@ -55,7 +55,7 @@ module TECSCDE
   class CellPluginDialog
     #=== CellPluginDialog#initialize
     # cell::TmCell
-    def initialize cell
+    def initialize(cell)
       @cell = cell
 
       Dir.chdir("#{$tecsgen_base_path}/../glade"){

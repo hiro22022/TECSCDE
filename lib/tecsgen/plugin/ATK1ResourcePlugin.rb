@@ -55,7 +55,7 @@ class ATK1ResourcePlugin < CelltypePlugin
 #  def gen_cdl_file file
 #  end
 
-  def new_cell cell
+  def new_cell(cell)
   end
 
   #===  受け口関数の本体(C言語)を生成する
@@ -73,7 +73,7 @@ class ATK1ResourcePlugin < CelltypePlugin
 #  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
 #  end
 
-  def gen_factory file
+  def gen_factory(file)
 
   file2 = CFile.open("#{$gen}/RESOURCE_tecsgen.oil", "w")
   file3 = CFile.open("#{$gen}/#{@celltype.get_name}_factory.#{$h_suffix}", "w")

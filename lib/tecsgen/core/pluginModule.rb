@@ -96,7 +96,7 @@ module PluginModule
   end
 
   #=== プラグインの gen_cdl_file を呼びして cdl ファイルを生成させ、解釈を行う
-  def generate_and_parse plugin_object
+  def generate_and_parse(plugin_object)
     if plugin_object == nil     # プラグインのロードに失敗している（既にエラー）
       return
     end
@@ -142,7 +142,7 @@ module PluginModule
 
   #=== プラグインが CDL の POST コードを生成
   # tmp_plugin_post_code.cdl への出力
-  def self.gen_plugin_post_code file
+  def self.gen_plugin_post_code(file)
     dbgPrint "PluginModule #{@@loaded_plugin_list}\n"
     @@loaded_plugin_list.each{ |plugin_name,count|
       if count == :MultiPlugin

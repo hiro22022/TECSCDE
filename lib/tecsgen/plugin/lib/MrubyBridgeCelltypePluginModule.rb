@@ -135,7 +135,7 @@ EOT
   #      すでに生成されている場合は出力しないこと。
   #      もしくは同名の import により、重複を避けること。
   # file::        FILE       生成するファイル
-  def gen_cdl_file file
+  def gen_cdl_file(file)
 #   この段階で呼びだすと generate 文が呼び出される前のセルのみの出力となる
     
 #    dbgPrint "MrubyBridgeCelltypePlugin: gen_cdl_file: #{@celltype.get_name}\n"
@@ -160,7 +160,7 @@ EOT
   #=== tCelltype_factory.h に挿入するコードを生成する
   # file 以外の他のファイルにファクトリコードを生成してもよい
   # セルタイププラグインが指定されたセルタイプのみ呼び出される
-  def gen_factory file
+  def gen_factory(file)
   end
 
   def get_celltype
@@ -204,26 +204,26 @@ EOT
   #=== プラグイン引数 
 
   #=== プラグイン引数 ignoreUnsigned
-  def set_ignoreUnsigned rhs
+  def set_ignoreUnsigned(rhs)
     if rhs == "true" || rhs == nil
       @b_ignoreUnsigned = true
     end
   end
 
-  def set_include_inner_cell rhs
+  def set_include_inner_cell(rhs)
     if rhs == "true" || rhs == nil
       @include_inner_cell = true
     end
   end
 
-  def set_exclude_cell rhs
+  def set_exclude_cell(rhs)
     cells = rhs.split ","
     cells.each{ |rhs_cell|
       rhs_cell.gsub!(/\s/, "")
       @exclude_cells << rhs_cell.to_sym
     }
   end
-  def set_exclude_port rhs
+  def set_exclude_port(rhs)
     ports = rhs.split ","
     ct = @cell.get_celltype
     return if ct == nil    # error case
@@ -239,7 +239,7 @@ EOT
   end
 
   #=== プラグイン引数 exclude_port_func
-  def set_exclude_port_func rhs
+  def set_exclude_port_func(rhs)
     port_funcs = rhs.split ","
     ct = @celltype
     return if ct == nil    # error case
@@ -270,7 +270,7 @@ EOT
   end
 
   #=== プラグイン引数 auto_exclude
-  def set_auto_exclude rhs
+  def set_auto_exclude(rhs)
     # print "MrubyBridgeCellPlugin: auto_exclude=#{rhs}\n"
     if rhs == "false"
       @b_auto_exclude = false

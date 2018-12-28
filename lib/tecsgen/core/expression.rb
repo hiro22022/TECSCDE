@@ -864,7 +864,7 @@ class Expression < Node
   # Expression#elements のクローンを作成
   # elements::Array
   # このメソッドは、Array のディープコピーを行う
-  def clone_elements elements
+  def clone_elements(elements)
     elements = elements.clone
     elements.map!{ |ele|
       if ele.instance_of? Array
@@ -876,7 +876,7 @@ class Expression < Node
     return elements
   end
 
-  def set_elements elements
+  def set_elements(elements)
     @elements = elements
   end
 

@@ -60,7 +60,7 @@ class CelltypePlugin < Plugin
   #=== tCelltype_factory.h に挿入するコードを生成する
   # file 以外の他のファイルにファクトリコードを生成してもよい
   # セルタイププラグインが指定されたセルタイプのみ呼び出される
-  def gen_factory file
+  def gen_factory(file)
   end
 
   #=== 後ろの CDL コードを生成

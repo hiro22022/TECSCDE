@@ -117,7 +117,7 @@ class TECS_LANG
   end
 
   #=== codepage から LANG の設定文字列に変換
-  def self.codepage_to_lang cp
+  def self.codepage_to_lang(cp)
     if cp == "932"
       "ja_JP.sjis"
     else
@@ -335,14 +335,14 @@ end
 #= Console クラス
 # 文字コードを変換する
 class Console
-  def self.print str
+  def self.print(str)
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       STDOUT.print str
     else
       STDOUT.print str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
     end
   end
-  def self.puts str
+  def self.puts(str)
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
       STDOUT.puts str
     else
@@ -352,7 +352,7 @@ class Console
 end
 
 # Copy from original tecgen.rb
-def set_kcode kcode
+def set_kcode(kcode)
   if ! $b_no_kcode
     $KCODE = kcode
   end

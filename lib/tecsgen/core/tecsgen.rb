@@ -42,7 +42,7 @@ class TECSGEN
 
   #=== import パス (-I) を末尾に追加
   # 既に登録済みであれば、追加しない
-  def self.add_import_path path
+  def self.add_import_path(path)
     if $import_path.index(path) == nil
       dbgPrint "add_import_path: '#{path}'\n"
       $import_path << path
@@ -124,7 +124,7 @@ class TECSGEN
     @@lines = []
 
     #=== OTHER_OBJS に追加する
-    def self.add_obj obj
+    def self.add_obj(obj)
       @@objs << obj
     end
     #=== 追加する変数
@@ -143,22 +143,22 @@ class TECSGEN
       end
     end
     #=== LDFLAGS に追加する
-    def self.add_ldflag ldflag
+    def self.add_ldflag(ldflag)
       @@ldflags += " " + ldflag
     end
     #=== サーチパスを追加する
     # CFLAGS, vpath に追加する
-    def self.add_search_path path
+    def self.add_search_path(path)
       @@search_path << path
     end
     #=== PRE_TECSGEN_TARGET に追加する
     # PRE_TECSGEN_TARGET に target を追加する
-    def self.add_pre_tecsgen_target target
+    def self.add_pre_tecsgen_target(target)
       @@pre_tecsgen_target << pre_tecsgen_target
     end
     #=== POST_TECSGEN_TARGET に追加する
     # POST_TECSGEN_TARGET に target を追加する
-    def self.add_post_tecsgen_target target
+    def self.add_post_tecsgen_target(target)
       @@post_tecsgen_target << pre_tecsgen_target
     end
     #=== 追加する変数
@@ -221,7 +221,7 @@ class TECSGEN
 
   #------ TECSGEN CDL analyze and generate ------#
 
-  def syntax_analisys argv
+  def syntax_analisys(argv)
     # ルート namespace (region) を生成
     @root_namespace = Region.new("::")
 

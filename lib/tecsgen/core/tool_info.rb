@@ -71,7 +71,7 @@ class TOOL_INFO
     end
   end
 
-  def self.get_tool_info name
+  def self.get_tool_info(name)
     @@tool_info[name]
   end
 
@@ -123,7 +123,7 @@ class TOOL_INFO
       @b_ok = false
     end
 
-    def initialize name, schema
+    def initialize(name, schema)
       @name = name
       @schema = schema
       @b_ok = true
@@ -180,7 +180,7 @@ class TOOL_INFO
 
     end
 
-    def validate_array_member array, val_types, path
+    def validate_array_member(array, val_types, path)
       if ! array.kind_of? Array
         error("#{path2}: array required as value\n")
         return
@@ -207,7 +207,7 @@ class TOOL_INFO
     #=== TOOL_INFO::VALIDATOR#validate_types
     # obj::Object (Integer, Floating, String, Hash)
     # val_type::Symbol : required object type
-    def validate_types obj, val_type, path
+    def validate_types(obj, val_type, path)
       type = get_object_type obj
       case val_type
       when :integer
@@ -242,7 +242,7 @@ class TOOL_INFO
       error("#{path}: type mismatch, #{type} for #{val_type}\n")
     end
 
-    def get_object_type obj
+    def get_object_type(obj)
 # p "#{obj.class} #{obj.to_s}"
       if obj.kind_of? Integer
         return :integer
@@ -265,20 +265,20 @@ end
 
 class TECSGEN
   #------ manupulate location information --------#
-  def self.new_cell_location cell_location
+  def self.new_cell_location(cell_location)
     @@current_tecsgen.new_cell_location cell_location
   end
-  def new_cell_location cell_location
+  def new_cell_location(cell_location)
     @cell_location_list << cell_location
   end
   def get_cell_location_list
     @cell_location_list
   end
 
-  def self.new_join_location join_location
+  def self.new_join_location(join_location)
     @@current_tecsgen.new_join_location join_location
   end
-  def new_join_location join_location
+  def new_join_location(join_location)
     @join_location_list << join_location
   end
   def get_join_location_list

@@ -137,7 +137,7 @@ module TECSCDE
   class MainViewAndModel
     # @model::TECSModel
     # @view::MainView
-    def initialize tecsgen
+    def initialize(tecsgen)
       @model   = TECSModel.new tecsgen
       @control = Control.new @model
       @view    = MainView.new @model, @control

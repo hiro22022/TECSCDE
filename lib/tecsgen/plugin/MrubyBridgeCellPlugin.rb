@@ -115,7 +115,7 @@ class MrubyBridgeCellPlugin < CellPlugin
     end
   end
 
-  def gen_cdl_file file
+  def gen_cdl_file(file)
     dbgPrint "#{self.class.name}: gen_cdl_file: #{@cell.get_name}\n"
 
     file.print <<EOT
@@ -189,7 +189,7 @@ EOT
     MrubyBridgeSignaturePlugin.set_gen_post_code_by_dependent
   end
 
-  def self.gen_post_code_body file
+  def self.gen_post_code_body(file)
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
     dbgPrint "#{self.name}: gen_post_code_body\n"
@@ -197,14 +197,14 @@ EOT
   end
 
   #=== プラグイン引数 ignoreUnsigned
-  def set_ignoreUnsigned rhs
+  def set_ignoreUnsigned(rhs)
     if rhs == "true" || rhs == nil
       @b_ignoreUnsigned = true
     end
   end
 
   #=== プラグイン引数 exclude_port
-  def set_exclude_port rhs
+  def set_exclude_port(rhs)
     ports = rhs.split ","
     ct = @cell.get_celltype
     return if ct == nil    # error case
@@ -220,7 +220,7 @@ EOT
   end
 
   #=== プラグイン引数 exclude_port_func
-  def set_exclude_port_func rhs
+  def set_exclude_port_func(rhs)
     port_funcs = rhs.split ","
     ct = @cell.get_celltype
     return if ct == nil    # error case
@@ -250,7 +250,7 @@ EOT
     }
   end
   #=== プラグイン引数 auto_exclude
-  def set_auto_exclude rhs
+  def set_auto_exclude(rhs)
     # print "MrubyBridgeCellPlugin: auto_exclude=#{rhs}\n"
     if rhs == "false"
       @b_auto_exclude = false

@@ -67,7 +67,7 @@ class OpaqueMarshalerPlugin < SignaturePlugin
     print "OpaqueMarshalerPlugin: signature=#{signature.get_namespace_path}, PPAllocator=#{necessity}\n"
   end
 
-  def gen_cdl_file file
+  def gen_cdl_file(file)
     gen_marshaler_celltype
     file.print <<EOT
 import( "#{@marshaler_celltype_file_name}" );

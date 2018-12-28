@@ -39,7 +39,7 @@
 # TECS 情報セルの生成
 module TECSInfo
   # region は Link root のこと
-  def self.print_info f, region
+  def self.print_info(f, region)
     # p "region: "+ region.get_name.to_s
     nest = region.gen_region_str_pre f
     indent0 = "    " * nest
@@ -74,7 +74,7 @@ class Namespace
   # 子ネームスペースは Namespace クラスの、子リージョンは Region クラスのオブジェクトである
   # これは、意味解析段階で呼び出されるため、リンクユニットごとに出しわけることができない
   # 出しわけるには、2パスにする必要がある
-  def print_info_ns_sub f, indent
+  def print_info_ns_sub(f, indent)
     if @name == "::"
       name = "_Root"
     else
@@ -118,7 +118,7 @@ EOT
 EOT
   end
 
-  def print_info_ns f, indent
+  def print_info_ns(f, indent)
     # p "print_info: #{self.get_global_name}"
     print_info_ns_sub f, indent
     @signature_list.each { |sig|
@@ -141,7 +141,7 @@ EOT
   end
 
   #=== Namespace# 構造体メンバーのオフセット定義
-  def print_struct_define f
+  def print_struct_define(f)
     f.print "\n/***** Offset of members of structures  *****/\n"
     @struct_tag_list.get_items.each{ |tag, sttype|
       # print "sttype: #{tag.get_name} #{sttype}\n"
@@ -156,7 +156,7 @@ EOT
     }
   end
 
-  def print_celltype_define_offset f
+  def print_celltype_define_offset(f)
     @celltype_list.each { |ct|
       if ct.get_cell_list.length > 0
         ct.print_define_offset f
@@ -169,7 +169,7 @@ EOT
     }
   end
 
-  def print_celltype_define f
+  def print_celltype_define(f)
     @celltype_list.each { |ct|
       if ct.get_cell_list.length > 0
         ct.print_celltype_define f
@@ -182,7 +182,7 @@ EOT
     }
   end
 
-  def print_call_define f
+  def print_call_define(f)
     @celltype_list.each { |ct|
       if ct.get_cell_list.length > 0
         ct.print_call_define f
@@ -195,7 +195,7 @@ EOT
     }
   end
 
-  def print_entry_define f
+  def print_entry_define(f)
     @celltype_list.each { |ct|
       if ct.get_cell_list.length > 0
         ct.print_entry_define f
@@ -210,7 +210,7 @@ EOT
 end
 
 class Region
-  def print_info_region_sub f, indent
+  def print_info_region_sub(f, indent)
     if get_link_root == self
       name = "_LinkRoot"
     else
@@ -256,7 +256,7 @@ EOT
     self.print_info_region f, indent
   end
 
-  def self.print_cell_define f
+  def self.print_cell_define(f)
     region.get_link_root.print_cell_define f
     region.get_link_root.get_region{ |region|
       if region.instance_of? Region
@@ -266,7 +266,7 @@ EOT
     }
   end
 
-  def print_cell_define f
+  def print_cell_define(f)
     ct_list = {}
     @cell_list.each{ |cell|
       next if cell.exclude_info_factory?
@@ -308,7 +308,7 @@ EOT
     }
   end
 
-  def print_entry_descriptor_define f
+  def print_entry_descriptor_define(f)
     @cell_list.each{ |cell|
       next if cell.exclude_info_factory?
 
@@ -337,7 +337,7 @@ EOT
 end
 
 class Celltype
-  def print_info f, indent
+  def print_info(f, indent)
     f.print <<EOT
 #{indent}cell nTECSInfo::tCelltypeInfo #{@global_name}CelltypeInfo {
 #{indent}    name             = "#{@name}";
@@ -393,7 +393,7 @@ EOT
     }
   end
 
-  def print_define_offset f
+  def print_define_offset(f)
     # intptr_t に一回キャストするのは 64bit 版を考量してのこと．しかし 32bit としているので 4GB を超える構造体等は扱えない
     if @n_cell_gen > 0
       f.print <<EOT
@@ -443,7 +443,7 @@ EOT
     end
   end
 
-  def print_celltype_define f
+  def print_celltype_define(f)
     if has_INIB?
       size_INIB = "(sizeof(#{@global_name}_INIB))"
     else
@@ -469,7 +469,7 @@ EOT
     end
   end
 
-  def print_call_define f
+  def print_call_define(f)
     if @n_cell_gen > 0
       f.print <<EOT
 
@@ -530,7 +530,7 @@ EOT
     }
   end
 
-  def print_entry_define f
+  def print_entry_define(f)
     @port.each{ |port|
       next if port.get_port_type == :CALL
       array_size = port.get_array_size
@@ -546,7 +546,7 @@ EOT
 end
 
 class Port
-  def print_info f, ct_global, indent
+  def print_info(f, ct_global, indent)
     return if @signature == nil     # signature not found error in cdl
     if @port_type == :ENTRY
       f.print <<EOT
@@ -582,7 +582,7 @@ EOT
 end
 
 class Cell
-  def print_info f, indent
+  def print_info(f, indent)
     if exclude_info?
       return
     end
@@ -661,7 +661,7 @@ EOT
 end
 
 class Signature
-  def print_info f, indent
+  def print_info(f, indent)
     f.print <<EOT
 
 #{indent}/*** #{@global_name} signature information ****/
@@ -683,7 +683,7 @@ EOT
 end
 
 class FuncHead
-  def print_info f, indent
+  def print_info(f, indent)
     sig_name = @owner.get_global_name
     func_name = get_name
     f.print <<EOT
@@ -709,7 +709,7 @@ EOT
 end
 
 class ParamDecl
-  def print_info f, signature_global_name, func_name, paramdecl_list, indent
+  def print_info(f, signature_global_name, func_name, paramdecl_list, indent)
     if @size
       size = "\"#{@size.get_rpn(paramdecl_list)}\""
     else
@@ -744,7 +744,7 @@ EOT
 end
 
 class Decl
-  def print_info f, parent_ID_str, indent, decl_type
+  def print_info(f, parent_ID_str, indent, decl_type)
     if @size_is
       size = "\"mikan\"";
     else
@@ -771,7 +771,7 @@ class Type
     @@typeinfo_printed = {}
   end
 
-  def print_info f, indent
+  def print_info(f, indent)
     # Type の info は、最後にまとめて出力するので、ここでは記録するだけ
     if @@typeinfo_printed[get_ID_str]
       return
@@ -791,13 +791,13 @@ class Type
     end
   end
 
-  def self.print_info_post f, indent
+  def self.print_info_post(f, indent)
     @@typeinfo_printed.each{ |nm, type|
       type.print_info_post f, indent
     }
   end
 
-  def print_info_post f, indent
+  def print_info_post(f, indent)
     if self.class.superclass == Type     # 親クラスが Type の場合 types.rb のクラス
       type_name = self.class.name
     else

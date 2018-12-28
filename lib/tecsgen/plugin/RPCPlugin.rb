@@ -246,7 +246,7 @@ EOT
 
 
   #=== プラグイン引数 noClientSemaphore のチェック
-  def set_noClientSemaphore rhs
+  def set_noClientSemaphore(rhs)
     rhs = rhs.to_sym
     if rhs == :true
       @b_noClientSemaphore = true
@@ -258,7 +258,7 @@ EOT
   end
 
   #=== プラグイン引数 semaphoreCelltype のチェック
-  def set_semaphoreCelltype rhs
+  def set_semaphoreCelltype(rhs)
     @semaphoreCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
     obj = Namespace.find(nsp)

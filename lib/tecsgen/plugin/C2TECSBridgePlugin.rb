@@ -64,7 +64,7 @@ class C2TECSBridgePlugin < SignaturePlugin
     parse_plugin_arg
   end
 
-  def gen_cdl_file file
+  def gen_cdl_file(file)
     if @@signature_list[@signature.get_global_name]
       @@signature_list[@signature.get_global_name] << self
       cdl_warning("C2TW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
@@ -194,15 +194,15 @@ EOT
   end
 
   #===  set_prefix - prefix プラグインオプション
-  def set_prefix rhs
+  def set_prefix(rhs)
     @prefix = rhs.to_s
   end
   #===  set_suffix - suffix プラグインオプション
-  def set_suffix rhs
+  def set_suffix(rhs)
     @suffix = rhs.to_s
   end
   #===  set_header_name - header_name プラグインオプション
-  def set_header_name rhs
+  def set_header_name(rhs)
     @header_name = "#{$gen}/" + rhs.to_s
     if ! (@header_name =~ /\.h\Z/)
       @header_name += ".h"

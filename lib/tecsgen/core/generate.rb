@@ -36,49 +36,49 @@
 #   $Id: generate.rb 2834 2018-03-18 06:20:15Z okuma-top $
 #++
 
-def ifdef_macro_only f
+def ifdef_macro_only(f)
   f.print <<EOT
 #ifndef TOPPERS_MACRO_ONLY
 
 EOT
 end
 
-def ifndef_macro_only f
+def ifndef_macro_only(f)
   f.print <<EOT
 #ifndef TOPPERS_MACRO_ONLY
 
 EOT
 end
 
-def endif_macro_only f
+def endif_macro_only(f)
   f.print <<EOT
 #endif /* TOPPERS_MACRO_ONLY */
 
 EOT
 end
 
-def ifndef_cb_type_only f
+def ifndef_cb_type_only(f)
   f.print <<EOT
 #ifndef TOPPERS_CB_TYPE_ONLY
 
 EOT
 end
 
-def ifdef_cb_type_only f
+def ifdef_cb_type_only(f)
   f.print <<EOT
 #ifdef TOPPERS_CB_TYPE_ONLY
 
 EOT
 end
 
-def endif_cb_type_only f
+def endif_cb_type_only(f)
   f.print <<EOT
 #endif /* TOPPERS_CB_TYPE_ONLY */
 
 EOT
 end
 
-def begin_extern_C f
+def begin_extern_C(f)
   f.print  <<EOT
 #ifdef __cplusplus
 extern "C" {
@@ -86,7 +86,7 @@ extern "C" {
 EOT
 end
 
-def end_extern_C f
+def end_extern_C(f)
   f.print  <<EOT
 #ifdef __cplusplus
 }
@@ -108,7 +108,7 @@ def print_note(f, b_complete = true)
   end
 end
 
-def print_Makefile_note f
+def print_Makefile_note(f)
   f.print TECSMsg.get(:Makefile_note)
 end
 
@@ -857,7 +857,7 @@ EOT
       ns.travers_all_signature_proc proc
     }
   end
-  def travers_all_signature_proc proc
+  def travers_all_signature_proc(proc)
     @signature_list.each{ |sig|
       proc.call sig
     }
@@ -876,7 +876,7 @@ EOT
       ns.travers_all_celltype_proc proc
     }
   end
-  def travers_all_celltype_proc proc
+  def travers_all_celltype_proc(proc)
     @celltype_list.each{ |ct|
       proc.call ct
     }
@@ -887,7 +887,7 @@ EOT
 end
 
 class Typedef
-  def gen_gh f
+  def gen_gh(f)
 
 #    print "Typedef.gen_gh\n"
 #    show_tree 1
@@ -900,7 +900,7 @@ class Typedef
 end
 
 class StructType < Type
-  def gen_gh f
+  def gen_gh(f)
 
 #    print "StructType.gen_gh\n"
 #    show_tree 1
@@ -954,12 +954,12 @@ class Signature
 
 #####  signature header
 
-  def gen_sh_guard f
+  def gen_sh_guard(f)
     f.print("#ifndef #{@global_name}_TECSGEN_H\n")
     f.print("#define #{@global_name}_TECSGEN_H\n\n")
   end
 
-  def gen_sh_info f
+  def gen_sh_info(f)
     f.print <<EOT
 /*
  * signature   :  #{@name}
@@ -970,7 +970,7 @@ class Signature
 EOT
   end
 
-  def gen_sh_include f
+  def gen_sh_include(f)
     dl = get_descriptor_list
     if dl.length > 0
       f.printf TECSMsg.get(:SDI_comment), "#_SDI_#"
@@ -989,7 +989,7 @@ EOT
 
   end
 
-  def gen_sh_func_tab f
+  def gen_sh_func_tab(f)
 
     # シグニチャディスクリプタの出力
     f.printf TECSMsg.get(:SD_comment), "#_SD_#"
@@ -1043,7 +1043,7 @@ EOT
   end
 
   #=== Signature# 関数の ID の define を出力
-  def gen_sh_func_id f
+  def gen_sh_func_id(f)
     f.print "/* function id */\n"
     get_function_head_array.each{ |fun|
       f.printf("#define\tFUNCID_%-31s (%d)\n", "#{@global_name}_#{fun.get_name}".upcase, get_id_from_func_name(fun.get_name))
@@ -1051,7 +1051,7 @@ EOT
     f.print "\n"
   end
 
-  def gen_sh_endif f
+  def gen_sh_endif(f)
     f.print("#endif /* #{@global_name}_TECSGEN_H */\n")
   end
 end
@@ -1345,7 +1345,7 @@ class Celltype
     f.print("#define #{@global_name}_#{post}_H\n\n")
   end
 
-  def gen_ph_info f
+  def gen_ph_info(f)
 
     yn_idx_is_id = "no"
     yn_idx_is_id = "yes"  if @idx_is_id
@@ -1374,7 +1374,7 @@ class Celltype
 EOT
   end
 
-  def gen_ph_include f
+  def gen_ph_include(f)
     # ランタイムヘッダの include
 #    f.printf TECSMsg.get( :IRTH_comment), "#_IRTH_#"
 #    f.print "#include \"tecs.#{$h_suffix}\"\n\n"
@@ -1395,7 +1395,7 @@ EOT
     f.print "\n"
   end
 
-  def gen_ph_include_cb_type f
+  def gen_ph_include_cb_type(f)
 
     if ! @b_cp_optimized
       return
@@ -1449,7 +1449,7 @@ EOT
   end
 
 
-  def gen_ph_base f
+  def gen_ph_base(f)
     return if @singleton
 
     # ID の基数および個数の define を出力
@@ -1457,7 +1457,7 @@ EOT
     f.printf("#define %-20s %10s  /* %s  #_NCEL_# */\n\n", "#{@global_name}_N_CELL", "(#{@n_cell_gen})", TECSMsg.get(:NCEL_comment))
   end
 
-  def gen_ph_valid_idx f
+  def gen_ph_valid_idx(f)
     return if @singleton
 
     # mikan  最適化
@@ -1471,7 +1471,7 @@ EOT
 
   end
 
-  def gen_ph_valid_idx_abbrev f
+  def gen_ph_valid_idx_abbrev(f)
     return if @singleton
 
     # IDX 正当性チェックマクロ（短縮形）の出力
@@ -1483,7 +1483,7 @@ EOT
   #=== 呼び口配列の大きさを得るマクロの出力
   #
   # セルタイプヘッダへ呼び口の個数を出力
-  def gen_ph_n_cp f
+  def gen_ph_n_cp(f)
 
     b_comment = false
     @port.each { |p|
@@ -1525,7 +1525,7 @@ EOT
   #=== 受け口配列の大きさを得るマクロの出力
   #
   # セルタイプヘッダへ受け口の個数を出力
-  def gen_ph_n_ep f
+  def gen_ph_n_ep(f)
 
     b_comment = false
     @port.each { |p|
@@ -1562,7 +1562,7 @@ EOT
   end
 
   #=== optional な呼び口が結合されているかテストするコードの生成
-  def gen_ph_test_optional_call_port f
+  def gen_ph_test_optional_call_port(f)
     b_comment = false
 
     if @singleton
@@ -1657,7 +1657,7 @@ EOT
   end
 
   #=== optional な呼び口が結合されているかテストするコードの生成（短縮形）
-  def gen_ph_test_optional_call_port_abbrev f
+  def gen_ph_test_optional_call_port_abbrev(f)
     b_comment = false
 
     @port.each { |p|
@@ -1690,7 +1690,7 @@ EOT
 
   #=== CELLCB へのポインタを得るマクロを出力
   #   セルタイプヘッダへ出力
-  def gen_ph_get_cellcb f
+  def gen_ph_get_cellcb(f)
     f.printf(TECSMsg.get(:GCB_comment), "#_GCB_#")
     if (! has_CB? && ! has_INIB?) || @singleton
       f.print("#define #{@global_name}_GET_CELLCB(idx) ((void *)0)\n")
@@ -1703,7 +1703,7 @@ EOT
 
   #=== CELLCB へのポインタを得るマクロ（短縮形）を出力
   #  セルタイプヘッダへ出力
-  def gen_ph_get_cellcb_abbrev f
+  def gen_ph_get_cellcb_abbrev(f)
     f.printf(TECSMsg.get(:GCBA_comment), "#_GCBA_#")
     f.print("#define GET_CELLCB(idx)  #{@global_name}_GET_CELLCB(idx)\n\n")
 
@@ -1720,7 +1720,7 @@ EOT
 
   #===  attribute, var をアクセスするマクロを出力
   #    セルタイプヘッダへ出力
-  def gen_ph_attr_access f
+  def gen_ph_attr_access(f)
     if @n_attribute_rw > 0 || @n_attribute_ro > 0
       f.printf(TECSMsg.get(:AAM_comment), "#_AAM_#")
     end
@@ -1860,7 +1860,7 @@ EOT
   end
 
   #===  attribute/var アクセスマクロ（短縮形）コードの生成
-  def gen_ph_attr_access_abbrev f
+  def gen_ph_attr_access_abbrev(f)
     if @n_attribute_rw > 0 || @n_attribute_ro > 0
       f.printf(TECSMsg.get(:AAMA_comment), "#_AAMA_#")
     end
@@ -1899,7 +1899,7 @@ EOT
 
   end
 
-  def gen_ph_cp_fun_macro f
+  def gen_ph_cp_fun_macro(f)
     if @n_call_port >0
       f.printf(TECSMsg.get(:CPM_comment) , "#_CPM_#")
     end
@@ -2042,7 +2042,7 @@ EOT
   end
 
   #=== ref_desc 指定された呼び口に対するディスクリプタ参照関数の生成
-  def gen_ph_ref_desc_func f
+  def gen_ph_ref_desc_func(f)
     if @n_call_port_ref_desc >0
       f.printf(TECSMsg.get(:CRD_comment), "#_CRD_#")
     end
@@ -2097,7 +2097,7 @@ EOT
   end
 
   #=== dynamic 指定された呼び口に対するディスクリプタ設定関数の生成
-  def gen_ph_set_desc_func f
+  def gen_ph_set_desc_func(f)
     if @n_call_port_dynamic >0
       f.printf(TECSMsg.get(:SDF_comment), "#_SDF_#")
     end
@@ -2226,7 +2226,7 @@ EOT
     }
   end
 
-  def gen_ph_cp_fun_macro_abbrev f
+  def gen_ph_cp_fun_macro_abbrev(f)
     if @n_call_port >0
       f.printf(TECSMsg.get(:CPMA_comment), "#_CPMA_#")
     end
@@ -2296,7 +2296,7 @@ EOT
     f.print("\n")
   end
 
-  def gen_ph_ref_desc_macro_abbrev f
+  def gen_ph_ref_desc_macro_abbrev(f)
     if @n_call_port_ref_desc >0
       f.printf(TECSMsg.get(:CRDA_comment), "#_CRDA_#")
     end
@@ -2331,7 +2331,7 @@ EOT
     f.print("\n")
   end
 
-  def gen_ph_set_desc_macro_abbrev f
+  def gen_ph_set_desc_macro_abbrev(f)
     if @n_call_port_dynamic >0
       f.printf(TECSMsg.get(:SDMA_comment), "#_SDMA_#")
     end
@@ -2366,7 +2366,7 @@ EOT
     f.print("\n")
   end
 
-  def gen_ph_ep_fun_macro f
+  def gen_ph_ep_fun_macro(f)
     if @n_entry_port >0
       f.printf(TECSMsg.get(:EPM_comment), "#_EPM_#")
     end
@@ -2385,7 +2385,7 @@ EOT
 
   end
 
-  def gen_ph_typedef_idx f
+  def gen_ph_typedef_idx(f)
     f.printf(TECSMsg.get(:CTIX_comment), "#_CTIX_#")
     if @idx_is_id_act
       f.print("typedef ID #{@global_name}_IDX;\n")
@@ -2401,7 +2401,7 @@ EOT
 
   end
 
-  def gen_ph_idx_type f
+  def gen_ph_idx_type(f)
     if @idx_is_id_act
       f.print("ID")
     else
@@ -2417,7 +2417,7 @@ EOT
 
   end
 
-  def gen_ph_ep_fun_prototype f
+  def gen_ph_ep_fun_prototype(f)
     if @n_entry_port >0
       f.printf(TECSMsg.get(:EPP_comment), "#_EPP_#")
     end
@@ -2472,7 +2472,7 @@ EOT
     }
   end
 
-  def gen_ph_ep_skel_prototype f
+  def gen_ph_ep_skel_prototype(f)
     # 受け口スケルトン関数のプロトタイプ宣言を出力
     if @n_entry_port >0
       f.printf(TECSMsg.get(:EPSP_comment), "#_EPSP_#")
@@ -2520,7 +2520,7 @@ EOT
     f.print("\n")
   end
 
-  def gen_ph_cell_cb_type f
+  def gen_ph_cell_cb_type(f)
 
     if ($rom)
       # 定数部は ROM, 変数部は RAM
@@ -2613,7 +2613,7 @@ EOT
     }
   end
 
-  def gen_cell_cb_type_var f
+  def gen_cell_cb_type_var(f)
     # 変数の出力
     if @n_var > 0
       f.print "    /* var #_VA_# */ \n"
@@ -2707,7 +2707,7 @@ EOT
     }
   end
 
-  def gen_ph_extern_cell f
+  def gen_ph_extern_cell(f)
     if @singleton
       f.printf(TECSMsg.get(:SCP_comment),  "#_SCP_#")
       if has_CB?
@@ -2732,7 +2732,7 @@ EOT
     end
   end
 
-  def gen_ph_INIB_as_CB f
+  def gen_ph_INIB_as_CB(f)
     # ここは、手抜きである。本来なら INIB を出力すべき
     if ! has_CB? && has_INIB?
       f.printf(TECSMsg.get(:DCI_comment),  "#_DCI_#")
@@ -2750,7 +2750,7 @@ EOT
 
   #===  イテレータコード (FOREACH_CELL)の生成
   #      singleton では出力しない
-  def gen_ph_foreach_cell f
+  def gen_ph_foreach_cell(f)
 
     return if @singleton
 
@@ -2792,7 +2792,7 @@ EOT
 
   #===  変数var初期化コード
   #
-  def gen_ph_cb_initialize_macro f
+  def gen_ph_cb_initialize_macro(f)
 
     f.printf(TECSMsg.get(:CIM_comment), "#_CIM_#")
 
@@ -2921,7 +2921,7 @@ EOT
   end
 
 
-  def gen_ph_inline f
+  def gen_ph_inline(f)
     # inline ポートが一つでもあれば、inline.h の include
     if @n_entry_port_inline > 0
       f.printf(TECSMsg.get(:INL_comment), "#_INL_#")
@@ -2958,15 +2958,15 @@ EOT
 
 
 #####  celltype glue code
-  def gen_cell_private_header f
+  def gen_cell_private_header(f)
     f.print "#include \"#{@global_name}_tecsgen.#{$h_suffix}\"\n"
   end
 
-  def gen_cell_factory_header f
+  def gen_cell_factory_header(f)
     f.print "#include \"#{@global_name}_factory.#{$h_suffix}\"\n\n"
   end
 
-  def gen_cell_ep_des_type f
+  def gen_cell_ep_des_type(f)
     if @n_entry_port > 0
       f.printf(TECSMsg.get(:EDT_comment), "#_EDT_#")
     end
@@ -2995,7 +2995,7 @@ EOT
     }
   end
 
-  def gen_cell_skel_fun f
+  def gen_cell_skel_fun(f)
     if @n_entry_port >0
       f.printf(TECSMsg.get(:EPSF_comment), "#_EPSF_#")
     end
@@ -3079,7 +3079,7 @@ EOT
     end
   end
 
-  def gen_cell_fun_table f
+  def gen_cell_fun_table(f)
     if @n_entry_port >0
       f.printf(TECSMsg.get(:EPSFT_comment), "#_EPSFT_#")
     end
@@ -3108,7 +3108,7 @@ EOT
 
   end
 
-  def gen_cell_ep_vdes fs
+  def gen_cell_ep_vdes(fs)
     if @n_cell_gen  >0
       fs.each{ |r,f| f.printf(TECSMsg.get(:CPEPD_comment), "#_CPEPD_#") }
     end
@@ -3204,7 +3204,7 @@ EOT
     }
   end
 
-  def gen_cell_ep_vdes_array fs
+  def gen_cell_ep_vdes_array(fs)
     if @n_cell_gen >0
       fs.each{ |r, f| f.printf(TECSMsg.get(:CPA_comment), "#_CPA_#") }  # mikan 呼び口配列が無い場合も出てしまう
     end
@@ -3336,7 +3336,7 @@ EOT
   end
 
   #=== CB を初期化するプログラムの生成
-  def gen_cell_cb_initialize_code f
+  def gen_cell_cb_initialize_code(f)
     if ! need_CB_initializer?
       return
     end
@@ -3368,7 +3368,7 @@ EOT
   end
 
   # === CB/INIB の外で初期化される変数の出力
-  def gen_cell_cb_out_init fs
+  def gen_cell_cb_out_init(fs)
 
     # セルがなければ、出力しない
     if @n_cell_gen == 0
@@ -3438,7 +3438,7 @@ EOT
   end
 
   #=== var の初期値の ROM 部への
-  def gen_cell_var_init f
+  def gen_cell_var_init(f)
     # var の{ }で囲まれた初期値指定があるか調べる
     n_init = 0
     @var.each { |v|
@@ -3495,7 +3495,7 @@ EOT
 
   end
 
-  def gen_cell_cb fs
+  def gen_cell_cb(fs)
     if has_INIB?
       if @n_cell_gen > 0
         fs.each{ |r, f| f.printf(TECSMsg.get(:INIB_comment), "#_INIB_#") }
@@ -3630,7 +3630,7 @@ EOT
     end  # has_CB?
   end
 
-  def gen_cell_cb_tab f
+  def gen_cell_cb_tab(f)
     indent = 0
     if @idx_is_id_act
       if has_INIB? && ($ram_initializer || ! has_CB?)
@@ -4191,7 +4191,7 @@ EOT
   end
 
   #== 関数テーブルの外部参照
-  def gen_cell_extern_mt fs
+  def gen_cell_extern_mt(fs)
     fs.each{ |r, f|
       if ! r.is_root?
         @port.each{ |p|
@@ -4206,7 +4206,7 @@ EOT
   end
 
   #=== 受け口ディスクリプタの定義を生成
-  def gen_cell_ep_des fs
+  def gen_cell_ep_des(fs)
     if @n_cell_gen >0
       fs.each{ |r, f|        f.printf(TECSMsg.get(:EPD_comment),  "#_EPD_#") }
     end
@@ -4364,7 +4364,7 @@ EOT
 
 #####  celltype template
 
-  def gen_template_private_header f
+  def gen_template_private_header(f)
     f.print "#include \"#{@global_name}_tecsgen.#{$h_suffix}\"\n\n"
     f.print <<EOT
 #ifndef E_OK
@@ -4375,7 +4375,7 @@ EOT
 EOT
   end
 
-  def gen_template_attr_access f
+  def gen_template_attr_access(f)
 
     if @n_attribute_rw > 0 || @n_attribute_ro > 0 || @n_var > 0
       f.printf(TECSMsg.get(:CAAM_comment), "#_CAAM_#")
@@ -4398,11 +4398,11 @@ EOT
 
   end
 
-  def gen_template_types f
+  def gen_template_types(f)
     f.printf(TECSMsg.get(:TYP_comment), "#_TYP_#", "#{@global_name}_CB", "#{@name}_IDX")
   end
 
-  def gen_template_cp_fun f
+  def gen_template_cp_fun(f)
     if @n_call_port >0
       f.print " *\n"
       f.printf(TECSMsg.get(:TCPF_comment), "#_TCPF_#")
@@ -5160,7 +5160,7 @@ class MemFile
   def initialize
     @string = ""
   end
-  def print str
+  def print(str)
     @string += str
   end
   def get_string
@@ -5169,7 +5169,7 @@ class MemFile
 end
 
 class Region
-  def gen_region_str_pre f
+  def gen_region_str_pre(f)
     nest = 1
     while nest < @family_line.length
       f.print "  " * (nest-1)
@@ -5179,7 +5179,7 @@ class Region
     return nest - 1
   end
 
-  def gen_region_str_post f
+  def gen_region_str_post(f)
     nest = @family_line.length - 1
     while nest >= 1
       f.print "  " * (nest-1)

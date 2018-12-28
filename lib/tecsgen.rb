@@ -207,7 +207,7 @@ def print_report
 end
 
 #=== $KCODE を設定
-def set_kcode kcode
+def set_kcode(kcode)
   if ! $b_no_kcode
     $KCODE = kcode
   end

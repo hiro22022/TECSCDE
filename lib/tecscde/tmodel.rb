@@ -72,7 +72,7 @@ module TECSCDE
     #  TmJoin    => TECSModel
     #  TmJoinBar => TmJoin
     #  TECSModel => Nil
-    def set_owner owner
+    def set_owner(owner)
       @owner = owner
     end
 
@@ -97,7 +97,7 @@ module TECSCDE
       proc.call
     end
 
-    def copy_from tm_object
+    def copy_from(tm_object)
       tm_object.instance_variables.each{ |iv|
         val = tm_object.instance_variable_get(iv)
         if val.kind_of?(Array) || val.kind_of?(Hash)
@@ -114,12 +114,12 @@ module TECSCDE
     #== ChangeSet class
     # record each change (change by user's operation)
     class ChangeSet
-      def initialize number
+      def initialize(number)
         @set = {}
         @number = number
       end
 
-      def add tm_object
+      def add(tm_object)
         if ! @set.has_key?(tm_object)
           # flush_print "add_change_set #{tm_object.class} number=#{@number}\n"
           @set[tm_object] = tm_object.clone_for_undo
@@ -153,7 +153,7 @@ module TECSCDE
 
       #=== ChangeSetManager#add_change_set
       # at the time modifying tm_object, record only the changed tm_object
-      def add_change_set tm_object
+      def add_change_set(tm_object)
         # flush_print "add_change_set #{tm_object.class} change_set=#{@change_no}\n"
         @change_set_next.add tm_object
       end
@@ -206,7 +206,7 @@ module TECSCDE
 
     #=== ChangeSetControl#add_change_set
     # at the time modifying tm_object, record only the changed tm_object
-    def add_change_set tm_object
+    def add_change_set(tm_object)
       # flush_print "add_change_set #{tm_object.class} change_set=#{@change_no}\n"
       @change_set_manager.add_change_set tm_object
     end
@@ -265,7 +265,7 @@ module TECSCDE
     # @root_region::TmRegion
     # @file_editing::String
 
-    def initialize tecsgen
+    def initialize(tecsgen)
       @cell_list = []
       @cell_hash = {}
       @join_list = []
@@ -338,7 +338,7 @@ module TECSCDE
 
     #=== TECSModel#delete_cell
     # don't call externally, use TmCell#delete instead
-    def delete_cell cell
+    def delete_cell(cell)
       modified {
 
         @cell_list.delete cell
@@ -386,7 +386,7 @@ module TECSCDE
 
     #=== TECSModel#delete_join
     # don't call externally. call TmJoin#delete instead
-    def delete_join join
+    def delete_join(join)
       modified {
 
         @join_list.delete join
@@ -419,7 +419,7 @@ module TECSCDE
     end
 
     #=== TECSModel.round_length_val
-    def self.round_length_val val
+    def self.round_length_val(val)
       round_unit = TECSModel.get_alignment
       # round_unit = 0.25
       # (val / round_unit).round * round_unit
@@ -442,7 +442,7 @@ module TECSCDE
     end
 
     #=== TECSModel#set_view ***
-    def set_view view
+    def set_view(view)
       @view = view
     end
 
@@ -454,13 +454,13 @@ module TECSCDE
     end
 
     #=== TECSModel#get_region_from_tecsgen_region
-    def get_region_from_tecsgen_region tecsgen_region
+    def get_region_from_tecsgen_region(tecsgen_region)
       nsp = tecsgen_region.get_namespace_path
       return get_region_from_namespace_path nsp
     end
 
     #=== TECSModel#get_region_from_namespace_path
-    def get_region_from_namespace_path nsp
+    def get_region_from_namespace_path(nsp)
       path_array = nsp.get_path
       region = @root_region
       i = 0
@@ -494,7 +494,7 @@ module TECSCDE
       ALIGN
     end
 
-    def clip_x x
+    def clip_x(x)
       max = @paper[:width] - 2
       if x < 2
         x = 2
@@ -504,7 +504,7 @@ module TECSCDE
       return x
     end
 
-    def clip_y y
+    def clip_y(y)
       max = @paper[:height] - 2
       if y < 2
         y = 2
@@ -522,7 +522,7 @@ module TECSCDE
     end
 
     #=== TECSModel.setup_clone
-    def copy_from model
+    def copy_from(model)
       model.instance_variables.each{ |iv|
         val = model.instance_variable_get(iv)
         instance_variable_set(iv, val)
@@ -544,7 +544,7 @@ module TECSCDE
 
       #=== TmObject#set_editable
       # locale:: see Node in syntaxobj.rb
-      def set_editable locale
+      def set_editable(locale)
         if locale[0] == get_model.get_file_editing
           @b_editable = true
         else
@@ -674,7 +674,7 @@ module TECSCDE
       # name::Symbol : new name
       # return::Bool: true if succeed
       # if cell of new_name already exists, results false
-      def change_name name
+      def change_name(name)
         if @owner.rename_cell(self, name)
           modified {
             @name = name
@@ -697,7 +697,7 @@ module TECSCDE
       end
 
       #=== TmCell#move ***
-      def move x_inc, y_inc
+      def move(x_inc, y_inc)
         modified {
 
           dbgPrint "cell move #{@name}\n"
@@ -785,14 +785,14 @@ module TECSCDE
         return n
       end
 
-      def get_new_cport_position port_def
+      def get_new_cport_position(port_def)
         if $b_tate
           return [ EDGE_BOTTOM, DIST_PORT * (inc_n_cport + 1) ]
         else
           return [ EDGE_RIGHT, DIST_PORT * (inc_n_cport + 1) ]
         end
       end
-      def get_new_eport_position port_def
+      def get_new_eport_position(port_def)
         if $b_tate
           return [ EDGE_TOP, DIST_PORT * (inc_n_eport + 1) ]
         else
@@ -802,7 +802,7 @@ module TECSCDE
 
       # TmCell#adjust_port_position_to_insert
       # port::TmPort : insert after the port
-      def adjust_port_position_to_insert port
+      def adjust_port_position_to_insert(port)
         # p "adjust_port_position_to_insert"
         nearest_port = find_nearest_next_port port
         if nearest_port
@@ -816,7 +816,7 @@ module TECSCDE
 
       # TmCell#find_nearest_next_port
       # this method is part of adjust_port_position_to_insert
-      def find_nearest_next_port port
+      def find_nearest_next_port(port)
         # p "find_nearest_next_port #{port.get_name} #{port.get_subscript}"
         edge_side = port.get_edge_side
         offs = port.get_offset
@@ -855,7 +855,7 @@ module TECSCDE
 
       #=== TmCell#adjust_port_position_after_port port, offs
       # this method is part of adjust_port_position_to_insert
-      def adjust_port_position_after_port port, move_offs
+      def adjust_port_position_after_port(port, move_offs)
         # p "adjust_port_position_after_port"
         edge_side = port.get_edge_side
         offs = port.get_offset
@@ -888,7 +888,7 @@ module TECSCDE
       end
 
       #=== TmCell#get_cport_for_new_join
-      def get_cport_for_new_join cport_name, cport_subscript
+      def get_cport_for_new_join(cport_name, cport_subscript)
         cp = @cports[cport_name]
         if cp == nil
           TECSCDE.error("TM9999 cell #{@name} not have call port #{cport_name}")
@@ -912,7 +912,7 @@ module TECSCDE
       end
 
       #=== TmCell#get_eport_for_new_join
-      def get_eport_for_new_join eport_name, eport_subscript
+      def get_eport_for_new_join(eport_name, eport_subscript)
         ep = @eports[eport_name]
         if ep == nil
           TECSCDE.error("TM9999 cell #{@name} not have entry port #{eport_name}")
@@ -1038,14 +1038,14 @@ module TECSCDE
       def get_color
       end
 
-      def delete_cell cell
+      def delete_cell(cell)
         @owner.delete_cell cell
       end
-      def rename_cell cell, name
+      def rename_cell(cell, name)
         @owner.rename_cell cell, name
       end
 
-      def get_region name
+      def get_region(name)
         if @sub_region[name] == nil
           modified {
 
@@ -1063,7 +1063,7 @@ module TECSCDE
         return bu
       end
 
-      def setup_clone sub_region
+      def setup_clone(sub_region)
         @sub_region = sub_region.dup
       end
     end # class TmRegion
@@ -1183,7 +1183,7 @@ module TECSCDE
         }
       end
 
-      def get_member subscript
+      def get_member(subscript)
         if subscript < 0 || subscript >= @actual_size
           return nil
         else
@@ -1201,7 +1201,7 @@ module TECSCDE
 
       #=== TmPortArray#delete_hilited
       # this method is called from Control
-      def delete_hilited port
+      def delete_hilited(port)
         if @port_def.get_array_size != "[]"
           TECSCDE::message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
@@ -1232,7 +1232,7 @@ EOT
 
       #=== TmPortArray#insert
       # this method is called from Control
-      def insert port, before_after
+      def insert(port, before_after)
         if @port_def.get_array_size != "[]"
           TECSCDE::message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
@@ -1288,13 +1288,13 @@ EOT
         return bu
       end
 
-      def setup_clone ports
+      def setup_clone(ports)
         @ports = ports.dup
       end
     end # class TmPortArray
 
     class TmCPortArray < TmPortArray
-      def initialize cell, port_def
+      def initialize(cell, port_def)
         # p "TmCPortArray port_def:#{port_def}"
         @port_def = port_def
         @owner = cell
@@ -1313,7 +1313,7 @@ EOT
         }
       end
 
-      def get_join subscript
+      def get_join(subscript)
         if subscript == nil
           return nil
         elsif 0 <= subscript && subscript < @actual_size
@@ -1339,13 +1339,13 @@ EOT
       end
 
       #=== TmCPortArray#new_port
-      def new_port subscript
+      def new_port(subscript)
         TmCPort.new(self, @port_def, subscript)
       end
     end # class TmCPortArray
 
     class TmEPortArray < TmPortArray
-      def initialize cell, port_def
+      def initialize(cell, port_def)
         # p "TmEPortArray port_def:#{port_def}"
         @port_def = port_def
         @owner = cell
@@ -1364,7 +1364,7 @@ EOT
       end
 
       #=== TmEPortArray#new_port
-      def new_port subscript
+      def new_port(subscript)
         TmEPort.new(self, @port_def, subscript)
       end
     end # class TmEPortArray
@@ -1422,7 +1422,7 @@ EOT
       #=== tmport#get_normal_bar_of_edge
       # (1)  (6) bar from call port. this indicate A position.
       # join::TmJoin
-      def get_normal_bar_of_edge join
+      def get_normal_bar_of_edge(join)
         pos = get_cell.get_edge_position_in_normal_dir(@edge_side) + CPGap * TECSModel.get_sign_of_normal(@edge_side)
         TECSModel.is_vertical?(@edge_side) ? HBar.new(pos, join) : VBar.new(pos, join)
       end
@@ -1498,7 +1498,7 @@ EOT
         @subscript
       end
 
-      def set_subscript subscript
+      def set_subscript(subscript)
         modified {
 
           @subscript = subscript
@@ -1511,7 +1511,7 @@ EOT
       end
 
       #=== TmPort#set_position
-      def set_position edge_side, offset
+      def set_position(edge_side, offset)
         modified {
 
           @edge_side = edge_side
@@ -1533,7 +1533,7 @@ EOT
       #=== TmPort#insert
       # before_after::Symbol: :before, :after
       # insert if this port is a member of unsubscripted array.
-      def insert before_after
+      def insert(before_after)
         if @owner.kind_of? TmPortArray
           @owner.insert self, before_after
         end
@@ -1559,7 +1559,7 @@ EOT
     class TmCPort < TmPort      # mikan cp array
       # @join::TmJoin
 
-      def initialize owner, port_def, subscript = nil
+      def initialize(owner, port_def, subscript = nil)
         # p "port_def::#{port_def.get_name}  #{port_def.class}"
         @port_def = port_def
         @owner = owner
@@ -1573,7 +1573,7 @@ EOT
         }
       end
 
-      def set_join join
+      def set_join(join)
         modified {
 
           @join = join
@@ -1586,7 +1586,7 @@ EOT
         end
       end
 
-      def get_join subscript = nil
+      def get_join(subscript = nil)
         @join
       end
 
@@ -1632,7 +1632,7 @@ EOT
     class TmEPort < TmPort   # mikan ep array
       # @joins::[TmJoin]
 
-      def initialize owner, port_def, subscript = nil
+      def initialize(owner, port_def, subscript = nil)
         @owner = owner
         @port_def = port_def
         @subscript = subscript
@@ -1649,7 +1649,7 @@ EOT
         }
       end
 
-      def add_join join
+      def add_join(join)
         modified {
 
           @joins << join
@@ -1659,7 +1659,7 @@ EOT
       #=== TmEPort#include?
       # TmEPort can have plural of joins.
       # test if TmEPort has specified join.
-      def include? join
+      def include?(join)
         @joins.include? join
       end
 
@@ -1682,7 +1682,7 @@ EOT
 
       #=== TmEPort#delete_join
       # this method is called from TmJoin
-      def delete_join join
+      def delete_join(join)
         modified {
           @joins.delete join
         }
@@ -1700,7 +1700,7 @@ EOT
         return bu
       end
 
-      def setup_clone joins
+      def setup_clone(joins)
         @joins = joins.dup
       end
     end # class TmEPort
@@ -1713,7 +1713,7 @@ EOT
 
       include TmUneditable
 
-      def initialize cport, eport, tmodel
+      def initialize(cport, eport, tmodel)
         @cport = cport
         @eport = eport
         @owner = tmodel
@@ -1918,7 +1918,7 @@ EOT
       end
 
       #=== TmJoin#change_bars bars
-      def change_bars bars
+      def change_bars(bars)
         modified {
           @bars = bars
         }
@@ -1972,7 +1972,7 @@ EOT
         }
       end
 
-      def moved inc
+      def moved(inc)
         set_position(@position + inc)
       end
 

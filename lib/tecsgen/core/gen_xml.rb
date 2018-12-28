@@ -39,7 +39,7 @@
 XML_INDENT = "    "
 
 class Namespace
-  def self.gen_XML root_namespace
+  def self.gen_XML(root_namespace)
     begin
       file_name = $gen_base + "/" + $target + ".xml"
       dbgPrint "generating XML file:#{file_name}\n"
@@ -99,7 +99,7 @@ EOT
 end
 
 class Signature
-  def gen_XML file, nest
+  def gen_XML(file, nest)
     indent = XML_INDENT * nest
     if is_imported?
       file.print <<EOT
@@ -145,7 +145,7 @@ EOT
 end
 
 class Celltype
-  def gen_XML file, nest
+  def gen_XML(file, nest)
     indent = XML_INDENT * nest
     if is_imported?
       file.print <<EOT
@@ -238,7 +238,7 @@ end
 #  @attribute ⇒ @name_list (Decl)
 #  @port ⇒ @name_list (Port)
 class CompositeCelltype
-  def gen_XML file, nest
+  def gen_XML(file, nest)
     indent = XML_INDENT * nest
     if is_imported?
       file.print <<EOT
@@ -318,7 +318,7 @@ EOT
 end
 
 class Cell
-  def gen_XML file, nest
+  def gen_XML(file, nest)
     indent = XML_INDENT * nest
 
     if is_imported?

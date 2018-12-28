@@ -42,7 +42,7 @@ require_tecsgen_lib "HRPKernelObjectManager.rb"
 class HRPTaskPlugin < HRPKernelObjectPlugin
     ##
     # oyama: add to avoid Ruby exception in code generation phase.
-    def new_cell cell
+    def new_cell(cell)
       region = cell.get_region
       dbgPrint "HRPTaskCelltypePlugin new_cell=#{cell.get_name} region=#{region.get_name}\n"
       domainOption = cell.get_region.get_domain_root.get_domain_type.get_option

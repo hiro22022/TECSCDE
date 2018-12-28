@@ -135,6 +135,6 @@ class HRP2Plugin < DomainPlugin
     return true
   end
 
-  def self.gen_post_code file
+  def self.gen_post_code(file)
   end
 end

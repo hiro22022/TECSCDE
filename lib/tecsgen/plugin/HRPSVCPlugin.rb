@@ -62,17 +62,17 @@ class SVCManage
         #
         raise "class #{self.class.name} shall not have instances"
     end
-    def self.get_func_id func_name
+    def self.get_func_id(func_name)
         return @@func_ids[func_name]
     end
-    def self.set_func_id func_name
+    def self.set_func_id(func_name)
         @@func_ids[func_name] = self.assign_id
         # puts @@func_ids[ func_name ]
     end
     def self.get_id
         return @@id
     end
-    def self.set_id id
+    def self.set_id(id)
         @@id = id
     end
     def self.assign_id
@@ -706,7 +706,7 @@ EOS
 
   #---------------------------------------------------------#
   #=== シグニチャのチェック
-  def check_signature signature
+  def check_signature(signature)
     signature.get_function_head_array.each{ |fh|
       type = fh.get_return_type
       check_return_type signature, fh, type
@@ -721,7 +721,7 @@ EOS
   #=== 戻り値の型のチェック
   # ER, ER_UINT は推奨される型
   # 整数、ブール、void は可能、他は不可
-  def check_return_type signature, fh, type
+  def check_return_type(signature, fh, type)
     ot = type.get_original_type
     if(type.get_type_str == "ER" || type.get_type_str == "ER_UINT")
       # OK!
@@ -733,7 +733,7 @@ EOS
     end
   end
   #=== 引数の型のチェック
-  def check_param signature, fh, param
+  def check_param(signature, fh, param)
     type = param.get_type
     ot = type.get_original_type
     dir = param.get_direction
@@ -757,7 +757,7 @@ EOS
       cdl_error("HSV0008 $1.$2.$3 param direction '$4' cannot be used", signature.get_name, fh.get_name, param.get_name, param.get_direction.to_s.downcase)
     end
   end
-  def check_ptr signature, fh, param, dir
+  def check_ptr(signature, fh, param, dir)
     type = param.get_type.get_referto
     ot = type.get_original_type
     if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)
@@ -774,7 +774,7 @@ EOS
       cdl_error("HSV0009 $1.$2.$3 string argment is necessary for out/inout parameter", signature.get_name, fh.get_name, param.get_name)
     end
   end
-  def check_struct signature, fh, param
+  def check_struct(signature, fh, param)
     type = param.get_type.get_referto
     ot = type.get_original_type
     ot.get_members_decl.get_items.each{ |decl|
@@ -794,7 +794,7 @@ EOS
       end
     }
   end
-  def check_struct_member_array signature, fh, param, member_decl
+  def check_struct_member_array(signature, fh, param, member_decl)
     # p "check_struct_member_array: #{member_decl.get_type.get_type_str}"
     type = member_decl.get_type.get_type
     ot = type.get_original_type
@@ -805,7 +805,7 @@ EOS
       cdl_error("HSV0007 $1.$2.$3 $4 type cannot be used as struct member", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post)
     end
   end
-  def check_intptr msg, type
+  def check_intptr(msg, type)
     dbgPrint "check_intptr IN\n"
     t = type
     while(t.kind_of? DefinedType)
