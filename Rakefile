@@ -13,11 +13,11 @@ task :bnf => ["lib/tecsgen/core/bnf.tab.rb"]
 task :yydebug => ["lib/tecsgen/core/bnf-deb.tab.rb"]
 task :c_parser => ["lib/tecsgen/core/C_parser.tab.rb"]
 
-file "lib/tecsgen/core/bnf-deb.tab.rb" => ["lib/tecsgen/core/bnf.y.rb"] do |t|
+file "lib/tecsgen/core/bnf-deb.tab.rb" => ["lib/tecsgen/core/bnf.y"] do |t|
   sh "bundle exec racc -O #{t.name}.log -v -g -o #{t.name} #{t.prerequisites.join(" ")}"
 end
 
-rule ".tab.rb" => [".y.rb"] do |t|
+rule ".tab.rb" => [".y"] do |t|
   sh "bundle exec racc -O #{t.name}.log -v -o #{t.name} #{t.source}"
 end
 
