@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2014 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: GenParamCopy.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -52,7 +52,7 @@ module  GenParamCopy
       subsc = type.get_subscript
       if subsc == nil
         raise "Unsubscripted Array Not Supported"
-      else        
+      else
         size_str = subsc.to_str(name_list, outer, outer2)
         file.print <<EOT
 #{indent}if((ercd_=#{alloc_cp}(sizeof(#{type.get_type.get_type_str}#{type.get_type.get_type_str_post})*(#{size_str}),(void **)&#{outer}#{name}#{outer2}#{alloc_cp_extra}))!=E_OK)\t/* GenParamCopy 1 */
@@ -264,7 +264,7 @@ EOT
       subsc = type.get_subscript
       if subsc == nil
         raise "Unsubscripted Array Not Supported"
-      else        
+      else
         size_str = subsc.to_str(name_list, outer, outer2)
 
         loop_counter_type = IntType.new(32)   # mikan 型を size_is, count_is の引数の型とする

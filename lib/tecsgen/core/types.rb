@@ -3,7 +3,7 @@
 #      Generator for TOPPERS Embedded Component System
 #
 #   Copyright (C) 2008-2017 by TOPPERS Project
-#--  
+#--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
 #   ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
 #   変・再配布（以下，利用と呼ぶ）することを無償で許諾する．
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: types.rb 2665 2017-07-24 08:59:28Z okuma-top $
 #++
 
@@ -221,7 +221,7 @@ class Type < Node
   def has_sized_pointer?
     false
   end
-  
+
   #=== 長さ指定のない string を持つ
   # なさ指定のない string 指定されたポインタ型、またはそれをメンバに持つ構造体、またはそれを要素に持つ配列
   def has_unsized_string?
@@ -323,7 +323,7 @@ class DefinedType < Type
   def has_sized_pointer?
     @type.has_sized_pointer?
   end
-  
+
   #=== 長さ指定のない string を持つ
   # なさ指定のない string 指定されたポインタ型、またはそれをメンバに持つ構造体、またはそれを要素に持つ配列
   def has_unsized_string?
@@ -970,7 +970,7 @@ class StructType < Type
       return @b_has_sized_pointer_member
     end
   end
-  
+
   def has_unsized_string?
     if @definition
       return @definition.has_unsized_string?
@@ -1006,7 +1006,7 @@ class StructType < Type
 
     return true
   end
-  
+
   def get_member_types_symbol
     mts = ""
     @members_decl.get_items.each { |member|
@@ -1597,7 +1597,7 @@ class DescriptorType < Type
       end
     }
   end
-  
+
   def check_signature
     # p "Desc #{@signature_nsp.to_s}"
     obj = Namespace.find @signature_nsp

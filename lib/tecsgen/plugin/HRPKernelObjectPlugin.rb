@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2018 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #
 #  $Id: HRPKernelObjectPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
@@ -55,7 +55,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
         #    - システムサービス呼出しはOSが提供するため
         HRPKernelObjectPlugin.set_celltype(celltype)
     end
-  
+
     #=== HRPKernelObjectPlugin#print_cfg_cre
     # 各種カーネルオブジェクトのCRE_*の出力
     # file:: FILE:     出力先ファイル
@@ -64,7 +64,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
     def print_cfg_cre(file, cell, val, tab)
         raise "called virtual method print_cfg_cre in #{@celltype.get_name} plugin"
     end
-  
+
     #=== HRPKernelObjectPlugin#print_cfg_sac
     # 各種カーネルオブジェクトのSAC_*の出力
     # file:: FILE:     出力先ファイル
@@ -73,7 +73,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
     def print_cfg_sac(file, val, acv)
         raise "called virtual method print_cfg_sac in #{@celltype.get_name} plugin"
     end
-  
+
     #
     #  セルタイププラグインの本体メソッド
     #   - 静的APIの生成
@@ -157,7 +157,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
 #                        else
 #                            file2.print "DOMAIN(#{cell_domain_root.get_name.to_s}){\n"
 #                        end
-#                        file2.puts "\tINCLUDE(\"#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg\");" 
+#                        file2.puts "\tINCLUDE(\"#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg\");"
 #                        file2.puts "}\n"
                     else
                         dbgPrint "~~~~~ #{cell.get_region.get_namespace_path} is included in"
@@ -233,7 +233,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                               # p "UserDomainCell or KernelDomainCell"
                               domain_roots = HRPPlugin.get_inter_domain_join_roots cell
                               domain_roots.each{ |dr|
-                                # 
+                                #
                                 case dr.get_domain_type.get_kind
                                 when :kernel
                                 when :user
@@ -267,7 +267,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                             end
                             if acp == "OMIT"
                               acv[key] = acv_tmp.join("|")
-                            end 
+                            end
                         end
                     }
                     # 各種SACの生成

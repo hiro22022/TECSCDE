@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: expression.rb 2633 2017-04-02 06:02:05Z okuma-top $
 #++
 
@@ -82,7 +82,7 @@ class Expression < Node
   # NamedList の要素は  size_is, count_is の引数評価の場合 ParamDecl (関数仮引数)
   #
   # name_list2(NamedList|Nil) : NamedList の要素は Decl (attribute, var) である．省略時 nil
-  # 
+  #
   # RETURN: 評価した定数．評価できなかった場合は nil を返す
   #
   # 型は get_type で、評価する（定数として求められないときに使用できる）
@@ -822,7 +822,7 @@ class Expression < Node
   #  :RELAY_ALLOC       [ cp_name, func_name, param_name ]  # rhs = cp_name.func_name.param_name
   def get_allocator_rhs_elements(alloc_type)
     ele = @elements
-    case alloc_type 
+    case alloc_type
     when :NORMAL_ALLOC
       if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER   # 1
         cdl_error("E1017 $1: rhs not \'Cell.ePort\' form" , ele[0].to_s)

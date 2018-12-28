@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2014 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: HRP2TaskPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -47,9 +47,9 @@ class HRP2TaskPlugin < HRP2KernelObjectPlugin
     ##
     #
     # file : output file (ex.tecsgen.cfg)
-    # cell : 
-    # val  : 
-    # tab  : 
+    # cell :
+    # val  :
+    # tab  :
     def print_cfg_cre(file, cell, val, tab)
         # val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_global_name.to_s}" )
         # val[:id] = @celltype.subst_name( val[:id], @celltype.get_name_array( cell ) )
@@ -94,7 +94,7 @@ EOT
             # 無所属の場合
             raise "task #{val[:id]} must belong to a domain."
         end
-   
+
         # 例外用のを生成
         file.print <<EOT
 #{tab}DEF_TEX(#{val[:id]}, { #{val[:exceptionAttribute]}, tTask_start_exception });
@@ -106,12 +106,12 @@ EOT
     end
 
 =begin
-    #tTaskの受け口リスト 
+    #tTaskの受け口リスト
     def get_entry_ports_name_list()
         @@ep
     end
 =end
-    # 
+    #
     #  ATT_MODの生成
     #  gen_factory実行時には，すべてのセルタイププラグインを生成済みのはずなので，
     #  カーネルAPIコードのメモリ保護を省略できる．
@@ -131,7 +131,7 @@ EOT
                     # 未チェックのセルタイプだった場合
                     # puts "check for ATT_MOD : #{ct.classget_global_name}"
                     puts "check for ATT_MOD : #{ct.get_global_name}"
-                        
+
                     # カーネルAPIのコード，データはメモリ保護しない
                     next if HRP2KernelObjectPlugin.include_celltype?(ct)
 
@@ -158,7 +158,7 @@ EOT
                     end
 
                     regions_hrp2.each { |reg|
-                        if reg.is_root? 
+                        if reg.is_root?
                             nsp = ""
                         else
                             nsp = "_#{reg.get_namespace_path.get_global_name}"
@@ -196,5 +196,5 @@ EOT
             # 何もしない
         end
     end
-    
+
 end

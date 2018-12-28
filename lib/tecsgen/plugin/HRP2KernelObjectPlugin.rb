@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: HRP2KernelObjectPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -134,7 +134,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
         # それぞれのカーネルオブジェクトを解析対象セルタイプに追加
         HRP2KernelObjectPlugin.set_celltype(celltype)
     end
-  
+
     #=== HRP2KernelObjectPlugin#print_cfg_cre
     # 各種カーネルオブジェクトのCRE_*の出力
     # file:: FILE:     出力先ファイル
@@ -143,7 +143,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
     def print_cfg_cre(file, cell, val, tab)
         raise "called virtual method print_cfg_cre in #{@celltype.get_name} plugin"
     end
-  
+
     #=== HRP2KernelObjectPlugin#print_cfg_sac
     # 各種カーネルオブジェクトのSAC_*の出力
     # file:: FILE:     出力先ファイル
@@ -152,7 +152,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
     def print_cfg_sac(file, val, acv)
         raise "called virtual method print_cfg_sac in #{@celltype.get_name} plugin"
     end
-  
+
     #=== HRP2KernelObjectPlugin#get_entry_ports_name_list
     # カーネルオブジェクトの各種アクセスの種別の受け口名を取得
     def get_entry_ports_name_list()
@@ -240,7 +240,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
                         else
                             file2.print "DOMAIN(#{cell_domain_root.get_name.to_s}){\n"
                         end
-                        file2.puts "\tINCLUDE(\"#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg\");" 
+                        file2.puts "\tINCLUDE(\"#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg\");"
                         file2.puts "}\n"
                     else
                         dbgPrint "~~~~~ #{cell.get_region.get_name.to_s} is included in"

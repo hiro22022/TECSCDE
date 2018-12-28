@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: tool_info.rb 2640 2017-06-03 11:27:12Z okuma-top $
 #++
 
@@ -40,9 +40,9 @@
 # The syntax of the contents of __tool_info__ is same as JSON.
 # Home made schema is used to validate the contents of __tool_info__.
 # the schema is not defiened well. see saveload.rb for example of the schema.
-# 
+#
 class TOOL_INFO
-  # tool_info 
+  # tool_info
   @@tool_info = { }
 
   # tool_info schema for tecsgen

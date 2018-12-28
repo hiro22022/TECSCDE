@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: messages_console_ja_JP.rb 2633 2017-04-02 06:02:05Z okuma-top $
 #++
 
@@ -45,10 +45,10 @@ class TECSMsg
 
 ### C_parser.y.rb
 # B1001 need parameter name"
-@@error_message[:"B1001"] = "パラメータ名が必要です" 
+@@error_message[:"B1001"] = "パラメータ名が必要です"
 
 # B1002 while open or reading \'$1\'"
-@@error_message[:"B1002"] = "\'$1\' のオープンまたは読み込みに失敗しました" 
+@@error_message[:"B1002"] = "\'$1\' のオープンまたは読み込みに失敗しました"
 
 # B1003 Unexpected EOF"
 @@error_message[:"B1003"] = "予期しない EOF です"

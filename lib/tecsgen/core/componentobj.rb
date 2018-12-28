@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2018 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: componentobj.rb 2846 2018-03-25 11:30:55Z okuma-top $
 #++
 
@@ -50,13 +50,13 @@
 #   @@nest_stack_index = -1
 #   @@nest_stack = []
 #   @@current_object = nil
-# 
+#
 #   def self.push
 #     @@nest_stack_index += 1
 #     @@nest_stack[ @nest_stack_index ] = @@current_object
 #     @@current_object = nil
 #   end
-# 
+#
 #   def pop
 #     @@current_object = @@nest_stack[ @@nest_stack_index ]
 #     @nest_stack_index -= 1
@@ -267,7 +267,7 @@ class Signature < NSBDNode  # < Nestable
     fha.each{ |fh|  # fh: FuncHead                      # 関数配列中の各関数頭部
       fd = fh.get_declarator                            # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function?                           # fd が関数でなければ、すでにエラー
-        func_name = fd.get_name.to_sym 
+        func_name = fd.get_name.to_sym
         if func_name == :alloc
           found_alloc = true
           params = fd.get_type.get_paramlist.get_items
@@ -425,13 +425,13 @@ end
   end
 
   #=== Signature# コールバックか？
-  # 指定子 callback が指定されていれば true 
+  # 指定子 callback が指定されていれば true
   def is_callback?
     @b_callback
   end
 
   #=== Signature# 逸脱か？
-  # 指定子 deviate が指定されていれば true 
+  # 指定子 deviate が指定されていれば true
   def is_deviate?
     @b_deviate
   end
@@ -487,7 +487,7 @@ module CelltypePluginModule
     else
       raise "unknown class #{self.class.name}"
     end
-    
+
     plClass = load_plugin(plugin_name, plugin_class)
     return if plClass == nil
     if $verbose
@@ -583,7 +583,7 @@ class Celltype < NSBDNode # < Nestable
 
   include PluginModule
   include CelltypePluginModule
-  
+
   @@nest_stack_index = -1
   @@nest_stack = []
   @@current_object = nil
@@ -1312,7 +1312,7 @@ class Celltype < NSBDNode # < Nestable
 
   def show_tree(indent)
     indent.times { print "  " }
-    puts "Celltype: name=#{@name} global_name=#{@global_name}"  
+    puts "Celltype: name=#{@name} global_name=#{@global_name}"
     (indent+1).times { print "  " }
     puts "active=#{@active}, singleton=#{@singleton}, idx_is_id=#{@idx_is_id} plugin=#{@plugin.class} reuse=#{@b_reuse}"
     (indent+1).times { print "  " }
@@ -1381,7 +1381,7 @@ class Cell < NSBDNode # < Nestable
 # @my_clone:: Cell : Composite cell で in_composite = true の場合のみ有効（直前の clone を一時記憶）
 # @cell_list:: Cell[local_name] : Composite cell で clone した後のリスト cell_list
 # @cell_list2:: [ Cell ] : Composite cell で clone した後のリスト cell_list
-#                          @cell_list2 は composite 内での出現順  
+#                          @cell_list2 は composite 内での出現順
 #
 # region のためのインスタンス変数
 # @region:: Region (属するregion)
@@ -1897,7 +1897,7 @@ class Cell < NSBDNode # < Nestable
           join = Join.new(cp_name, subscript, a[4+1])   # 構文解析段階なので locale 不要
           dbgPrint("new allocator join #{cp_name} #{subscript} #{a[4+1]}\n")
           Cell.new_join(join)
-          @alloc_list << a 
+          @alloc_list << a
         }
       when :ID          # [id(0)]
         if ! s[1].instance_of? Expression
@@ -2000,7 +2000,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# cell を composite セルタイプのセル用に clone する
   # name::        string : 親 cell の名前  (cell tComposite cell1 での cell1)
-  # global_name:: string : 親 cell の global_name 
+  # global_name:: string : 親 cell の global_name
   # join_array::  Join[] : composite の cell の join で、この cell に対応するもの
   # ct_name::     string : 親セルのセルタイプ名
   # region::      Region : 元のセルが属する region
@@ -2435,7 +2435,7 @@ class Cell < NSBDNode # < Nestable
             if ja == nil
               # 見つからない場合
               found = false
-              
+
               # composite 内で外部に結合されているか
               if @in_composite
                 @compositecelltypejoin_list.get_items.each { |cj|
@@ -2471,7 +2471,7 @@ class Cell < NSBDNode # < Nestable
                   break
                 end
               }
-              # 
+              #
             end
 
             # mikan 配列
@@ -2833,7 +2833,7 @@ class Cell < NSBDNode # < Nestable
               ### exprs に含まれる識別子を抜き出し、対応する export される名前を探す
               while remain != "" && !remain.nil?
                 ### p "remain ", remain
-                remain =~ /([^\w]*)([_A-Za-z][\w\d]*)/   # 変数名文字列を取り出す 
+                remain =~ /([^\w]*)([_A-Za-z][\w\d]*)/   # 変数名文字列を取り出す
                 if $2 == nil
                   break
                 end
@@ -2872,13 +2872,13 @@ class Cell < NSBDNode # < Nestable
             # else cj は Port (既にエラー)
             end
           end
-        end    
+        end
       end
 
       if b_init == false
           cdl_error("S1052 attribute \'$1\' not initialized in cell \'$2\'" , a.get_name, @name)
       end
-   
+
     }
   end
 
@@ -2963,7 +2963,7 @@ class Cell < NSBDNode # < Nestable
 
     if ! @f_cloned
       check_restrict_list
-      
+
       # compoiste セルのクローンされたものは、set_definition 不要
       # 元の join は既に definition されている
       # 元のセルにおいて、代入チェックされているので、二重にチェック(through適用)されてしまう
@@ -2989,7 +2989,7 @@ class Cell < NSBDNode # < Nestable
     end
 
     # リレー join は through プラグイン生成後にしかできない
-    # through 後に結合先が入れ替えられる 
+    # through 後に結合先が入れ替えられる
     create_relay_allocator_join
 
     # composite セルの展開
@@ -3104,7 +3104,7 @@ class Cell < NSBDNode # < Nestable
       return true
     end
   end
-  
+
   def show_tree(indent)
     indent.times { print "  " }
     puts "Cell: name: #{@name} in_composite: #{@in_composite} def: #{@b_defined} ref: #{@f_ref} cloned: #{@f_cloned}"
@@ -3356,7 +3356,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     internal_cell_elem_name, type)
     @@current_object.new_join(export_name, internal_cell_name,
            internal_cell_elem_name, type)
-    
+
   end
 
  ### CompositeCelltype#new_cell
@@ -3667,7 +3667,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     join_list.get_items.each{ |j|
       dbgPrint "   #{j.get_name} #{j}\n"
     }
-  
+
     # 展開で clone されたセルのリスト、右辺は Cell (composite の場合 composite な cell の clone)
     clone_cell_list = {}
     clone_cell_list2 = []
@@ -4962,7 +4962,7 @@ class Namespace < NSBDNode
         # 同じものが typedef された
         # ここへ来るのは C で関数ポインタを typedef しているケース
         # 以下のように二重に定義されている場合は type_specifier_qualifier_list として扱われる
-        #    typedef long LONG; 
+        #    typedef long LONG;
         #    typedef long LONG;
         # bnf.y.rb では declarator に TYPE_NAME を許さないので、ここへ来ることはない
         # p "#{typedef.get_declarator.get_type.get_type_str} #{typedef.get_name} #{typedef.get_declarator.get_type.get_type_str_post}"
@@ -5032,7 +5032,7 @@ class Namespace < NSBDNode
   # def self.new_region( region )
   #   @@namespace_stack[@@namespace_sp].new_region( region )
   # end
-# 
+#
   # def new_region( region )
   #   region.set_owner self   # Rgion (Namespace)
   #   @name_list.add_item( region )
@@ -5824,7 +5824,7 @@ class Join < BDNode
         print "signature: #{@definition.get_signature.get_name} from: #{caller_cell.get_name} to: #{next_cell.get_name} of celltype: #{@celltype.get_name}\n"
       end
       print_exception(evar)
-      return 
+      return
     end
 
     @through_generated_list[i] = plugin_object
@@ -6403,7 +6403,7 @@ class CompositeCelltypeJoin < BDNode
 # @internal_cell_elem_name:: string : CompositeCelltype 内部のセルの呼び口、受け口、属性の名前
 # @cell : Cell : Cell::  internal cell  : CompositeCelltyep 内部のセル（in_compositeセル）
 # @port_decl:: Port | Decl
-# @b_pseudo: bool : 
+# @b_pseudo: bool :
 
   def initialize(export_name, internal_cell_name, internal_cell_elem_name, cell, port_decl)
     super()
@@ -6766,7 +6766,7 @@ class DomainType < Node
 end
 
 #== Region クラス
-# 
+#
 # Region は Namespace を継承している
 # root region は特殊で、root namespace と同じである
 #
@@ -7250,7 +7250,7 @@ module Importable
   #=== Importable#find_file
   # file::String : file name to find
   # return::String | Nil: path to file or nil if not found
-  # find file in 
+  # find file in
   def find_file(file)
     $import_path.each{ |path|
       if path == "."
@@ -7341,7 +7341,7 @@ class Import_C < Node
 
     end
 
-    # コマンドライン指定された DEFINE 
+    # コマンドライン指定された DEFINE
     $define.each{ |define|
       if $IN_EXERB
         q = ""
@@ -7482,7 +7482,7 @@ class Import_C < Node
 
   def print_defines(file)
     if ! $b_no_gcc_extension_support
-      
+
     file.print <<EOT
 
 #ifndef TECS_NO_GCC_EXTENSION_SUPPORT
@@ -7702,7 +7702,7 @@ class NamespacePath < Node
   #=== NamespacePath# initialize
   # ident::Symbol           最初の名前, ただし "::" のみの場合は String
   # b_absolute:Bool         "::" で始まっている場合 true
-  # namespace::Namespace    b_absolute = false かつ、構文解釈段階以外で呼び出す場合は、必ず指定すること 
+  # namespace::Namespace    b_absolute = false かつ、構文解釈段階以外で呼び出す場合は、必ず指定すること
   def initialize(ident, b_absolute, namespace = nil)
     super()
 

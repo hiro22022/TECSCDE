@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: plugin.rb 2633 2017-04-02 06:02:05Z okuma-top $
 #++
 
@@ -89,7 +89,7 @@ class Plugin < Node
 
 ### コード生段階で呼び出されるメソッド ###
   #=== プラグインは gen_ep_func を提供するか
-  # gen_ep_func 定義   ⇒ テンプレートではない、セルタイプコード(tCelltype.c)を生成 
+  # gen_ep_func 定義   ⇒ テンプレートではない、セルタイプコード(tCelltype.c)を生成
   # gen_ep_func 未定義 ⇒ テンプレート(tCelltype_templ.c)を生成
   def gen_ep_func?
     self.class.method_defined?(:gen_ep_func_body)
@@ -164,7 +164,7 @@ class Plugin < Node
         cdl_error("P1001 plugin arg: cannot find identifier in $1" , arg)
         return
       end
-      
+
       # 前の空白読み飛ばす
       arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
@@ -299,14 +299,14 @@ class CFile
   end
 
   def initialize(path, mode)
-    if $b_no_kcode 
+    if $b_no_kcode
       mode += ":" + $Ruby19_File_Encode
     end
     @file = File.open(path, mode)
   end
 
   def print(str)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
       @file.print(str)
     else
       @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
@@ -314,7 +314,7 @@ class CFile
   end
 
   def puts(str)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
       @file.print(str)
     else
       @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
@@ -323,7 +323,7 @@ class CFile
   end
 
   def printf(format, *arg)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
       @file.print(sprintf(format, *arg))
     else
       @file.print(sprintf(format, *arg).kconv($KCONV_CDL, $KCONV_TECSGEN))

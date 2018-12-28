@@ -2,7 +2,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2018 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -27,13 +27,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: tecsgen.rb 2780 2018-02-11 11:22:33Z okuma-top $
 #++
 
@@ -95,7 +95,7 @@ end
 def require_tecsgen_lib(fname, b_fatal = true)
   dbgPrint("require_lib: #{fname}\n")
   set_kcode $KCODE_TECSGEN
-  begin  
+  begin
     b_require = false
     b_exception = false
 
@@ -104,7 +104,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
     ($library_path+$LOAD_PATH).each{ |path|
       [ "", "tecslib/plugin/" ].each { |lp|
         lib = File.expand_path(path) + "/" + lp + fname
-        
+
         if File.exist? lib  # ファイル存否と他のエラーを区別するため存在確認をする
           begin
             require(lib)
@@ -221,7 +221,7 @@ class TECSGEN
     analyze_option addtional_option_parser
     load_modules
     setup
-        
+
     dbgPrint  "tecspath: #{$tecsgen_base_path}, __FILE__=#{__FILE__}\n"
     dbgPrint  "ARGV(remained): #{ARGV}, argments=#{$arguments}\n"
   end
@@ -349,7 +349,7 @@ class TECSGEN
     end
     # $KCODE_TECSGEN, $KCONV_TECSGEN を仮に設定する (tecs_lang.rb ですぐに再設定される)
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
-    $KCONV_TECSGEN = Kconv::UTF8 # const: 
+    $KCONV_TECSGEN = Kconv::UTF8 # const:
     set_kcode($KCODE_TECSGEN)  # このファイルの文字コードを設定
 
   end # initialize_global_var
@@ -504,7 +504,7 @@ class TECSGEN
       require "tecsgen/core/bnf-deb.tab"
     end
 
-    # syntaxobj.rb には Node が定義されているので、早い段階で require 
+    # syntaxobj.rb には Node が定義されているので、早い段階で require
     require "tecsgen/core/syntaxobj"
     require "tecsgen/core/pluginModule"
     require "tecsgen/core/plugin"

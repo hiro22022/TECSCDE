@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2014 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: SharedRPCPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -61,7 +61,7 @@ class SharedRPCPlugin < ThroughPlugin
   #  説明は ThroughPlugin (plugin.rb) を参照
   def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
 
-    # mikan プラグインオプション指定の不一致のチェック task_priority, 
+    # mikan プラグインオプション指定の不一致のチェック task_priority,
 
     super
     initialize_transparent_marshaler cell_name
@@ -107,7 +107,7 @@ class SharedRPCPlugin < ThroughPlugin
 
   # def set_through_info( start_region, end_region, through_type )
   #   super
-  #  
+  #
   # end
 
   def gen_plugin_decl_code(file)
@@ -304,7 +304,7 @@ EOT
 
   #=== 後ろのコードを生成
   # プラグインの後ろのコードを生成
-  # file:: File: 
+  # file:: File:
   def self.gen_post_code(file)
     file.print "/* '#{self.name}' post code */\n"
     @@shared_channel_list.each{ |chan_name,plugin_obj|

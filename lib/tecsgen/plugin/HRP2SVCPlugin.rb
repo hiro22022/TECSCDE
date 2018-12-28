@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2014 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: HRP2SVCPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -141,7 +141,7 @@ celltype #{@ct_name} {
 };
 EOT
         end
-        
+
         file2.close
     else
       @@generated_celltype[@ct_name] << self
@@ -221,7 +221,7 @@ EOT
       subscript = ""
     end
 
-    # サーバー側チャンネルの生成 
+    # サーバー側チャンネルの生成
     # 拡張サービスコール本体
     file.print <<EOT
 
@@ -362,15 +362,15 @@ EOT
 #  * tecsmerge によるマージに使用されます
 #  *
 #  * #[</PREAMBLE>]# */
-# 
+#
 # /* プロトタイプ宣言や変数の定義をここに書きます #_PAC_# */
 # #include "#{@ct_name_body}_tecsgen.h"
-# 
+#
 # #ifndef E_OK
 # #define  E_OK  0    /* success */
 # #define  E_ID  (-18)  /* illegal ID */
 # #endif
-# 
+#
 # EOT
 #             end
 

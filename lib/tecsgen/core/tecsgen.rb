@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: tecsgen.rb 2665 2017-07-24 08:59:28Z okuma-top $
 #++
 
@@ -200,7 +200,7 @@ class TECSGEN
     end
 
     #=== TECSGEN のデフォルト設定を行う
-    # Makefile 
+    # Makefile
     # @@fixed_vars で定義されている変数は、変更できず、定数定義されている
     def self.set_default_config
       add_var("TARGET", "$(TARGET_BASE).exe", "default target name")
@@ -420,7 +420,7 @@ class TECSGEN
   def finalize
     dbgPrint("## Generating XML\n")
     # Region.gen_xml @root_namespace
-    ## 
+    ##
     # Namespace.gen_XML  @root_namespace
 
     $region_list.each{ |region_path_str, val|

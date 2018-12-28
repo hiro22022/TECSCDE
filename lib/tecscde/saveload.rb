@@ -220,7 +220,7 @@ module TECSCDE
       new_cell_ = new_cell(x, y, cell.get_celltype.get_name, cell.get_celltype.get_owner.get_namespace_path.to_s, cell)
       new_name = cell.get_name          # automatically given name
       new_cell_.change_name(new_name)
-      
+
       # decide cell box size from text width
       w, h = @view.get_text_extent(new_name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
       w2, h = @view.get_text_extent(cell.get_celltype.get_name, CELLTYPE_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
@@ -374,7 +374,7 @@ module TECSCDE
         bl.each{ |bar|
           bar_list << [ bar[:type], bar[:position] ]
         }
-        
+
         # cp_cell_nspath, cp_name, ep_cell_nspath, ep_name, bar_list = jl.get_location
         # p "set_location_from_tecsgen, #{cp_cell_nspath}, #{cp_name}, #{ep_cell_nspath}, #{ep_name}, #{bar_list}"
         cp_cell = @cell_hash[cp_cell_nspath]
@@ -689,8 +689,8 @@ EOT
         else
           ep_subsc = ""
         end
-# :call_region : 
-# :entry_region : 
+# :call_region :
+# :entry_region :
 
         f.print <<EOT
 #{delim_1}        {       /** join_list[ #{index} ] **/

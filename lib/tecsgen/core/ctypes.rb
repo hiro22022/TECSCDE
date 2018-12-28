@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: ctypes.rb 2665 2017-07-24 08:59:28Z okuma-top $
 #++
 
@@ -52,7 +52,7 @@ module CType
     # signed, unsigned が Symbol として来る事は無くなった
     # if another.instance_of? Symbol then
     #   # ここで Symbol は :SIGNED, :UNSIGNED のいずれか
-    # 
+    #
     #   # CIntType か？
     #   if self.instance_of? CIntType then
     #     self.set_sign another
@@ -121,7 +121,7 @@ module CType
       #   TECS には long double を表現する手段がない (double80_t を定義すればよいか?)
 #      cdl_warning( "C1003 $1 & $2 incompatible (\'long double\' is not supported.). Treated as $3." , self.class, another.class, self.class )
 #      cdl_warning( "W9999 $1 & $2 incompatible (\'long double\' is not supported.). Treated as $3." , self.get_type_str, another.get_type_str, self.get_type_str )
-      self.to_long      
+      self.to_long
       return self
     else
       raise "merge: unknown type"

@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2018 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: GenOpaqueMarshaler.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -348,7 +348,7 @@ module GenOpaqueMarshaler
     end
   end
 
-  ##### 
+  #####
 
   def gen_marshaler_celltype
     f = CFile.open(@marshaler_celltype_file_name, "w")
@@ -747,7 +747,7 @@ EOT
       file.print <<EOT
 /*
  * name:    #{f_name}
- * func_id: #{id} 
+ * func_id: #{id}
  */
 EOT
       file.print "static ER\n"
@@ -917,7 +917,7 @@ EOT
       # ここ（個々の関数）ではエラーハンドラーは呼び出さない。呼び元（サーバーのメイン関数）で呼び出す。
     }
   end
- 
+
 
   # b_marshal:: bool
   # b_get:: bool

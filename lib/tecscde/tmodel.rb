@@ -2082,7 +2082,7 @@ applying abbrviated patterns, there is conditions.
      EDGE_LEFT   = 0b10
      EDGE_RIGHT  = 0b11
 
- 
+
   bit0: 1 if normal direction is positive, 0 negative
   bit1: 1 if vertical, 0 if horizontal
 
@@ -2097,10 +2097,10 @@ applying abbrviated patterns, there is conditions.
       case edge_side
       when  EDGE_TOP     y
       when  EDGE_BOTTOM  y+height
-      when  EDGE_LEFT    x    
+      when  EDGE_LEFT    x
       when  EDGE_RIGHT   x+width
 
-  #=== (1)  (6) bar from call port. this indicate A position.  
+  #=== (1)  (6) bar from call port. this indicate A position.
   TmCPort#get_normal_bar_of_edge
       pos = @cell.get_edge_position_in_normal_dir( @edge_side ) + Gap * TECSModel.get_sign_of_normal( @edge_side )
       TECSModel.is_vertical?( @edge_side ) ? HBar.new( pos ) : VBar.new( pos )
@@ -2126,7 +2126,7 @@ applying abbrviated patterns, there is conditions.
        e1, e2 = @eport.get_cell.get_right_angle_edges_position( @cport.get_edge_side )
        pos2 = ( posa - e1 ).abs > ( posa - e2 ).abs ? e2 : e1
        @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
-       
+
        pos3 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
 
@@ -2146,7 +2146,7 @@ applying abbrviated patterns, there is conditions.
 
        pos1 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
        @bars[1] = (bar[0].instance_of? HBar) ? VBar.new( pos1 ) : HBar.new( pos1 )
-       
+
        pos2 = @eport.get_position_in_tangential_dir
        @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
 

@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2014 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: tecs_lang.rb 2061 2014-05-31 22:15:33Z okuma-top $
 #++
 
@@ -235,7 +235,7 @@ class TECS_LANG
     end
 
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
-    $KCONV_TECSGEN = Kconv::UTF8 # const: 
+    $KCONV_TECSGEN = Kconv::UTF8 # const:
     # set_kcode $KCODE_TECSGEN     # このファイルの文字コードを設定
   end
 
@@ -313,7 +313,7 @@ class TECS_LANG
   end
 
   # Kconv クラスのための変数を設定
-  self.set_kconv_var 
+  self.set_kconv_var
 
   dbgPrint "LANG_FILE=#{$LANG_FILE}.#{$CHARSET_FILE}, LANG_CONSOLE=#{$LANG_CONSOLE}.#{$CHARSET_CONSOLE}\n"
   dbgPrint "KCODE_CDL=#{$KCODE_CDL}(#{$KCONV_CDL}) KCODE_CONSOLE=#{$KCODE_CONSOLE}(#{$KCONV_CONSOLE})\n"
@@ -336,14 +336,14 @@ end
 # 文字コードを変換する
 class Console
   def self.print(str)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
       STDOUT.print str
     else
       STDOUT.print str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
     end
   end
   def self.puts(str)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY 
+    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
       STDOUT.puts str
     else
       STDOUT.puts str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)

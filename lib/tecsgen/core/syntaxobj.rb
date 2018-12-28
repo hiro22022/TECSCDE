@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: syntaxobj.rb 2633 2017-04-02 06:02:05Z okuma-top $
 #++
 
@@ -45,7 +45,7 @@
 #
 # owner を持たないものが Node となる
 # エラーは、cdl_error を通じて報告する (意味解析が構文解析後に行われる場合には、行番号が正しく出力できる
-# 
+#
 
 class Node
 # @locale::    [@file, @lineno, @col]
@@ -123,14 +123,14 @@ end
 #    Factory => Celltype
 #    Join => Cell
 #    CompositeCelltypeJoin => CompositeCelltype
-#    Region => Region, 
+#    Region => Region,
 #    ParamDecl => ParamList
 #    ParamList => FuncHead
 #    Expression => Namespace
 #    大半のものは new_* メソッドで owner Node に伝達される
 #    そのメソッドが呼び出されたときに owner Node が記録される
 #    new_* がないもの：
-#            Decl(parameter), ParamDecl, ParamList, FuncHead, Expression 
+#            Decl(parameter), ParamDecl, ParamList, FuncHead, Expression
 #
 #    Expression は、owner Node となるものが多くあるが、改造が困難であるため
 #    Expression が定義されたときの Namespace を owner Node とする
@@ -140,7 +140,7 @@ class BDNode < Node
 # @owner::Node
 # @NamespacePath:: NamespacePath
 # @Generator::
-# @import::Import :  
+# @import::Import :
 
   def initialize
     super
@@ -696,7 +696,7 @@ class Decl < BDNode
     end
     (indent+1).times { print "  " }
     puts "size_is: #{@size_is.to_s}, count_is: #{@count_is.to_s}, string: #{@string.to_s} referenced: #{@b_referenced} "
-   
+
   end
 end
 
@@ -707,7 +707,7 @@ class ParamDecl < BDNode
 # @size:: Expr   (size_is 引数)
 # @count:: Expr   (count_is 引数)
 # @max:: Expr (size_is の第二引数)
-# @b_nullable:: Bool : nullable 
+# @b_nullable:: Bool : nullable
 # @string:: Expr or -1(if size not specified) （string 引数）
 # @allocator:: Signature of allocator
 # @b_ref:: bool : size_is, count_is, string_is 引数として参照されている
@@ -1012,7 +1012,7 @@ class ParamDecl < BDNode
     if @allocator
       (indent+1).times { print "  " }
       puts "allocator: signature: #{@allocator.get_name}"
-    end    
+    end
   end
 end
 

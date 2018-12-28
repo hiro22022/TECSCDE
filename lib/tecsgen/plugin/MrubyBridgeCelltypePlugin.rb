@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: MrubyBridgeCelltypePlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -54,7 +54,7 @@ end
 # class MrubyBridgeCelltypePlugin < CelltypePlugin
 #
 #  # プラグイン引数名 => Proc
-#  MrubyBridgePluginArgProc = { 
+#  MrubyBridgePluginArgProc = {
 #      "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },
 #      "include_inner_cell" => Proc.new { |obj,rhs| obj.set_include_inner_cell rhs },
 #      "exclude_cell" => Proc.new { |obj,rhs| obj.set_exclude_cell rhs },
@@ -79,7 +79,7 @@ end
 #    @exclude_port = []
 #    @exclude_port_func = {}
 #    @b_ignoreUnsigned = false
-#    @b_auto_exclude = true     # auto_exclude = true by default 
+#    @b_auto_exclude = true     # auto_exclude = true by default
 #    @@plugin_list << self
 #
 #    @plugin_arg_check_proc_tab = MrubyBridgePluginArgProc
@@ -151,7 +151,7 @@ end
 #  #file::        FILE       生成するファイル
 #  def gen_cdl_file file
 ##   この段階で呼びだすと generate 文が呼び出される前のセルのみの出力となる
-#    
+#
 ##    dbgPrint "MrubyBridgeCelltypePlugin: gen_cdl_file: #{@celltype.get_name}\n"
 ##    file.print <<EOT
 # #/* MrubyBridgeCelltypePlugin: celltype=#{@celltype.get_name}
@@ -183,12 +183,12 @@ end
 #
 #  #=== 後ろの CDL コードを生成
 #  #プラグインの後ろの CDL コードを生成
-#  #file:: File: 
+#  #file:: File:
 #  def self.gen_post_code( file )
 #    dbgPrint "#{self.name}: gen_post_code_body\n"
 #    print "#{self.name}: gen_post_code_body\n"
 ##    この段階で生成すると、同じポストコードで出力される mruby の初期化コードに反映されない
-#    
+#
 ##    # MrubyBridgeCelltypePlugin の生成する generate 文は、
 ##    fn2 = "#{$gen}/tmp_MrubyBridgeCelltypePlugin_post.cdl"
 ##    f2 = File.open( fn2, "w" )
@@ -210,7 +210,7 @@ end
 #    MrubyBridgeCellPlugin.gen_post_code_body file
 #  end
 #
-#  #=== プラグイン引数 
+#  #=== プラグイン引数
 #
 #  #=== プラグイン引数 ignoreUnsigned
 #  def set_ignoreUnsigned rhs
@@ -284,7 +284,7 @@ end
 #    if rhs == "false" then
 #      @b_auto_exclude = false
 #    elsif rhs == "true" then
-#      @b_auto_exclude = true     # auto_exclude = true by default 
+#      @b_auto_exclude = true     # auto_exclude = true by default
 #    else
 #      cdl_warning( "MRB9999 auto_exclude: unknown rhs value ignored. specify true or false" )
 #    end

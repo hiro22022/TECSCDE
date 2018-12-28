@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2018 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #  $Id: HRPSVCPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -57,7 +57,7 @@ class SVCManage
     @@id = 0
     @@func_ids = {}
     def initialize()
-        # 
+        #
       #  本クラスはインスタンスを持たない仮想的なクラスである
         #
         raise "class #{self.class.name} shall not have instances"
@@ -239,7 +239,7 @@ EOT
       subscript = ""
     end
 
-    # サーバー側チャンネルの生成 
+    # サーバー側チャンネルの生成
     # 拡張サービスコール本体
     file.print <<EOT
 
@@ -280,7 +280,7 @@ EOT
         #  拡張サービスコール呼出し側の関数生成
         #
         #  完成形のイメージ
-        #  
+        #
         # ER_UINT
         # eThroughEntry_write(CELLIDX idx, const char* buffer, uint_t length)
         # {
@@ -291,8 +291,8 @@ EOT
         #   }else{
         #       /* エラー処理コードをここに記述 */
         #   }
-        # 
-        #   retval = (ER_UINT)cal_svc( TFN_TECSGEN_ORIGIN + svcid, 
+        #
+        #   retval = (ER_UINT)cal_svc( TFN_TECSGEN_ORIGIN + svcid,
         #                              (intptr_t)par1, (intptr_t)par2, 0, 0, 0 );
         #
         #   return retval;
@@ -349,7 +349,7 @@ EOT
         #  拡張サービスコール本体側の関数生成
         #
         #  完成形のイメージ
-        #  
+        #
         # ER_UINT
         # eThroughEntry_write(CELLIDX idx, const char* buffer, uint_t length)
         # {
@@ -360,8 +360,8 @@ EOT
         #   }else{
         #       /* エラー処理コードをここに記述 */
         #   }
-        # 
-        #   retval = (ER_UINT)cal_svc( TFN_TECSGEN_ORIGIN + svcid, 
+        #
+        #   retval = (ER_UINT)cal_svc( TFN_TECSGEN_ORIGIN + svcid,
         #                              (intptr_t)par1, (intptr_t)par2, 0, 0, 0 );
         #
         #   return retval;
@@ -392,11 +392,11 @@ ER_UINT
 
 EOT
 
-            # 
+            #
             #  エラーチェック処理の生成
             #
 
-            # 
+            #
             #  呼出し元ドメインのチェック
             #   * private method: gen_caller_check_code参照
             #
@@ -404,7 +404,7 @@ EOT
             check_code = generated_check_code["check_code"]
             user_cannot_callable = generated_check_code["user_cannot_callable"]
 
-            # 
+            #
             #  パラメータにポインタが存在する場合，呼出し元タスクに対する
             #  アクセス権のチェック処理を出力する
             #  ※ cdmidがカーネルドメイン(拡張サービスコール呼出し中のユーザ
@@ -415,7 +415,7 @@ EOT
             params.each{ |param|
                 if param.get_declarator.get_ptr_level > 0
                     align_check_str = "!ALIGN_TYPE(#{passed_param[num]}, #{param.get_type.get_referto.get_type_str}) || "
-                  
+
                     if param.get_type.get_referto.kind_of?(IntType)
                         case param.get_type.get_referto.get_bit_size
                         when -11, -1, 8   # char, char_t, int8_t (無符号含む)
@@ -479,7 +479,7 @@ EOT
                 num += 1
             }
 
-            # 
+            #
             #  呼出し元がカーネルドメインのみ許可されている場合，
             #  すべてのユーザドメインからの呼出しに対し，E_OACVを返す
             #
@@ -488,7 +488,7 @@ EOT
             end
 
             if check_code != ""
-                # 
+                #
                 #  呼出し元がカーネルドメインの場合，アクセス権のチェック
                 #  処理をスキップさせる
                 #
@@ -499,7 +499,7 @@ EOT
 eot
             end
 
-            # 
+            #
             #  拡張サービスコール本体(本来の受け口関数)を呼び出す
             #
             file2.print"    #{retval_assign}#{@call_port_name}_#{func_name}("
@@ -522,7 +522,7 @@ eot
 
             file2.close
 
-            # 
+            #
             #  拡張サービスコールの登録
             #
             file2 = AppFile.open("#{$gen}/tecsgen.cfg")
@@ -535,7 +535,7 @@ KERNEL_DOMAIN{
 EOT
             file2.close
 
-            # 
+            #
             #  拡張サービスコール登録に必要な情報をヘッダに出力
             #   - 拡張サービスコール呼出し時のチェックで使用するスタックサイズを出力
             #   - 拡張サービスコールとして登録する関数名のextern宣言を出力
@@ -567,17 +567,17 @@ EOT
   end
 
   private
-  # 
+  #
   #  拡張サービスコール本体における，呼出し元チェックのコードを
   #  出力する
   #  gen_ep_func_body からのみ呼び出される
   #  引数: 対象の関数名
   #  返り値: 下記のハッシュ
-  #    {"check_code"=>出力するエラーチェックコード, 
+  #    {"check_code"=>出力するエラーチェックコード,
   #     "user_cannot_callable"=>ユーザドメインが呼出し不可能かどうかのフラグ}
   #
-  def gen_caller_check_code(func_name)  
-      # 
+  def gen_caller_check_code(func_name)
+      #
       #  エラーチェック処理
       #
       check_code = ""
@@ -585,7 +585,7 @@ EOT
       all_domain_callable = false
       caller_unrestricted = false
 
-      # 
+      #
       #  呼出し元ドメインのチェック処理
       #  callable_domains: 拡張サービスコールを呼出し可能なドメインのリスト
       #    - 無所属のセルから結合されている場合，すべてのセルに対して，
@@ -603,7 +603,7 @@ EOT
                   #
                   caller_unrestricted = true
               else
-                  # 
+                  #
                   #  無所属から接続されている場合は，すべてのセルの
                   #  restrictをチェック
                   #
@@ -614,13 +614,13 @@ EOT
                   }
               end
           elsif svcplugin.get_caller_cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
-              # 
+              #
               #  特定のドメインから接続されている場合は，呼出し元セルの
               #  restrictをチェック
               #
               callable_domains << svcplugin.get_caller_cell.get_region.get_domain_root
           else
-              # 
+              #
               #  無所属から結合されておらず，特定の呼出し元ドメインにアクセス権
               #  がない場合，callable_domainsは空となる
               #
@@ -633,11 +633,11 @@ EOT
           return {"check_code"=>"", "user_cannot_callable"=>false}
       end
 
-      # 
+      #
       #  重複を削除
       #
       callable_domains.uniq!
-      # 
+      #
       #  無所属に対するドメインチェックは実施しない
       #  カーネルドメインに対するドメインチェックは実施しない
       #
@@ -647,7 +647,7 @@ EOT
       }
       # pp "callable_domains"
       # pp callable_domains.map{|domain| domain.get_name }
-      # 
+      #
       #  すべてのユーザドメインから呼出し可能な場合，ドメインチェックは
       #  実施しない
       #
@@ -662,24 +662,24 @@ EOT
           all_domain_callable = true
       end
 
-      # 
+      #
       #  呼出し元ドメインのチェック処理本体の生成
       #
       if callable_domains.length == 0
-          # 
+          #
           #  ユーザドメインから呼出し不可能な場合は
           #  個別のエラーチェックはせず，問答無用でE_OACVを返す
           #
           user_cannot_callable = true
       elsif callable_domains.length == 1
-          # 
+          #
           #  呼出し可能なユーザドメインが単一の場合は
           #  cdmid != <domain名> の形式でチェックする
           #
           check_code += "\t/* HRPSVC0012.1 */\n"
           check_code += "\tif (cdmid != #{callable_domains[0].get_name}) {\n"
       elsif callable_domains.length > 1 && !all_domain_callable
-          # 
+          #
           #  呼出し可能なユーザドメインが複数の場合は
           #  TACP(cdmid) & (TACP(<domain名>) | ...) != 0U
           #  の形式でチェックする
@@ -690,7 +690,7 @@ EOT
           check_code += ") != 0U) {\n"
       end
       if check_code != ""
-          # 
+          #
           #  呼出し可能なユーザドメインのチェックがある場合は
           #  エラーコードを返すためのコードを出力する
           #

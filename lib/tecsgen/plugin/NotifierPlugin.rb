@@ -31,13 +31,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #  $Id: NotifierPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -1000,7 +1000,7 @@ class NotifierPlugin < CelltypePlugin
     pre_text  = ""
     post_text = "\n"
     indent    = ""
- 
+
       [EVENT_HANDLER, ERROR_HANDLER].each { |handler|
         # 呼び口の結合を取得
         call_join = cell.get_join_list.get_item(handler.call_port_name.to_sym)
@@ -1039,7 +1039,7 @@ class NotifierPlugin < CelltypePlugin
             case match
             when ActivateTaskHandlerType,       WakeUpTaskHandlerType,
                  SetVariableHandlerType,        SetVariableToErrorCodeHandlerType,
-                  IncrementVariableHandlerType,  SignalSemaphoreHandlerType, 
+                  IncrementVariableHandlerType,  SignalSemaphoreHandlerType,
                  SetEventflagHandlerType,       SendToDataqueueHandlerType,
                  SendErrorCodeToDataqueueHandlerType
               if option == "OutOfDomain"

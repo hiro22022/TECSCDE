@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2011 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: HRP2SemaphorePlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -54,11 +54,11 @@ class HRP2SemaphorePlugin < HRP2KernelObjectPlugin
     # SAC_SEMの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
-    # acv :: string:   アクセスベクタ    
+    # acv :: string:   アクセスベクタ
     def print_cfg_sac(file, val, acv)
         file.puts "SAC_SEM(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
     end
-    # tSemaphoreの受け口リスト 
+    # tSemaphoreの受け口リスト
     def get_entry_ports_name_list()
         @@ep
     end

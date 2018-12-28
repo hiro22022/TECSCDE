@@ -368,7 +368,7 @@ EOT
 
     def key_pressed(keyval, state)
       if @sub_mode == :SM_EDIT_CELL_NAME
-        
+
         return
       end
 
@@ -484,7 +484,7 @@ EOT
 
       # set data model to tree view(self)
       @treeView.set_model(liststore)
-   
+
       # create renderer for text
       renderer = Gtk::CellRendererText.new
 
@@ -575,7 +575,7 @@ EOT
 
       # set data model to tree view(self)
       @treeView.set_model(liststore)
-   
+
       # create renderer for text
       renderer = Gtk::CellRendererText.new
 
@@ -810,7 +810,7 @@ EOT
     end
 
     def include?(object)
-      @hilite_objs.include? object 
+      @hilite_objs.include? object
     end
 
     def set_attrTreeView(treeview, name_entry, region_entry, frame)

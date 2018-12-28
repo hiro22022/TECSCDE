@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2014-2018 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,13 +26,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #  $Id: HRPPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
@@ -42,7 +42,7 @@ require_tecsgen_lib "HRPKernelObjectManager.rb"
 # 各メソッドの役割りは、DomainPlugin.rb を参照のこと
 # HRPカーネル用ドメインプラグイン
 class HRPPlugin < DomainPlugin
-  
+
   def initialize(region, name, option)
     super
     dbgPrint "HRPPlugin: initialize: region=#{region.get_name}, domainName=#{name}, option=#{option}\n"
@@ -83,11 +83,11 @@ class HRPPlugin < DomainPlugin
     HRPPlugin.add_inter_domain_join_set join
     # p join.get_cell.get_name
     # p join.get_cell.get_real_celltype(join.get_rhs_port1).get_name
-    # if HRPKernelObjectManager.include_celltype?(join.get_cell.get_celltype.get_global_name)   #oyama: get_name => get_global_name 
+    # if HRPKernelObjectManager.include_celltype?(join.get_cell.get_celltype.get_global_name)   #oyama: get_name => get_global_name
     if HRPKernelObjectManager.include_celltype?(join.
                                                  get_cell.
                                                  get_real_celltype(join.get_rhs_port1).
-                                                 get_global_name)                # oyama: get_name => get_global_name 
+                                                 get_global_name)                # oyama: get_name => get_global_name
         # 結合先がカーネルオブジェクトセル
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # 何もしないthrough
@@ -137,7 +137,7 @@ class HRPPlugin < DomainPlugin
   def get_kind
     return @option.to_sym
   end
-  
+
   def self.gen_post_code(file)
   end
 
@@ -145,7 +145,7 @@ class HRPPlugin < DomainPlugin
   @@generate_memory_module = false
 
   @@include_extsvc_fncd = false  # 17.07.26 暫定
-  # 
+  #
   #  ATT_MODの生成
   #  gen_factory実行時には，すべてのセルタイププラグインを生成済みのはずなので，
   #  カーネルAPIコードのメモリ保護を省略できる．
@@ -193,7 +193,7 @@ class HRPPlugin < DomainPlugin
 
       check_celltype_list = []
 
-      # 
+      #
       #  ATT_MODの生成
       #
       Cell.get_cell_list2.each { |cell|
@@ -233,7 +233,7 @@ class HRPPlugin < DomainPlugin
           end
 
           regions_hrp.each { |reg|
-            if reg.is_root? 
+            if reg.is_root?
               nsp = ""
             else
               nsp = "_#{reg.get_global_name}"

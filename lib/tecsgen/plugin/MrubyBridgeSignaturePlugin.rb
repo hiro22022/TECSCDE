@@ -1,6 +1,6 @@
 #
 #  mruby => TECS bridge
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -25,13 +25,13 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: MrubyBridgeSignaturePlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #
 
@@ -65,7 +65,7 @@
 
 class MrubyBridgeSignaturePlugin < SignaturePlugin
   # プラグイン引数名 => Proc
-  MrubyBridgePluginArgProc = { 
+  MrubyBridgePluginArgProc = {
       "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },
       "include" => Proc.new { |obj,rhs| obj.set_include rhs },
       "exclude" => Proc.new { |obj,rhs| obj.set_exclude rhs },
@@ -97,7 +97,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     :uint32_t          => [:uint32_t,  "UInt32",   :Int,   :INT   ],
     :uint64_t          => [:uint64_t,  "UInt64",   :Int,   :INT   ],
 
-    :int               => [:int,       "Int",      :Int,  :INT   ], 
+    :int               => [:int,       "Int",      :Int,  :INT   ],
     :char              => [:char,      "Char",     :Char, :INT   ],    # char は char_t として扱う
     :short             => [:short,     "Short",    :Int,  :INT   ],
     :long              => [:long,      "Long",     :Int,  :INT   ],
@@ -146,7 +146,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     @struct_list = { }
     @ptr_list = { }
     @auto_exclude_list = {}
-    @b_auto_exclude = true     # auto_exclude = true by default 
+    @b_auto_exclude = true     # auto_exclude = true by default
 
     @plugin_arg_check_proc_tab = MrubyBridgePluginArgProc
     parse_plugin_arg
@@ -268,7 +268,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
             case param_decl.get_direction
             when :OUT, :INOUT
               if @b_auto_exclude
-                cdl_info("MRB9999 string specifier without length cannot be used for out & inout parameter, $1 automatcally excluded", 
+                cdl_info("MRB9999 string specifier without length cannot be used for out & inout parameter, $1 automatcally excluded",
                         fh.get_name)
                 @auto_exclude_list[fh.get_name] = fh
               else
@@ -541,10 +541,10 @@ EOT
 #     file.print <<EOT
 # namespace nMruby {
 # EOT
-# 
+#
 #     @@ptr_list.each{ |name,tment|
 #       file.print <<EOT
-# 
+#
 #     // MBP600
 #     [singleton]
 #     celltype #{name} {
@@ -552,7 +552,7 @@ EOT
 #     };
 # EOT
 #     }
-# 
+#
 #     file.print <<EOT
 # };
 # EOT
@@ -623,7 +623,7 @@ EOT
       end
       file.print "  };"
     }
-    
+
   end
 
   ####### 以下コード生成段階 ######
@@ -690,7 +690,7 @@ EOT
   end
 
   def gen_ep_func_body_ptr(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-    
+
     t = @@ptr_list[ct_name]
     type = t[1]
     file.print <<EOT
@@ -806,7 +806,7 @@ EOT
     file.print <<EOT
 
 /* RData MBP001 */
-static void 
+static void
 #{@celltype_name}_free( mrb_state *mrb, void *p )
 {
 	if( p )
@@ -1002,7 +1002,7 @@ MrubyBridge_#{ct_name}_#{func_name}( mrb_state *mrb, mrb_value self )
 	/* cellcbp (MBP105) */
 	CELLCB	*p_cellcb = ((struct tecs_#{@celltype_name} *)DATA_PTR(self))->cbp;
 EOT
-      
+
       file.print "	/* variables for return & parameter (MBP110) */\n"
       if ! b_void
         file.print "	", ret_type.get_type_str, "\tret_val", ret_type.get_type_str_post, ";\n"
@@ -1166,7 +1166,7 @@ EOT
         delim = ", "
       }
       file.print " );\n"
-      
+
       file.print "	/* return (MBP130) */\n"
       case ret_type0
       when BoolType
@@ -1302,7 +1302,7 @@ EOT
     if rhs == "false"
       @b_auto_exclude = false
     elsif rhs == "true"
-      @b_auto_exclude = true     # auto_exclude = true by default 
+      @b_auto_exclude = true     # auto_exclude = true by default
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")
     end

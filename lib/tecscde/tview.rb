@@ -383,7 +383,7 @@ module TECSCDE
     end
 
     def set_cursor(cursor)
-      @canvas.window.cursor = cursor 
+      @canvas.window.cursor = cursor
     end
 
     #=== TmView#drawTargetDirect
@@ -665,7 +665,7 @@ module TECSCDE
       y1 = mm2dot y
       w1 = mm2dot(w)
       h1 = mm2dot(h)
-      
+
       #----- draw cell rect -----#
       @gdkWindow.draw_rectangle(@canvasGc, false, x1, y1, w1, h1)
       # @cairo_context_target.rectangle(x1, y1, w1, h1)
@@ -1172,7 +1172,7 @@ module TECSCDE
     end
 
     def self.setup_colormap_1(name)
-      color = Gdk::Color.parse(name.to_s)        
+      color = Gdk::Color.parse(name.to_s)
       self.setup_colormap_2 name, color
     end
 
@@ -1230,7 +1230,7 @@ module TECSCDE
 
       paper = Cairo::Paper.const_get(@model.get_paper[:name])
       paper_width = paper.width("pt") - mm2dot(PAPER_MARGIN * 2)
-      paper_height = paper.height("pt") - mm2dot(PAPER_MARGIN * 2) 
+      paper_height = paper.height("pt") - mm2dot(PAPER_MARGIN * 2)
       begin
         surface = Cairo::PDFSurface.new(fname, paper.width("pt"), paper.height("pt"))
         @cairo_context_target = Cairo::Context.new surface
@@ -1249,7 +1249,7 @@ module TECSCDE
 
         #----- draw model name -----#
         draw_text(paper_width, paper_height, @model.get_file_editing, PAPER_COMMENT, ALIGN_RIGHT, TEXT_HORIZONTAL)
- 
+
         #----- draw rectangle frame around paper -----#
         @cairo_context_target.rectangle(0, 0, paper_width, paper_height)
         @cairo_context_target.stroke
@@ -1345,6 +1345,6 @@ module TECSCDE
       @base_y = y
       set_rotate0
     end
-                  
+
   end
 end

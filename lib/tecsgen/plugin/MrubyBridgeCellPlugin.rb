@@ -1,7 +1,7 @@
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
-#  
+#
 #   Copyright (C) 2008-2017 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
@@ -26,20 +26,20 @@
 #       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
 #       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
 #       免責すること．
-#  
+#
 #   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
 #   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
 #   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
-#  
+#
 #   $Id: MrubyBridgeCellPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
 #== celltype プラグインの共通の親クラス
 class MrubyBridgeCellPlugin < CellPlugin
   # プラグイン引数名 => Proc
-  MrubyBridgePluginArgProc = { 
+  MrubyBridgePluginArgProc = {
       "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },
       "exclude_port" => Proc.new { |obj,rhs| obj.set_exclude_port rhs },
       "exclude_port_func" => Proc.new { |obj,rhs| obj.set_exclude_port_func rhs },
@@ -51,8 +51,8 @@ class MrubyBridgeCellPlugin < CellPlugin
 
   require_tecsgen_lib("MrubyBridgeSignaturePlugin.rb")
 
-  # @exclude_port::[ String(port_name) ] : 
-  # @exclude_port_func::{ [ String(port_name) ] => [ String(func_name) ] } : 
+  # @exclude_port::[ String(port_name) ] :
+  # @exclude_port_func::{ [ String(port_name) ] => [ String(func_name) ] } :
   # @port_list::{ String(port_name) => String(include/exclude=func_name) }  : all included port and opt_string
 
   #=== CellPlugin# initialize
@@ -68,7 +68,7 @@ class MrubyBridgeCellPlugin < CellPlugin
     @b_ignoreUnsigned = false
     @exclude_port = []
     @exclude_port_func = {}
-    @b_auto_exclude = true     # auto_exclude = true by default 
+    @b_auto_exclude = true     # auto_exclude = true by default
     MrubyBridgeSignaturePlugin.set_gen_post_code_by_dependent
 
     @plugin_arg_str = CDLString.remove_dquote option
@@ -134,7 +134,7 @@ EOT
       return
     end
     @@cell_list[@cell] = @cell
-                
+
     @port_list.each{ |port, opt_str|
       next if port.get_signature == nil
 
@@ -175,7 +175,7 @@ EOT
 
   #=== 後ろの CDL コードを生成
   # プラグインの後ろの CDL コードを生成
-  # file:: File: 
+  # file:: File:
   def self.gen_post_code(file)
     dbgPrint "#{self.name}: gen_post_code\n"
     if ! @@b_gen_post_code_by_dependent
@@ -255,7 +255,7 @@ EOT
     if rhs == "false"
       @b_auto_exclude = false
     elsif rhs == "true"
-      @b_auto_exclude = true     # auto_exclude = true by default 
+      @b_auto_exclude = true     # auto_exclude = true by default
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")
     end
