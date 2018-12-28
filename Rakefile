@@ -3,6 +3,7 @@ require "bundler/gem_tasks"
 task :default => :test
 
 CLEAN.concat(FileList["lib/tecsgen/core/*.tab.rb"])
+CLEAN.concat(FileList["lib/tecsgen/core/*.log"])
 
 desc "Generate files"
 task :generate => [:bnf, :yydebug, :c_parser]
