@@ -38,7 +38,6 @@
 
 #== celltype プラグインの共通の親クラス
 class CelltypePlugin < Plugin
-
   # celltype::     Celltype        セルタイプ（インスタンス）
   def initialize(celltype, option)
     super()

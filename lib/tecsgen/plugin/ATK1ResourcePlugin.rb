@@ -123,5 +123,4 @@ class ATK1ResourcePlugin < CelltypePlugin
   file3.close
 
   end
-
 end

@@ -179,5 +179,4 @@ EOT
 
       file2.close
   end
-
 end

@@ -141,7 +141,6 @@ module CType
 end
 
 class CDefinedType < DefinedType
-
   include CType
 
   def initialize(type_name)
@@ -150,19 +149,14 @@ class CDefinedType < DefinedType
 end
 
 class CVoidType < VoidType
-
   include CType
-
 end
 
 class CBoolType < BoolType
-
   include CType
-
 end
 
 class CIntType < IntType
-
   include CType
 
   def initialize(bit_size)
@@ -177,7 +171,6 @@ class CIntType < IntType
 end
 
 class CFloatType < FloatType
-
   include CType
 
   def initialize(bit_size)
@@ -194,17 +187,14 @@ class CFloatType < FloatType
 end
 
 class CEnumType < EnumType # mikan
-
   include CType
 
   def initialize(bit_size)
     super(bit_size)
   end
-
 end
 
 class CStructType < StructType
-
   include CType
 
 
@@ -214,17 +204,14 @@ class CStructType < StructType
 end
 
 class CFuncType < FuncType
-
   include CType
 
   def initialize(paramlist = nil)
     super(paramlist)
   end
-
 end
 
 class CArrayType < ArrayType
-
   include CType
 
   def initialize(subscript = nil)
@@ -233,11 +220,9 @@ class CArrayType < ArrayType
 end
 
 class CPtrType < PtrType
-
   include CType
 
   def initialize(referto = nil)
     super(referto)
   end
-
 end

@@ -38,7 +38,6 @@
 
 #== celltype プラグインの共通の親クラス
 class CellPlugin < Plugin
-
   #=== CellPlugin# initialize
   # cell::     Cell        セル（インスタンス）
   # このメソッドは、セルの構文解析が終わったところで呼び出される

@@ -38,7 +38,6 @@
 
 #== CompositeCelltype プラグインの共通の親クラス
 class CompositePlugin < Plugin
-
   # celltype::     CompositeCelltype        セルタイプ（インスタンス）
   def initialize(celltype, option)
     super()

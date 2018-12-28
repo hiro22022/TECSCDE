@@ -39,7 +39,6 @@
 
 # File Messages for en_US 
 class TECSMsg
-
 ## generate.rb ##
 
 @@comment = {}
@@ -332,5 +331,4 @@ class TECSMsg
 
 # @@comment[ :TEFB_comment ] = "\t/* ここに処理本体を記述します %s */\n"
 @@comment[:TEFB_comment] = "\t/* Put statements here %s */\n"
-
 end

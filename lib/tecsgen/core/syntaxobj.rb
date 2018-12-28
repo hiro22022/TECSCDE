@@ -169,7 +169,6 @@ end
 #== Namespace 名を持つ BDNode
 # Namespace(Region), Signature, Celltype, CompositeCelltype, Cell
 class NSBDNode < BDNode
-
   def initialize
     super
   end
@@ -323,7 +322,6 @@ class NamedList
       i.show_tree(indent)
     }
   end
-
 end
 
 class Typedef < BDNode
@@ -438,7 +436,6 @@ end
 #=== 宣言
 # @kind で示される各種の宣言
 class Decl < BDNode
-
 # @identifer:: String
 # @global_name:: String | nil : String(@kind=TYPEDEF||:CONSTANT), nil(@kind=その他)
 #                set_kind にて設定される
@@ -701,12 +698,10 @@ class Decl < BDNode
     puts "size_is: #{@size_is.to_s}, count_is: #{@count_is.to_s}, string: #{@string.to_s} referenced: #{@b_referenced} "
    
   end
-
 end
 
 # 関数パラメータの宣言
 class ParamDecl < BDNode
-
 # @declarator:: Decl:  Token, ArrayType, FuncType, PtrType
 # @direction:: :IN, :OUT, :INOUT, :SEND, :RECEIVE
 # @size:: Expr   (size_is 引数)

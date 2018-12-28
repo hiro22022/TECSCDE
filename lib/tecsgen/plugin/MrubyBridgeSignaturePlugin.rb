@@ -64,7 +64,6 @@
 #     signature … ブリッジ関数の定義
 
 class MrubyBridgeSignaturePlugin < SignaturePlugin
-
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = { 
       "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },

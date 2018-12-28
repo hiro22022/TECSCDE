@@ -39,7 +39,6 @@
 
 # File Messages for ja_JP
 class TECSMsg
-
 ## generate.rb ##
 
 @@comment = {}
@@ -161,5 +160,4 @@ class TECSMsg
 @@comment[:TCPF_comment] = " * 呼び口関数 %s\n"
 @@comment[:TEPF_comment] = "/* 受け口関数 %s */\n"
 @@comment[:TEFB_comment] = "\t/* ここに処理本体を記述します %s */\n"
-
 end

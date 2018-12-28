@@ -43,7 +43,6 @@ require_tecsgen_lib "lib/GenOpaqueMarshaler.rb"
 require_tecsgen_lib "lib/GenParamCopy.rb"
 
 class OpaqueMarshalerPlugin < SignaturePlugin
-
   OpaqueMarshalerPluginArgProc = { }
 
   include GenOpaqueMarshaler
@@ -79,5 +78,4 @@ EOT
     return :"_"
     # return nil
   end
-
 end

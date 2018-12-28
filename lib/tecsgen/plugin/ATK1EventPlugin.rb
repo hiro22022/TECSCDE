@@ -148,5 +148,4 @@ class ATK1EventPlugin < CelltypePlugin
     file2.close
 
   end
-
 end

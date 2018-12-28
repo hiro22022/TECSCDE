@@ -90,7 +90,6 @@ end
 #  　　　　　で実施されるため，ここでは判定しないこととした
 #
 class HRPSVCPlugin < ThroughPlugin
-
   NUM_SVC_ARG_MAX = 5              # HRP3 の拡張サービスコールで扱うことのできる引数の最大個数
 
   #=== RPCPlugin の initialize

@@ -40,7 +40,6 @@
 # 現状、エラーメッセージは英語のみ
 # 生成ファイルのコメントとして出力される文字列
 class TECSMsg
-
   #=== TECSMsg#生成するヘッダやテンプレートなどに含めるコメントの取得
   # CDL の文字コードに合わせて、文字コード変換を行う
   def self.get(msg)
@@ -100,5 +99,4 @@ class TECSMsg
    end
    return m
  end
-
 end

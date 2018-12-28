@@ -466,7 +466,6 @@ end
     puts "function head list:"
     @function_head_list.show_tree(indent + 2)
   end
-
 end
 
 module CelltypePluginModule
@@ -3159,7 +3158,6 @@ class Cell < NSBDNode # < Nestable
       puts("#{port.get_name} : #{count} times referenced")
     }
   end
-
 end
 
 class CompositeCelltype < NSBDNode # < Nestable
@@ -3870,7 +3868,6 @@ class CompositeCelltype < NSBDNode # < Nestable
       }
     end
   end
-
 end
 
 
@@ -4524,7 +4521,6 @@ end
       puts "VMT_useless : #{@b_VMT_useless}  skelton_useless : #{@b_skelton_useless}"
     end
   end
-
 end
 
 #== Namespace
@@ -5111,7 +5107,6 @@ class Namespace < NSBDNode
     @struct_tag_list.show_tree(indent + 1)
     @name_list.show_tree(indent + 1)
   end
-
 end
 
 
@@ -6373,7 +6368,6 @@ class Join < BDNode
       }
     end
   end
-
 end
 
 #== 逆結合
@@ -7317,7 +7311,6 @@ module Importable
 end
 
 class Import_C < Node
-
   # ヘッダの名前文字列のリスト
   @@header_list = {}
   @@header_list2 = []
@@ -7539,7 +7532,6 @@ EOT
   def self.get_header_list2
     @@header_list2
   end
-
 end
 
 class Import < Node
@@ -7892,7 +7884,6 @@ class NamespacePath < Node
 
     return nsp
   end
-
 end
 
 # 以下単体テストコード

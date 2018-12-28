@@ -38,7 +38,6 @@
 
 
 class TECSGEN
-
   @@b_post_coded = false     # ポストコード生成開始後 true
 
   #=== import パス (-I) を末尾に追加

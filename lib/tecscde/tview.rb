@@ -1309,7 +1309,6 @@ module TECSCDE
         return [ str[0, len / 2], str[len / 2, len] ]
       end
     end
-
   end # class MainView
 
   #== MyCairoMatrix

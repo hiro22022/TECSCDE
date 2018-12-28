@@ -344,7 +344,6 @@ class DefinedType < Type
 end
 
 class VoidType < Type
-
   def check  # 意味的誤りがあれば、文字列を返す
     nil
   end
@@ -369,7 +368,6 @@ class VoidType < Type
 end
 
 class BoolType < Type
-
   def check  # 意味的誤りがあれば、文字列を返す
     nil
   end
@@ -1552,7 +1550,6 @@ class PtrType < Type
     puts "type:"
     @type.show_tree(indent + 2)
   end
-
 end
 
 #==  DescriptorType クラス

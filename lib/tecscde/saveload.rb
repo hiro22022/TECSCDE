@@ -54,7 +54,6 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
 module TECSCDE
   class TECSModel
-
     # tool_info schema for tecscde
     @@TECSCDE_schema = {
       :tecscde => {
@@ -876,6 +875,5 @@ EOT
         0   # same as EDGE_TOP
       end
     end
-
   end #  class TECSModel
 end # module TECSCDE

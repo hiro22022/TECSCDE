@@ -44,7 +44,6 @@ require_tecsgen_lib "lib/GenOpaqueMarshaler.rb"
 require_tecsgen_lib "lib/GenParamCopy.rb"
 
 class OpaqueRPCPlugin < ThroughPlugin
-
   include GenOpaqueMarshaler
   include GenParamCopy
 

@@ -38,7 +38,6 @@
 
 #== CelltypePlugin for tTECSInfo
 class TECSInfoPlugin < CelltypePlugin
-
   @@cell_list = []
   # @celltype::Celltype
   # @plugin_arg_str::String

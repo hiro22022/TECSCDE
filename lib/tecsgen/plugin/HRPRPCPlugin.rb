@@ -45,7 +45,6 @@ require_tecsgen_lib "lib/GenParamCopy.rb"
 # ・マーシャラ、TDR、チャンネル、メッセージバッファを生成する
 #
 class HRPRPCPlugin < ThroughPlugin
-
   include GenOpaqueMarshaler
   include GenParamCopy
 
@@ -408,5 +407,4 @@ EOT
     nsp = @start_region.get_namespace_path
     return nsp.append(@cell_name)
   end
-
 end

@@ -43,7 +43,6 @@
 #       cell の指定子 (allocator, id)
 #       結合の指定子 (through)
 class RepeatCellPlugin < CellPlugin
-
   @@plugin_list = []
   RepeatCellPluginArgProc = {
     "count" => Proc.new { |obj,rhs| obj.set_count rhs }
@@ -164,5 +163,4 @@ class RepeatCellPlugin < CellPlugin
       end
     end
   end
-
 end

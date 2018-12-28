@@ -42,7 +42,6 @@
 # the schema is not defiened well. see saveload.rb for example of the schema.
 # 
 class TOOL_INFO
-
   # tool_info 
   @@tool_info = { }
 
@@ -117,7 +116,6 @@ class TOOL_INFO
   # array length cannot be checked.
   # you have to check array length in your code, if necessary.
   class VALIDATOR
-
     # @b_ok::Bool
 
     def error(msg)
@@ -258,7 +256,6 @@ class TOOL_INFO
       return nil
     end
   end
-
 end
 
 
@@ -267,7 +264,6 @@ end
 #--- TOOL_INFO replaced location information ---#
 
 class TECSGEN
-
   #------ manupulate location information --------#
   def self.new_cell_location cell_location
     @@current_tecsgen.new_cell_location cell_location
@@ -292,7 +288,6 @@ class TECSGEN
 #==  Cell_location
   # tecscde の位置情報
   class  Cell_location
-
     #=== Join_location#initialize
     # cell_nspath::NamespacePath
     # x,y,w,h::Expression
@@ -313,7 +308,6 @@ class TECSGEN
     def get_location
       [ @cell_nspath, @x, @y, @w, @h, @port_location_list ]
     end
-
   end # Cell_location
 
   #==  Join_location
@@ -341,7 +335,5 @@ class TECSGEN
     def get_location
       [@cp_cell_nspath, @cp_name, @ep_cell_path, @ep_name, @bar_list]
     end
-
   end # Join_location
-
 end # TECSGEN

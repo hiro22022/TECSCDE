@@ -466,14 +466,12 @@ EOT
       @hilite_objs.update_attrTreeView
       @view.paint_canvas
     end
-
   end # class Control
 
   #== CelltypeTreeView: show celltype list
   # formerly this class is sub-class of Gtk::TreeView
   # currently this class has Gtk::TreeView
   class CelltypeTreeView
-
     COL_NAME   = 0
     COL_NSPATH = 1
 
@@ -874,6 +872,5 @@ EOT
         @attrTreeView.clear
       end
     end
-
   end # class hilite_objs
 end

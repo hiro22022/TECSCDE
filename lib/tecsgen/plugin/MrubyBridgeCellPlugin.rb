@@ -38,7 +38,6 @@
 
 #== celltype プラグインの共通の親クラス
 class MrubyBridgeCellPlugin < CellPlugin
-
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = { 
       "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },
@@ -261,5 +260,4 @@ EOT
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")
     end
   end
-
 end

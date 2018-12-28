@@ -38,7 +38,6 @@
 #++
 
 class RepeatJoinPlugin < CellPlugin
-
   RepeatJoinPluginArgProc = {
     "count" => Proc.new { |obj,rhs| obj.set_count rhs }
   }
@@ -126,5 +125,4 @@ class RepeatJoinPlugin < CellPlugin
       end
     end
   end
-
 end

@@ -77,7 +77,6 @@ end
 # HRP2ドメインプラグインによって挿入される
 #
 class HRP2SVCPlugin < ThroughPlugin
-
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
   @@generated_celltype_header = {}

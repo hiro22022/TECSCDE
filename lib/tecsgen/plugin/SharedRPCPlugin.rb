@@ -52,7 +52,6 @@ require_tecsgen_lib "lib/GenParamCopy.rb"
 #  有符号、無符号でサイズが同じ
 
 class SharedRPCPlugin < ThroughPlugin
-
   attr_reader :region
   @@shared_channel_list = {}
   include GenTransparentMarshaler
@@ -334,5 +333,4 @@ EOT
     @region.gen_region_str_post file
 
   end
-
 end

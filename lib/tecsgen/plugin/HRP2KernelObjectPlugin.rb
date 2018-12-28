@@ -369,5 +369,4 @@ class HRP2KernelObjectPlugin < CelltypePlugin
     def self.include_celltype?(celltype)
         return @@celltype_list.include?(celltype)
     end
-
 end

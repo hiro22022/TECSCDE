@@ -225,7 +225,6 @@ module TECSCDE
   end
 
   class TECSModel < TmObject
-
     include ChangeSetControl
 
     # edges for join (connected by Bars from TmCPort to TmEPort)
@@ -1292,7 +1291,6 @@ EOT
       def setup_clone ports
         @ports = ports.dup
       end
-
     end # class TmPortArray
 
     class TmCPortArray < TmPortArray
@@ -1629,7 +1627,6 @@ EOT
         bu.copy_from self
         return bu
       end
-
     end # class TmCPort
 
     class TmEPort < TmPort   # mikan ep array

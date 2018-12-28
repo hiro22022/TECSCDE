@@ -229,7 +229,6 @@ EOT
 EOT
     end
   end
-
 end
 
 #
@@ -316,7 +315,6 @@ EOT
 EOT
     end
   end
-
 end
 
 class Cell

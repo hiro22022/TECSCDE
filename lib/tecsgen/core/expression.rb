@@ -970,7 +970,6 @@ class Expression < Node
   end
 
   private :elements_to_s, :elements_eval_const,  :elements_get_type
-
 end
 
 

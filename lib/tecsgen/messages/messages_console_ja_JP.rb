@@ -39,7 +39,6 @@
 
 # Console Messages for ja_JP
 class TECSMsg
-
 ###
 # エラーメッセージ
 @@error_message = {}
@@ -1169,5 +1168,4 @@ class TECSMsg
 ###
 # info メッセージ
 @@info_message = {}
-
 end

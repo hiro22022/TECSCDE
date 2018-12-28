@@ -487,5 +487,4 @@ EOT
       cdl_error("TracePlugin: syslogCelltype '#{rhs}' not celltype or not defined")
     end
   end
-
 end

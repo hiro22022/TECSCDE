@@ -48,7 +48,6 @@ Other processes are setting ID for each cell and setting domain information
 =end
 
 class Namespace
-
   #===  各セルに ID （整数値）を割付ける
   def set_cell_id_and_domain
     # celltype の各セルに ID を割付ける
@@ -88,7 +87,6 @@ class Namespace
 end
 
 class Celltype
-
   ID_BASE = 1               # reset_optimize でリセットする
   @@ID_BASE = ID_BASE
 

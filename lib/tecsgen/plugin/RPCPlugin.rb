@@ -52,7 +52,6 @@ require_tecsgen_lib "lib/GenParamCopy.rb"
 #  有符号、無符号でサイズが同じ
 
 class RPCPlugin < ThroughPlugin
-
   include GenTransparentMarshaler
   include GenParamCopy
 

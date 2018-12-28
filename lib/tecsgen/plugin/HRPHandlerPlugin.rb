@@ -40,7 +40,6 @@ require_tecsgen_lib "HRPKernelObjectPlugin.rb"
 
 #== celltype プラグインの共通の親クラス
 class HRPHandlerPlugin < HRPKernelObjectPlugin
-
     ##
     # oyama: add to avoid Ruby exception in code generation phase.
     def new_cell cell
@@ -123,5 +122,4 @@ EOT
             raise "#{@plugin_arg_str} is unknown option"
         end
     end
-
 end

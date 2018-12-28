@@ -921,7 +921,6 @@ class StructType < Type
 end
 
 class Signature
-
   def generate
     generate_signature_header
   end
@@ -1055,11 +1054,9 @@ EOT
   def gen_sh_endif f
     f.print("#endif /* #{@global_name}_TECSGEN_H */\n")
   end
-
 end
 
 class Celltype
-
   def generate
 
     if need_generate?    # セルのないセルタイプは生成しない
@@ -5081,7 +5078,6 @@ EOT
 
     return str
   end
-
 end
 
 # Appendable File（追記可能ファイル）
@@ -5173,7 +5169,6 @@ class MemFile
 end
 
 class Region
-
   def gen_region_str_pre f
     nest = 1
     while nest < @family_line.length

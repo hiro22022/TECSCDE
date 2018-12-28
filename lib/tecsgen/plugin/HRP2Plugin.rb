@@ -40,7 +40,6 @@
 # 各メソッドの役割りは、DomainPlugin.rb を参照のこと
 # HRP2カーネル用ドメインプラグイン
 class HRP2Plugin < DomainPlugin
-
   def initialize(region, name, option)
     super
     print "HRP2Plugin: initialize: region=#{region.get_name}, domainName=#{name}, option=#{option}\n"

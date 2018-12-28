@@ -214,7 +214,6 @@ def set_kcode kcode
 end
 #----- class TECSGEN -------#
 class TECSGEN
-
   @@current_tecsgen = nil
 
   def self.init(addtional_option_parser = nil)

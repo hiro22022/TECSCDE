@@ -58,7 +58,6 @@ require_tecsgen_lib "lib/GenHRP2Marshaler.rb"
 # HRP2ドメインプラグインによって挿入される
 #
 class HRP2RPCPlugin < ThroughPlugin
-
   include GenTransparentMarshaler
   # include GenParamCopy
 
@@ -320,5 +319,4 @@ EOT
     nsp = @start_region.get_namespace_path
     return nsp.append(@cell_name)
   end
-
 end

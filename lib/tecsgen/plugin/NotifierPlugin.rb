@@ -47,7 +47,6 @@ NotifierPluginArgProc = {
 }
 
 class NotifierPlugin < CelltypePlugin
-
   # ---------- アダプタ関数の生成 -------------
   #
   # siHandlerBodyの受け口関数は，タイムイベント通知の通知先として直接指定する
@@ -97,7 +96,6 @@ class NotifierPlugin < CelltypePlugin
 
   # @private
   class AdapterGenerator
-
     # 結合先に関する属性を含む．セル，受け口配列の添字から成る．
     # 同一のEntryPropertyとなる結合は，全く同じ方法でその受け口関数を呼び
     # 出せる．
@@ -404,7 +402,6 @@ class NotifierPlugin < CelltypePlugin
       @source_file.close
       @header_file.close
     end
-
   end
 
   # ------ 通知のハンドラの種類の定義 -------
@@ -465,7 +462,6 @@ class NotifierPlugin < CelltypePlugin
   # ------ ハンドラタイプの定義 -------
 
   class BaseHandlerType
-
     def initialize()
       super
 
@@ -546,7 +542,6 @@ class NotifierPlugin < CelltypePlugin
     def might_fail
       return false
     end
-
   end
   class BaseTaskHandlerType < BaseHandlerType
     def validate_join(handler, cell, join, *args)
@@ -1188,5 +1183,4 @@ class NotifierPlugin < CelltypePlugin
      end
    end
    private :gen_factory_for_cell
-
 end

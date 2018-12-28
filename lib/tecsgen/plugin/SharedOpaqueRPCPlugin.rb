@@ -52,7 +52,6 @@ require_tecsgen_lib "lib/GenParamCopy.rb"
 #  有符号、無符号でサイズが同じ
 
 class SharedOpaqueRPCPlugin < ThroughPlugin
-
   # チャンネルを共有するプラグインオブジェクトへのハッシュリスト
   @@shared_channel_list = {}    # { chan_name => [ Plugin_obj0, Plugin_Obj1, ... ] }
 

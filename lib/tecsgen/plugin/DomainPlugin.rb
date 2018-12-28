@@ -38,7 +38,6 @@
 
 #== ドメインプラグインの親クラス
 class DomainPlugin < Plugin
-
   #== domain 指定されたリージョンが定義された
   # region で domain 指定があった
   # domain_type_name::Symbol : domain 指定子の第一引数

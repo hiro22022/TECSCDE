@@ -105,5 +105,4 @@ class ATK1DelayTaskPlugin < CelltypePlugin
     file2.close
 
   end
-
 end

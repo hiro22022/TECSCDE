@@ -72,5 +72,4 @@ EOT
     def get_entry_ports_name_list()
         @@ep
     end
-
 end

@@ -89,5 +89,4 @@ class HRPObjectPlugin < HRPKernelObjectPlugin
             file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}({ #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
         end
     end
-
 end
