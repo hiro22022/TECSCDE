@@ -366,8 +366,8 @@ module TECSCDE
     end
 
     def resize_canvas
-      @canvas_height = Integer(mm2dot @model.get_paper[ :height ])
-      @canvas_width  = Integer(mm2dot @model.get_paper[ :width  ])
+      @canvas_height = Integer(mm2dot @model.get_paper[:height])
+      @canvas_width  = Integer(mm2dot @model.get_paper[:width])
       @canvas.set_size_request(@canvas_width, @canvas_height)
       # @scrolledWindow.queue_draw
     end
@@ -470,10 +470,10 @@ module TECSCDE
       #----- setup color -----#
       if ! cell.is_editable?
 #        @canvasGc.set_foreground @@colors[ Color_uneditable ]
-        @cairo_context_target.set_source_color @@colors[ Color_uneditable ]
+        @cairo_context_target.set_source_color @@colors[Color_uneditable]
       else
 #        @canvasGc.set_foreground @@colors[ Color_editable ]
-        @cairo_context_target.set_source_color @@colors[ Color_editable ]
+        @cairo_context_target.set_source_color @@colors[Color_editable]
       end
 
       #----- draw cell rect -----#
@@ -499,7 +499,7 @@ module TECSCDE
         else
           if cell.is_editable? && eport.is_unsubscripted_array?
             # @canvasGc.set_foreground @@colors[ :brown ]
-            @cairo_context_target.set_source_color @@colors[ :brown ]
+            @cairo_context_target.set_source_color @@colors[:brown]
           end
           # EPortArray
           eport.get_ports.each{ |ep|
@@ -507,7 +507,7 @@ module TECSCDE
           }
           if cell.is_editable? && eport.is_unsubscripted_array?
             # @canvasGc.set_foreground @@colors[ Color_editable ]
-            @cairo_context_target.set_source_color @@colors[ Color_editable ]
+            @cairo_context_target.set_source_color @@colors[Color_editable]
           end
         end
       }
@@ -518,7 +518,7 @@ module TECSCDE
       label = cell_name.to_s + "\n" + ct_name.to_s
       if ! cell.complete?
         # @canvasGc.set_foreground @@colors[ Color_incomplete ]
-        @cairo_context_target.set_source_color @@colors[ Color_incomplete ]
+        @cairo_context_target.set_source_color @@colors[Color_incomplete]
       end
       # draw_text( x1 + w1/2, y1+h1/2, label, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
 
@@ -570,7 +570,7 @@ module TECSCDE
         end
       end
       # @canvasGc.set_foreground @@colors[ color_name ]
-      @cairo_context_target.set_source_color @@colors[ color_name ]
+      @cairo_context_target.set_source_color @@colors[color_name]
     end
 
     def draw_entry_port_triangle(eport)
@@ -655,7 +655,7 @@ module TECSCDE
 
       #----- if uneditable change color ------#
       if ! cell.is_editable?
-        @canvasGc.set_foreground(@@colors[ Color_uneditable ])
+        @canvasGc.set_foreground(@@colors[Color_uneditable])
         # @cairo_context_target.set_source_color( @@colors[ Color_uneditable ] )
       end
 
@@ -681,7 +681,7 @@ module TECSCDE
       drawTargetDirect
 
       #----- set line width -----#
-      @canvasGc.set_foreground(@@colors[ Color_hilite ])
+      @canvasGc.set_foreground(@@colors[Color_hilite])
       # @cairo_context_target.set_source_color( @@colors[ Color_hilite ] )
       draw_port_name port
 
@@ -723,7 +723,7 @@ module TECSCDE
       #----- setup color -----#
       if ! join.is_editable?
         # @canvasGc.set_foreground @@colors[ Color_uneditable ]
-        @cairo_context_target.set_source_color(@@colors[ Color_uneditable ])
+        @cairo_context_target.set_source_color(@@colors[Color_uneditable])
       end
 
       @cairo_context_target.move_to xm, ym
@@ -1177,7 +1177,7 @@ module TECSCDE
     end
 
     def self.setup_colormap_2 name, color
-      @@colors[ name ] = color
+      @@colors[name] = color
       @@colormap.alloc_color(color, false, true)
     end
 
@@ -1186,7 +1186,7 @@ module TECSCDE
     def get_cell_paint_color cell
       if @b_color_by_region
         region = cell.get_region
-        color = @@cell_file_to_color[ region ]
+        color = @@cell_file_to_color[region]
         if color
           return color
         end
@@ -1194,10 +1194,10 @@ module TECSCDE
       else
         tecsgen_cell= cell.get_tecsgen_cell
         if tecsgen_cell == nil || cell.is_editable?
-          return @@colors[ Color_editable_cell ]
+          return @@colors[Color_editable_cell]
         end
         file = tecsgen_cell.get_locale[0]
-        color = @@cell_file_to_color[ file ]
+        color = @@cell_file_to_color[file]
         if color
           return color
         end
@@ -1206,11 +1206,11 @@ module TECSCDE
       if @@cell_paint_color_index >= @@cell_paint_colors.length
         @@cell_paint_color_index = 0
       end
-      col_name = @@cell_paint_colors[ @@cell_paint_color_index ]
-      @@cell_file_to_color[ obj ] = @@colors[ col_name ]
+      col_name = @@cell_paint_colors[@@cell_paint_color_index]
+      @@cell_file_to_color[obj] = @@colors[col_name]
       @@cell_paint_color_index += 1
       # p "col_name:#{col_name} index:#{@@cell_paint_color_index}"
-      return @@colors[ col_name ]
+      return @@colors[col_name]
     end
 
     #------ export ------#
@@ -1228,7 +1228,7 @@ module TECSCDE
       @scale_val = 72.0 / TECSCDE::DPI * 100     # PDF surface = 72 DPI,  mm2dot assume 100 DPI by default
       target_bak = @cairo_context_target
 
-      paper = Cairo::Paper.const_get(@model.get_paper[ :name ])
+      paper = Cairo::Paper.const_get(@model.get_paper[:name])
       paper_width = paper.width("pt") - mm2dot(PAPER_MARGIN * 2)
       paper_height = paper.height("pt") - mm2dot(PAPER_MARGIN * 2) 
       begin
@@ -1288,9 +1288,9 @@ module TECSCDE
       center = len / 2
       i = 0
       n = 0
-      while((center / 2 > i) && (i < center) && (str[ center + i ] != nil))
-        char_i = str[ center - i ]
-        char_j = str[ center + i ]
+      while((center / 2 > i) && (i < center) && (str[center + i] != nil))
+        char_i = str[center - i]
+        char_j = str[center + i]
         if char_j == Char__ || (Char_A <= char_j && char_j <= Char_Z)
           n = center + i
           break
@@ -1304,9 +1304,9 @@ module TECSCDE
         i += 1
       end
       if n > 0
-        return [ str[ 0, n ], str[ n, len ] ]
+        return [ str[0, n], str[n, len] ]
       else
-        return [ str[ 0, len / 2 ], str[ len / 2, len ] ]
+        return [ str[0, len / 2], str[len / 2, len] ]
       end
     end
 

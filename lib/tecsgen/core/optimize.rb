@@ -147,10 +147,10 @@ class Celltype
         id = @n_cell_gen + id + 1
       end
 
-      if @ordered_cell_list[ id - 1 ] then
-        cdl_error("S3003 $1: id number '$2' conflict with $3", c.get_name, id, @ordered_cell_list[ id - 1 ].get_name)
+      if @ordered_cell_list[id - 1] then
+        cdl_error("S3003 $1: id number '$2' conflict with $3", c.get_name, id, @ordered_cell_list[id - 1].get_name)
       end
-      @ordered_cell_list[ id - 1 ] = c
+      @ordered_cell_list[id - 1] = c
       # 通し番号とする場合のため @id_base を加える
       c.set_id(@id_base - 1 + id)
       if $verbose then
@@ -164,7 +164,7 @@ class Celltype
       while(@ordered_cell_list[i] != nil)
         i += 1
       end
-      @ordered_cell_list[ i ] = c
+      @ordered_cell_list[i] = c
       c.set_id(@id_base + i)
       if $verbose then
         print("#{c.get_name}: id=#{c.get_id}\n")
@@ -185,15 +185,15 @@ class Celltype
         else
           dn = nil
         end
-        if @domain_roots[ dn ] then
-          @domain_roots[ dn ] << dr
+        if @domain_roots[dn] then
+          @domain_roots[dn] << dr
         else
-          @domain_roots[ dn ] = [ dr ]
+          @domain_roots[dn] = [ dr ]
         end
-        if domain_cells[ dr ]  then
-          domain_cells[ dr ] << c
+        if domain_cells[dr]  then
+          domain_cells[dr] << c
         else
-          domain_cells[ dr ] = [ c ]
+          domain_cells[dr] = [ c ]
         end
       end
     }
@@ -450,8 +450,8 @@ class Celltype
   # #_ISH_#, #_ICT_# でヘッダが取り込まれているかチェックする
   # false が返った場合、hname は登録されて、次回の呼び出しでは true が返る
   def header_included?(hname)
-    if @included_header[ hname ] == nil then
-      @included_header[ hname ] = true
+    if @included_header[hname] == nil then
+      @included_header[hname] = true
       return false
     else
       return true

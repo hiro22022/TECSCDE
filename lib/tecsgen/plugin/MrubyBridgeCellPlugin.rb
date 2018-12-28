@@ -91,14 +91,14 @@ class MrubyBridgeCellPlugin < CellPlugin
       port_list.each{ |port|
         if ! @exclude_port.include?(port.get_name.to_s) then
           # print "MRBBridgeCellPlugin: #{port.get_name} included\n"
-          @port_list[ port ] = ""
+          @port_list[port] = ""
         else
           # print "MRBBridgeCellPlugin: #{port.get_name} excluded\n"
         end
       }
     else
       port_list.each{ |port|
-        @port_list[ port ] = ""
+        @port_list[port] = ""
       }
     end
 
@@ -106,12 +106,12 @@ class MrubyBridgeCellPlugin < CellPlugin
       @port_list.each{ |port, opt_str|
         delim = ""
         if @exclude_port_func.include?(port.get_name.to_s) then
-          @exclude_port_func[ port.get_name.to_s ].each{ |func_name|
+          @exclude_port_func[port.get_name.to_s].each{ |func_name|
             opt_str += delim + "exclude=" + func_name
             delim = ","
           }
         end
-        @port_list[ port ] = opt_str
+        @port_list[port] = opt_str
       }
     end
   end
@@ -123,7 +123,7 @@ class MrubyBridgeCellPlugin < CellPlugin
 /* MrubyBridgeCellPlugin: generate for cell=#{@cell.get_name} */
 EOT
 
-    if @@cell_list[ @cell ] then
+    if @@cell_list[@cell] then
       file.print <<EOT
 
 /*
@@ -134,7 +134,7 @@ EOT
       cdl_info("MrubyBridgeCellPlugin: generate duplicate for cell '$1'", @cell.get_name)
       return
     end
-    @@cell_list[ @cell ] = @cell
+    @@cell_list[@cell] = @cell
                 
     @port_list.each{ |port, opt_str|
       next if port.get_signature == nil
@@ -147,7 +147,7 @@ EOT
 
       if port.get_port_type == :ENTRY then
         print "  MrubyBridgeCellPlugin: [cell.port] #{@cell.get_name}.#{port.get_name} => [mruby instance] TECS::T#{port.get_signature.get_name}.new( '#{@cell.get_name}#{port.get_name}Bridge' ) \n"
-        if @@signature_list[ port.get_signature ] == nil then
+        if @@signature_list[port.get_signature] == nil then
           opt_str = "ignoreUnsigned=#{@b_ignoreUnsigned}, auto_exclude=#{@b_auto_exclude}, " + opt_str
           # p "opt_str=#{opt_str}"
 
@@ -156,7 +156,7 @@ EOT
 /* cell.port=#{@cell.get_name}.#{port.get_name} */
 generate( MrubyBridgePlugin, #{port.get_signature.get_namespace_path}, "#{opt_str}" );
 EOT
-          @@signature_list[ port.get_signature ] = true
+          @@signature_list[port.get_signature] = true
         end
 
         # mikan option
@@ -238,10 +238,10 @@ EOT
         next if signature == nil     # error case
         if signature.get_function_head port_func[1].to_sym
           # print "MRBBridgeCellPlugin: #{port_func[0]}.#{port_func[1]} exclude\n"
-          if @exclude_port_func[ port_func[0] ] then
-            @exclude_port_func[ port_func[0] ] <<  port_func[1]
+          if @exclude_port_func[port_func[0]] then
+            @exclude_port_func[port_func[0]] <<  port_func[1]
           else
-            @exclude_port_func[ port_func[0] ] = [ port_func[1] ]
+            @exclude_port_func[port_func[0]] = [ port_func[1] ]
           end
         else
           cdl_error("MRB9999 exclude_port_func: func '$1' not found in port '$2' celltype $3",

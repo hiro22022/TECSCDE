@@ -55,12 +55,12 @@ class TECS2CBridgePlugin < SignaturePlugin
   end
 
   def gen_cdl_file file
-    if @@signature_list[ @signature.get_global_name ] then
-      @@signature_list[ @signature.get_global_name ] << self
+    if @@signature_list[@signature.get_global_name] then
+      @@signature_list[@signature.get_global_name] << self
       cdl_warning("T2CW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return
     end
-    @@signature_list[ @signature.get_global_name ] = [ self ]
+    @@signature_list[@signature.get_global_name] = [ self ]
 
     print_msg "  TECS2CBridgePlugin: [celltype] TECS2C::#{@celltype_name}. Create cell then join to entry port 'eEntry' from the caller cell\n"
     file.print <<EOT

@@ -64,8 +64,8 @@ class HRP2RPCPlugin < ThroughPlugin
 
   # RPCPlugin 専用のオプション
   TransparentRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
-  TransparentRPCPluginArgProc[ "noClientSemaphore"  ] = Proc.new { |obj,rhs| obj.set_noClientSemaphore rhs }
-  TransparentRPCPluginArgProc[ "semaphoreCelltype"  ] = Proc.new { |obj,rhs| obj.set_semaphoreCelltype rhs }
+  TransparentRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj,rhs| obj.set_noClientSemaphore rhs }
+  TransparentRPCPluginArgProc["semaphoreCelltype"] = Proc.new { |obj,rhs| obj.set_semaphoreCelltype rhs }
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
@@ -106,10 +106,10 @@ class HRP2RPCPlugin < ThroughPlugin
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ ct_name ] == nil then
-      @@generated_celltype[ ct_name ] = [ self ]
+    if @@generated_celltype[ct_name] == nil then
+      @@generated_celltype[ct_name] = [ self ]
     else
-      @@generated_celltype[ ct_name ] << self
+      @@generated_celltype[ct_name] << self
       return
     end
 

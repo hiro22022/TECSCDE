@@ -65,13 +65,13 @@ class C2TECSBridgePlugin < SignaturePlugin
   end
 
   def gen_cdl_file file
-    if @@signature_list[ @signature.get_global_name ] then
-      @@signature_list[ @signature.get_global_name ] << self
+    if @@signature_list[@signature.get_global_name] then
+      @@signature_list[@signature.get_global_name] << self
       cdl_warning("C2TW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return
     end
 
-    @@signature_list[ @signature.get_global_name ] = [ self ]
+    @@signature_list[@signature.get_global_name] = [ self ]
     print_msg "  C2TECSBridgePlugin: [celltype] C2TECS::#{@celltype_name}. Create cell then join the call port 'cCall' to the target cell\n"
     file.print <<EOT
 namespace nC2TECS{

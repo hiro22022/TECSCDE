@@ -329,12 +329,12 @@ class TECSGEN
     if $cpp == nil then
       $cpp       = "gcc -E -DTECSGEN"
     end
-    if ENV[ 'TECS_CPP' ]then
-      $cpp = ENV[ 'TECS_CPP' ]
+    if ENV['TECS_CPP']then
+      $cpp = ENV['TECS_CPP']
       $b_cpp_specified = true
     end
-    if ENV[ 'TECSPATH' ] then
-      $tecspath = ENV[ 'TECSPATH' ]
+    if ENV['TECSPATH'] then
+      $tecspath = ENV['TECSPATH']
     else
       $tecspath = "#{$tecsgen_base_path}/tecs"
     end
@@ -369,7 +369,7 @@ class TECSGEN
         else
           gen_path = "::" + path
         end
-        $region_list[ gen_path ] = true
+        $region_list[gen_path] = true
       }
       parser.on('-I', '--import-path=path', 'imoprt/import_C path') { |path|
         $import_path << path

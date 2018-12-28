@@ -55,8 +55,8 @@ module PluginModule
 
     dbgPrint "PluginModule: load_plugin: #{plugin_name}\n"
     begin
-      unless @@loaded_plugin_list[ plugin_name.to_sym ] then
-        @@loaded_plugin_list[ plugin_name.to_sym ] = 0
+      unless @@loaded_plugin_list[plugin_name.to_sym] then
+        @@loaded_plugin_list[plugin_name.to_sym] = 0
         if ($verbose) then
           print("load '#{plugin_name}.rb'\n")
         end
@@ -77,7 +77,7 @@ module PluginModule
         if plugin_object == nil then
           cdl_error("P9999 '$1': MultiPlugin not support '$2'", plugin_name, superClass.name)
         end
-        @@loaded_plugin_list[ plugin_name.to_sym ] = :MultiPlugin
+        @@loaded_plugin_list[plugin_name.to_sym] = :MultiPlugin
         return plugin_object
       else
         cdl_error("P2002 $1: not kind of $2" ,  plugin_name, superClass.name)
@@ -101,17 +101,17 @@ module PluginModule
       return
     end
     plugin_name = plugin_object.class.name.to_sym
-    if @@loaded_plugin_list[ plugin_name ] == :MultiPlugin then
+    if @@loaded_plugin_list[plugin_name] == :MultiPlugin then
       p "#{plugin_name}: MultiPlugin"
       return
-    elsif @@loaded_plugin_list[ plugin_name ] == nil then
+    elsif @@loaded_plugin_list[plugin_name] == nil then
       # raise "#{plugin_name} might have different name "
       ## プラグインのファイル名と、プラグインのクラス名が相違する場合
       # MultiPlugin の get_plugin で返されたケースでは nil になっている
-      @@loaded_plugin_list[ plugin_name ] = 0
+      @@loaded_plugin_list[plugin_name] = 0
     end
-    count = @@loaded_plugin_list[ plugin_name ]
-    @@loaded_plugin_list[ plugin_name ] += 1
+    count = @@loaded_plugin_list[plugin_name]
+    @@loaded_plugin_list[plugin_name] += 1
     tmp_file_name = "#{$gen}/tmp_#{plugin_name}_#{count}.cdl"
 
     begin

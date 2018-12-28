@@ -76,17 +76,17 @@ module TECSCDE
 #      @builder.add get_ui_definition
       @builder.add_from_file "tecscde-cell-plugin.glade"
 
-      @dialog = @builder[ "dialog_cell_plugin" ]
+      @dialog = @builder["dialog_cell_plugin"]
 
-      @label_cell_name = @builder[ "label_cell_name" ]
+      @label_cell_name = @builder["label_cell_name"]
       @label_cell_name.text = @cell.get_name.to_s
 
-      @button_ok = @builder[ "button_ok" ]
+      @button_ok = @builder["button_ok"]
       @button_ok.signal_connect("clicked") { |me|
         @dialog.response Gtk::Dialog::RESPONSE_OK
       }
 
-      @button_cancel = @builder[ "button_cancel" ]
+      @button_cancel = @builder["button_cancel"]
       @button_cancel.signal_connect("clicked") { |me|
         @dialog.response Gtk::Dialog::RESPONSE_CANCEL
       }

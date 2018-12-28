@@ -115,7 +115,7 @@ module TECSCDE
       #----- set @file_editing -----#
       argv = TECSGEN.get_argv
       if argv.length > 0
-        last_arg = argv[ -1 ]
+        last_arg = argv[-1]
         if (last_arg =~ /\.cde\Z/)
           @file_editing = last_arg
         else
@@ -146,7 +146,7 @@ module TECSCDE
         tecsgen_cell_list.each{ |cell|
           # p cell.get_owner.get_namespace
           # p cell.get_owner.get_namespace_path
-          if @cell_hash[ cell.get_name ] then    # duplicate cell in cdl file
+          if @cell_hash[cell.get_name] then    # duplicate cell in cdl file
             next
           end
           if cell.get_celltype == nil then       # celltype not found error in cdl (tecsgen)
@@ -157,15 +157,15 @@ module TECSCDE
           p "add_cell #{cell.get_name} #{cell.get_owner.get_namespace_path} #{cell.get_locale}"
           new_cell_ = create_cell_from_tecsgen(cell, x, y)
           tecsgen_cell_list2 << cell
-          cell_list[ cell ] = new_cell_
+          cell_list[cell] = new_cell_
 
           new_cell_.set_editable(cell.get_locale)
 
           x += 55
-          if x >= @paper[ :width ] - 30
+          if x >= @paper[:width] - 30
             x = 10
             y += 30
-            if y >= @paper[ :height ] -15
+            if y >= @paper[:height] -15
               y = 10
             end
           end
@@ -242,13 +242,13 @@ module TECSCDE
       if object.instance_of?(::Port) then
         if object.get_port_type == :CALL then
           if ! object.is_require? then
-            lhs_cell = cell_list[ cell ]
+            lhs_cell = cell_list[cell]
             cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
             if cport == nil
               TECSCDE.error("#{@name}.#{join.get_name} not found")
               return
             end
-            rhs_cell = cell_list[ join.get_cell ]
+            rhs_cell = cell_list[join.get_cell]
             if rhs_cell == nil then      # not joined in cdl (tecsgen)
               return
             end
@@ -267,18 +267,18 @@ module TECSCDE
 
     def set_paper_from_tecsgen
       info = TOOL_INFO.get_tool_info(:tecscde)
-      if info == nil || info[ :paper ] == nil
+      if info == nil || info[:paper] == nil
         return
       end
 
       #----- paper -----#
-      paper_info = info[ :paper ]
+      paper_info = info[:paper]
       if paper_info
-        size = paper_info[ :size ]
-        orientation = paper_info[ :orientation ]
+        size = paper_info[:size]
+        orientation = paper_info[:orientation]
         paper = nil
         Paper.each{ |name, val|
-          if val[ :size ] == size && val[ :orientation ] == orientation
+          if val[:size] == size && val[:orientation] == orientation
             p "paper found #{val[:name]}"
             paper = val
           end
@@ -289,34 +289,34 @@ module TECSCDE
 
     def set_cell_location_from_tecsgen
       info = TOOL_INFO.get_tool_info(:tecscde)
-      if info == nil || info[ :cell_list ] == nil
+      if info == nil || info[:cell_list] == nil
         return
       end
 
       #----- cell location -----#
-      info[ :cell_list ].each{ |cell_location|
+      info[:cell_list].each{ |cell_location|
         # region = cell_location[ :region ].to_sym
-        name = cell_location[ :name ].to_sym
-        loc = cell_location[ :location ]
+        name = cell_location[:name].to_sym
+        loc = cell_location[:location]
         if loc.length != 4
           TECSCDE.error("#{name}: cell_location.location: array length is not inconsistent, #{loc.length} for 4")
           next
         end
-        cell = @cell_hash[ name ]
+        cell = @cell_hash[name]
         if cell then
           # p "apply location: #{cell.get_name}"
           cell.set_geometry(*loc)
 
           #------ port location -----#
-          cell_location[ :port_location ].each{ |port_location|
+          cell_location[:port_location].each{ |port_location|
             # mikan offset not set yet
-            port_name = port_location[ :port_name ].to_sym
-            edge = get_edge_side_val(port_location[ :edge ])
-            offset = port_location[ :offset ]
-            subscript = port_location[ :subscript ]
-            port = cell.get_cports[ port_name ]
+            port_name = port_location[:port_name].to_sym
+            edge = get_edge_side_val(port_location[:edge])
+            offset = port_location[:offset]
+            subscript = port_location[:subscript]
+            port = cell.get_cports[port_name]
             if port == nil
-              port = cell.get_eports[ port_name ]
+              port = cell.get_eports[port_name]
             end
             if port == nil
               p "port '#{port_name}' not found"
@@ -332,7 +332,7 @@ module TECSCDE
                 next
               end
               p0 = port
-              port = port.get_ports[ subscript ]   # array
+              port = port.get_ports[subscript]   # array
               if port == nil
                 p "port '#{port_name}' : 'subscript=#{subscript}' out of range"
                 next
@@ -360,29 +360,29 @@ module TECSCDE
       end
 
       #----- join location -----#
-      info[ :join_list ].each{ |jl|
+      info[:join_list].each{ |jl|
         # jl[ :call_region ]
-        cp_cell_nspath = jl[ :call_cell ].to_sym
-        cp_name = jl[ :call_port ].to_sym
-        cp_subscript = jl[ :call_port_subscript ]
+        cp_cell_nspath = jl[:call_cell].to_sym
+        cp_name = jl[:call_port].to_sym
+        cp_subscript = jl[:call_port_subscript]
         # jl[ :entry_region ]
-        ep_cell_nspath = jl[ :entry_cell ].to_sym
-        ep_name = jl[ :entry_port ].to_sym
-        ep_subscript = jl[ :entry_port_subscript ]
+        ep_cell_nspath = jl[:entry_cell].to_sym
+        ep_name = jl[:entry_port].to_sym
+        ep_subscript = jl[:entry_port_subscript]
 
-        bl = jl[ :bar_list ]
+        bl = jl[:bar_list]
         bar_list = []
         bl.each{ |bar|
-          bar_list << [ bar[ :type ], bar[ :position ] ]
+          bar_list << [ bar[:type], bar[:position] ]
         }
         
         # cp_cell_nspath, cp_name, ep_cell_nspath, ep_name, bar_list = jl.get_location
         # p "set_location_from_tecsgen, #{cp_cell_nspath}, #{cp_name}, #{ep_cell_nspath}, #{ep_name}, #{bar_list}"
-        cp_cell = @cell_hash[ cp_cell_nspath ]
-        ep_cell = @cell_hash[ ep_cell_nspath ]
+        cp_cell = @cell_hash[cp_cell_nspath]
+        ep_cell = @cell_hash[ep_cell_nspath]
         # check existance of cells
         if cp_cell != nil && ep_cell != nil then
-          cport = cp_cell.get_cports[ cp_name ]
+          cport = cp_cell.get_cports[cp_name]
           if cport.kind_of? TmCPortArray
             if cp_subscript == nil
               TECSCDE.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
@@ -394,7 +394,7 @@ module TECSCDE
               TECSCDE.error("TM9999 #{cp_name} is not array but specified subscript")
             end
           end
-          eport = ep_cell.get_eports[ ep_name ]
+          eport = ep_cell.get_eports[ep_name]
           if eport.kind_of? TmEPortArray
             if ep_subscript == nil
               TECSCDE.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
@@ -445,8 +445,8 @@ module TECSCDE
                 # mikan length more than 2
                 len = bars.length
                 if len >= 0.1 then
-                  bars[ len - 1 ].set_position eport.get_position_in_normal_dir
-                  bars[ len - 2 ].set_position eport.get_position_in_tangential_dir
+                  bars[len - 1].set_position eport.get_position_in_normal_dir
+                  bars[len - 2].set_position eport.get_position_in_tangential_dir
                   # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
                   cport.get_join.change_bars bars
                 end
@@ -616,8 +616,8 @@ module TECSCDE
       f.print <<EOT
     "paper" : {
        "type" : "paper",
-       "size" :  "#{@paper[ :size ]}",
-       "orientation" :  "#{@paper[ :orientation ]}"
+       "size" :  "#{@paper[:size]}",
+       "orientation" :  "#{@paper[:orientation]}"
     },
 EOT
     end
@@ -735,7 +735,7 @@ EOT
       @tecsgen.get_cell_location_list.each{ |cl|
         cell_nspath, x, y, w, h, port_location_list = cl.get_location
         # p "set_location_from_tecsgen", cell_nspath, x, y, w, h, port_location_list
-        cell = @cell_hash[ cell_nspath.to_s.to_sym ]
+        cell = @cell_hash[cell_nspath.to_s.to_sym]
         if cell then
           # p "apply location: #{cell.get_name}"
           cell.set_geometry(x, y, w, h)
@@ -748,12 +748,12 @@ EOT
         cp_subscript = nil   # kari
         ep_subscript = nil
         # p "set_location_from_tecsgen, #{cp_cell_nspath}, #{cp_name}, #{ep_cell_nspath}, #{ep_name}, #{bar_list}"
-        cp_cell = @cell_hash[ cp_cell_nspath.to_s.to_sym ]
-        ep_cell = @cell_hash[ ep_cell_nspath.to_s.to_sym ]
+        cp_cell = @cell_hash[cp_cell_nspath.to_s.to_sym]
+        ep_cell = @cell_hash[ep_cell_nspath.to_s.to_sym]
         # check existance of cells
         if cp_cell != nil && ep_cell != nil then
-          cport = cp_cell.get_cports[ cp_name.to_sym ]
-          eport = ep_cell.get_eports[ ep_name.to_sym ]
+          cport = cp_cell.get_cports[cp_name.to_sym]
+          eport = ep_cell.get_eports[ep_name.to_sym]
            # p "1 #{cp_name} #{ep_name} #{cport} #{eport}"
 
           # check existance of cport & eport and direction of bar & edge (must be in right angle)
@@ -793,8 +793,8 @@ EOT
                 # mikan length more than 2
                 len = bars.length
                 if len >= 2 then
-                  bars[ len - 1 ].set_position eport.get_position_in_normal_dir
-                  bars[ len - 2 ].set_position eport.get_position_in_tangential_dir
+                  bars[len - 1].set_position eport.get_position_in_normal_dir
+                  bars[len - 2].set_position eport.get_position_in_tangential_dir
                   # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
                   cport.get_join.change_bars bars
                 end

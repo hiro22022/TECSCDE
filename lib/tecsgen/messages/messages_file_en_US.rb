@@ -122,215 +122,215 @@ class TECSMsg
 "
 
 # @@comment[ :oneway_ercd_note ] = "/* oneway の場合 E_OK しか返せません */"
-@@comment[ :oneway_ercd_note ] = "/* Oneway function always returns E_OK. */"
+@@comment[:oneway_ercd_note] = "/* Oneway function always returns E_OK. */"
 
 # @@comment[ :ercd_note ] = "/* エラー処理コードをここに記述します */"
-@@comment[ :ercd_note ] = "/* Write error processing code here */"
+@@comment[:ercd_note] = "/* Write error processing code here */"
 
 # @@comment[ :IMP_comment ] = "\n/* import_C により import されるヘッダ %s */\n"
-@@comment[ :IMP_comment ] = "\n/* header imported by import_C %s */\n"
+@@comment[:IMP_comment] = "\n/* header imported by import_C %s */\n"
 
 # @@comment[ :MVAR_comment ] = "# 変数 %s\n"
-@@comment[ :MVAR_comment ] = "# var %s\n"
+@@comment[:MVAR_comment] = "# var %s\n"
 
 # @@comment[ :MRUL_comment ] = "# ルール %s\n"
-@@comment[ :MRUL_comment ] = "# Rule %s\n"
+@@comment[:MRUL_comment] = "# Rule %s\n"
 
 # @@comment[ :TCM_comment ] = "# テンプレートコードでメークしてみる場合 %s\n"
-@@comment[ :TCM_comment ] = "# in case build with template code %s\n"
+@@comment[:TCM_comment] = "# in case build with template code %s\n"
 
 # @@comment[ :MDEP_comment ] = "\n# depend を include %s\n"
-@@comment[ :MDEP_comment ] = "\n# include dependcy %s\n"
+@@comment[:MDEP_comment] = "\n# include dependcy %s\n"
 
 # @@comment[ :SDI_comment ] = "/* シグニチャディスクリプタ参照ヘッダ %s */\n"
-@@comment[ :SDI_comment ] = "/* descriptor referencing signature header %s */\n"
+@@comment[:SDI_comment] = "/* descriptor referencing signature header %s */\n"
 
 # @@comment[ :SD_comment ] = "/* シグニチャディスクリプタ %s */\n"
-@@comment[ :SD_comment ] = "/* signature descriptor %s */\n"
+@@comment[:SD_comment] = "/* signature descriptor %s */\n"
 
 # @@comment[ :SFT_comment ] = "/* シグニチャ関数テーブル %s */\n"
-@@comment[ :SFT_comment ] = "/* signature function table %s */\n"
+@@comment[:SFT_comment] = "/* signature function table %s */\n"
 
 # @@comment[ :SDES_comment ] = "/* シグニチャディスクリプタ(動的結合用) %s */\n"
-@@comment[ :SDES_comment ] = "/* signature descriptor %s for dynamic join */\n"
+@@comment[:SDES_comment] = "/* signature descriptor %s for dynamic join */\n"
 
 # @@comment[ :IRTH_comment ] = "/* ランタイムヘッダ %s */\n"
 
 # @@comment[ :UDF_comment ] = "/* inline のための undef %s */\n"
-@@comment[ :UDF_comment ] = "/* undef for inline %s */\n"
+@@comment[:UDF_comment] = "/* undef for inline %s */\n"
 
 # @@comment[ :IGH_comment ] = "/* グローバルヘッダ %s */\n"
-@@comment[ :IGH_comment ] = "/* global header %s */\n"
+@@comment[:IGH_comment] = "/* global header %s */\n"
 
 # @@comment[ :ISH_comment ] = "/* シグニチャヘッダ %s */\n"
-@@comment[ :ISH_comment ] = "/* signature header %s */\n"
+@@comment[:ISH_comment] = "/* signature header %s */\n"
 
 # @@comment[ :ICT_comment ] = "/* 最適化のため参照するセルタイプの CB 型の定義を取込む %s */\n"
-@@comment[ :ICT_comment ] = "/* to get the definition of CB type of referenced celltype for optimization %s */\n"
+@@comment[:ICT_comment] = "/* to get the definition of CB type of referenced celltype for optimization %s */\n"
 
 # @@comment[ :NIDB_comment ] = "ID のベース "
-@@comment[ :NIDB_comment ] = "ID Base "
+@@comment[:NIDB_comment] = "ID Base "
 
 # @@comment[ :NCEL_comment ] = "セルの個数"
-@@comment[ :NCEL_comment ] = " number of cells"
+@@comment[:NCEL_comment] = " number of cells"
 
 # @@comment[ :CVI_comment ] = "/* IDXの正当性チェックマクロ %s */\n"
-@@comment[ :CVI_comment ] = "/* IDX validation macro %s */\n"
+@@comment[:CVI_comment] = "/* IDX validation macro %s */\n"
 
 # @@comment[ :CVIA_comment ] = "/* IDXの正当性チェックマクロ（短縮形） %s */\n"
-@@comment[ :CVIA_comment ] = "/* IDX validation macro (abbrev.) %s */\n"
+@@comment[:CVIA_comment] = "/* IDX validation macro (abbrev.) %s */\n"
 
 # @@comment[ :NCPA_comment ] = "/* 呼び口配列の大きさを得るマクロ %s */\n"
-@@comment[ :NCPA_comment ] = "/* call port array size macro %s */\n"
+@@comment[:NCPA_comment] = "/* call port array size macro %s */\n"
 
 # @@comment[ :NEPA_comment ] = "/* 受け口配列の大きさを得るマクロ %s */\n"
-@@comment[ :NEPA_comment ] = "/* entry port array size macro %s */\n"
+@@comment[:NEPA_comment] = "/* entry port array size macro %s */\n"
 
 # @@comment[ :TOCP_comment ] = "/* optional 呼び口をテストするマクロ %s */\n"
-@@comment[ :TOCP_comment ] = "/* optional call port test macro %s */\n"
+@@comment[:TOCP_comment] = "/* optional call port test macro %s */\n"
 
 # @@comment[ :TOCPA_comment ] = "/* optional 呼び口をテストするマクロ（短縮形） %s */\n"
-@@comment[ :TOCPA_comment ] = "/* optional call port test macro (abbrev) %s */\n"
+@@comment[:TOCPA_comment] = "/* optional call port test macro (abbrev) %s */\n"
 
 # @@comment[ :GCB_comment ] = "\n/* セルCBを得るマクロ %s */\n"
-@@comment[ :GCB_comment ] = "\n/* celll CB macro %s */\n"
+@@comment[:GCB_comment] = "\n/* celll CB macro %s */\n"
 
 # @@comment[ :GCBA_comment ] = "\n/* セルCBを得るマクロ(短縮形) %s */\n"
-@@comment[ :GCBA_comment ] = "\n/* cell CB macro (abbrev) %s */\n"
+@@comment[:GCBA_comment] = "\n/* cell CB macro (abbrev) %s */\n"
 
 # @@comment[ :CCT_comment ] = "/* CELLCB 型(短縮形) %s */\n"
-@@comment[ :CCT_comment ] = "/* CELLCB type (abbrev) %s */\n"
+@@comment[:CCT_comment] = "/* CELLCB type (abbrev) %s */\n"
 
 # @@comment[ :CTIXA_comment ] = "/* セルタイプのIDX型(短縮形) %s */\n"
-@@comment[ :CTIXA_comment ] = "/* celltype IDX type (abbrev) %s */\n"
+@@comment[:CTIXA_comment] = "/* celltype IDX type (abbrev) %s */\n"
 
 # @@comment[ :AAM_comment ] = "\n/* 属性アクセスマクロ %s */\n"
-@@comment[ :AAM_comment ] = "\n/* attr access  %s */\n"
+@@comment[:AAM_comment] = "\n/* attr access  %s */\n"
 
 # @@comment[ :VAM_comment ] = "\n/* var アクセスマクロ %s */\n"
-@@comment[ :VAM_comment ] = "\n/* var access macro %s */\n"
+@@comment[:VAM_comment] = "\n/* var access macro %s */\n"
 
 # @@comment[ :AAMA_comment ] = "\n/* 属性アクセスマクロ(短縮形) %s */\n"
-@@comment[ :AAMA_comment ] = "\n/* attr access macro (abbrev) %s */\n"
+@@comment[:AAMA_comment] = "\n/* attr access macro (abbrev) %s */\n"
 
 # @@comment[ :VAMA_comment ] = "\n/* var アクセスマクロ(短縮形) %s */\n"
-@@comment[ :VAMA_comment ] = "\n/* var access macro (abbrev) %s */\n"
+@@comment[:VAMA_comment] = "\n/* var access macro (abbrev) %s */\n"
 
 # @@comment[ :CPM_comment ] = " /* 呼び口関数マクロ %s */\n"
-@@comment[ :CPM_comment ] = " /* call port function macro %s */\n"
+@@comment[:CPM_comment] = " /* call port function macro %s */\n"
 
 # @@comment[ :CPMA_comment ] = "/* 呼び口関数マクロ（短縮形）%s */\n"
-@@comment[ :CPMA_comment ] = "/* call port function macro (abbrev) %s */\n"
+@@comment[:CPMA_comment] = "/* call port function macro (abbrev) %s */\n"
 
 # @@comment[ :EPM_comment ] = "\n/* 受け口関数マクロ（短縮形） %s */\n"
-@@comment[ :EPM_comment ] = "\n/* entry port function macro (abbrev) %s */\n"
+@@comment[:EPM_comment] = "\n/* entry port function macro (abbrev) %s */\n"
 
 # @@comment[ :CRD_comment ] = "\n/* ディスクリプタ参照関数 %s */\n"
-@@comment[ :CRD_comment ] = "/* refer to descriptor function %s */\n"
+@@comment[:CRD_comment] = "/* refer to descriptor function %s */\n"
 
 # @@comment[ :CRDA_comment ] = "\n/* ディスクリプタ参照マクロ（短縮形） %s */\n"
-@@comment[ :CRDA_comment ] = "\n/* refer to descriptor macro (abbrev) %s */\n"
+@@comment[:CRDA_comment] = "\n/* refer to descriptor macro (abbrev) %s */\n"
 
 # @@comment[ :SDF_comment ] = "/* ディスクリプタ設定関数 %s */\n"
-@@comment[ :SDF_comment ] = "/* set descriptor function %s */\n"
+@@comment[:SDF_comment] = "/* set descriptor function %s */\n"
 
 # @@comment[ :SDMA_comment ] = "\n/* ディスクリプタ設定マクロ（短縮形） %s */\n"
-@@comment[ :SDMA_comment ] = "\n/* set descriptor macro (abbrev) %s */\n"
+@@comment[:SDMA_comment] = "\n/* set descriptor macro (abbrev) %s */\n"
 
 # @@comment[ :CTIX_comment ] = "\n/* セルタイプのIDX型 %s */\n"
-@@comment[ :CTIX_comment ] = "\n/* celltype IDX type %s */\n"
+@@comment[:CTIX_comment] = "\n/* celltype IDX type %s */\n"
 
 # @@comment[ :EPP_comment ] = "\n/* 受け口関数プロトタイプ宣言 %s */\n"
-@@comment[ :EPP_comment ] = "\n/* prototype declaration of entry port function %s */\n"
+@@comment[:EPP_comment] = "\n/* prototype declaration of entry port function %s */\n"
 
 # @@comment[ :EPSP_comment ] = "\n/* 受け口スケルトン関数プロトタイプ宣言（VMT不要最適化により参照するもの） %s */\n"
-@@comment[ :EPSP_comment ] = "\n/* prototype declaration of entry port function (referenced when VMT useless optimise enabled) %s */\n"
+@@comment[:EPSP_comment] = "\n/* prototype declaration of entry port function (referenced when VMT useless optimise enabled) %s */\n"
 
 # @@comment[ :INL_comment ] = "/* inline ヘッダの include %s */\n"
-@@comment[ :INL_comment ] = "/*  include inline header %s */\n"
+@@comment[:INL_comment] = "/*  include inline header %s */\n"
 
 # @@comment[ :CIP_comment ] = "/* セル INIB 型宣言 %s */\n"
-@@comment[ :CIP_comment ] = "/* cell INIB type definition %s */\n"
+@@comment[:CIP_comment] = "/* cell INIB type definition %s */\n"
 
 # @@comment[ :CCTPA_comment ] = "/* セル CB 型宣言 %s */\n"
-@@comment[ :CCTPA_comment ] = "/* cell CB type definition %s */\n"
+@@comment[:CCTPA_comment] = "/* cell CB type definition %s */\n"
 
 # @@comment[ :CCDP_comment ] = "/* セル CB (ダミー)型宣言 %s */\n"
-@@comment[ :CCDP_comment ] = "/* cell CB (dummy) type definition %s */\n"
+@@comment[:CCDP_comment] = "/* cell CB (dummy) type definition %s */\n"
 
 # @@comment[ :CCTPO_comment ] = "/* セル CB 型宣言 %s */\n"
-@@comment[ :CCTPO_comment ] = "/* cell CB type definition %s */\n"
+@@comment[:CCTPO_comment] = "/* cell CB type definition %s */\n"
 
 # @@comment[ :SCP_comment ] = "/* シングルトンセル CB プロトタイプ宣言 %s */\n"
-@@comment[ :SCP_comment ] = "/* singleton cell CB prototype declaration %s */\n"
+@@comment[:SCP_comment] = "/* singleton cell CB prototype declaration %s */\n"
 
 # @@comment[ :DCI_comment ] = "\n/* CB は存在しない。INIB を CB の代わりに使用するための define %s */\n"
-@@comment[ :DCI_comment ] = "\n/* CB not exist. CB corresponding to INIB %s */\n"
+@@comment[:DCI_comment] = "\n/* CB not exist. CB corresponding to INIB %s */\n"
 
 # @@comment[ :FEC_comment ] = "/* イテレータコード (FOREACH_CELL)の生成 %s */\n"
-@@comment[ :FEC_comment ] = "/* iteration code (FOREACH_CELL) %s */\n"
+@@comment[:FEC_comment] = "/* iteration code (FOREACH_CELL) %s */\n"
 
 # @@comment[ :DAL_comment ] = "/* deallocate マクロ %s */\n"
-@@comment[ :DAL_comment ] = "/* deallocate macro %s */\n"
+@@comment[:DAL_comment] = "/* deallocate macro %s */\n"
 
 # @@comment[ :NFEC_comment ] = "/* イテレータコード (FOREACH_CELL)の生成(CB,INIB は存在しない) %s */\n"
-@@comment[ :NFEC_comment ] = "/* iteration code (FOREACH_CELL) (niether CB, nor NIB exit) %s */\n"
+@@comment[:NFEC_comment] = "/* iteration code (FOREACH_CELL) (niether CB, nor NIB exit) %s */\n"
 
 # @@comment[ :CIM_comment ] = "/* CB 初期化マクロ %s */\n"
-@@comment[ :CIM_comment ] = "/* CB initialize macro %s */\n"
+@@comment[:CIM_comment] = "/* CB initialize macro %s */\n"
 
 # @@comment[ :EDT_comment ] = "/* 受け口ディスクリプタ型 %s */\n"
-@@comment[ :EDT_comment ] = "/* entry port descriptor type %s */\n"
+@@comment[:EDT_comment] = "/* entry port descriptor type %s */\n"
 
 # @@comment[ :EPSF_comment ] = "/* 受け口スケルトン関数 %s */\n"
-@@comment[ :EPSF_comment ] = "/* entry port skelton function %s */\n"
+@@comment[:EPSF_comment] = "/* entry port skelton function %s */\n"
 
 # @@comment[ :EPSFT_comment ] = "/* 受け口スケルトン関数テーブル %s */\n"
-@@comment[ :EPSFT_comment ] = "/* entry port skelton function table %s */\n"
+@@comment[:EPSFT_comment] = "/* entry port skelton function table %s */\n"
 
 # @@comment[ :CPEPD_comment ] = "/* 呼び口の参照する受け口ディスクリプタ(実際の型と相違した定義) %s */\n"
-@@comment[ :CPEPD_comment ] = "/* entry port descriptor referenced by call port (differ from actual definition) %s */\n"
+@@comment[:CPEPD_comment] = "/* entry port descriptor referenced by call port (differ from actual definition) %s */\n"
 
 # @@comment[ :CPA_comment ] = "/* 呼び口配列 %s */\n"
-@@comment[ :CPA_comment ] = "/* call port array %s */\n"
+@@comment[:CPA_comment] = "/* call port array %s */\n"
 
 # @@comment[ :CIC_comment ] = "/* CB 初期化コード %s */\n"
-@@comment[ :CIC_comment ] = "/* CB initialize code %s */\n"
+@@comment[:CIC_comment] = "/* CB initialize code %s */\n"
 
 # @@comment[ :AVAI_comment ] = "/* 属性・変数の配列 %s */\n"
-@@comment[ :AVAI_comment ] = "/* array of attr/var %s */\n"
+@@comment[:AVAI_comment] = "/* array of attr/var %s */\n"
 
 # @@comment[ :AVI_comment ] = "/* 変数(構造体、配列)初期値 %s */\n"
-@@comment[ :AVI_comment ] = "/* var (struct, array) initial value %s */\n"
+@@comment[:AVI_comment] = "/* var (struct, array) initial value %s */\n"
 
 # @@comment[ :INIB_comment ] = "/* セル INIB %s */\n"
-@@comment[ :INIB_comment ] = "/* cell INIB %s */\n"
+@@comment[:INIB_comment] = "/* cell INIB %s */\n"
 
 # @@comment[ :CB_comment ] = "/* セル CB %s */\n"
-@@comment[ :CB_comment ] = "/* cell CB %s */\n"
+@@comment[:CB_comment] = "/* cell CB %s */\n"
 
 # @@comment[ :EPD_comment ] = "/* 受け口ディスクリプタ %s */\n"
-@@comment[ :EPD_comment ] = "/* entry port descriptor %s */\n"
+@@comment[:EPD_comment] = "/* entry port descriptor %s */\n"
 
 # @@comment[ :PAC_comment ] = "/* プロトタイプ宣言や変数の定義をここに書きます %s */\n"
-@@comment[ :PAC_comment ] = "/* Put prototype declaration and/or variale definition here %s */\n"
+@@comment[:PAC_comment] = "/* Put prototype declaration and/or variale definition here %s */\n"
 
 # @@comment[ :CAAM_comment ] = " *\n * 属性アクセスマクロ %s\n"
-@@comment[ :CAAM_comment ] = " *\n * attr access macro %s\n"
+@@comment[:CAAM_comment] = " *\n * attr access macro %s\n"
 
 # @@comment[ :CAAMI_comment ] = " *\n * 属性アクセスマクロ %s\n"
-@@comment[ :CAAMI_comment ] = " *\n * attr access macro %s\n"
+@@comment[:CAAMI_comment] = " *\n * attr access macro %s\n"
 
 # @@comment[ :TYP_comment ] = " *\n * 型 %s\n * CELLCB 型  : %s\n * CELLIDX 型 : %s\n"
-@@comment[ :TYP_comment ] = " *\n * type %s\n * CELLCB type  : %s\n * CELLIDX type : %s\n"
+@@comment[:TYP_comment] = " *\n * type %s\n * CELLCB type  : %s\n * CELLIDX type : %s\n"
 
 # @@comment[ :TCPF_comment ] = " * 呼び口関数 %s\n"
-@@comment[ :TCPF_comment ] = " * call port function %s\n"
+@@comment[:TCPF_comment] = " * call port function %s\n"
 
 # @@comment[ :TEPF_comment ] = "/* 受け口関数 %s */\n"
-@@comment[ :TEPF_comment ] = "/* entry port function %s */\n"
+@@comment[:TEPF_comment] = "/* entry port function %s */\n"
 
 # @@comment[ :TEFB_comment ] = "\t/* ここに処理本体を記述します %s */\n"
-@@comment[ :TEFB_comment ] = "\t/* Put statements here %s */\n"
+@@comment[:TEFB_comment] = "\t/* Put statements here %s */\n"
 
 end

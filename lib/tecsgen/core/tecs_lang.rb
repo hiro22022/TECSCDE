@@ -84,19 +84,19 @@ class TECS_LANG
   # RETURN:
   #  [ lang, charset, result ]::　　result = false の場合 lang, charset は不適切
   def self.resolve_alias_and_check(lang, charset)
-    if LANG_ALIAS[ lang.to_s.upcase ] then
-      ln = LANG_ALIAS[ lang.to_s.upcase ]
+    if LANG_ALIAS[lang.to_s.upcase] then
+      ln = LANG_ALIAS[lang.to_s.upcase]
     else
       ln = lang
     end
 
-    if CHARSET_ALIAS[ charset.to_s.upcase ] then
-      cs = CHARSET_ALIAS[ charset.to_s.upcase ]
+    if CHARSET_ALIAS[charset.to_s.upcase] then
+      cs = CHARSET_ALIAS[charset.to_s.upcase]
     else
       cs = charset
     end
 
-    if SUITABLE_CHARSET[ ln ] == nil || SUITABLE_CHARSET[ ln ].index(cs) == nil
+    if SUITABLE_CHARSET[ln] == nil || SUITABLE_CHARSET[ln].index(cs) == nil
       res = false
     else
       res = true
@@ -135,7 +135,7 @@ class TECS_LANG
   #   ・-k オプション (ファイルの文字コードのみ)
   def self.set_lang_var
 
-    if $IN_EXERB && (ENV[ 'TERM' ] == nil || ENV[ 'TERM' ] == "cygwin") then
+    if $IN_EXERB && (ENV['TERM'] == nil || ENV['TERM'] == "cygwin") then
       # exerb 版で端末 cygwin の時は codepage のみを見る
       cp = get_win_codepage
       lang = codepage_to_lang cp
@@ -143,23 +143,23 @@ class TECS_LANG
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
 
-    elsif ENV[ 'LANG' ]then
+    elsif ENV['LANG']then
       # 非 exerb 版では LANG 環境変数を見る
       # cygwin console では codepage に従って出力した方が平和なため
 
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV[ 'LANG' ])
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['LANG'])
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
-    if ENV[ 'TECSGEN_LANG' ]then
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV[ 'TECSGEN_LANG' ])
+    if ENV['TECSGEN_LANG']then
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['TECSGEN_LANG'])
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
-    if ENV[ 'TECSGEN_FILE_LANG' ]then
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV[ 'TECSGEN_FILE_LANG' ])
+    if ENV['TECSGEN_FILE_LANG']then
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['TECSGEN_FILE_LANG'])
     end
 
     self.set_lang_by_option

@@ -63,10 +63,10 @@ class SVCManage
         raise "class #{self.class.name} shall not have instances"
     end
     def self.get_func_id func_name
-        return @@func_ids[ func_name ]
+        return @@func_ids[func_name]
     end
     def self.set_func_id func_name
-        @@func_ids[ func_name ] = self.assign_id
+        @@func_ids[func_name] = self.assign_id
         # puts @@func_ids[ func_name ]
     end
     def self.get_id
@@ -130,8 +130,8 @@ class HRPSVCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ @ct_name_body ] == nil then
-        @@generated_celltype[ @ct_name_body ] = [ self ]
+    if @@generated_celltype[@ct_name_body] == nil then
+        @@generated_celltype[@ct_name_body] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
         file2.print <<EOT
 /* HRPSVC0001 */
@@ -145,13 +145,13 @@ celltype #{@ct_name_body} {
 EOT
         file2.close
     else
-      @@generated_celltype[ @ct_name_body ] << self
+      @@generated_celltype[@ct_name_body] << self
     end
     file.print "import( \"#{$gen}/#{@ct_name_body}.cdl\" );\n"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ @ct_name ] == nil then
-        @@generated_celltype[ @ct_name ] = [ self ]
+    if @@generated_celltype[@ct_name] == nil then
+        @@generated_celltype[@ct_name] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         file2.print <<EOT
 /* HRPSVC0002 */
@@ -164,7 +164,7 @@ celltype #{@ct_name} {
 EOT
         file2.close
     else
-      @@generated_celltype[ @ct_name ] << self
+      @@generated_celltype[@ct_name] << self
     end
     file.print "import( \"#{$gen}/#{@ct_name}.cdl\" );\n"
 
@@ -595,7 +595,7 @@ EOT
       #      callable?をチェックし，呼出し可能であれば，そのドメインを返す
       #
       callable_domains = []
-      @@generated_celltype[ @ct_name_body ].each { |svcplugin|
+      @@generated_celltype[@ct_name_body].each { |svcplugin|
           if svcplugin.get_caller_cell.get_region.get_domain_root.get_domain_type.get_option == "OutOfDomain"
               if svcplugin.get_caller_cell.get_celltype.is_active?
                   #

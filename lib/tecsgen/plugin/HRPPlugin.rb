@@ -166,7 +166,7 @@ class HRPPlugin < DomainPlugin
       # INCLUDE を出力
       #  すべてのドメインに対する cfg を先に生成しておく
       #  もし、ドメインに属するカーネルオブジェクトも、モジュールもない場合でも、cfg が出力される
-      regions = DomainType.get_domain_regions[ :HRP ]
+      regions = DomainType.get_domain_regions[:HRP]
       file = AppFile.open("#{$gen}/tecsgen.cfg")
       file.print "/* HRPPlugin 002 */\n"
       regions.each{ |region|
@@ -215,7 +215,7 @@ class HRPPlugin < DomainPlugin
 
           # HRPのドメインリージョンを取得
           regions = ct.get_domain_roots
-          regions_hrp = regions[ :HRP ]
+          regions_hrp = regions[:HRP]
           dbgPrint "HRP domain in #{ct.get_name}: "
           regions_hrp.each { |reg|
             dbgPrint reg.get_name
@@ -278,19 +278,19 @@ class HRPPlugin < DomainPlugin
     rhs_cell = join.get_cell
     dbgPrint "--------- add_inter_domain:#{join.get_owner.get_namespace_path} => #{join.get_cell.get_namespace_path}-----\n"
     domain_root = join.get_owner.get_region.get_domain_root   # lhs cell's domain root
-    if @@inter_domain_join_set[ rhs_cell ] == nil then
-      @@inter_domain_join_set[ rhs_cell ] = []
+    if @@inter_domain_join_set[rhs_cell] == nil then
+      @@inter_domain_join_set[rhs_cell] = []
     end
     # 左辺のドメインルートを記録
-    @@inter_domain_join_set[ rhs_cell ] << join
+    @@inter_domain_join_set[rhs_cell] << join
   end
   def self.get_inter_domain_join_set rhs_cell
-    if @@inter_domain_join_set[ rhs_cell ] then
-      @@inter_domain_join_set[ rhs_cell ].uniq!
+    if @@inter_domain_join_set[rhs_cell] then
+      @@inter_domain_join_set[rhs_cell].uniq!
     else
-      @@inter_domain_join_set[ rhs_cell ] = []
+      @@inter_domain_join_set[rhs_cell] = []
     end
-    return @@inter_domain_join_set[ rhs_cell ]
+    return @@inter_domain_join_set[rhs_cell]
   end
   def self.get_inter_domain_join_roots rhs_cell
     dbgPrint "--------- get_inter_domain #{rhs_cell.get_namespace_path} -----\n"

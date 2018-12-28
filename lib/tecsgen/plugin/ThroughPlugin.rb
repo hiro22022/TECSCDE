@@ -151,10 +151,10 @@ class ThroughPlugin < Plugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ @ct_name ] == nil then
-      @@generated_celltype[ @ct_name ] = [ self ]
+    if @@generated_celltype[@ct_name] == nil then
+      @@generated_celltype[@ct_name] = [ self ]
     else
-      @@generated_celltype[ @ct_name ] << self
+      @@generated_celltype[@ct_name] << self
       return
     end
 

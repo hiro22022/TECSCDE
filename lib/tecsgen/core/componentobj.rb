@@ -88,12 +88,12 @@ class Signature < NSBDNode  # < Nestable
 
   def self.push
     @@nest_stack_index += 1
-    @@nest_stack[ @@nest_stack_index ] = @@current_object
+    @@nest_stack[@@nest_stack_index] = @@current_object
     @@current_object = nil
   end
 
   def self.pop
-    @@current_object = @@nest_stack[ @@nest_stack_index ]
+    @@current_object = @@nest_stack[@@nest_stack_index]
     @@nest_stack_index -= 1
     if @@nest_stack_index < -1 then
       raise "TooManyRestore"
@@ -139,7 +139,7 @@ class Signature < NSBDNode  # < Nestable
     # id を割付ける
     id = 1
     function_head_list.get_items.each{ |f|
-      @func_name_to_id[ f.get_name ] = id
+      @func_name_to_id[f.get_name] = id
       f.set_owner self
       id += 1
     }
@@ -215,7 +215,7 @@ class Signature < NSBDNode  # < Nestable
 
   #=== Signature# 関数名から signature 内の id を得る
   def get_id_from_func_name func_name
-    @func_name_to_id[ func_name ]
+    @func_name_to_id[func_name]
   end
 
   #=== Signature# context を得る
@@ -365,8 +365,8 @@ end
   @@set_descriptor_list = {}
   def self.set_descriptor_list
     Namespace.get_root.travers_all_signature{ |sig|
-      if @@set_descriptor_list[ sig ] == nil then
-        @@set_descriptor_list[ sig ] = true
+      if @@set_descriptor_list[sig] == nil then
+        @@set_descriptor_list[sig] = true
         sig.set_descriptor_list
       end
     }
@@ -393,7 +393,7 @@ end
             end
             # p "has_desc #{param.get_name} #{t}"
             if t.kind_of? DescriptorType then
-              desc_list[ t.get_signature ] = param
+              desc_list[t.get_signature] = param
               # p self.get_name, t.get_signature.get_name
               if t.get_signature == self then
                # cdl_error( "S9999 Descriptor argument '$1' is the same signature as this parameter '$2' included", @name, param.get_name )
@@ -592,12 +592,12 @@ class Celltype < NSBDNode # < Nestable
 
   def self.push
     @@nest_stack_index += 1
-    @@nest_stack[ @@nest_stack_index ] = @@current_object
+    @@nest_stack[@@nest_stack_index] = @@current_object
     @@current_object = nil
   end
 
   def self.pop
-    @@current_object = @@nest_stack[ @@nest_stack_index ]
+    @@current_object = @@nest_stack[@@nest_stack_index]
     @@nest_stack_index -= 1
     if @@nest_stack_index < -1 then
       raise "TooManyRestore"
@@ -1010,8 +1010,8 @@ class Celltype < NSBDNode # < Nestable
   @@dynamic_join_checked_list = {}
   def self.check_dynamic_join
     Namespace.get_root.travers_all_celltype{ |ct|
-      if @@dynamic_join_checked_list[ ct ] == nil then
-        @@dynamic_join_checked_list[ ct ] = true
+      if @@dynamic_join_checked_list[ct] == nil then
+        @@dynamic_join_checked_list[ct] = true
         ct.check_dynamic_join
       end
     }
@@ -1429,12 +1429,12 @@ class Cell < NSBDNode # < Nestable
 
   def self.push
     @@nest_stack_index += 1
-    @@nest_stack[ @@nest_stack_index ] = @@current_object
+    @@nest_stack[@@nest_stack_index] = @@current_object
     @@current_object = nil
   end
 
   def self.pop
-    @@current_object = @@nest_stack[ @@nest_stack_index ]
+    @@current_object = @@nest_stack[@@nest_stack_index]
     @@nest_stack_index -= 1
     if @@nest_stack_index < -1 then
       raise "TooManyRestore"
@@ -2189,7 +2189,7 @@ class Cell < NSBDNode # < Nestable
       # debug
       dbgPrint " composite join name: #{cj.get_name}  cell: #{cj.get_cell_name}  cell elem: #{cj.get_cell_elem_name}\n"
 
-      name = @cell_list[ "#{cj.get_cell_name}" ].get_real_global_name(cj.get_cell_elem_name)
+      name = @cell_list["#{cj.get_cell_name}"].get_real_global_name(cj.get_cell_elem_name)
       return name
 
     else
@@ -2222,7 +2222,7 @@ class Cell < NSBDNode # < Nestable
       dbgPrint "   composite join name: #{cj.get_name}  cell: #{cj.get_cell_name}  cell elem: #{cj.get_cell_elem_name}\n"
 
       # composite の内部のセルに対し再帰的に get_real_global_port_name を適用
-      name = @cell_list[ "#{cj.get_cell_name}" ].get_real_global_port_name(cj.get_cell_elem_name)
+      name = @cell_list["#{cj.get_cell_name}"].get_real_global_port_name(cj.get_cell_elem_name)
       return name
 
     else
@@ -2243,7 +2243,7 @@ class Cell < NSBDNode # < Nestable
       cj = @celltype.find_export(port_name)
 
       # composite の内部のセルに対し再帰的に get_real_port を適用
-      port = @cell_list[ "#{cj.get_cell_name}" ].get_real_port(cj.get_cell_elem_name)
+      port = @cell_list["#{cj.get_cell_name}"].get_real_port(cj.get_cell_elem_name)
       return port
     else
 
@@ -2264,7 +2264,7 @@ class Cell < NSBDNode # < Nestable
       cj = @celltype.find_export(port_name)
 
       # composite の内部のセルに対し再帰的に get_real_port を適用
-      cell = @cell_list[ "#{cj.get_cell_name}" ].get_real_cell(cj.get_cell_elem_name)
+      cell = @cell_list["#{cj.get_cell_name}"].get_real_cell(cj.get_cell_elem_name)
       return cell
     else
 
@@ -2285,10 +2285,10 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# 受け口のport の参照カウントをアップする
   # port_name:: Symbol  : ポート名
   def port_referenced port
-    if @referenced_port_list[ port ] then
-      @referenced_port_list[ port ] += 1
+    if @referenced_port_list[port] then
+      @referenced_port_list[port] += 1
     else
-      @referenced_port_list[ port ] = 1
+      @referenced_port_list[port] = 1
     end
 
     # composite か？
@@ -2301,7 +2301,7 @@ class Cell < NSBDNode # < Nestable
 
       if cj then  # 既にエラー
         # composite の内部のセルに対し再帰的に get_real_port を適用
-        cell = @cell_list[ "#{cj.get_cell_name}" ]
+        cell = @cell_list["#{cj.get_cell_name}"]
         if cell && cell.get_celltype then
           cell.port_referenced(cell.get_celltype.find(cj.get_cell_elem_name))
         end
@@ -2387,8 +2387,8 @@ class Cell < NSBDNode # < Nestable
       # @cell_list.each{ |c, p| print c, p, '\n' }
 
       cj = @celltype.find_export port.get_name
-      if cj && @cell_list[ cj.get_cell_name.to_s ] then
-        inner_cell = @cell_list[ cj.get_cell_name.to_s ]
+      if cj && @cell_list[cj.get_cell_name.to_s] then
+        inner_cell = @cell_list[cj.get_cell_name.to_s]
         ct = inner_cell.get_celltype
         if ct then
           inner_port = ct.find(cj.get_cell_elem_name)
@@ -3035,9 +3035,9 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell#restrict を追加
   def add_restrict(entry_name, func_name, region_name_list)
-    if @restrict_list[ entry_name ] then
-      if @restrict_list[ entry_name ][ func_name ] then
-        @restrict_list[ entry_name ][ func_name ].each{ |rn|
+    if @restrict_list[entry_name] then
+      if @restrict_list[entry_name][func_name] then
+        @restrict_list[entry_name][func_name].each{ |rn|
           if region_name_list.include? rn then
             # p func_name
             name = func_name ? entry_name : entry_name+"."+func_name
@@ -3045,12 +3045,12 @@ class Cell < NSBDNode # < Nestable
           end
         }
       else
-        @restrict_list[ entry_name ][ func_name ] = region_name_list
+        @restrict_list[entry_name][ func_name ] = region_name_list
       end
     else
       func_list = { }
-      func_list[ func_name ] = region_name_list
-      @restrict_list[ entry_name ] = func_list
+      func_list[func_name] = region_name_list
+      @restrict_list[entry_name] = func_list
     end
     # pp @restrict_list
   end
@@ -3188,12 +3188,12 @@ class CompositeCelltype < NSBDNode # < Nestable
 
   def self.push
     @@nest_stack_index += 1
-    @@nest_stack[ @@nest_stack_index ] = @@current_object
+    @@nest_stack[@@nest_stack_index] = @@current_object
     @@current_object = nil
   end
 
   def self.pop
-    @@current_object = @@nest_stack[ @@nest_stack_index ]
+    @@current_object = @@nest_stack[@@nest_stack_index]
     @@nest_stack_index -= 1
     if @@nest_stack_index < -1 then
       raise "TooManyRestore"
@@ -3733,9 +3733,9 @@ class CompositeCelltype < NSBDNode # < Nestable
       # セルの clone を生成
 #      clone_cell_list[ "#{name}_#{c.get_name}" ] =  c.clone_for_composite( name, global_name, ja )
       c2 =  c.clone_for_composite(name, global_name, namespacePath, ja, @name, region, plugin, locale)
-      clone_cell_list[ "#{c.get_local_name}" ] = c2
+      clone_cell_list["#{c.get_local_name}"] = c2
       clone_cell_list2 << c2
-      clone_cell_list3[ c ] = c2
+      clone_cell_list3[c] = c2
 
     }
 
@@ -3743,7 +3743,7 @@ class CompositeCelltype < NSBDNode # < Nestable
       dbgPrint "  cloned: #{nm} = #{c.get_global_name}\n"
       # join の owner を clone されたセルに変更する V1.1.0.25
       c.get_join_list.get_items.each{ |j|
-        j.set_cloned(clone_cell_list[ "#{c.get_local_name}" ])
+        j.set_cloned(clone_cell_list["#{c.get_local_name}"])
       }
       dbgPrint "change_rhs_port: inner cell #{c.get_name}\n"
       c.change_rhs_port clone_cell_list3
@@ -4254,7 +4254,7 @@ end
       end
 
       # 重複指定がないか?
-      if @allocator_instance[ "#{@name}_#{ai[1]}_#{ai[2]}" ] then
+      if @allocator_instance["#{@name}_#{ai[1]}_#{ai[2]}"] then
         cdl_error("S1085 duplicate allocator specifier for \'$1_$2\'" , ai[1], ai[2])
       end
 
@@ -4339,7 +4339,7 @@ end
         ai2 = [ ai[0], ai[1], ai[2], cp_name, func_name, param_name ]
       end # case alloc_type
 
-      @allocator_instance[ "#{@name}_#{ai[1]}_#{ai[2]}" ] = ai2
+      @allocator_instance["#{@name}_#{ai[1]}_#{ai[2]}"] = ai2
     }
   end
 
@@ -4566,16 +4566,16 @@ class Namespace < NSBDNode
   def self.push
     dbgPrint "push Namespace\n"
     @@nest_stack_index += 1
-    @@nest_stack[ @@nest_stack_index ] = [ @@namespace_stack, @@namespace_sp ]
+    @@nest_stack[@@nest_stack_index] = [ @@namespace_stack, @@namespace_sp ]
     if @@root_namespace then
       @@namespace_sp = 0
-      @@namespace_stack[ @@namespace_sp ] = @@root_namespace
+      @@namespace_stack[@@namespace_sp] = @@root_namespace
     end
   end
 
   def self.pop
     dbgPrint "pop Namespace\n"
-    @@namespace_stack, @@namespace_sp = @@nest_stack[ @@nest_stack_index ]
+    @@namespace_stack, @@namespace_sp = @@nest_stack[@@nest_stack_index]
     @@nest_stack_index -= 1
     if @@nest_stack_index < -1 then
       raise "TooManyRestore"
@@ -4585,7 +4585,7 @@ class Namespace < NSBDNode
   # namespace 階層用スタックの push, pop (インスタンスメソッド)
   def push ns
     @@namespace_sp += 1
-    @@namespace_stack[ @@namespace_sp ] = self
+    @@namespace_stack[@@namespace_sp] = self
     dbgPrint "Namespace.PUSH #{@@namespace_sp} #{@name}\n"
   end
 
@@ -4610,7 +4610,7 @@ class Namespace < NSBDNode
       @@root_namespace = self
       @NamespacePath = NamespacePath.new(name, true)
     else
-      ns = @@namespace_stack[ @@namespace_sp ].find(name)
+      ns = @@namespace_stack[@@namespace_sp].find(name)
       if ns.kind_of? Namespace then
         dbgPrint "namespace: re-appear #{@name}\n"
         # 登録済み namespace の再登録
@@ -5691,17 +5691,17 @@ class Join < BDNode
     i = len - 1
     while i >= 0
 
-      through = @through_list[ i ]
-      plugin_name           = through[ 0 ]
-      generating_cell_name  = through[ 1 ]
-      plugin_arg            = through[ 2 ]
+      through = @through_list[i]
+      plugin_name           = through[0]
+      generating_cell_name  = through[1]
+      plugin_arg            = through[2]
 
       if i != len - 1 then
 
         begin
-          next_cell_nsp       = @through_generated_list[ i + 1 ].get_cell_namespace_path
-          next_port_name      = @through_generated_list[ i + 1 ].get_through_entry_port_name
-          next_port_subscript = @through_generated_list[ i + 1 ].get_through_entry_port_subscript
+          next_cell_nsp       = @through_generated_list[i + 1].get_cell_namespace_path
+          next_port_name      = @through_generated_list[i + 1].get_through_entry_port_name
+          next_port_subscript = @through_generated_list[i + 1].get_through_entry_port_subscript
         rescue Exception => evar
           cdl_error("S1124 $1: plugin function failed: \'get_through_entry_port_name\'" , plugin_name)
           print_exception(evar)
@@ -5712,7 +5712,7 @@ class Join < BDNode
         next_cell = Namespace.find(next_cell_nsp)    # 1
         if next_cell == nil then
           # p "next_cell_path: #{next_cell_nsp.get_path_str}"
-          cdl_error("S1125 $1: not generated cell \'$2\'" , @through_generated_list[ i + 1 ].class, next_cell_nsp.get_path_str)
+          cdl_error("S1125 $1: not generated cell \'$2\'" , @through_generated_list[i + 1].class, next_cell_nsp.get_path_str)
           return
         end
 
@@ -5749,12 +5749,12 @@ class Join < BDNode
         end
       else
         # 見つかったものを共用する
-        @through_generated_list[ i ] = rp
+        @through_generated_list[i] = rp
       end
 
       if i >= cp_len then
         # @through_generated_list のうち @region_through_listに対応する部分
-        @region_through_generated_list[ i - cp_len ] = @through_generated_list[ i ]
+        @region_through_generated_list[i - cp_len] = @through_generated_list[i]
         if rp == nil then
           # 生成したものを region(@through_list[i][3]) のリストに追加
           # @through_list[i][3].add_cell_port_through_plugin( @cell_name, @port_name, @through_generated_list[i] ) #762
@@ -5783,31 +5783,31 @@ class Join < BDNode
   @@through_count = { }
   def get_through_count name
     sym = name.to_sym
-    if @@through_count[ sym ] then
-      @@through_count[ sym ] += 1
+    if @@through_count[sym] then
+      @@through_count[sym] += 1
     else
-      @@through_count[ sym ] = 0
+      @@through_count[sym] = 0
     end
-    return @@through_count[ sym ]
+    return @@through_count[sym]
   end
 
   #=== Join# through プラグインを呼び出して CDL 生成させるとともに、import する
   def gen_through_cell_code_and_parse(plugin_name, i, next_cell, next_port_name, next_port_subscript, plClass)
 
-    through = @through_list[ i ]
-    plugin_name           = through[ 0 ]
-    generating_cell_name  = :"#{through[ 1 ]}_#{get_through_count through[ 1 ]}"
-    plugin_arg            = through[ 2 ]
-    if through[ 3 ] then
+    through = @through_list[i]
+    plugin_name           = through[0]
+    generating_cell_name  = :"#{through[1]}_#{get_through_count through[1]}"
+    plugin_arg            = through[2]
+    if through[3] then
       # region 間の through の場合
-      @@start_region      = through[ 3 ]
+      @@start_region      = through[3]
       if next_cell.get_region.equal? @@start_region then
         @@end_region      = @@start_region
       else
-        @@end_region      = through[ 4 ]
+        @@end_region      = through[4]
       end
-      @@through_type      = through[ 5 ]
-      @@region_count      = through[ 6 ]
+      @@through_type      = through[5]
+      @@region_count      = through[6]
     else
       # 呼び口の through の場合
       @@start_region      = @owner.get_region    # 呼び口側セルの region
@@ -5832,7 +5832,7 @@ class Join < BDNode
       return 
     end
 
-    @through_generated_list[ i ] = plugin_object
+    @through_generated_list[i] = plugin_object
 
     # Region に関する情報を設定
     # 後から追加したので、new の引数外で設定
@@ -6713,12 +6713,12 @@ class DomainType < Node
     @region = region
     @option = option
 
-    if @@domain_regions[ name ] then
-      if ! @@domain_regions[ name ].include?(region) then
-        @@domain_regions[ name ] << region
+    if @@domain_regions[name] then
+      if ! @@domain_regions[name].include?(region) then
+        @@domain_regions[name] << region
       end
     else
-      @@domain_regions[ name ] = [ region ]
+      @@domain_regions[name] = [ region ]
     end
   end
 
@@ -6752,7 +6752,7 @@ class DomainType < Node
   end
 
   def get_regions
-    return @@domain_regions[ @name ]
+    return @@domain_regions[@name]
   end
 
   def get_option
@@ -7082,10 +7082,10 @@ class Region < Namespace
   end
 
   def next_to_through_count(symRegionName)
-    if @to_through_count[ symRegionName ] == nil then
-      @to_through_count[ symRegionName ] = 0
+    if @to_through_count[symRegionName] == nil then
+      @to_through_count[symRegionName] = 0
     else
-      @to_through_count[ symRegionName ] += 1
+      @to_through_count[symRegionName] += 1
     end
   end
 
@@ -7110,14 +7110,14 @@ class Region < Namespace
     if subscript then
       subscript = '[' + subscript.to_s + ']'
     end
-    @cell_port_throug_plugin_list[ "#{cell_name}.#{port_name}#{subscript}" ] = through_plugin_object
+    @cell_port_throug_plugin_list["#{cell_name}.#{port_name}#{subscript}"] = through_plugin_object
   end
 
   def find_cell_port_through_plugin(cell_name, port_name, subscript)
     if subscript then
       subscript = '[' + subscript.to_s + ']'
     end
-    return @cell_port_throug_plugin_list[ "#{cell_name}.#{port_name}#{subscript}" ]
+    return @cell_port_throug_plugin_list["#{cell_name}.#{port_name}#{subscript}"]
   end
 
   def create_domain_plugin
@@ -7265,8 +7265,8 @@ module Importable
         pt = "#{path}/#{file}"
       end
       if File.exist?(pt)
-        if ! $base_dir[ Dir.pwd ]
-          $base_dir[ Dir.pwd ] = true
+        if ! $base_dir[Dir.pwd]
+          $base_dir[Dir.pwd] = true
         end
         if $verbose then
           print "#{file} is found in #{path}\n"
@@ -7293,7 +7293,7 @@ module Importable
             end
             @last_base_dir = bd
             dbgPrint "base_dir=#{bd} while searching #{file}\n"
-            $base_dir[ bd ] = true
+            $base_dir[bd] = true
             return pt
           end
         rescue
@@ -7403,9 +7403,9 @@ class Import_C < Node
     }
 
     # 読込み済み？
-    if(@@header_list[ header ]) then
+    if(@@header_list[header]) then
       # 第二引数 define が以前と異なる
-      if @@define_list[ header ].to_s != define.to_s then
+      if @@define_list[header].to_s != define.to_s then
         cdl_error("S1143 import_C: arg2: mismatch with previous one")
       end
       # いずれにせよ読み込まない
@@ -7413,9 +7413,9 @@ class Import_C < Node
     end
 
     # ヘッダのリストを記録
-    @@header_list[ header ] = header_path
+    @@header_list[header] = header_path
     @@header_list2 << header
-    @@define_list[ header ] = define
+    @@define_list[header] = define
 
     if $verbose then
       print "import_C header=#{header_path}, define=#{define}\n"
@@ -7560,12 +7560,12 @@ class Import < Node
 
   def self.push object
     @@nest_stack_index += 1
-    @@nest_stack[ @@nest_stack_index ] = @@current_object
+    @@nest_stack[@@nest_stack_index] = @@current_object
     @@current_object = object
   end
 
   def self.pop
-    @@current_object = @@nest_stack[ @@nest_stack_index ]
+    @@current_object = @@nest_stack[@@nest_stack_index]
     @@nest_stack_index -= 1
     if @@nest_stack_index < -1 then
       raise "TooManyRestore"
@@ -7607,7 +7607,7 @@ class Import < Node
     end
 
     # 読込み済みなら、読込まない
-    prev = @@import_list[ File.expand_path(@cdl_path) ]
+    prev = @@import_list[File.expand_path(@cdl_path)]
     if(prev) then
       if prev.is_reuse_real? != @b_reuse_real then
         cdl_warning("W1008 $1: reuse designation mismatch with previous import" , @cdl)
@@ -7616,7 +7616,7 @@ class Import < Node
     end
 
     # import リストを記録
-    @@import_list[ File.expand_path(@cdl_path) ] = self
+    @@import_list[File.expand_path(@cdl_path)] = self
 
     # plugin から import されている場合
     plugin = Generator.get_plugin
@@ -7758,7 +7758,7 @@ class NamespacePath < Node
   end
 
   def get_name
-    @path[ @path.length - 1 ]
+    @path[@path.length - 1]
   end
 
   #=== NamespacePath#クローンを作成して名前を変更する
@@ -7773,7 +7773,7 @@ class NamespacePath < Node
   #=== NamespacePath#名前を変更する
   # このインスタンスを参照するすべてに影響を与えることに注意
   def change_name_no_clone name
-    @path[ @path.length - 1 ] = name
+    @path[@path.length - 1] = name
     nil
   end
 

@@ -902,12 +902,12 @@ class StructType < Type
     if @tag == nil then
       @member_types_symbol = get_member_types_symbol
       # print "member_types_symbol = #{get_member_types_symbol}\n"
-      if @@no_tag_struct_list[ @member_types_symbol ] then
-        @tag = @@no_tag_struct_list[ @member_types_symbol ]
+      if @@no_tag_struct_list[@member_types_symbol] then
+        @tag = @@no_tag_struct_list[@member_types_symbol]
       else
         @tag = :"TAG_#{@@no_struct_tag_num}_TECS_internal__"
       @@no_struct_tag_num += 1
-        @@no_tag_struct_list[ @member_types_symbol ] = @tag
+        @@no_tag_struct_list[@member_types_symbol] = @tag
         Namespace.new_structtype(self)
       end
     else
@@ -1565,7 +1565,7 @@ class DescriptorType < Type
   def initialize(signature_nsp)
     @signature_nsp = signature_nsp
     # check_signature ##
-    @@descriptors[ self ] = false
+    @@descriptors[self] = false
   end
 
   def get_type_str
@@ -1596,7 +1596,7 @@ class DescriptorType < Type
     @@descriptors.each{ |desc, val|
       if val != true then
         desc.check_signature
-        @@descriptors[ desc ] = true
+        @@descriptors[desc] = true
       end
     }
   end

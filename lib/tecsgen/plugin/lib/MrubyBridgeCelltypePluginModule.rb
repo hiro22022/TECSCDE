@@ -256,10 +256,10 @@ EOT
         next if signature == nil     # error case
         if signature.get_function_head port_func[1].to_sym
           # print "MRBBridgeCellPlugin: #{port_func[0]}.#{port_func[1]} exclude\n"
-          if @exclude_port_func[ port_func[0] ] then
-            @exclude_port_func[ port_func[0] ] <<  port_func[1]
+          if @exclude_port_func[port_func[0]] then
+            @exclude_port_func[port_func[0]] <<  port_func[1]
           else
-            @exclude_port_func[ port_func[0] ] = [ port_func[1] ]
+            @exclude_port_func[port_func[0]] = [ port_func[1] ]
           end
         else
           cdl_error("MRB9999 include_port_func: func '$1' not found in port '$2' celltype $3",

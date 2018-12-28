@@ -62,7 +62,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
 
   # SharedOpaqueRPCPlugin 専用のオプション
   SharedOpaqueRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
-  SharedOpaqueRPCPluginArgProc[ "sharedChannelName"  ] = Proc.new { |obj,rhs| obj.set_sharedChannelName rhs }
+  SharedOpaqueRPCPluginArgProc["sharedChannelName"] = Proc.new { |obj,rhs| obj.set_sharedChannelName rhs }
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
@@ -88,20 +88,20 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
       @shared_channel_cell = @sharedChannelName
     end
 
-    if @@shared_channel_list[ @shared_channel_cell ] == nil then
-      @@shared_channel_list[ @shared_channel_cell ] = [ self ]
+    if @@shared_channel_list[@shared_channel_cell] == nil then
+      @@shared_channel_list[@shared_channel_cell] = [ self ]
     else
-      @@shared_channel_list[ @shared_channel_cell ] << self
+      @@shared_channel_list[@shared_channel_cell] << self
     end
-    @sub_channel_no = (@@shared_channel_list[ @shared_channel_cell ].length) -1
+    @sub_channel_no = (@@shared_channel_list[@shared_channel_cell].length) -1
 
-    prev_start = @@shared_channel_list[ @shared_channel_cell ][0].start_region
+    prev_start = @@shared_channel_list[@shared_channel_cell][0].start_region
     if @start_region != prev_start then
       # 初出と start リージョン不一致 (初出は、自分自身とチェックされる。無駄だが小さいので放置)
       cdl_error("SharedRPCPlugin: start region mismatch current: #{@region.get_name} previous: #{prev_start.get_name}")
     end
 
-    prev_end = @@shared_channel_list[ @shared_channel_cell ][0].end_region
+    prev_end = @@shared_channel_list[@shared_channel_cell][0].end_region
     if @end_region != prev_end then
       # 初出と end リージョン不一致  (初出は、自分自身とチェックされる。無駄だが小さいので放置)
       cdl_error("SharedRPCPlugin: end region mismatch current: #{@region.get_name} previous: #{prev_end.get_name}")
@@ -126,10 +126,10 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ @shared_channel_server_ct_name ] == nil then
-      @@generated_celltype[ @shared_channel_server_ct_name ] = [ self ]
+    if @@generated_celltype[@shared_channel_server_ct_name] == nil then
+      @@generated_celltype[@shared_channel_server_ct_name] = [ self ]
     else
-      @@generated_celltype[ @shared_channel_server_ct_name ] << self
+      @@generated_celltype[@shared_channel_server_ct_name] << self
     end
 
     gen_marshaler_celltype

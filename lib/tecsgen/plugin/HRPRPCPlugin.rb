@@ -51,8 +51,8 @@ class HRPRPCPlugin < ThroughPlugin
 
   # RPCPlugin 専用のオプション
   HRPRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
-  HRPRPCPluginArgProc[ "noClientSemaphore"  ] = Proc.new { |obj,rhs| obj.set_noClientSemaphore rhs }
-  HRPRPCPluginArgProc[ "semaphoreCelltype"  ] = Proc.new { |obj,rhs| obj.set_semaphoreCelltype rhs }
+  HRPRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj,rhs| obj.set_noClientSemaphore rhs }
+  HRPRPCPluginArgProc["semaphoreCelltype"] = Proc.new { |obj,rhs| obj.set_semaphoreCelltype rhs }
   @@isFirstInstance = true
 
   #=== RPCPlugin の initialize
@@ -116,10 +116,10 @@ class HRPRPCPlugin < ThroughPlugin
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ ct_name ] == nil then
-      @@generated_celltype[ ct_name ] = [ self ]
+    if @@generated_celltype[ct_name] == nil then
+      @@generated_celltype[ct_name] = [ self ]
     else
-      @@generated_celltype[ ct_name ] << self
+      @@generated_celltype[ct_name] << self
       return
     end
 

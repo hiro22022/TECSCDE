@@ -140,7 +140,7 @@ EOT
 
                     # HRP2のドメインリージョンを取得
                     regions = ct.get_domain_roots
-                    regions_hrp2 = regions[ :HRP2 ]
+                    regions_hrp2 = regions[:HRP2]
                     dbgPrint "HRP2 domain in #{ct.get_name}: "
                     regions_hrp2.each { |reg|
                         dbgPrint reg.get_name

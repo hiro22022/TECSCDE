@@ -73,7 +73,7 @@ class TOOL_INFO
   end
 
   def self.get_tool_info name
-    @@tool_info[ name ]
+    @@tool_info[name]
   end
 
   #=== TOOL_INFO#set_tecsgen_tool_info
@@ -82,31 +82,31 @@ class TOOL_INFO
     validator = TOOL_INFO::VALIDATOR.new(:tecsgen, @@TECSGEN_schema)
     if validator.validate || $b_force_apply_tool_info
       info = TOOL_INFO.get_tool_info(:tecsgen)
-      (info[ :base_dir ]).each{ |bd|
+      (info[:base_dir]).each{ |bd|
         if ! $base_dir.include? bd
-          $base_dir[ bd ] = true
+          $base_dir[bd] = true
         end
       }
 
-      info[ :import_path ].each{ |path|
+      info[:import_path].each{ |path|
         if ! $import_path.include?(path)
           $import_path << path
         end
       }
 
-      info[ :define_macro ].each{ |define|
+      info[:define_macro].each{ |define|
         if ! $define.include?(define)
           $define << define
         end
       }
-      if info[ :cpp ]
+      if info[:cpp]
         if ! $b_cpp_specified
-          $cpp = info[ :cpp ]
+          $cpp = info[:cpp]
           $b_cpp_specified = true
         end
       end
 
-      info[ :direct_import ] && info[ :direct_import ].each{ |import|
+      info[:direct_import] && info[:direct_import].each{ |import|
         Import.new(import, false, false)
       }
     end
@@ -143,8 +143,8 @@ class TOOL_INFO
     end
 
     def validate_object(object, require_type, path)
-      obj_type = @schema[ require_type ]
-      dbgPrint "validate_object: #{path}  object=#{obj_type[ :type ]}  required=#{object[:type]}\n"
+      obj_type = @schema[require_type]
+      dbgPrint "validate_object: #{path}  object=#{obj_type[:type]}  required=#{object[:type]}\n"
 
       obj_type.each{ |name, val_type|
         val = object[name]
@@ -160,7 +160,7 @@ class TOOL_INFO
         end
       }
 
-      optional = @schema[ ("__" + require_type.to_s).to_sym ]
+      optional = @schema[("__" + require_type.to_s).to_sym]
       if optional
         dbgPrint "#{require_type.to_s} has optional\n"
 
@@ -200,7 +200,7 @@ class TOOL_INFO
           error("#{path}: array member type mismatch, #{type} for #{val_types}\n")
           next
         end
-        val_type = val_types[ i ]
+        val_type = val_types[i]
         validate_types member, val_type, (path.to_s + '[' + index.to_s + '].')
         index += 1
       }
@@ -253,7 +253,7 @@ class TOOL_INFO
       elsif obj.kind_of? String
         return :string
       elsif obj.kind_of? Hash
-        return obj[ :type ].to_sym
+        return obj[:type].to_sym
       end
       return nil
     end

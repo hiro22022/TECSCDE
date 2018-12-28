@@ -502,14 +502,14 @@ EOT
 
     def add celltype
       iter = @treeView.model.append
-      iter[ COL_NAME ]  = celltype.get_name
-      iter[ COL_NSPATH ]  = celltype.get_owner.get_namespace_path.to_s
+      iter[COL_NAME]  = celltype.get_name
+      iter[COL_NSPATH]  = celltype.get_owner.get_namespace_path.to_s
     end
 
     def selected
       iter = @treeView.selection.selected
       if iter then
-        [iter[ COL_NAME ], iter[ COL_NSPATH ] ]
+        [iter[COL_NAME], iter[COL_NSPATH] ]
       else
         [ nil, nil ]
       end
@@ -586,7 +586,7 @@ EOT
       # ATTRIBUTE column
       col = Gtk::TreeViewColumn.new("attribute", renderer, :text => COL_NAME)
       col.set_cell_data_func(renderer) { |col, renderer, model, iter|
-        if iter[ COL_VALUE ] == nil || iter[ COL_VALUE ] == ""
+        if iter[COL_VALUE] == nil || iter[COL_VALUE] == ""
           renderer.foreground = "red"
         elsif @cell.is_editable?
           renderer.foreground = "black"
@@ -614,7 +614,7 @@ EOT
       col = Gtk::TreeViewColumn.new("value", renderer, :text => COL_VALUE)
       col.set_cell_data_func(renderer) { |col, renderer, model, iter|
         # p "iter[0]=#{iter[0]}"
-        if @cell.get_attr_list[iter[ COL_NAME ].to_sym] == nil
+        if @cell.get_attr_list[iter[COL_NAME].to_sym] == nil
           renderer.foreground = "orange"
         elsif @cell.is_editable?
           renderer.foreground = "black"
@@ -628,8 +628,8 @@ EOT
           renderer.editable = false
         end
 
-        if @choice_list[ iter[0] ]
-          renderer.model = @choice_list[ iter[0] ]
+        if @choice_list[iter[0]]
+          renderer.model = @choice_list[iter[0]]
           renderer.has_entry = false
           renderer.text_column = 0
         else
@@ -666,18 +666,18 @@ EOT
         # p "new_text='#{new_text}'"
         if (iter = @treeView.model.get_iter(path))
           if new_text == nil || new_text == ""
-            if @ct_attr_list[ iter[ COL_NAME ] ]
-              iter[ COL_VALUE ] = @ct_attr_list[ iter[ COL_NAME ] ]
+            if @ct_attr_list[iter[COL_NAME]]
+              iter[COL_VALUE] = @ct_attr_list[iter[COL_NAME]]
             else
-              iter[ COL_VALUE ] = new_text
+              iter[COL_VALUE] = new_text
             end
             if new_text == ""
               new_text = nil
             end
           else
-            iter[ COL_VALUE ] = new_text
+            iter[COL_VALUE] = new_text
           end
-          @cell.set_attr(iter[ COL_NAME ].to_sym, new_text)
+          @cell.set_attr(iter[COL_NAME].to_sym, new_text)
           @cell.get_model.set_undo_point
           @view.paint_canvas
         end
@@ -702,24 +702,24 @@ EOT
           iter = @treeView.model.append
           name = attr.get_name.to_s
           if attr.get_initializer
-            @ct_attr_list[ name ] = attr.get_initializer.to_CDL_str
+            @ct_attr_list[name] = attr.get_initializer.to_CDL_str
           end
 
-          iter[ COL_NAME ] = name
-          iter[ COL_TYPE ] = "#{attr.get_type.get_type_str}#{attr.get_type.get_type_str_post}"
-          if cell_attr_list[ name.to_sym ]
-            iter[ COL_VALUE ] = cell_attr_list[name.to_sym]
+          iter[COL_NAME] = name
+          iter[COL_TYPE] = "#{attr.get_type.get_type_str}#{attr.get_type.get_type_str_post}"
+          if cell_attr_list[name.to_sym]
+            iter[COL_VALUE] = cell_attr_list[name.to_sym]
           elsif attr.get_initializer
-            iter[ COL_VALUE ] = attr.get_initializer.to_CDL_str
+            iter[COL_VALUE] = attr.get_initializer.to_CDL_str
           else
             # iter[ COL_VALUE ] = " "
           end
 
           #----- choice list model -----#
           if attr.get_choice_list
-            @choice_list[ name ] = Gtk::ListStore.new(String)
+            @choice_list[name] = Gtk::ListStore.new(String)
             attr.get_choice_list.each{ |choice|
-              iter = @choice_list[ name ].append
+              iter = @choice_list[name].append
               iter[0] = CDLString.remove_dquote(choice.val)
             }
           end

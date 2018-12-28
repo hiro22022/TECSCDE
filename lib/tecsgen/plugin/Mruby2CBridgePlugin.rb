@@ -53,13 +53,13 @@ class Mruby2CBridgePlugin < SignaturePlugin
       c2tecs = "generate( C2TECSBridgePlugin, nMruby::sInitializeBridge, \"silent=true\" );\n"
     end
 
-    if @@signature_list[ @signature.get_global_name ] then
-      @@signature_list[ @signature.get_global_name ] << self
+    if @@signature_list[@signature.get_global_name] then
+      @@signature_list[@signature.get_global_name] << self
       cdl_warning("MRCW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return
     end
 
-    @@signature_list[ @signature.get_global_name ] = [self]
+    @@signature_list[@signature.get_global_name] = [self]
     print_msg "  Mruby2CBridgePlugin: [object creattion]    object = TECS::#{@class_name}.new( 'C#{@signature.get_global_name}' )\n"
     print_msg "  Mruby2CBridgePlugin: [function call]       result = object.function( params )  # substitute 'function' and params \n"
 

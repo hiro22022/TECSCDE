@@ -122,7 +122,7 @@ module TECSCDE
       def add tm_object
         if ! @set.has_key?(tm_object)
           # flush_print "add_change_set #{tm_object.class} number=#{@number}\n"
-          @set[ tm_object ] = tm_object.clone_for_undo
+          @set[tm_object] = tm_object.clone_for_undo
         end
       end
 
@@ -136,7 +136,7 @@ module TECSCDE
         # print "applying change_no=#{@number}\n"
         dbgPrint "applying change_no=#{@number}\n"
         @set.each_key{ |tm_object|
-          tm_object.copy_from @set[ tm_object ]
+          tm_object.copy_from @set[tm_object]
           dbgPrint "apply #{tm_object.class}\n"
         }
       end
@@ -163,7 +163,7 @@ module TECSCDE
         if count > 0
           # flush_print "* set_undo_point change_no=#{@change_no}, count=#{count}\n"
           # p "* set_undo_point change_no=#{@change_no}, count=#{count}\n"
-          @change_set_list[ @change_no ] = @change_set_next
+          @change_set_list[@change_no] = @change_set_next
           @change_no += 1
           @change_set_next = ChangeSet.new(@change_no)
 
@@ -184,7 +184,7 @@ module TECSCDE
         if @change_no > 1
           @change_no -= 1
           flush_print "* undo change_no=#{@change_no}\n"
-          @change_set_list[ @change_no ].apply
+          @change_set_list[@change_no].apply
           # flush_print "* undo1 change_no=#{@change_no}\n"
           @change_set_next = ChangeSet.new(@change_no)
         end
@@ -194,7 +194,7 @@ module TECSCDE
         if @change_set_list.length > @change_no + 1
           @change_no += 1
           flush_print "* redo change_no=#{@change_no}\n"
-          @change_set_list[ @change_no ].apply
+          @change_set_list[@change_no].apply
         end
       end
     end # class ChangeSetManger
@@ -271,7 +271,7 @@ module TECSCDE
       @cell_hash = {}
       @join_list = []
       @tecsgen = tecsgen
-      @paper = Paper[ :A3L ]
+      @paper = Paper[:A3L]
 #      @paper = Paper[ :A2L ]
 
       # __tool_info__( "tecsgen" )
@@ -313,9 +313,9 @@ module TECSCDE
       modified {
 
         name = celltype.get_name.to_s.gsub(/t(.*)/, '\\1').to_sym
-        if @cell_hash[ name ]
+        if @cell_hash[name]
           count = 0
-          while @cell_hash[ (name.to_s + count.to_s).to_sym ]
+          while @cell_hash[(name.to_s + count.to_s).to_sym]
             count +=1
           end
           name = (name.to_s + count.to_s).to_sym
@@ -323,7 +323,7 @@ module TECSCDE
 
         cell = TmCell.new(name, celltype, xm, ym, region, tecsgen_cell)
         @cell_list << cell
-        @cell_hash[ name ] = cell
+        @cell_hash[name] = cell
 
         w, h = @view.get_text_extent(name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
         w2, h = @view.get_text_extent(celltype.get_name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
@@ -365,12 +365,12 @@ module TECSCDE
           TECSCDE.message_box("'#{new_name}' has unsuitable character for identifier", nil)
           return false
         end
-        if @cell_hash[ new_name ] then
+        if @cell_hash[new_name] then
           TECSCDE.message_box("'#{new_name}' already exists", nil)
           return false
         end
         @cell_hash.delete cell.get_name
-        @cell_hash[ new_name ] = cell
+        @cell_hash[new_name] = cell
         return true
       }
     end
@@ -496,7 +496,7 @@ module TECSCDE
     end
 
     def clip_x x
-      max = @paper[ :width ] - 2
+      max = @paper[:width] - 2
       if x < 2
         x = 2
       elsif x > max
@@ -506,7 +506,7 @@ module TECSCDE
     end
 
     def clip_y y
-      max = @paper[ :height ] - 2
+      max = @paper[:height] - 2
       if y < 2
         y = 2
       elsif y > max
@@ -598,17 +598,17 @@ module TECSCDE
           if port_def.get_port_type == :ENTRY then
             # if ! port_def.is_reverse_required? then
             if port_def.get_array_size == nil
-              @eports[ port_def.get_name ] = TmEPort.new(self, port_def)
+              @eports[port_def.get_name] = TmEPort.new(self, port_def)
             else
-              @eports[ port_def.get_name ] = TmEPortArray.new(self, port_def)
+              @eports[port_def.get_name] = TmEPortArray.new(self, port_def)
             end
             # end
           else
             if ! port_def.is_require? then
               if port_def.get_array_size == nil
-                @cports[ port_def.get_name] = TmCPort.new(self, port_def)
+                @cports[port_def.get_name] = TmCPort.new(self, port_def)
               else
-                @cports[ port_def.get_name] = TmCPortArray.new(self, port_def)
+                @cports[port_def.get_name] = TmCPortArray.new(self, port_def)
               end
             end
           end
@@ -890,7 +890,7 @@ module TECSCDE
 
       #=== TmCell#get_cport_for_new_join
       def get_cport_for_new_join cport_name, cport_subscript
-        cp = @cports[ cport_name ]
+        cp = @cports[cport_name]
         if cp == nil
           TECSCDE.error("TM9999 cell #{@name} not have call port #{cport_name}")
         end
@@ -914,7 +914,7 @@ module TECSCDE
 
       #=== TmCell#get_eport_for_new_join
       def get_eport_for_new_join eport_name, eport_subscript
-        ep = @eports[ eport_name ]
+        ep = @eports[eport_name]
         if ep == nil
           TECSCDE.error("TM9999 cell #{@name} not have entry port #{eport_name}")
         end
@@ -945,7 +945,7 @@ module TECSCDE
           if init == nil
             @attr_list.delete name
           else
-            @attr_list[ name ] = init
+            @attr_list[name] = init
           end
         }
       end
@@ -958,7 +958,7 @@ module TECSCDE
       def complete?
         @celltype.get_attribute_list.each{ |attr|
           if attr.get_initializer == nil
-            if @attr_list[ attr.get_name ] == nil
+            if @attr_list[attr.get_name] == nil
               return false
             end
           end
@@ -1100,20 +1100,20 @@ module TECSCDE
               if @port_def.get_array_size == "[]"
                 # extend array size
                 (0..subscript).each{ |subsc|
-                  if @ports[ subsc ] == nil
+                  if @ports[subsc] == nil
                     port = new_port subsc
                     @ports[subsc] = port
                   end
                 }
                 @actual_size = @ports.length
                 # p "new_join: 1 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
-                return @ports[ subscript ]
+                return @ports[subscript]
               end
 
               TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size-1})")
               return nil
             else
-              port = @ports[ subscript ]
+              port = @ports[subscript]
               # p "new_join: 2 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
               if self.instance_of? TmCPortArray   # CPort cannot have multiple join
                 if port.get_join
@@ -1188,7 +1188,7 @@ module TECSCDE
         if subscript < 0 || subscript >= @actual_size
           return nil
         else
-          @ports[ subscript ]
+          @ports[subscript]
         end
       end
 
@@ -1253,7 +1253,7 @@ EOT
           end
           new_port = new_port(subsc + 1)
           new_port.set_position(port.get_edge_side, port.get_offset + DIST_PORT)
-          @ports[ subsc + 1 ] =  new_port
+          @ports[subsc + 1] =  new_port
 
           p "insert ####"
         }
@@ -1319,7 +1319,7 @@ EOT
         if subscript == nil
           return nil
         elsif 0 <= subscript && subscript < @actual_size
-          return @ports[ subscript ]
+          return @ports[subscript]
         else
           return nil
         end
@@ -1997,7 +1997,7 @@ EOT
           bar_prev = nil
           bars = @owner.get_bars
 
-          if bars.length >= 1 && bars[ bars.length - 1 ] == self then
+          if bars.length >= 1 && bars[bars.length - 1] == self then
             @owner.get_eport.move(x_inc, y_inc)
             return   # last bar
           end

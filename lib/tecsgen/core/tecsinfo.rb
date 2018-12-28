@@ -270,7 +270,7 @@ EOT
     ct_list = {}
     @cell_list.each{ |cell|
       next if cell.exclude_info_factory?
-      ct_list[ cell.get_celltype ] = true
+      ct_list[cell.get_celltype] = true
     }
     f.print "#define TOPPERS_CB_TYPE_ONLY\n"
     ct_list.each{ |ct, val|
@@ -316,7 +316,7 @@ EOT
       cell.get_celltype.get_port_list.each{ |port|
         next if port.get_port_type != :ENTRY
 
-        if signatures[ port.get_signature ] == nil then
+        if signatures[port.get_signature] == nil then
           f.print "#include \"#{port.get_signature.get_global_name}_tecsgen.h\"\n"
         end
         if cell.get_celltype.get_global_name == :nTECSInfo_tRawEntryDescriptorInfo then
@@ -612,7 +612,7 @@ EOT
       if size == nil then
         size = 1
       elsif size == "[]" then
-        size = @entry_array_max_subscript[ port ]
+        size = @entry_array_max_subscript[port]
       end
       if ! port.is_omit? then
         red = "C_EXP( \"&#{@global_name}_#{port.get_name}_des\" )"
@@ -773,11 +773,11 @@ class Type
 
   def print_info f, indent
     # Type の info は、最後にまとめて出力するので、ここでは記録するだけ
-    if @@typeinfo_printed[ get_ID_str ] then
+    if @@typeinfo_printed[get_ID_str] then
       return
     end
     # p "ID Str: #{get_ID_str}"
-    @@typeinfo_printed[ get_ID_str ] = self
+    @@typeinfo_printed[get_ID_str] = self
     if self.kind_of? PtrType then
       get_referto.print_info f, indent
     elsif self.kind_of? ArrayType then

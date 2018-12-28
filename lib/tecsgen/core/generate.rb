@@ -146,8 +146,8 @@ class Namespace
       if (instance_of? Region) && get_domain_type != nil then
         # p "*******************  domain_type: #{get_domain_type.get_name}  ****************"
         domain_type = get_domain_type
-        if @@domain_gen_factory_list[ domain_type ] == nil then
-          @@domain_gen_factory_list[ domain_type ] = self
+        if @@domain_gen_factory_list[domain_type] == nil then
+          @@domain_gen_factory_list[domain_type] = self
           domain_type.gen_factory
         end
       end
@@ -794,7 +794,7 @@ EOT
 #      next if b_inline_only == false && ct.is_all_entry_inline?
       next if b_inline_only == false && ct.is_all_entry_inline? && ! ct.is_active?
       if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin) then
-        regions = ct.get_domain_roots[ domain_type ]
+        regions = ct.get_domain_roots[domain_type]
         if regions.include?(region) then
           # p "BBB celltype:#{ct.get_name} domain:#{domain_type} append:#{append}"
           if region.is_root? then
@@ -831,7 +831,7 @@ EOT
       next if b_inline_only == false && ct.is_all_entry_inline? && ! ct.is_active?
       if (b_plugin && ct.get_plugin) || (! b_plugin && ! ct.get_plugin) then
         # p "BBB celltype:#{ct.get_name} domain:#{domain_type} append:#{append}"
-        regions = ct.get_domain_roots[ domain_type ]
+        regions = ct.get_domain_roots[domain_type]
         if regions.include?(region) && regions.length == 1 then
           f.print " #{prepend}#{ct.get_global_name}#{append}"
         elsif region.is_root? then
@@ -1289,7 +1289,7 @@ class Celltype
         f = AppFile.open("#{$gen}/#{@global_name}_tecsgen.#{$c_suffix}")
       else
         # shared code are placed in unique region
-        f = fs[ regions[0] ]
+        f = fs[regions[0]]
       end
     end
 
@@ -3120,7 +3120,7 @@ EOT
     @ordered_cell_list.each{ |c|
       if c.is_generate? then                           # 生成対象か？
 
-        f = fs[ c.get_region.get_domain_root ]
+        f = fs[c.get_region.get_domain_root]
 
         # 結合のリスト (NamedList)
         jl = c.get_join_list
@@ -3214,7 +3214,7 @@ EOT
 
     @ordered_cell_list.each{ |c|
       if c.is_generate? then
-        f = fs[ c.get_region.get_domain_root ]
+        f = fs[c.get_region.get_domain_root]
 
         jl = c.get_join_list
         # ループを回す変数を jl から @port に変更
@@ -3384,7 +3384,7 @@ EOT
     @ordered_cell_list.each{ |c|
       next if  ! c.is_generate?
 
-      f = fs[ c.get_region.get_domain_root ]
+      f = fs[c.get_region.get_domain_root]
       name_array = get_name_array(c)
 
       ct = c.get_celltype
@@ -3516,7 +3516,7 @@ EOT
       @ordered_cell_list.each{ |c|
         next if ! c.is_generate?
 
-        f = fs[ c.get_region.get_domain_root ]
+        f = fs[c.get_region.get_domain_root]
 
         name_array = get_name_array(c)
 
@@ -3569,7 +3569,7 @@ EOT
         @ordered_cell_list.each{ |c|
           next if ! c.is_generate?
 
-          f = fs[ c.get_region.get_domain_root ]
+          f = fs[c.get_region.get_domain_root]
 
           name_array = get_name_array(c)
 
@@ -3620,7 +3620,7 @@ EOT
           @ordered_cell_list.each{ |c|
             next if ! c.is_generate?
 
-            f = fs[ c.get_region.get_domain_root ]
+            f = fs[c.get_region.get_domain_root]
 
             name_array = get_name_array(c)
             f.print "/* cell: #{name_array[2]}:  #{name_array[1]} id=#{c.get_id} */\n"
@@ -4219,7 +4219,7 @@ EOT
 
       next if ! c.is_generate?
 
-      f = fs[ c.get_region.get_domain_root ]
+      f = fs[c.get_region.get_domain_root]
 
       ct = c.get_celltype
       jl = c.get_join_list
@@ -5104,7 +5104,7 @@ class AppFile
     end
 
     # 既に開いているか？
-    if @@file_name_list[ name ] then
+    if @@file_name_list[name] then
 # 2.0
       mode = "a" + mode
       # 追記モードで開く
@@ -5114,7 +5114,7 @@ class AppFile
       mode = "w" + mode
       # 新規モードで開く（既にあれば、サイズを０にする）
       file = File.open(real_name, mode)
-      @@file_name_list[ name ] = true
+      @@file_name_list[name] = true
     end
     # File クラスのオブジェクトを返す
     return file
@@ -5178,7 +5178,7 @@ class Region
     nest = 1
     while nest < @family_line.length
       f.print "  " * (nest-1)
-      f.print "region #{@family_line[ nest ].get_name}{\n"
+      f.print "region #{@family_line[nest].get_name}{\n"
       nest += 1
     end
     return nest - 1

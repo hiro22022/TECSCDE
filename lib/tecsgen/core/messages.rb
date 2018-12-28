@@ -44,7 +44,7 @@ class TECSMsg
   #=== TECSMsg#生成するヘッダやテンプレートなどに含めるコメントの取得
   # CDL の文字コードに合わせて、文字コード変換を行う
   def self.get(msg)
-    str = @@comment[ msg ]
+    str = @@comment[msg]
 # 2.0    if $KCONV_TECSGEN == $KCONV_CDL
     if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Kconv::BINARY then
       return str
@@ -61,7 +61,7 @@ class TECSMsg
    body =~ /^[A-Z0-9]+/    # エラー番号を取り出す
    num = $&
    if num then
-     msg = @@error_message[ num.to_sym ]
+     msg = @@error_message[num.to_sym]
    else
      msg = nil
    end
@@ -78,7 +78,7 @@ class TECSMsg
  def self.get_warning_message(body)
    body =~ /^[A-Z0-9]+/    # ウォーニング番号を取り出す
    num = $&
-   msg = @@warning_message[ num.to_sym ]
+   msg = @@warning_message[num.to_sym]
    if msg == nil then
      m = body
    else
@@ -92,7 +92,7 @@ class TECSMsg
  def self.get_info_message(body)
    body =~ /^[A-Z0-9]+/    # 情報番号を取り出す
    num = $&
-   msg = @@info_message[ num.to_sym ]
+   msg = @@info_message[num.to_sym]
    if msg == nil then
      m = body
    else

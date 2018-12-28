@@ -132,15 +132,15 @@ class TECSGEN
     # プラグインからは、デフォルト値を変更できる
     # config により
     def self.add_var(var, val, comment = nil)
-      if @@fixed_vars[ var ]
+      if @@fixed_vars[var]
         raise "fixed var '#{var}' cannot be changed"
       end
       if @@config_mode then
-        @@vars_default[ var.to_sym ] = val
-        @@var_comments_default[ var.to_sym ] = comment
+        @@vars_default[var.to_sym] = val
+        @@var_comments_default[var.to_sym] = comment
       else
-        @@vars[ var.to_sym ] = val
-        @@var_comments[ var.to_sym ] = comment
+        @@vars[var.to_sym] = val
+        @@var_comments[var.to_sym] = comment
       end
     end
     #=== LDFLAGS に追加する
@@ -179,10 +179,10 @@ class TECSGEN
       end
     end
     def self.get_var_val(var)
-      return @@vars[ var ] ? @@vars[ var ] : @@vars_default[ var ]
+      return @@vars[var] ? @@vars[var] : @@vars_default[var]
     end
     def self.get_var_comment(var)
-      return @@var_comments[ var ]
+      return @@var_comments[var]
     end
     def self.get_ldflags  # String を返す
       return @@ldflags
@@ -340,8 +340,8 @@ class TECSGEN
       end
 
       if $region_list.length > 0 then
-        if $region_list[ region.get_namespace_path.get_path_str ] then
-          $region_list[ region.get_namespace_path.get_path_str ] = false
+        if $region_list[region.get_namespace_path.get_path_str] then
+          $region_list[region.get_namespace_path.get_path_str] = false
         else
           next
         end

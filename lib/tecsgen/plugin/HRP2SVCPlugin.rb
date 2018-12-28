@@ -50,11 +50,11 @@ class SVCManage
     @@id = 20
     @@func_ids = {}
     def self.get_func_id func_name
-        return @@func_ids[ func_name ]
+        return @@func_ids[func_name]
     end
     def self.set_func_id func_name
-        @@func_ids[ func_name ] = self.assign_id
-        puts @@func_ids[ func_name ]
+        @@func_ids[func_name] = self.assign_id
+        puts @@func_ids[func_name]
     end
     def self.include_func_id? func_name
         return @@func_ids.has_key?(func_name)
@@ -105,8 +105,8 @@ class HRP2SVCPlugin < ThroughPlugin
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
-    if @@generated_celltype[ @ct_name_body ] == nil then
-        @@generated_celltype[ @ct_name_body ] = [ self ]
+    if @@generated_celltype[@ct_name_body] == nil then
+        @@generated_celltype[@ct_name_body] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
         file2.print <<EOT
 [active]
@@ -116,14 +116,14 @@ celltype #{@ct_name_body} {
 EOT
         file2.close
     else
-      @@generated_celltype[ @ct_name_body ] << self
+      @@generated_celltype[@ct_name_body] << self
     end
     file.print "import( \"#{$gen}/#{@ct_name_body}.cdl\" );\n"
     end
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ @ct_name ] == nil then
-        @@generated_celltype[ @ct_name ] = [ self ]
+    if @@generated_celltype[@ct_name] == nil then
+        @@generated_celltype[@ct_name] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
         file2.print <<EOT
@@ -145,7 +145,7 @@ EOT
         
         file2.close
     else
-      @@generated_celltype[ @ct_name ] << self
+      @@generated_celltype[@ct_name] << self
     end
     file.print "import( \"#{$gen}/#{@ct_name}.cdl\" );\n"
 

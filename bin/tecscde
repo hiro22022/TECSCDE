@@ -183,7 +183,7 @@ begin
 
   additional_option_parser = Proc.new { |parser|
     parser.on('--base_dir=dir', 'base directory (tecscde only)'){ |dir|
-      $base_dir[ dir ] = true
+      $base_dir[dir] = true
     }
     parser.on('--force-apply-tool_info', 'force to apply tool_info, even if validation failed. this might cause ruby exception and stop tecscde'){
       $b_force_apply_tool_info = true

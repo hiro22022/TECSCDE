@@ -68,21 +68,21 @@ module TECSCDE
       @builder.add_from_file "tecscde-palette.glade"
 
       #----- window -----#
-      @window = @builder[ "window_palette" ]
+      @window = @builder["window_palette"]
       @window.realize
 #      @window.type = ( Gtk::Window::TOPLEVEL )
       @window.window.set_functions(Gdk::Window::FUNC_RESIZE | Gdk::Window::FUNC_MOVE)
 
       #----- save BUTTON -----#
-      @button_save = @builder[ "button_save" ]
+      @button_save = @builder["button_save"]
       @button_save.signal_connect("clicked") { @control.on_save }
 
       #----- export BUTTON -----#
-      @button_export = @builder[ "button_export" ]
+      @button_export = @builder["button_export"]
       @button_export.signal_connect("clicked") {  @control.on_export   }
 
       #----- pointer BUTTON -----#
-      @button_pointer = @builder[ "togglebutton_pointer" ]
+      @button_pointer = @builder["togglebutton_pointer"]
       @button_pointer.signal_connect("clicked") {
         @control.on_pointer
         # @button_pointer.active = true
@@ -91,7 +91,7 @@ module TECSCDE
       }
 
       #----- new cell BUTTON -----#
-      @button_new_cell = @builder[ "togglebutton_new_cell" ]
+      @button_new_cell = @builder["togglebutton_new_cell"]
       @button_new_cell.signal_connect("clicked") {
         @control.on_new_cell
         # @button_new_cell.active = true
@@ -100,24 +100,24 @@ module TECSCDE
       }
 
       #----- undo BUTTON -----#
-      @button_undo = @builder[ "button_undo" ]
+      @button_undo = @builder["button_undo"]
       @button_undo.signal_connect("clicked") {  @control.on_undo   }
 
       #----- redo BUTTON -----#
-      @button_redo = @builder[ "button_redo" ]
+      @button_redo = @builder["button_redo"]
       @button_redo.signal_connect("clicked") {  @control.on_redo   }
       # currently redo doesn't work well
       @button_redo.set_sensitive false
 
       #----- celltype TREEVIEW -----#
-      @treeView_celltype = @builder[ "treeview_celltype" ]
+      @treeView_celltype = @builder["treeview_celltype"]
       @celltypeTreeView = CelltypeTreeView.new @treeView_celltype
 
       #-----  -----#
-      @frame_cell = @builder[ "frame_cell" ]
+      @frame_cell = @builder["frame_cell"]
 
       #----- cell name ENTRY -----#
-      @entry_cell_name = @builder[ "entry_cell_name" ]
+      @entry_cell_name = @builder["entry_cell_name"]
       @entry_cell_name.signal_connect("activate"){|entry|
         @control.on_cell_name_entry_active entry
         false
@@ -127,7 +127,7 @@ module TECSCDE
         false
       }
 
-      @entry_cell_region = @builder[ "entry_cell_region" ]
+      @entry_cell_region = @builder["entry_cell_region"]
       @entry_cell_region.signal_connect("activate"){|entry|
         @control.on_cell_region_entry_active entry
         false
@@ -137,11 +137,11 @@ module TECSCDE
         false
       }
 
-      @treeview_cell_attribute = @builder[ "treeview_cell_attribute" ]
+      @treeview_cell_attribute = @builder["treeview_cell_attribute"]
       @attrTreeView = AttrTreeView.new @treeview_cell_attribute
 
       #----- quit BUTTON -----#
-      @button_quit = @builder[ "button_quit" ]
+      @button_quit = @builder["button_quit"]
       @button_quit.signal_connect("clicked") { @control.on_quit }
 
       @control.set_attrOperationWidgets @window, @celltypeTreeView, @attrTreeView, @entry_cell_name, @entry_cell_region, @frame_cell

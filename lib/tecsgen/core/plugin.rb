@@ -234,7 +234,7 @@ class Plugin < Node
       # \ を外す
       rhs = rhs.gsub(/\\(.)/, "\\1")   # ここで $' が変わることに注意！
       # print "parse_plugin_arg:  #{ident} #{rhs}\n"
-      @plugin_arg_list[ ident ] = rhs
+      @plugin_arg_list[ident] = rhs
 
       check_plugin_arg(ident, rhs)
     end
@@ -254,7 +254,7 @@ class Plugin < Node
       proc = @plugin_arg_check_proc_tab[ident.to_s]
     end
     if proc == nil then
-      proc = PluginArgProc[ ident.to_s ]
+      proc = PluginArgProc[ident.to_s]
     end
     if proc.instance_of? Proc then
       dbgPrint "calling: #{self.class.name}.#{proc.to_s}\n"
