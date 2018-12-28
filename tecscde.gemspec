@@ -6,11 +6,11 @@ require "tecscde/version"
 Gem::Specification.new do |spec|
   spec.name          = "tecscde"
   spec.version       = Tecscde::VERSION
-  spec.authors       = ["Kenji Okimoto"]
-  spec.email         = ["okimoto@clear-code.com"]
+  spec.authors       = ["Hiroshi OYAMA", "Kenji Okimoto"]
+  spec.email         = ["hiro22022@gmail.com", "okimoto@clear-code.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{TECSCDE - TECS Component Diagram Editor}
+  spec.description   = %q{TECSCDE - TECS Component Diagram Editor}
   spec.homepage      = "https://www.toppers.jp/"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   if spec.respond_to?(:metadata)
     spec.metadata["homepage_uri"] = spec.homepage
     spec.metadata["source_code_uri"] = "https://github.com/hiro22022/TECSCDE"
-    spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+    spec.metadata["changelog_uri"] = "https://github.com/hiro22022/TECSCDE/CHANGELOG.md"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
@@ -36,5 +36,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "gtk2", ">= 3.3.0"
 
   spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "racc"
   spec.add_development_dependency "rake"
 end
