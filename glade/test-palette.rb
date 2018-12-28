@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 #まずは決まり文句
 require 'gtk2'

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 #  TECS Generator Cell-type plugin
 #      for TOPPERS Embedded Component System

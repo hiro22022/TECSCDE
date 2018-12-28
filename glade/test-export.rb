@@ -1,5 +1,4 @@
 #! /usr/bin/ruby
-# -*- coding: utf-8 -*-
 
 p __FILE__
 

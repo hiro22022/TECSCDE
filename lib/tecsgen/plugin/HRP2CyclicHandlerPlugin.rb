@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
