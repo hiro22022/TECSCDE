@@ -120,15 +120,15 @@ Structure of Palette Window
 
     #----- operations for palette -----#
     def on_save
-      flush_print "save\n"; @model.save( @model.get_file_editing )
+      flush_print "save\n"; @model.save(@model.get_file_editing)
     end
     def on_export
-      fname = @model.get_file_editing.sub( /\.[Cc][Dd][Ee]\Z/, ".pdf" )
-      if ! ( fname =~ /\.pdf\Z/ )
+      fname = @model.get_file_editing.sub(/\.[Cc][Dd][Ee]\Z/, ".pdf")
+      if ! (fname =~ /\.pdf\Z/)
         fname += ".pdf"
       end
       flush_print "export to #{fname}\n"
-      @view.export( fname )
+      @view.export(fname)
     end
     def on_pointer
       flush_print "mode: pointer\n"
@@ -198,7 +198,7 @@ Structure of Palette Window
       @attrTreeView.set_view view
 
       # keep controlWindow above mainWindow
-      @window.set_transient_for( @view.get_window )
+      @window.set_transient_for(@view.get_window)
       @window.window.set_group @view.get_window.window
       @window.window.raise
 
@@ -223,24 +223,24 @@ Structure of Palette Window
 
       if button == 1
         object = find_near xm, ym
-        if object.kind_of?( TECSModel::TmCell ) && click_count == 2
+        if object.kind_of?(TECSModel::TmCell) && click_count == 2
           if object.is_editable?
 # p "begin_edit_name"
             @view.begin_edit_name object, time
-            @hilite_objs.reset( object )
+            @hilite_objs.reset(object)
             @sub_mode = :SM_EDIT_CELL_NAME
           end
-        elsif object.kind_of?( TECSModel::TmCell ) ||
+        elsif object.kind_of?(TECSModel::TmCell) ||
 #         if object.kind_of?( TECSModel::TmCell ) ||
-            object.kind_of?( TECSModel::TmJoinBar )
+            object.kind_of?(TECSModel::TmJoinBar)
           @sub_mode = :SM_MOVING_CELL_BAR
           # p "FOUND Cell or Bar"
           if state.shift_mask?
-            @hilite_objs.add( object )
+            @hilite_objs.add(object)
           elsif state.control_mask?
-            @hilite_objs.add_del( object )
+            @hilite_objs.add_del(object)
           elsif ! @hilite_objs.include? object
-            @hilite_objs.reset( object )
+            @hilite_objs.reset(object)
           end
           @view.draw_hilite_objects @hilite_objs
         elsif object.kind_of? TECSModel::TmCPort
@@ -250,14 +250,14 @@ Structure of Palette Window
             @hilite_objs.add object
           elsif state.control_mask?
             @sub_mode = :SM_MOVING_CPORT
-            @hilite_objs.reset( object )
+            @hilite_objs.reset(object)
           elsif object.get_join == nil
             @sub_mode = :SM_JOINING
             @hilite_objs.reset
             @cport_joining = object
             @view.set_cursor CURSOR_JOINING
           else
-            TECSCDE::message_box( <<EOT, :OK )
+            TECSCDE::message_box(<<EOT, :OK)
 Call port has already been joined.
 Delete existing join before creating new join.
 If you want to hilited port, click with pressing shift key.
@@ -269,7 +269,7 @@ EOT
             @hilite_objs.add object
           elsif state.control_mask?
             @sub_mode = :SM_MOVING_EPORT
-            @hilite_objs.add_del( object )
+            @hilite_objs.add_del(object)
           else
             # p "FOUND TmEPort"
             @sub_mode = :SM_MOVING_EPORT
@@ -280,7 +280,7 @@ EOT
           if @mode == :MODE_NEW_CELL then
             ctn, nsp = @celltypeTreeView.selected
             if ctn then
-              cell = @model.new_cell( xm, ym, ctn, nsp )
+              cell = @model.new_cell(xm, ym, ctn, nsp)
               @model.set_undo_point
             end
             @hilite_objs.reset cell
@@ -310,13 +310,13 @@ EOT
       when :SM_MOVING_CELL_BAR
         # p "move hilite obj"
         @hilite_objs.each{ |cell_bar|
-          cell_bar.move( x_inc2, y_inc2 )
+          cell_bar.move(x_inc2, y_inc2)
         }
         @view.refresh_canvas
         @view.draw_hilite_objects @hilite_objs
       when :SM_MOVING_CPORT, :SM_MOVING_EPORT
         @hilite_objs.each{ |port|
-          port.move( x_inc2, y_inc2 )
+          port.move(x_inc2, y_inc2)
         }
         update
         @view.refresh_canvas
@@ -353,7 +353,7 @@ EOT
         object = find_near xm, ym
         if object.kind_of? TECSModel::TmEPort then
           if object.get_signature == @cport_joining.get_signature
-            join = @model.new_join( @cport_joining, object )
+            join = @model.new_join(@cport_joining, object)
             @model.set_undo_point
           end
          # update
@@ -387,7 +387,7 @@ EOT
       when 0x63     # Insert
         @hilite_objs.each{ |object|
           if object.kind_of? TECSModel::TmPort
-            object.insert( state.shift_mask? ? :before : :after )
+            object.insert(state.shift_mask? ? :before : :after)
           end
         }
       when 0x51, 0x52, 0x53, 0x54
@@ -402,7 +402,7 @@ EOT
           x_inc = 0.0; y_inc = TECSModel.get_alignment
         end
         @hilite_objs.each{ |obj|
-          obj.move( x_inc, y_inc )
+          obj.move(x_inc, y_inc)
         }
       when 0x50     # home
       when 0x57     # end
@@ -421,13 +421,13 @@ EOT
     # RETURN::TmCell, TmPort, TmJoin
     def find_near xm, ym
       @model.get_cell_list.each{ |cell|
-        port = cell.get_near_port( xm, ym )
+        port = cell.get_near_port(xm, ym)
         if port != nil then
           # p "found port"
           return port
         end
 
-        if cell.is_near?( xm, ym ) then
+        if cell.is_near?(xm, ym) then
           # p "found cell"
           return cell
         end
@@ -437,7 +437,7 @@ EOT
       min_dist = 999999999
       min_bar = nil
       @model.get_join_list.each{ |join|
-        bar, dist = join.get_near_bar( xm, ym )
+        bar, dist = join.get_near_bar(xm, ym)
         if dist < min_dist then
           min_dist = dist
           min_bar = bar
@@ -497,7 +497,7 @@ EOT
       col = Gtk::TreeViewColumn.new("namespace", renderer, :text => COL_NSPATH)
       @treeView.append_column(col)
 
-      liststore.set_sort_column_id( COL_NAME )
+      liststore.set_sort_column_id(COL_NAME)
     end
 
     def add celltype
@@ -611,7 +611,7 @@ EOT
       renderer = Gtk::CellRendererCombo.new
       renderer.text_column = 0
       renderer.model = combo_list
-      col = Gtk::TreeViewColumn.new("value", renderer, :text => COL_VALUE )
+      col = Gtk::TreeViewColumn.new("value", renderer, :text => COL_VALUE)
       col.set_cell_data_func(renderer) { |col, renderer, model, iter|
         # p "iter[0]=#{iter[0]}"
         if @cell.get_attr_list[iter[ COL_NAME ].to_sym] == nil
@@ -677,7 +677,7 @@ EOT
           else
             iter[ COL_VALUE ] = new_text
           end
-          @cell.set_attr( iter[ COL_NAME ].to_sym, new_text )
+          @cell.set_attr(iter[ COL_NAME ].to_sym, new_text)
           @cell.get_model.set_undo_point
           @view.paint_canvas
         end
@@ -720,7 +720,7 @@ EOT
             @choice_list[ name ] = Gtk::ListStore.new(String)
             attr.get_choice_list.each{ |choice|
               iter = @choice_list[ name ].append
-              iter[0] = CDLString.remove_dquote( choice.val )
+              iter[0] = CDLString.remove_dquote(choice.val)
             }
           end
         }
@@ -823,14 +823,14 @@ EOT
     end
 
     def change_cell_name name
-     if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?( TECSModel::TmCell )
+     if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
        @hilite_objs[0].change_name name.to_sym
        @hilite_objs[0].get_model.set_undo_point
      end
     end
 
     def cell_plugin_dialog
-     if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?( TECSModel::TmCell )
+     if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
        dialog = CellPluginDialog.new @hilite_objs[0]
        dialog.run
      end
@@ -851,12 +851,12 @@ EOT
 
         # this doesn't work!  I don't know how to change the color of Entry text
         if cell.is_editable?
-          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse( "black" )
-          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse( "black" )
+          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("black")
+          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("black")
           @cell_property_frame.set_label "cell property"
         else
-          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse( "blue" )
-          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse( "blue" )
+          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("blue")
+          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("blue")
           @cell_property_frame.set_label "cell property (read only)"
         end
 

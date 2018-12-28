@@ -46,10 +46,10 @@ class TECSInfoPlugin < CelltypePlugin
   # @cell_list::[Cell]
 
   # celltype::     Celltype        セルタイプ（インスタンス）
-  def initialize( celltype, option )
+  def initialize(celltype, option)
     super
     if $unopt_entry == false then
-      cdl_info( "TIF0001 forcely set --unoptimize-entry by TECSInfoPlugin (by importing TECSInfo.cdl)" )
+      cdl_info("TIF0001 forcely set --unoptimize-entry by TECSInfoPlugin (by importing TECSInfo.cdl)")
       $unopt_entry = true
     end
   end
@@ -59,14 +59,14 @@ class TECSInfoPlugin < CelltypePlugin
   #
   # celltype プラグインを指定されたセルタイプのセルが生成された
   # セルタイププラグインに対する新しいセルの報告
-  def new_cell( cell )
+  def new_cell(cell)
     @@cell_list << cell
 
     # AppFile は、重ね書きようなので、やめる
     # p "import: cell nTECSInfo::tTECSInfoSub TECSInfoSub under #{cell.get_region.get_name}"
     # TECSInfoSub セルのプロトタイプ宣言
     fn = "#{$gen}/tmp_#{cell.get_region.get_global_name}_TECSInfoSub.cdl"
-    File.open( fn, "w" ){ |f|
+    File.open(fn, "w"){ |f|
       f.print "/* prototype declaration of TECSInfoSub */\n"
       nest = cell.get_region.gen_region_str_pre f
       indent = "    " * nest
@@ -81,9 +81,9 @@ EOT
     Import.new fn
 
     # セルに cTECSInfo の結合があるか？
-    if cell.get_join_list.get_item( :cTECSInfo ) == nil then
+    if cell.get_join_list.get_item(:cTECSInfo) == nil then
       # cTECSInfo = rTECSInfo::TECSInfosub.eTECSInfo; の追加
-      nsp = NamespacePath.new( :rTECSInfo, false )
+      nsp = NamespacePath.new(:rTECSInfo, false)
       nsp.append! :TECSInfoSub
       rhs = Expression.create_cell_join_expression nsp, nil, :eTECSInfo
       join = Join.new :cTECSInfo, nil, rhs
@@ -95,7 +95,7 @@ EOT
   # file 以外の他のファイルにファクトリコードを生成してもよい
   # セルタイププラグインが指定されたセルタイプのみ呼び出される
   def gen_factory file
-    File.open( "#{$gen}/include_all_signature_header.h", "w" ){ |f|
+    File.open("#{$gen}/include_all_signature_header.h", "w"){ |f|
       f.print <<EOT
 #ifndef include_all_signature_header_h
 #define include_all_signature_header_h
@@ -111,7 +111,7 @@ EOT
     }
 
     undefs2 = [ :INITIALIZE_CB, :FOREACH_CELL, :END_FOREACH_CELL ]
-    f = AppFile.open( "#{$gen}/nTECSInfo_tVarDeclInfo_factory.h" )
+    f = AppFile.open("#{$gen}/nTECSInfo_tVarDeclInfo_factory.h")
     Namespace.get_root.print_struct_define f
 
     undefs = [ :VALID_IDX, :GET_CELLCB, :CELLCB, :CELLIDX,
@@ -174,7 +174,7 @@ EOT
                :eCelltypeInfo_isSingleton, :eCelltypeInfo_isIDX_is_ID, :eCelltypeInfo_hasCB,
                :eCelltypeInfo_hasINIB, :FOREACH_CELL, :END_FOREACH_CELL ]
 
-    f = AppFile.open( "#{$gen}/nTECSInfo_tCelltypeInfo_factory.h" )
+    f = AppFile.open("#{$gen}/nTECSInfo_tCelltypeInfo_factory.h")
     undefs.each{ |u|
       f.print "#undef #{u}\n"
     }
@@ -203,7 +203,7 @@ EOT
                :eCallInfo_isDynamic, :eCallInfo_isRefDesc,
                :eCallInfo_isOmit ]
 
-    f = AppFile.open( "#{$gen}/nTECSInfo_tCallInfo_factory.h" )
+    f = AppFile.open("#{$gen}/nTECSInfo_tCallInfo_factory.h")
     f.print <<EOT
 
 /***** Offset of attr & var of celltype  *****/
@@ -240,12 +240,12 @@ EOT
     end
     f.close
 
-    f = AppFile.open( "#{$gen}/nTECSInfo_tEntryInfo_factory.h" )
+    f = AppFile.open("#{$gen}/nTECSInfo_tEntryInfo_factory.h")
     Namespace.get_root.print_entry_define f
     f.close
 
     undefs = [ :GET_CELLCB, :CELLCB, :CELLIDX, :ATTR_name, :INITIALIZE_CB, :FOREACH_CELL ]
-    f = AppFile.open( "#{$gen}/nTECSInfo_tCellInfo_factory.h" )
+    f = AppFile.open("#{$gen}/nTECSInfo_tCellInfo_factory.h")
     undefs.each{ |u|
       f.print "#undef #{u}\n"
     }
@@ -256,7 +256,7 @@ EOT
     ct.gen_ph_cb_initialize_macro f
     f.close
 
-    f = AppFile.open( "#{$gen}/nTECSInfo_tRawEntryDescriptorInfo_factory.h" )
+    f = AppFile.open("#{$gen}/nTECSInfo_tRawEntryDescriptorInfo_factory.h")
     Region.get_root.print_entry_descriptor_define f
     f.close
   end
@@ -264,9 +264,9 @@ EOT
   #=== 後ろの CDL コードを生成
   # プラグインの後ろの CDL コードを生成
   # file:: File:
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     if Generator.get_n_error > 0 then
-      Generator.info( "I9999 TECSInfoPlugin does not generate TECSInfo code because of early error" )
+      Generator.info("I9999 TECSInfoPlugin does not generate TECSInfo code because of early error")
       return
     end
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること

@@ -42,7 +42,7 @@ class TracePlugin < ThroughPlugin
 
   #=== TracePlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
-  def initialize( cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell )
+  def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
 
     @maxArrayDisplay = 16
     @cellEntry_list  = []
@@ -77,7 +77,7 @@ class TracePlugin < ThroughPlugin
   #      typedef, signature, celltype など（cell 以外）のコードを生成
   #          重複して生成してはならない（すでに生成されている場合は出力しないこと）
   # file::        FILE       生成するファイル
-  def gen_plugin_decl_code( file )
+  def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[ @ct_name ] == nil then
@@ -87,7 +87,7 @@ class TracePlugin < ThroughPlugin
       return
     end
 
-    file2 = CFile.open( "#{$gen}/#{@ct_name}.cdl", "w" )
+    file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
 
     send_receive = []
     if @signature != nil then
@@ -132,9 +132,9 @@ EOT
     file.print "import( \"#{$gen}/#{@ct_name}.cdl\" );\n"
   end
 
-  def gen_through_cell_code( file )
+  def gen_through_cell_code(file)
 
-    gen_plugin_decl_code( file )
+    gen_plugin_decl_code(file)
 
     if @b_generate != false then
       nest = @region.gen_region_str_pre file
@@ -167,13 +167,13 @@ EOT
 
   end
 
-  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     if ! func_type.get_type.is_void? then
-      file.print( "\t#{func_type.get_type_str}\tretval;\n" )
+      file.print("\t#{func_type.get_type_str}\tretval;\n")
     end
 
-    file.print( "\tSYSUTM\tutime;\n" )
+    file.print("\tSYSUTM\tutime;\n")
 
     if ! b_singleton then
 
@@ -197,22 +197,22 @@ EOT
 \tsyslog( LOG_INFO, \"Enter: %sTime=%d: #{@next_cell.get_name}.#{@next_cell_port_name}.#{func_name} calledFrom: %s\", ATTR_probeName_str, utime, ATTR_from_str );
 EOT
 
-    print_params( params, file, 0, :IN )
+    print_params(params, file, 0, :IN)
 
     delim = ""
     if ! func_type.get_type.is_void? then
-      file.print( "\tretval = " )
+      file.print("\tretval = ")
     else
-      file.print( "\t" )
+      file.print("\t")
     end
 
-    file.print( "#{@call_port_name}_#{func_name}(" )
+    file.print("#{@call_port_name}_#{func_name}(")
 
     params.each{ |param|
-      file.printf( "#{delim} #{param.get_name}" )
+      file.printf("#{delim} #{param.get_name}")
       delim = ","
     }
-    file.print( " );\n" )
+    file.print(" );\n")
     if @next_cell_port_subscript then
       subscript = '[' + @next_cell_port_subscript.to_s + ']'
     else
@@ -224,46 +224,46 @@ EOT
 \tsyslog( LOG_INFO, \"Leave: %sTime=%d: #{@next_cell.get_name}.#{@next_cell_port_name}#{subscript}.#{func_name}\", ATTR_probeName_str, utime );
 EOT
 
-    print_params( params, file, 0, :OUT )
+    print_params(params, file, 0, :OUT)
 
-    if( ! func_type.get_type.is_void? ) then
-      print_param( "retval", func_type.get_type, file, 0, :RETURN, func_type.get_type.get_type_str, nil, nil)
-      file.print( "\treturn retval;\n" )
+    if(! func_type.get_type.is_void?) then
+      print_param("retval", func_type.get_type, file, 0, :RETURN, func_type.get_type.get_type_str, nil, nil)
+      file.print("\treturn retval;\n")
     end
 
   end
 
-  def print_params( params, file, nest, direction )
+  def print_params(params, file, nest, direction)
     params.each{ |param|
       dir = param.get_direction
-      if( direction == :IN )then
+      if(direction == :IN)then
         case dir
         when :IN, :INOUT, :SEND
-          print_param( param.get_name, param.get_type, file, nest, dir, param.get_type.get_type_str, nil, nil )
+          print_param(param.get_name, param.get_type, file, nest, dir, param.get_type.get_type_str, nil, nil)
         end
       else
         case dir
         when :OUT, :INOUT
-          print_param( param.get_name, param.get_type, file, nest, dir, param.get_type.get_type_str, nil, nil )
+          print_param(param.get_name, param.get_type, file, nest, dir, param.get_type.get_type_str, nil, nil)
         when  :RECEIVE
           outer = "*"
           outer2 = nil
-          print_param( param.get_name, param.get_type.get_referto, file, nest, dir,
-                       param.get_type.get_referto.get_type_str, outer, outer2 )
+          print_param(param.get_name, param.get_type.get_referto, file, nest, dir,
+                       param.get_type.get_referto.get_type_str, outer, outer2)
         end
       end
     }
   end
 
-  def print_param( name, type, file, nest, direction, type_str, outer, outer2, name_list = nil )
-    indent = "    " * ( nest + 1 )
+  def print_param(name, type, file, nest, direction, type_str, outer, outer2, name_list = nil)
+    indent = "    " * (nest + 1)
 
     case type
     when DefinedType
-      print_param( name, type.get_type, file, nest, direction, type_str, outer, outer2, name_list )
+      print_param(name, type.get_type, file, nest, direction, type_str, outer, outer2, name_list)
     when VoidType
     when BoolType
-      file.print( "#{indent}syslog( LOG_INFO, \"#{indent}[#{direction}]#{type_str} #{outer}#{name}#{outer2} = %d;\", #{outer}#{name}#{outer2} );\n" )
+      file.print("#{indent}syslog( LOG_INFO, \"#{indent}[#{direction}]#{type_str} #{outer}#{name}#{outer2} = %d;\", #{outer}#{name}#{outer2} );\n")
     when IntType
       file.print <<EOT
 #{indent}if( sizeof(#{outer}#{name}#{outer2}) > sizeof(int_t) )
@@ -273,7 +273,7 @@ EOT
 EOT
 #      file.print( "#{indent}syslog( LOG_INFO, \"#{indent}[#{direction}]#{type_str} #{outer}#{name}#{outer2} = %ld;\", (long)#{outer}#{name}#{outer2} );\n" )
     when FloatType
-      file.print( "#{indent}syslog( LOG_INFO, \"#{indent}[#{direction}]#{type_str} #{outer}#{name}#{outer2} = %g;\", (double)#{outer}#{name}#{outer2} );\n" )
+      file.print("#{indent}syslog( LOG_INFO, \"#{indent}[#{direction}]#{type_str} #{outer}#{name}#{outer2} = %g;\", (double)#{outer}#{name}#{outer2} );\n")
     when EnumType  # mikan EnumType
 
     when StructType
@@ -284,7 +284,7 @@ EOT
         outer = "#{name}."
       end
       members_decl.get_items.each { |m|
-        print_param( m.get_name, m.get_type, file, nest, direction, m.get_type.get_type_str, outer, nil, members_decl )
+        print_param(m.get_name, m.get_type, file, nest, direction, m.get_type.get_type_str, outer, nil, members_decl)
       }
     when FuncType  # mikan FuncType
     when ArrayType # mikan ArrayType
@@ -296,13 +296,13 @@ EOT
       loop_count = nil
 
       if se then
-        loop_count = "(((#{se.to_str( name_list, outer, outer2 )})>#{max_loop}) ? #{max_loop} : (#{se.to_str( name_list, outer, outer2 )}))"
-        file.print( "#{indent}syslog( LOG_INFO, \"#{indent}size_is(#{se.to_str( name_list, outer, outer2 )})=%d\", #{se.to_str( name_list, outer, outer2 )} );\n" )
-        size = "#{se.to_str( name_list, outer, outer2 )}"
+        loop_count = "(((#{se.to_str(name_list, outer, outer2)})>#{max_loop}) ? #{max_loop} : (#{se.to_str(name_list, outer, outer2)}))"
+        file.print("#{indent}syslog( LOG_INFO, \"#{indent}size_is(#{se.to_str(name_list, outer, outer2)})=%d\", #{se.to_str(name_list, outer, outer2)} );\n")
+        size = "#{se.to_str(name_list, outer, outer2)}"
       elsif ce then
-        loop_count = "(((#{ce.to_str( name_list, outer, outer2 )})>#{max_loop}) ? #{max_loop} : (#{ce.to_str( name_list, outer, outer2 )})) "
-        file.print( "#{indent}syslog( LOG_INFO, \"#{indent}count_is(#{ce.to_str( name_list, outer, outer2 )})=%d\", #{ce.to_str( name_list, outer, outer2 )} );\n" )
-        size = "#{ce.to_str( name_list, outer, outer2 )}"
+        loop_count = "(((#{ce.to_str(name_list, outer, outer2)})>#{max_loop}) ? #{max_loop} : (#{ce.to_str(name_list, outer, outer2)})) "
+        file.print("#{indent}syslog( LOG_INFO, \"#{indent}count_is(#{ce.to_str(name_list, outer, outer2)})=%d\", #{ce.to_str(name_list, outer, outer2)} );\n")
+        size = "#{ce.to_str(name_list, outer, outer2)}"
       end
 
       # mikan PtrType: string
@@ -311,7 +311,7 @@ EOT
       type0 = type
       type = referto
       type_str = type.get_type_str
-      if type.kind_of?( DefinedType ) then
+      if type.kind_of?(DefinedType) then
         type = type.get_original_type
       end
 
@@ -335,17 +335,17 @@ EOT
           end
           outer2 = nil
           members.get_items.each { |m|
-            print_param( m.get_name, m.get_type, file, nest, direction, m.get_type.get_type_str, outer, outer2, members )
+            print_param(m.get_name, m.get_type, file, nest, direction, m.get_type.get_type_str, outer, outer2, members)
           }
         when FuncType  # mikan FuncType
         when ArrayType # mikan ArrayType
         when BoolType, IntType, FloatType, EnumType, PtrType
           outer = "*#{outer}"
           outer2 = "#{outer2}"
-          print_param( name, type, file, nest, direction, type_str, outer, outer2 )
+          print_param(name, type, file, nest, direction, type_str, outer, outer2)
         end
       else # loop_count != nil
-        if type.kind_of?( PtrType ) || type.kind_of?( StructType ) then
+        if type.kind_of?(PtrType) || type.kind_of?(StructType) then
           num_per_loop = 1
         else
           num_per_loop = 4
@@ -366,7 +366,7 @@ EOT
             outer = "#{name}[i__#{nest}]."
           end
           members.get_items.each { |m|
-            print_param( m.get_name, m.get_type, file, nest + 1, direction, m.get_type.get_type_str, outer, nil, members )
+            print_param(m.get_name, m.get_type, file, nest + 1, direction, m.get_type.get_type_str, outer, nil, members)
           }
         when FuncType  # mikan FuncType
         when ArrayType # mikan ArrayType
@@ -405,7 +405,7 @@ EOT
             outer = ""
             outer2 = "[i__#{nest}]"
           end
-          print_param( name, type, file, nest + 1, direction, type_str, outer, outer2 )
+          print_param(name, type, file, nest + 1, direction, type_str, outer, outer2)
         end
 
         file.print <<EOT
@@ -448,7 +448,7 @@ EOT
       if ce =~ /^[A-Za-z_]\w*\.[A-Za-z_]\w*$/ then
         # OK
       else
-        cdl_error( "#{ce}: TracePlugin arg not in \"symbol.symbol\" form" )
+        cdl_error("#{ce}: TracePlugin arg not in \"symbol.symbol\" form")
       end
     }
     @cellEntry_list.concat ces
@@ -464,27 +464,27 @@ EOT
     elsif rhs.to_s == "false"
       @b_diplayTime = false
     else
-      cdl_error( "displayTime : #{rhs} unsuitable: specify true or false" )
+      cdl_error("displayTime : #{rhs} unsuitable: specify true or false")
     end
   end
 
   #=== プラグイン引数 tKernel のチェック
-  def set_kernelCelltype( rhs )
+  def set_kernelCelltype(rhs)
     @kernelCelltype = rhs.to_sym
-    nsp = NamespacePath.analyze( @kernelCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "TracePlugin: kernelCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@kernelCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("TracePlugin: kernelCelltype '#{rhs}' not celltype or not defined")
     end
   end
 
   #=== プラグイン引数 tSyslog のチェック
-  def set_syslogCelltype( rhs )
+  def set_syslogCelltype(rhs)
     @syslogCelltype = rhs.to_sym
-    nsp = NamespacePath.analyze( @syslogCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "TracePlugin: syslogCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@syslogCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("TracePlugin: syslogCelltype '#{rhs}' not celltype or not defined")
     end
   end
 

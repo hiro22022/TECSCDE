@@ -49,7 +49,7 @@ class HRP2AlarmHandlerPlugin < HRP2KernelObjectPlugin
     # val  : 
     # tab  : 
     def print_cfg_cre(file, cell, val, tab)
-        val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}" )
+        val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
         # $cbp$  #983
         name_array = @celltype.get_name_array cell
         cell_CBP = name_array[8]    # CBP

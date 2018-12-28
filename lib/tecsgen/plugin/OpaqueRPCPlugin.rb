@@ -54,7 +54,7 @@ class OpaqueRPCPlugin < ThroughPlugin
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
-  def initialize( cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell )
+  def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
     super
     @b_noClientSemaphore = false
     initialize_opaque_marshaler
@@ -72,7 +72,7 @@ class OpaqueRPCPlugin < ThroughPlugin
     @rpc_client_channel_celltype_file_name = "#{$gen}/#{@rpc_client_channel_celltype_name}.cdl"
   end
 
-  def gen_plugin_decl_code( file )
+  def gen_plugin_decl_code(file)
 
     gen_marshaler_celltype
 
@@ -80,7 +80,7 @@ class OpaqueRPCPlugin < ThroughPlugin
     #  ここで生成された CDL ファイルは、tecsgen が直接 import するのではなく
     #  セルコードの CDL から import される
 
-    f = CFile.open( @rpc_client_channel_celltype_file_name, "w" )
+    f = CFile.open(@rpc_client_channel_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     f.print <<EOT
@@ -118,7 +118,7 @@ EOT
       alloc_call_port_join = ""
     end
 
-    f = CFile.open( @rpc_server_channel_celltype_file_name, "w" )
+    f = CFile.open(@rpc_server_channel_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     f.print <<EOT
@@ -152,14 +152,14 @@ EOT
   #===  through cell コードを生成
   #
   #
-  def gen_through_cell_code( file )
+  def gen_through_cell_code(file)
 
-    gen_plugin_decl_code( file )
+    gen_plugin_decl_code(file)
 
     # セルを探す
     # path =["::",@next_cell.get_name]  # mikan namespace
     # cell = Namespace.find( path )
-    cell = Namespace.find( @next_cell.get_namespace_path )
+    cell = Namespace.find(@next_cell.get_namespace_path)
 
     file.print <<EOT
 import( "#{@rpc_client_channel_celltype_file_name}" );
@@ -320,7 +320,7 @@ EOT
     elsif rhs == :false then
       @b_noClientSemaphore = false
     else
-      cdl_error( "RPCPlugin: specify true or false for noClientSemaphore" )
+      cdl_error("RPCPlugin: specify true or false for noClientSemaphore")
     end
   end
 end

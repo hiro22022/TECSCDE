@@ -101,7 +101,7 @@ class Celltype
   def set_cell_id
 
     if $verbose then
-      print( "=== id for the cells of celltype #{get_namespace_path.to_s} ===\n" ) 
+      print("=== id for the cells of celltype #{get_namespace_path.to_s} ===\n") 
     end
 
     if $unique_id then
@@ -136,38 +136,38 @@ class Celltype
       id = c.get_specified_id
       if id > 0 then
         if id >= @n_cell_gen then
-          cdl_error( "S3001 $1: id too large $2 (max=$3)", c.get_name, id, @n_cell_gen )
+          cdl_error("S3001 $1: id too large $2 (max=$3)", c.get_name, id, @n_cell_gen)
           next
         end
       else
         if - id >= @n_cell_gen then
-          cdl_error( "S3002 $1: id too large $2 (max=$3)", c.get_name, id, @n_cell_gen )
+          cdl_error("S3002 $1: id too large $2 (max=$3)", c.get_name, id, @n_cell_gen)
           next
         end
         id = @n_cell_gen + id + 1
       end
 
       if @ordered_cell_list[ id - 1 ] then
-        cdl_error( "S3003 $1: id number '$2' conflict with $3", c.get_name, id, @ordered_cell_list[ id - 1 ].get_name )
+        cdl_error("S3003 $1: id number '$2' conflict with $3", c.get_name, id, @ordered_cell_list[ id - 1 ].get_name)
       end
       @ordered_cell_list[ id - 1 ] = c
       # 通し番号とする場合のため @id_base を加える
-      c.set_id( @id_base - 1 + id )
+      c.set_id(@id_base - 1 + id)
       if $verbose then
-        print( "#{c.get_name}: id=#{c.get_id}  specified id=#{c.get_specified_id}\n" )
+        print("#{c.get_name}: id=#{c.get_id}  specified id=#{c.get_specified_id}\n")
       end
     }
 
     # ID 指定されていないセルに id 番号を与える
     i = 0
     no_id_specified_cells.each{ |c|
-      while( @ordered_cell_list[i] != nil )
+      while(@ordered_cell_list[i] != nil)
         i += 1
       end
       @ordered_cell_list[ i ] = c
-      c.set_id( @id_base + i )
+      c.set_id(@id_base + i)
       if $verbose then
-        print( "#{c.get_name}: id=#{c.get_id}\n" )
+        print("#{c.get_name}: id=#{c.get_id}\n")
       end
     }
     if @n_cell_gen >0 && i >= @n_cell_gen then
@@ -227,9 +227,9 @@ class Celltype
     @domain_roots.each{ |dn, regions|
       # domain_type は一つのノードに一つしかないので、一つの要素を無条件で取り出す
       if regions.length > 1 then
-        cdl_info( "I9999 celltype '$1' has cells in multi-domain.\n", @name )
+        cdl_info("I9999 celltype '$1' has cells in multi-domain.\n", @name)
         if @idx_is_id == false then
-          cdl_info( "I9999 celltype '$1' forcely set idx_is_id\n", @name )
+          cdl_info("I9999 celltype '$1' forcely set idx_is_id\n", @name)
         end
         @idx_is_id_act = true
       end
@@ -290,7 +290,7 @@ class Celltype
         end
 
         jl = cell.get_join_list
-        j = jl.get_item( port.get_name )
+        j = jl.get_item(port.get_name)
 
         if j then
           if j.get_array_member2 then
@@ -376,7 +376,7 @@ class Celltype
           end
         end
 
-        port.set_only_callee( port_ports[0], port_cells[0] )
+        port.set_only_callee(port_ports[0], port_cells[0])
            # set_cell_unique でない場合 cell は意味がない
 
       end
@@ -405,7 +405,7 @@ class Celltype
         end
 
         jl = cell.get_join_list
-        j = jl.get_item( port.get_name )
+        j = jl.get_item(port.get_name)
 
         if j then    # optional で結合されていない場合 nil
           if j.get_array_member2 then
@@ -414,7 +414,7 @@ class Celltype
               if j2 then
                 port2 = j2.get_rhs_port   # 右辺のポート
                 # 受け口側の最適化可能性を設定
-                port2.set_entry_VMT_skelton_useless( b_VMT_useless, b_skelton_useless )
+                port2.set_entry_VMT_skelton_useless(b_VMT_useless, b_skelton_useless)
               # else
               #  optional で呼び口配列要素が初期化されていない
               end
@@ -422,7 +422,7 @@ class Celltype
           else
             port2 = j.get_rhs_port      # 右辺のポート
             # 受け口側の最適化可能性を設定
-            port2.set_entry_VMT_skelton_useless( b_VMT_useless, b_skelton_useless )
+            port2.set_entry_VMT_skelton_useless(b_VMT_useless, b_skelton_useless)
           end
         end
       }
@@ -449,7 +449,7 @@ class Celltype
   # RETURN:: bool_t: false インクルードされていない、true インクルードされている
   # #_ISH_#, #_ICT_# でヘッダが取り込まれているかチェックする
   # false が返った場合、hname は登録されて、次回の呼び出しでは true が返る
-  def header_included?( hname )
+  def header_included?(hname)
     if @included_header[ hname ] == nil then
       @included_header[ hname ] = true
       return false

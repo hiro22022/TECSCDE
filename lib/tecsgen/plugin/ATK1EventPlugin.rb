@@ -45,7 +45,7 @@ class ATK1EventPlugin < CelltypePlugin
   #      全てのセルの実体を意味解析後に参照する必要があるために
   #      初期化時に singleton の instancies に格納する
   # signature::     Celltype        シグニチャ（インスタンス）
-  def initialize( celltype, option )
+  def initialize(celltype, option)
     super
     @@instancies << self
   end
@@ -66,7 +66,7 @@ class ATK1EventPlugin < CelltypePlugin
   #===  OILファイル出力
   def gen_oil_code file
 
-    file2 = CFile.open( "#{$gen}/EVENT_tecsgen.oil", "w" )
+    file2 = CFile.open("#{$gen}/EVENT_tecsgen.oil", "w")
 
     whole_mask = 0
 
@@ -74,7 +74,7 @@ class ATK1EventPlugin < CelltypePlugin
     @celltype.get_cell_list.each { |cell|
 
 #      if cell.is_generate?
-        join = cell.get_join_list.get_item( :mask )
+        join = cell.get_join_list.get_item(:mask)
 
         # AUTO type search and change to zero
         if join then
@@ -82,15 +82,15 @@ class ATK1EventPlugin < CelltypePlugin
           mask_bit = join.get_rhs.to_s.to_i
           mask_str = join.get_rhs.to_s
           if mask_str == "AUTO" then
-            new_rhs = Expression.create_integer_constant( 32, @locale )
+            new_rhs = Expression.create_integer_constant(32, @locale)
             join.change_rhs new_rhs
           else
             mask_pattern = 1 << mask_bit
             whole_mask |= mask_pattern
           end
         else
-          new_rhs = Expression.create_integer_constant( 32, @locale )
-          join = Join.new( :mask, nil, new_rhs )
+          new_rhs = Expression.create_integer_constant(32, @locale)
+          join = Join.new(:mask, nil, new_rhs)
           cell.new_join(join)
         end
 
@@ -107,7 +107,7 @@ class ATK1EventPlugin < CelltypePlugin
 #      if cell.is_generate?
         # bit place to mask pattern
         file2.print "\tEVENT #{cell.get_name} {\n"
-        join = cell.get_join_list.get_item( :mask )
+        join = cell.get_join_list.get_item(:mask)
         if join then
           mask_bit = join.get_rhs.to_s.to_i
           if mask_bit == 32 then
@@ -117,7 +117,7 @@ class ATK1EventPlugin < CelltypePlugin
               current_mask = (1 << mask_count)
     p current_mask
               if 0 == whole_mask & current_mask
-                new_rhs = Expression.create_integer_constant( current_mask, @locale )
+                new_rhs = Expression.create_integer_constant(current_mask, @locale)
                 join.change_rhs new_rhs
                 whole_mask = whole_mask | current_mask
                 mask_place = mask_count
@@ -132,7 +132,7 @@ class ATK1EventPlugin < CelltypePlugin
           else
             mask_place = join.get_rhs.to_s.to_i
             current_mask = 1 << mask_place
-            new_rhs = Expression.create_integer_constant( current_mask, @locale )
+            new_rhs = Expression.create_integer_constant(current_mask, @locale)
             join.change_rhs new_rhs
           end
           file2.print "\t\tMASK = #{mask_place.to_s};\n"

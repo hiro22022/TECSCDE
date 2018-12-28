@@ -64,36 +64,36 @@ module GenOpaqueMarshaler
   ##### プラグイン引数チェック関数
 
   #=== プラグイン引数 taskPriority のチェック
-  def set_taskPriority( rhs )
+  def set_taskPriority(rhs)
     @taskPriority = rhs
   end
 
   #=== プラグイン引数 serverChannelCelltype のチェック
-  def set_serverChannelCelltype( rhs )
+  def set_serverChannelCelltype(rhs)
     @serverChannelCelltype = rhs.to_sym
     # path = [ "::", @serverChannelCelltype ]
     # obj = Namespace.find( path )
-    nsp = NamespacePath.analyze( @serverChannelCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: serverChannelCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@serverChannelCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: serverChannelCelltype '#{rhs}' not celltype or not defined")
     end
   end
 
   #=== プラグイン引数 clientChannelCelltype のチェック
-  def set_clientChannelCelltype( rhs )
+  def set_clientChannelCelltype(rhs)
     @clientChannelCelltype = rhs.to_sym
     # path = [ "::", @clientChannelCelltype ]
     # obj = Namespace.find( path )
-    nsp = NamespacePath.analyze( @clientChannelCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: clientChanneclCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@clientChannelCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: clientChanneclCelltype '#{rhs}' not celltype or not defined")
     end
   end
 
   #=== プラグイン引数 serverChannelCell のチェック
-  def set_serverChannelCell( rhs )
+  def set_serverChannelCell(rhs)
     @serverChannelCell = rhs.to_sym
     # ChannelCell はプラグインで生成されるため、ここではチェックできない
     # path = [ "::", @serverChannelCell ]
@@ -104,7 +104,7 @@ module GenOpaqueMarshaler
   end
 
   #=== プラグイン引数 clientChannelCell のチェック
-  def set_clientChannelCell( rhs )
+  def set_clientChannelCell(rhs)
     @clientChannelCell = rhs.to_sym
     # ChannelCell はプラグインで生成されるため、ここではチェックできない
     # path = [ "::", @clientChannelCell ]
@@ -115,62 +115,62 @@ module GenOpaqueMarshaler
   end
 
   #=== プラグイン引数 serverChannelInitializer のチェック
-  def set_serverChannelInitializer( rhs )
+  def set_serverChannelInitializer(rhs)
     @serverChannelInitializer = rhs.to_sym
   end
 
   #=== プラグイン引数 clientChannelInitializer のチェック
-  def set_clientChannelInitializer( rhs )
+  def set_clientChannelInitializer(rhs)
     @clientChannelInitializer = rhs.to_sym
   end
 
   #=== タスクタイプ taskCellype のチェック
-  def set_taskCelltype( rhs )
+  def set_taskCelltype(rhs)
     @taskCelltype = rhs.to_sym
     # path = [ "::", @taskCelltype ]
     # obj = Namespace.find( path )
-    nsp = NamespacePath.analyze( @taskCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: taskCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@taskCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: taskCelltype '#{rhs}' not celltype or not defined")
     end
   end
 
   #=== タスクタイプ stack\size のチェック
-  def set_stackSize( rhs )
+  def set_stackSize(rhs)
     @stackSize = rhs
   end
 
   #=== プラグイン引数 PPAllocatorSize のチェック
-  def set_PPAllocatorSize( rhs )
+  def set_PPAllocatorSize(rhs)
     @PPAllocatorSize = rhs
   end
 
   #=== プラグイン引数 TDRCelltype のチェック
-  def set_TDRCelltype( rhs )
+  def set_TDRCelltype(rhs)
     @TDRCelltype = rhs.to_sym
     # path = [ "::", @TDRCelltype ]
     # obj = Namespace.find( path )
-    nsp = NamespacePath.analyze( @TDRCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found" )
+    nsp = NamespacePath.analyze(@TDRCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found")
     end
   end
 
   #=== プラグイン引数 substituteAllocator のチェック
   # オプション引数が、以下の形式であることをチェック
   #     substituteAllocator(Alloc.eAlloc=>Subst.eAlloc,Alloc2.eAlloc=>Subst2.eAlloc)
-  def set_substituteAllocator( rhs )
+  def set_substituteAllocator(rhs)
     # str::String : 破壊される（マッチした残りになる）。str.empty? で空になったことをチェックできる
     # regexp::Regexp : 期待するトークンにマッチする正規表現。 "\A" 出始める
     # expected::String: 期待するトークン、regexp が出現しなかった場合にエラーメッセージとして表示
     def optparse (str,regexp,expected)
       str.strip!
       token = nil
-      res = str.sub!( regexp ){ |matched|  token = matched;  "" }
+      res = str.sub!(regexp){ |matched|  token = matched;  "" }
       if ! token then
-        cdl_error( "syntax error in substituteAllocator option near '#{str}', expected '#{expected}'" )
+        cdl_error("syntax error in substituteAllocator option near '#{str}', expected '#{expected}'")
       end
       return token
     end
@@ -180,25 +180,25 @@ module GenOpaqueMarshaler
 
     # "Alloc.eAlloc=>CAlloc.eAlloc" の形式になっていることをチェック
     while true
-      lhs_alloc_cell = optparse( opt, ident_rexpr, "allocator cell name" )
+      lhs_alloc_cell = optparse(opt, ident_rexpr, "allocator cell name")
       break if ! lhs_alloc_cell
 
-      res = optparse( opt, /\A\./, "." )
+      res = optparse(opt, /\A\./, ".")
       break if ! res
 
-      lhs_alloc_ent = optparse( opt, ident_rexpr, "allocator cell entry name" )
+      lhs_alloc_ent = optparse(opt, ident_rexpr, "allocator cell entry name")
       break if ! lhs_alloc_ent
 
-      res = optparse( opt, /\A\=\>/, "=>" )
+      res = optparse(opt, /\A\=\>/, "=>")
       break if ! res
 
-      rhs_alloc_cell = optparse( opt, ident_rexpr, "allocator cell name" )
+      rhs_alloc_cell = optparse(opt, ident_rexpr, "allocator cell name")
       break if ! rhs_alloc_cell
 
-      res = optparse( opt, /\A\./, "." )
+      res = optparse(opt, /\A\./, ".")
       break if ! res
 
-      rhs_alloc_ent = optparse( opt, ident_rexpr, "allocator cell entry name" )
+      rhs_alloc_ent = optparse(opt, ident_rexpr, "allocator cell entry name")
       break if ! rhs_alloc_ent
 
 #  ここでは、右辺のチェックはできない。右辺のセルは前方参照となる
@@ -223,31 +223,31 @@ module GenOpaqueMarshaler
 
       break if opt.empty?
 
-      res = optparse( opt, /\A\,/, "," )
+      res = optparse(opt, /\A\,/, ",")
       break if ! res
     end
 
   end
 
   #=== プラグイン引数 noServerChannelOpenerCode のチェック
-  def set_noServerChannelOpenerCode( rhs )
+  def set_noServerChannelOpenerCode(rhs)
     rhs = rhs.to_sym
     if rhs == :true
       @noServerChannelOpenerCode = true
     elsif rhs == :false then
       @noServerChannelOpenerCode = false
     else
-      cdl_error( "RPCPlugin: specify true or false for noServerChannelOpenerCode" )
+      cdl_error("RPCPlugin: specify true or false for noServerChannelOpenerCode")
     end
   end
 
   #=== プラグイン引数 clientSemaphoreCelltype のチェック
   def set_clientSemaphoreCelltype rhs
     @semaphoreCelltype = rhs.to_sym
-    nsp = NamespacePath.analyze( @semaphoreCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: clientSemaphoreCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: clientSemaphoreCelltype '#{rhs}' not celltype or not defined")
     end
   end
 
@@ -284,8 +284,8 @@ module GenOpaqueMarshaler
     @clientChannelCelltype = :"tSocketClient"
     @serverChannelCell = :"#{@cell_name}Server"
     @clientChannelCell = :"#{@cell_name}Client"
-    @serverChannelInitializer = subst_name( "portNo=8931+$count$;" ).to_sym
-    @clientChannelInitializer = subst_name( "portNo=8931+$count$; serverAddr=\"127.0.0.1\"; " ).to_sym
+    @serverChannelInitializer = subst_name("portNo=8931+$count$;").to_sym
+    @clientChannelInitializer = subst_name("portNo=8931+$count$; serverAddr=\"127.0.0.1\"; ").to_sym
     @taskCelltype = :"tTask"
     @PPAllocatorSize = nil
     # @TDRCelltype  = :"tTDR"   # "tNBOTDR" に変更の予定
@@ -307,10 +307,10 @@ module GenOpaqueMarshaler
     @signature.each_param{ |func_decl, param_decl|
       if param_decl.get_direction == :OUT then
         if param_decl.get_count && ! param_decl.get_size then
-          cdl_error( "#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: size_is must be specified for out parameter of Opaque RPC" )
+          cdl_error("#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: size_is must be specified for out parameter of Opaque RPC")
         end
         if param_decl.get_string == -1 then
-          cdl_error( "#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: string length must be specified for out parameter of Opaque RPC" )
+          cdl_error("#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: string length must be specified for out parameter of Opaque RPC")
         end
       end
     }
@@ -321,10 +321,10 @@ module GenOpaqueMarshaler
     # サーバーチャンネルセルタイプが entry sServerChannelOpener eOpener を持つかどうかをチェック
     # mikan entry か (call でないか) をチェックしていない
     # scct = Namespace.find ["::", @serverChannelCelltype] # mikan namespace
-    nsp = NamespacePath.analyze( @serverChannelCelltype.to_s )
+    nsp = NamespacePath.analyze(@serverChannelCelltype.to_s)
     scct = Namespace.find nsp
     if scct then
-      obj = scct.find( :"eOpener" )
+      obj = scct.find(:"eOpener")
       if obj.instance_of? Port then
         if obj.get_signature.get_name.to_sym == :sServerChannelOpener then
           if @noServerChannelOpenerCode == false then
@@ -335,7 +335,7 @@ module GenOpaqueMarshaler
       end
     end
     if @noServerChannelOpenerCode == false && @taskMainCelltype != :"tRPCDedicatedTaskMainWithOpener" then
-      cdl_warning( "O9999 ServerChannelOpener code not generated, not found 'entry sServerChannelOpener eOpener'")
+      cdl_warning("O9999 ServerChannelOpener code not generated, not found 'entry sServerChannelOpener eOpener'")
     end
   end
 
@@ -343,7 +343,7 @@ module GenOpaqueMarshaler
   def check_PPAllocator
     if @signature.need_PPAllocator?(true) then
       if @PPAllocatorSize == nil then
-        cdl_error( "PPAllocatorSize must be speicified for size_is array" )
+        cdl_error("PPAllocatorSize must be speicified for size_is array")
       end
     end
   end
@@ -351,7 +351,7 @@ module GenOpaqueMarshaler
   ##### 
 
   def gen_marshaler_celltype
-    f = CFile.open( @marshaler_celltype_file_name, "w" )
+    f = CFile.open(@marshaler_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     if @PPAllocatorSize then
@@ -383,18 +383,18 @@ EOT
 
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
   # ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
-  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     # unmarshaler クラスか?
     if ct_name == @unmarshaler_celltype_name.to_sym then
-      gen_ep_func_body_unmarshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+      gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     else
-      gen_ep_func_body_marshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+      gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     end
   end
 
   #===  marshal コードの生成
-  def gen_ep_func_body_marshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     b_void = false
     b_ret_er = false
@@ -404,21 +404,21 @@ EOT
 
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
     if ! type.is_void? then
-      file.print( "\t#{func_type.get_type.get_type_str}\t\tretval_;\n" )
-      if func_type.get_type.kind_of?( DefinedType ) && ( func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT" ) then
+      file.print("\t#{func_type.get_type.get_type_str}\t\tretval_;\n")
+      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT") then
         b_ret_er = true
       end
     else
       b_void = true
     end
 
-    file.print( "\tER\t\tercd_;\n" )
-    file.print( "\tint16_t\tstate_;\n" )
+    file.print("\tER\t\tercd_;\n")
+    file.print("\tint16_t\tstate_;\n")
 
     # 関数 ID （整数値）
     func_id = "FUNCID_#{@signature.get_global_name}_#{func_name}".upcase
-    fid = @signature.get_id_from_func_name( func_name )
-    file.print( "\tint16_t\tfunc_id_ = #{func_id};	/* (id of '#{func_name}') = #{fid}*/\n" )
+    fid = @signature.get_id_from_func_name(func_name)
+    file.print("\tint16_t\tfunc_id_ = #{func_id};	/* (id of '#{func_name}') = #{fid}*/\n")
 
     # シングルトンでないか？
     if ! b_singleton then
@@ -487,10 +487,10 @@ EOT
     if func_type.has_inward? then
       file.print "	/* 入力引数送出 */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_SEND_BODY );\n"
-      print_params( params, file, 1, b_marshal, b_get, true, "eClientEntry", func_name )
-      print_params( params, file, 1, b_marshal, b_get, false, "eClientEntry", func_name )
+      print_params(params, file, 1, b_marshal, b_get, true, "eClientEntry", func_name)
+      print_params(params, file, 1, b_marshal, b_get, false, "eClientEntry", func_name)
     end
-    print_out_nullable( params, file, 1, b_marshal );
+    print_out_nullable(params, file, 1, b_marshal);
 
     if ! func_type.is_oneway? then
       b_continue = "true"
@@ -507,7 +507,7 @@ EOT
       file.print "	/* dealloc send parameter while executing */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_EXEC );\n"
       dir = :SEND; nest = 1; dealloc_cp = "eClientEntry_#{func_name}"
-      dealloc_for_params( params, file, nest, dir, dealloc_cp )
+      dealloc_for_params(params, file, nest, dir, dealloc_cp)
       file.print "\n"
     end
 
@@ -520,7 +520,7 @@ EOT
 
       b_get = true     # marshaler は get
       file.print "	/* 戻り値の受け取り */\n"
-      print_param( "retval_", func_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get )
+      print_param("retval_", func_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
 
       if func_type.has_outward? then
         if b_ret_er then
@@ -533,8 +533,8 @@ EOT
 
         file.print "#{indent}/* 出力値の受け取り */\n"
         file.print "#{indent}SET_RPC_STATE( state_, RPCSTATE_CLIENT_RECV_BODY );\n"
-        print_params( params, file, indent_level, b_marshal, b_get, true, "eClientEntry", func_name )
-        print_params( params, file, indent_level, b_marshal, b_get, false, "eClientEntry", func_name )
+        print_params(params, file, indent_level, b_marshal, b_get, true, "eClientEntry", func_name)
+        print_params(params, file, indent_level, b_marshal, b_get, false, "eClientEntry", func_name)
 
         if b_ret_er then
           file.print "	}\n"
@@ -556,11 +556,11 @@ EOT
 		cLockChannel_signal();
 EOT
 
-    if( b_void == false )then
+    if(b_void == false)then
       # 呼び元に戻り値をリターン
-      file.print( "	return retval_;\n" )
+      file.print("	return retval_;\n")
     else
-      file.print( "	return;\n" )
+      file.print("	return;\n")
     end
 
     file.print <<EOT
@@ -572,15 +572,15 @@ EOT
       file.print "	/* dealloc send parameter */\n"
       file.print "	if( state_ < RPCSTATE_CLIENT_EXEC ){\n"
       dir = :SEND; nest = 2; dealloc_cp = "eClientEntry_#{func_name}"
-      dealloc_for_params( params, file, nest, dir, dealloc_cp )
+      dealloc_for_params(params, file, nest, dir, dealloc_cp)
       file.print "	}\n"
     end
 
     # receive のメモリをデアロケート
     if func_type.has_receive? then
-      file.print( "	/* receive parameter */\n" )
+      file.print("	/* receive parameter */\n")
       dir = :RECEIVE; nest = 1; dealloc_cp = "eClientEntry_#{func_name}"
-      dealloc_for_params( params, file, nest, dir, dealloc_cp, true )
+      dealloc_for_params(params, file, nest, dir, dealloc_cp, true)
     end
 
     file.print <<EOT
@@ -598,17 +598,17 @@ EOT
 		cErrorHandler_errorOccured( func_id_, ercd_, state_ );
 EOT
 
-    if( b_ret_er != false )then
+    if(b_ret_er != false)then
       # 呼び元に戻り値をリターン
-      file.print( "	return ERCD( E_RPC, MERCD( ercd_ ) );\n" )
+      file.print("	return ERCD( E_RPC, MERCD( ercd_ ) );\n")
     else
-      file.print( "	return;\n" )
+      file.print("	return;\n")
     end
 
   end
 
   #===  unmarshal コードの生成
-  def gen_ep_func_body_unmarshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     b_ret_er = true
 
@@ -664,7 +664,7 @@ EOT
       f_name = f.get_name
       f_type = f.get_declarator.get_type
       func_id = "FUNCID_#{@signature.get_global_name}_#{f_name}".upcase
-      fid = @signature.get_id_from_func_name( f_name )
+      fid = @signature.get_id_from_func_name(f_name)
 
       file.print "	case #{func_id}:		/* (id of '#{f_name}') = #{fid} */ \n"
       file.print "		ercd_ = tOpaqueUnmarshaler_#{@signature.get_global_name}_#{f_name}( p_cellcb, &state_ );\n"
@@ -712,7 +712,7 @@ EOT
     @signature.get_function_head_array.each { |f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
-      id = @signature.get_id_from_func_name( f_name )
+      id = @signature.get_id_from_func_name(f_name)
       file.print "static ER  tOpaqueUnmarshaler_#{@signature.get_global_name}_#{f_name}(CELLCB *p_cellcb, int16_t *state);\t/* func_id: #{id} */\n"
     }
     file.print "\n"
@@ -729,7 +729,7 @@ EOT
     @signature.get_function_head_array.each { |f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
-      id = @signature.get_id_from_func_name( f_name )
+      id = @signature.get_id_from_func_name(f_name)
 
       # 関数は返り値を持つか?
       b_ret_er = false
@@ -763,11 +763,11 @@ EOT
         type = par.get_type.get_original_type
 
         dir = par.get_direction
-        if( dir == :RECEIVE )then
+        if(dir == :RECEIVE)then
           # type は PtrType で、それを取り除いた型
           type = type.get_type
         end
-        if( dir == :SEND || dir == :RECEIVE )then
+        if(dir == :SEND || dir == :RECEIVE)then
           init = " = 0"
         else
           init = ""
@@ -782,16 +782,16 @@ EOT
           aster2 = ""
         end
 
-        type_str = type.get_type_str.gsub( /\bconst\b */, "" ) # "const" を外す
-        file.printf( "	%-12s %s%s%s%s%s;\n", type_str, aster, name, aster2, type.get_type_str_post, init )
+        type_str = type.get_type_str.gsub(/\bconst\b */, "") # "const" を外す
+        file.printf("	%-12s %s%s%s%s%s;\n", type_str, aster, name, aster2, type.get_type_str_post, init)
 
         if dir == :OUT && type.is_nullable? then
-          file.print( "	int8_t\tb_#{name}_null_;\n" )
+          file.print("	int8_t\tb_#{name}_null_;\n")
         end
       }
 
       if ! b_void then
-        file.printf( "	%-12s retval_%s%s;\n", f_type.get_type.get_type_str, f_type.get_type.get_type_str_post, init_retval )
+        file.printf("	%-12s retval_%s%s;\n", f_type.get_type.get_type_str, f_type.get_type.get_type_str_post, init_retval)
       end
 
       # in 方向の入出力を入力
@@ -799,9 +799,9 @@ EOT
       file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_RECV_BODY );\n"
       b_get = true    # unmarshal では get
       b_marshal  = false
-      print_params( params, file, 1, b_marshal, b_get, true, "cServerCall", f_name )
-      print_params( params, file, 1, b_marshal, b_get, false, "cServerCall", f_name )
-      print_out_nullable( params, file, 1, b_marshal );
+      print_params(params, file, 1, b_marshal, b_get, true, "cServerCall", f_name)
+      print_params(params, file, 1, b_marshal, b_get, false, "cServerCall", f_name)
+      print_out_nullable(params, file, 1, b_marshal);
 
 
       # パケットの受信完了
@@ -817,15 +817,15 @@ EOT
 
       # out のメモリをアロケート
       dir = :OUT; alloc_cp = "cPPAllocator_alloc"; alloc_cp_extra = nil; nest = 1
-      alloc_for_out_params( params, file, nest, dir, alloc_cp, alloc_cp_extra )
+      alloc_for_out_params(params, file, nest, dir, alloc_cp, alloc_cp_extra)
 
       # 対象関数を呼出す
       file.print "	/* 対象関数の呼出し */\n"
       file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_EXEC );\n"
       if b_void then
-        file.print( "	cServerCall_#{f_name}(" )
+        file.print("	cServerCall_#{f_name}(")
       else
-        file.print( "	retval_ = cServerCall_#{f_name}(" )
+        file.print("	retval_ = cServerCall_#{f_name}(")
       end
 
       delim = " "
@@ -837,7 +837,7 @@ EOT
         end
         file.print par.get_name
       }
-      file.print( " );\n" )
+      file.print(" );\n")
 
       # 戻り値、出力引数の受取コードの生成
 
@@ -851,9 +851,9 @@ EOT
         file.print "		goto error_reset;\n"
 
         b_get = false     # unmarshaler は put
-        if( ! b_void )then
+        if(! b_void)then
           file.print "	/* 戻り値の送出 */\n"
-          print_param( "retval_", f_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get )
+          print_param("retval_", f_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
         end
 
         if f_type.has_outward? then
@@ -867,14 +867,14 @@ EOT
 
           file.print "#{indent}/* 出力値の送出 */\n"
           file.print "#{indent}SET_RPC_STATE( *state_, RPCSTATE_SERVER_SEND_BODY );\n"
-          print_params( params, file, indent_level, b_marshal, b_get, true, "cServerCall", f_name )
-          print_params( params, file, indent_level, b_marshal, b_get, false, "cServerCall", f_name )
+          print_params(params, file, indent_level, b_marshal, b_get, true, "cServerCall", f_name)
+          print_params(params, file, indent_level, b_marshal, b_get, false, "cServerCall", f_name)
 
           # receive のメモリをデアロケート
           if f_type.has_receive? then
             file.print "#{indent}/* dealloc receive parameter */\n"
             dir = :RECEIVE; dealloc_cp = "cServerCall_#{f_name}"
-            dealloc_for_params( params, file, indent_level, dir, dealloc_cp )
+            dealloc_for_params(params, file, indent_level, dir, dealloc_cp)
           end
 
           if b_ret_er then
@@ -898,7 +898,7 @@ EOT
         file.print "	/* dealloc send parameter */\n"
         file.print "	if( *state_ < RPCSTATE_SERVER_EXEC ){\n"
         dir = :SEND; indent_level = 2; dealloc_cp = "cServerCall_#{f_name}"
-        dealloc_for_params( params, file, indent_level, dir, dealloc_cp, true )
+        dealloc_for_params(params, file, indent_level, dir, dealloc_cp, true)
         file.print "	}\n"
       end
 
@@ -907,7 +907,7 @@ EOT
         file.print "	/* dealloc receive parameter */\n"
         file.print "	if( MERCD( retval_ ) != E_RPC ){\n"
         dir = :RECEIVE; indent_level = 2; dealloc_cp = "cServerCall_#{f_name}"
-        dealloc_for_params( params, file, indent_level, dir, dealloc_cp )
+        dealloc_for_params(params, file, indent_level, dir, dealloc_cp)
         file.print "	}\n"
       end
 
@@ -926,31 +926,31 @@ EOT
   #  b_marshal = false && b_get == false   :  アンマーシャラで入力引数受取
   #  b_marshal = false && b_get == true    :  アンマーシャラで出力引数送出
   # b_referenced:: size_is, count_is, string で参照されているものを出力
-  def print_params( params, file, nest, b_marshal, b_get, b_referenced, port_name, func_name )
+  def print_params(params, file, nest, b_marshal, b_get, b_referenced, port_name, func_name)
     params.each{ |param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
-      if ! ( b_referenced == param.is_referenced? ) then
+      if ! (b_referenced == param.is_referenced?) then
         next
       end
 
       dir = param.get_direction
-      if( b_get == false && b_marshal == true || b_get == true && b_marshal == false  )then
+      if(b_get == false && b_marshal == true || b_get == true && b_marshal == false)then
         case dir
         when :IN, :INOUT
           alloc_cp = "cPPAllocator_alloc"
           alloc_cp_extra = nil
-          print_param( param.get_name, param.get_type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra )
+          print_param(param.get_name, param.get_type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra)
         when :SEND
           alloc_cp = "#{port_name}_#{func_name}_#{param.get_name}_alloc"
           alloc_cp_extra = nil
-          print_param( param.get_name, param.get_type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra )
+          print_param(param.get_name, param.get_type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra)
         end
       else
         case dir
         when :OUT, :INOUT
           alloc_cp = nil        # inout の b_get==true&&b_marsha==true のときアロケータコードは不用
           alloc_cp_extra = nil
-          print_param( param.get_name, param.get_type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra )
+          print_param(param.get_name, param.get_type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra)
         when :RECEIVE
           alloc_cp = "#{port_name}_#{func_name}_#{param.get_name}_alloc"
           alloc_cp_extra = nil
@@ -962,24 +962,24 @@ EOT
             outer2 = nil
           end
           type = param.get_type.get_referto
-          print_param( param.get_name, type, file, nest, dir, outer, outer2, b_marshal, b_get, alloc_cp, alloc_cp_extra )
+          print_param(param.get_name, type, file, nest, dir, outer, outer2, b_marshal, b_get, alloc_cp, alloc_cp_extra)
         end
       end
     }
   end
 
   #=== アロケータコードを生成 (out のアンマーシャラ用)
-  def alloc_for_out_params( params, file, nest, dir, alloc_cp, alloc_cp_extra )
+  def alloc_for_out_params(params, file, nest, dir, alloc_cp, alloc_cp_extra)
     params.each{ |param|
       dir = param.get_direction
       if dir == :OUT then
-        alloc_for_out_param( param.get_name, param.get_type, file, nest, nil, nil, alloc_cp, alloc_cp_extra )
+        alloc_for_out_param(param.get_name, param.get_type, file, nest, nil, nil, alloc_cp, alloc_cp_extra)
       end
     }
   end
 
   #=== アロケータコードを生成 (out のアンマーシャラ用個別パラメータの生成)
-  def alloc_for_out_param( name, type, file, nest, outer, outer2, alloc_cp, alloc_cp_extra )
+  def alloc_for_out_param(name, type, file, nest, outer, outer2, alloc_cp, alloc_cp_extra)
     org_type = type.get_original_type
     if org_type.is_nullable? then
       indent = "\t" * nest
@@ -1021,7 +1021,7 @@ EOT
           file.print "#{indent}{\n"
           file.print "#{indent}	#{loop_counter_type.get_type_str}  i__#{nest}, length__#{nest} = #{len};\n"
           file.print "#{indent}	for( i__#{nest} = 0; i__#{nest} < length__#{nest}; i__#{nest}++ ){\n"
-          alloc_for_out_param( name, type.get_type, file, nest + 2, outer, "#{outer2}[i__#{nest}]", alloc_cp, alloc_cp_extra )
+          alloc_for_out_param(name, type.get_type, file, nest + 2, outer, "#{outer2}[i__#{nest}]", alloc_cp, alloc_cp_extra)
           file.print "#{indent}	}\n"
           file.print "#{indent}}\n"
         end
@@ -1045,7 +1045,7 @@ EOT
 
   #=== 引数の一括デアロケートコードの生成
   # send：マーシャラの最後、receive：アンマーシャラの最後で一括して引数をデアロケートする
-  def dealloc_for_params( params, file, nest, dir, dealloc_cp, b_reset = false )
+  def dealloc_for_params(params, file, nest, dir, dealloc_cp, b_reset = false)
     if b_reset then
       reset_str = "_reset"
     else
@@ -1081,7 +1081,7 @@ EOT
 
   #== out で nullable な引数の情報を渡す
   # out nullable の場合、in, send, receive のように、値を渡す直前ではなく、呼出し時に渡す
-  def  print_out_nullable( params, file, nest, b_marshal );
+  def  print_out_nullable(params, file, nest, b_marshal);
     indent = "\t" * nest
     params.each{ |param|
       next if param.get_direction != :OUT

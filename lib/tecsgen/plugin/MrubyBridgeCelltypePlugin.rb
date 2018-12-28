@@ -43,7 +43,7 @@ class MrubyBridgeCelltypePlugin < CompositePlugin
   dbgPrint "MrubyBridgeCelltypePlugin loaded\n"
   include MrubyBridgeCelltypePluginModule
 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     MrubyBridgeCelltypePluginModule.gen_post_code file
   end
 end

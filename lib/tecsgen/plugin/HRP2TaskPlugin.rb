@@ -124,7 +124,7 @@ EOT
             Cell.get_cell_list2.each { |cell|
                 # すべてのセルを走査してセルタイプをチェック
                 ct = cell.get_celltype
-                if ct.class == Celltype && check_celltype_list.include?( ct ) == false
+                if ct.class == Celltype && check_celltype_list.include?(ct) == false
                     # チェック済みセルタイプに登録
                     check_celltype_list << ct
 
@@ -133,7 +133,7 @@ EOT
                     puts "check for ATT_MOD : #{ct.get_global_name}"
                         
                     # カーネルAPIのコード，データはメモリ保護しない
-                    next if HRP2KernelObjectPlugin.include_celltype?( ct )
+                    next if HRP2KernelObjectPlugin.include_celltype?(ct)
 
                     # 必要のないセルタイプのコード，データはメモリ保護しない
                     next if ! ct.need_generate?
@@ -149,10 +149,10 @@ EOT
 
                     # セル管理ブロックとスケルトンのメモリ保護
                     # gen_celltype_names_domain 相当の処理
-                    if regions_hrp2.include?( Region.get_root ) == false && regions_hrp2.length > 1
+                    if regions_hrp2.include?(Region.get_root) == false && regions_hrp2.length > 1
                         # ドメインが複数で，OutOfDomainにセルが存在しないセルタイプの場合
                         # 共有のセル管理ブロックとスケルトンコードを登録する
-                        file = AppFile.open( "#{$gen}/tecsgen.cfg" )
+                        file = AppFile.open("#{$gen}/tecsgen.cfg")
                         file.print "ATT_MOD(\"#{ct.get_global_name}_tecsgen.o\");\n"
                         file.close
                     end
@@ -163,7 +163,7 @@ EOT
                         else
                             nsp = "_#{reg.get_namespace_path.get_global_name}"
                         end
-                        file = AppFile.open( "#{$gen}/tecsgen#{nsp}.cfg" )
+                        file = AppFile.open("#{$gen}/tecsgen#{nsp}.cfg")
                         file.print "ATT_MOD(\"#{ct.get_global_name}#{nsp}_tecsgen.o\");\n"
                         file.close
                     }
@@ -173,15 +173,15 @@ EOT
 
                     # セルタイプコードのメモリ保護
                     # gen_celltype_names_domain2 相当の処理
-                    if regions_hrp2.include?( Region.get_root ) == true || regions_hrp2.length > 1
+                    if regions_hrp2.include?(Region.get_root) == true || regions_hrp2.length > 1
                         # OutOfDomainにセルが存在するセルタイプの場合
                         # または，複数のドメインにセルが存在するセルタイプの場合
                         # セルタイプコードを共有するように登録する
-                        file = AppFile.open( "#{$gen}/tecsgen.cfg" )
+                        file = AppFile.open("#{$gen}/tecsgen.cfg")
                     else
                         # OutOfDomainでない単一のドメインにセルが存在するセルタイプの場合
                         # セルタイプコードを専有するように登録する
-                        file = AppFile.open( "#{$gen}/tecsgen_#{regions_hrp2[0].get_namespace_path.get_global_name}.cfg" )
+                        file = AppFile.open("#{$gen}/tecsgen_#{regions_hrp2[0].get_namespace_path.get_global_name}.cfg")
                     end
 
                     file.print "ATT_MOD(\"#{ct.get_global_name}.o\");\n"

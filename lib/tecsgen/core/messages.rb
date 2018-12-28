@@ -43,13 +43,13 @@ class TECSMsg
 
   #=== TECSMsg#生成するヘッダやテンプレートなどに含めるコメントの取得
   # CDL の文字コードに合わせて、文字コード変換を行う
-  def self.get( msg )
+  def self.get(msg)
     str = @@comment[ msg ]
 # 2.0    if $KCONV_TECSGEN == $KCONV_CDL
     if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Kconv::BINARY then
       return str
     else
-      return str.kconv( $KCONV_CDL, $KCONV_TECSGEN )
+      return str.kconv($KCONV_CDL, $KCONV_TECSGEN)
     end
   end
 
@@ -57,7 +57,7 @@ class TECSMsg
  # body::String   : "S0001 error message body"  の形式
  # S0001 の部分が使用される
  # Generator.error2 から呼び出される
- def self.get_error_message( body )
+ def self.get_error_message(body)
    body =~ /^[A-Z0-9]+/    # エラー番号を取り出す
    num = $&
    if num then
@@ -75,7 +75,7 @@ class TECSMsg
 
  #=== TECSMsg#ローカライズされたウォーニングメッセージを得る
  # Generator.warning2 から呼び出される
- def self.get_warning_message( body )
+ def self.get_warning_message(body)
    body =~ /^[A-Z0-9]+/    # ウォーニング番号を取り出す
    num = $&
    msg = @@warning_message[ num.to_sym ]
@@ -89,7 +89,7 @@ class TECSMsg
 
  #=== TECSMsg#ローカライズされた情報メッセージを得る
  # Generator.info2 から呼び出される
- def self.get_info_message( body )
+ def self.get_info_message(body)
    body =~ /^[A-Z0-9]+/    # 情報番号を取り出す
    num = $&
    msg = @@info_message[ num.to_sym ]

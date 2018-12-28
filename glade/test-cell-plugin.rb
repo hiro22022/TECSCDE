@@ -33,7 +33,7 @@ plugin_list.append_column(col)
 col = Gtk::TreeViewColumn.new("Option", renderer, :text => COL_OPTION)
 plugin_list.append_column(col)
 
-liststore.set_sort_column_id( COL_NAME )
+liststore.set_sort_column_id(COL_NAME)
 
 # ウィンドウのクローズボタンが押されたら終了
 main_window.signal_connect("destroy") do

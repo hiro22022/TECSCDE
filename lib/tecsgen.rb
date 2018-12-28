@@ -56,7 +56,7 @@ $Copyright = "Copyright(c) 2008-2018, TOPPERS project. All rights reserved."
 $License   = "TOPPERS License"
 
 # This doesn't work as expected in exerb version (Ruby 1.8.7?)
-$tecsgen_base_path = File.dirname( File.expand_path __FILE__ )
+$tecsgen_base_path = File.dirname(File.expand_path __FILE__)
 
 
 ###
@@ -75,11 +75,11 @@ class Array
     return str
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times{ print "  " }
-    print( "Array\n" )
+    print("Array\n")
     self.each{ |m|
-      m.show_tree( indent+1 )
+      m.show_tree(indent+1)
     }
   end
 end
@@ -92,8 +92,8 @@ end
 # プラグインの場合は b_fatal = false を指定。ファイルがなくてもエラー出力後、処理続行
 # b_fatal = false の場合 tecslib/core がサーチパスに追加される
 # RETURN::Bool   : true=成功、 false=失敗   失敗した場合、Generator.error は呼び元で出力する
-def require_tecsgen_lib( fname, b_fatal = true )
-  dbgPrint( "require_lib: #{fname}\n")
+def require_tecsgen_lib(fname, b_fatal = true)
+  dbgPrint("require_lib: #{fname}\n")
   set_kcode $KCODE_TECSGEN
   begin  
     b_require = false
@@ -103,15 +103,15 @@ def require_tecsgen_lib( fname, b_fatal = true )
     #   exerb では $LOAD_PATH は ["."] のみ入っているようだ
     ($library_path+$LOAD_PATH).each{ |path|
       [ "", "tecslib/plugin/" ].each { |lp|
-        lib = File.expand_path( path ) + '/' + lp + fname
+        lib = File.expand_path(path) + '/' + lp + fname
         
         if File.exist? lib then  # ファイル存否と他のエラーを区別するため存在確認をする
           begin
-            require( lib )
+            require(lib)
             b_require = true
           rescue Exception => evar
             b_exception = true
-            print_exception( evar )
+            print_exception(evar)
           end
           break
         end
@@ -137,7 +137,7 @@ def require_tecsgen_lib( fname, b_fatal = true )
         rescue Exception => e
           b_exception = true
           # 文法エラーなどが発生
-          print_exception( e )
+          print_exception(e)
           break
         end
       }
@@ -164,10 +164,10 @@ end
 
 #=== 例外の表示
 # evar:: Exception
-def print_exception( evar )
+def print_exception(evar)
 # もしスタックトレースが出るまでい時間がかかるようならば、次をコメントアウトしてみるべし
   print "*** Begin Ruby exception message ***\n"
-  puts( evar.to_s )
+  puts(evar.to_s)
 
   if $debug then
     puts "#### stack trace ####"
@@ -176,13 +176,13 @@ def print_exception( evar )
   print "*** End Ruby exception message ***\n"
 end
 
-def dbgPrint( str )
+def dbgPrint(str)
   if $debug then
     print str
   end
 end
 
-def dbgPrintf( *param )
+def dbgPrintf(*param)
   if $debug then
     printf *param
   end
@@ -217,7 +217,7 @@ class TECSGEN
 
   @@current_tecsgen = nil
 
-  def self.init( addtional_option_parser = nil )
+  def self.init(addtional_option_parser = nil)
     initialize_global_var
     analyze_option addtional_option_parser
     load_modules
@@ -351,11 +351,11 @@ class TECSGEN
     # $KCODE_TECSGEN, $KCONV_TECSGEN を仮に設定する (tecs_lang.rb ですぐに再設定される)
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const: 
-    set_kcode( $KCODE_TECSGEN )  # このファイルの文字コードを設定
+    set_kcode($KCODE_TECSGEN)  # このファイルの文字コードを設定
 
   end # initialize_global_var
 
-  def self.analyze_option( additional_option_parser )
+  def self.analyze_option(additional_option_parser)
 
     ###  tecsgen コマンドオプション解析  ###
     ARGV.options {|parser|
@@ -378,7 +378,7 @@ class TECSGEN
       parser.on('-L', '--library-path=path', 'path to dir where tecsgen.rb (obsolete, unnecessary to specify -L, those passes are gotten from tecsgen.rb') { |path|
         $library_path << path
       }
-      parser.on('-R', '--RAM-initializer',   'generate RAM initializer. INITIALIZE_TECS() must be called before running any TECS code.' ){
+      parser.on('-R', '--RAM-initializer',   'generate RAM initializer. INITIALIZE_TECS() must be called before running any TECS code.'){
         $ram_initializer = true
       }
       parser.on('-U', '--unoptimize', 'unoptimize') {
@@ -387,12 +387,12 @@ class TECSGEN
       parser.on('--unoptimize-entry', 'unoptimize entry port') {
         $unopt_entry = true
       }
-      parser.on('-c', '--cpp=cpp_cmd', 'C pre-processor command used import_C (default: gcc -E -DTECSGEN), you can also specify by environment variable TECS_CPP' ){
+      parser.on('-c', '--cpp=cpp_cmd', 'C pre-processor command used import_C (default: gcc -E -DTECSGEN), you can also specify by environment variable TECS_CPP'){
         |arg|
         $cpp = arg
         $b_cpp_specified = true
       }
-      parser.on('-d', '--dryrun',      'dryrun' ){
+      parser.on('-d', '--dryrun',      'dryrun'){
         $dryrun = true
       }
       parser.on('-f', '--force-overwrite', 'force overwrite all files') {
@@ -412,48 +412,48 @@ class TECSGEN
       #  parser.on('-o', '--old-mode',    'old mode' ){
       #    $old_mode = true
       #  }
-      parser.on('-r', '--ram',     'RAM only' ){
+      parser.on('-r', '--ram',     'RAM only'){
         $rom = false
       }
-      parser.on('-s', '--show-tree',   'show parsing tree' ){
+      parser.on('-s', '--show-tree',   'show parsing tree'){
         $show_tree = true
       }
-      parser.on('-t', '--generator-debug', 'generator debug' ){
+      parser.on('-t', '--generator-debug', 'generator debug'){
         $debug = true
         $verbose = true
       }
-      parser.on('-u', '--unique-id', 'assign unique id for each cell' ){
+      parser.on('-u', '--unique-id', 'assign unique id for each cell'){
         $unique_id = true
       }
-      parser.on('-v', '--verbose',     'verbose mode' ){
+      parser.on('-v', '--verbose',     'verbose mode'){
         $verbose = true
       }
-      parser.on('-y', '--yydebug',     'yydebug' ){
+      parser.on('-y', '--yydebug',     'yydebug'){
         $yydebug = true
       }
-      parser.on( '--no-banner', 'not display banner') {
+      parser.on('--no-banner', 'not display banner') {
         $no_banner = true
       }
-      parser.on( '--version', 'print version') {
+      parser.on('--version', 'print version') {
         $print_version = true
       }
-      parser.on( '--unit-test', 'unit verification (test tecsgen itself)') {
+      parser.on('--unit-test', 'unit verification (test tecsgen itself)') {
         $unit_test = true
       }
-      parser.on( '--generate-all-template', 'generate all celltypes\' templates') {
+      parser.on('--generate-all-template', 'generate all celltypes\' templates') {
         $generate_all_template = true
       }
-      parser.on( '--generate-no-template',  'generate no template') {
+      parser.on('--generate-no-template',  'generate no template') {
         $generate_no_template = true
       }
-      parser.on( '--no-default-import-path', 'no default import path' ){
+      parser.on('--no-default-import-path', 'no default import path'){
         $no_default_import_path = true
       }
-      parser.on( '--c-suffix=c', 'C program suffix (default: c)' ){
+      parser.on('--c-suffix=c', 'C program suffix (default: c)'){
         | suffix |
         $c_suffix = suffix
       }
-      parser.on( '--h-suffix=h', 'C program header suffix (default: h)' ){
+      parser.on('--h-suffix=h', 'C program header suffix (default: h)'){
         | suffix |
         $h_suffix = suffix
       }
@@ -462,7 +462,7 @@ class TECSGEN
       parser.version = # {$version}
       parser.release = nil
       if additional_option_parser
-        additional_option_parser.call( parser )
+        additional_option_parser.call(parser)
       end
       parser.parse!
     }
@@ -549,9 +549,9 @@ class TECSGEN
         TECSGEN.add_import_path $tecspath
         dir = nil
         begin
-          Dir.foreach( $tecspath ){ |f|
-            if f != "." && f != ".." && File.directory?( $tecspath + '/' + f ) then
-              TECSGEN.add_import_path( $tecspath + '/' + f )
+          Dir.foreach($tecspath){ |f|
+            if f != "." && f != ".." && File.directory?($tecspath + '/' + f) then
+              TECSGEN.add_import_path($tecspath + '/' + f)
             end
           }
         rescue
@@ -565,22 +565,22 @@ class TECSGEN
 
     # $target の設定
     $target = ARGV[0]
-    pos = $target.rindex( /[:\\\/]/ )
+    pos = $target.rindex(/[:\\\/]/)
     if pos then
       $target = $target[pos+1..-1]  # ディレクトリ区切りを除いた文字列
     end
-    pos = $target.rindex( /\./ )
+    pos = $target.rindex(/\./)
     if pos then
       $target = $target[0..pos-1]   # 拡張子を取り除いた文字列
     end
 
     # gen ディレクトリの作成
     begin
-      if ! File.directory?( $gen_base ) then
-        Dir.mkdir( $gen_base )
+      if ! File.directory?($gen_base) then
+        Dir.mkdir($gen_base)
       end
     rescue
-      print( "Cannot mkdir #{$gen_base}. If the path has hierarchy, please create directory by manual.\n" )
+      print("Cannot mkdir #{$gen_base}. If the path has hierarchy, please create directory by manual.\n")
       exit 1
     end
   end # setup
@@ -610,7 +610,7 @@ if $TECSCDE != true then
     tecsgen.run1
     tecsgen.run2
   rescue => evar
-    print_exception( evar )
+    print_exception(evar)
     STDERR << "tecsgen: exit because of unrecoverble error.\n"
     STDERR << "   please retry after resolve early error.\n"
     STDERR << "   if no error has occured, please report to TOPPERS TECS WG (users@toppers.jp or com-wg@toppers.jp).\n"

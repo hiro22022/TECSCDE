@@ -5137,7 +5137,7 @@ class Token
 
   alias == eql?
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     print "#{@val}\n"
   end
@@ -5152,7 +5152,7 @@ class TECSIO
     pr = Proc.new   # このメソッドのブロック引数を pr に代入
     if $b_no_kcode then
       msg = "E".encode $Ruby19_File_Encode
-      if( $Ruby19_File_Encode == "Shift_JIS" )
+      if($Ruby19_File_Encode == "Shift_JIS")
 
         # Shift JIS は、いったん Windows-31J として読み込ませ、Shift_JIS に変換させる．
         # コメント等に含まれる SJIS に不適切な文字コードは '?' または REPLACEMENT CHARACTER に変換される．
@@ -5170,12 +5170,12 @@ class TECSIO
       mode = "r"
     end
 
-    f = File.open( file, mode )
+    f = File.open(file, mode)
     begin
       f.each{ |line|
         # dbgPrint line
-        line = str_code_convert( msg, line )
-        pr.call( line )
+        line = str_code_convert(msg, line)
+        pr.call(line)
       }
     ensure
       f.close
@@ -5189,15 +5189,15 @@ class TECSIO
   # このメソッドは、エラーメッセージ出力でも使用されていることに注意．
   #
   # msg_enc::Encode | String
-  def self.str_code_convert( msg, str )
+  def self.str_code_convert(msg, str)
     if $b_no_kcode == false then
       return str                          # Ruby V1.8 まで
     end
     if msg.encoding != str.encoding then
       option = { :invalid => :replace, :undef => :replace }   # 例外を発生させず、'?' に変換する(utf-8 は 0xfffd)
       # return str.encode( msg.encoding, option )
-      str = str.encode( "utf-8", option )
-      return str.encode( msg.encoding, option )
+      str = str.encode("utf-8", option)
+      return str.encode(msg.encoding, option)
     else
       return str
     end

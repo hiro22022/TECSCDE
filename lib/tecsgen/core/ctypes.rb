@@ -62,7 +62,7 @@ module CType
     #     return self
     #   end
     # elsif self.instance_of?( CIntType ) && another.instance_of?( CIntType )then
-    if self.instance_of?( CIntType ) && another.instance_of?( CIntType )then
+    if self.instance_of?(CIntType) && another.instance_of?(CIntType)then
       if another.get_bit_size != -3 then
         if @bit_size == -4 && another.get_bit_size == -4 then
           @bit_size = -5  # long long
@@ -90,9 +90,9 @@ module CType
       end
 
       return self
-    elsif self.instance_of?( CIntType ) then
+    elsif self.instance_of?(CIntType) then
       return another.merge self
-    elsif self.instance_of?( CDefinedType ) then
+    elsif self.instance_of?(CDefinedType) then
       # mikan unsigned などとの merge の不正検出
       if another.is_const? then
         @b_const = true
@@ -108,7 +108,7 @@ module CType
 #        cdl_error( "C1002 $1 not compatible with previous one $2" , self.get_type_str, another.get_type_str )
 #      end
       return self
-    elsif self.instance_of?( CStructType ) then
+    elsif self.instance_of?(CStructType) then
       if another.is_const? then
         @b_const = true
       end
@@ -116,7 +116,7 @@ module CType
         @b_volatile = true
       end
       return self
-    elsif self.instance_of?( CFloatType ) then
+    elsif self.instance_of?(CFloatType) then
       # mikan long double
       #   TECS には long double を表現する手段がない (double80_t を定義すればよいか?)
 #      cdl_warning( "C1003 $1 & $2 incompatible (\'long double\' is not supported.). Treated as $3." , self.class, another.class, self.class )
@@ -130,12 +130,12 @@ module CType
 
   #=== qualifier を設定する
   #     元の Type クラスでは矛盾チェックしない（TECSの本来の文法では重複指定できないため）
-  def set_qualifier( qual )
+  def set_qualifier(qual)
 
     if @qualifier then
-      cdl_error( "C1004 $1: qualifier redefined. previous one: $2" , qual, @qualifier )
+      cdl_error("C1004 $1: qualifier redefined. previous one: $2" , qual, @qualifier)
     end
-    super( qual )
+    super(qual)
   end
 
 end
@@ -144,8 +144,8 @@ class CDefinedType < DefinedType
 
   include CType
 
-  def initialize( type_name )
-    super( type_name )
+  def initialize(type_name)
+    super(type_name)
   end
 end
 
@@ -165,13 +165,13 @@ class CIntType < IntType
 
   include CType
 
-  def initialize( bit_size )
+  def initialize(bit_size)
     # p super.class   mikan super.class が Symbol だ、なぜ？
-    super( bit_size )
+    super(bit_size)
   end
 
-  def set_sign( sign, b_uint = false )
-    super( sign, b_uint )
+  def set_sign(sign, b_uint = false)
+    super(sign, b_uint)
     # p "CInt: set_sign: #{get_type_str} #{sign}"
   end
 end
@@ -180,13 +180,13 @@ class CFloatType < FloatType
 
   include CType
 
-  def initialize( bit_size )
+  def initialize(bit_size)
     super
   end
 
   def to_long
     if @bit_size != -64 then
-      cdl_warning( "W9999 long specified for $1" , get_type_str )
+      cdl_warning("W9999 long specified for $1" , get_type_str)
     else
       @bit_size = -128  # @bit_size = -128 : long double
     end
@@ -197,8 +197,8 @@ class CEnumType < EnumType # mikan
 
   include CType
 
-  def initialize( bit_size )
-    super( bit_size )
+  def initialize(bit_size)
+    super(bit_size)
   end
 
 end
@@ -208,8 +208,8 @@ class CStructType < StructType
   include CType
 
 
-  def initialize( tag = nil )
-    super( tag )
+  def initialize(tag = nil)
+    super(tag)
   end
 end
 
@@ -217,8 +217,8 @@ class CFuncType < FuncType
 
   include CType
 
-  def initialize( paramlist = nil )
-    super( paramlist )
+  def initialize(paramlist = nil)
+    super(paramlist)
   end
 
 end
@@ -227,8 +227,8 @@ class CArrayType < ArrayType
 
   include CType
 
-  def initialize( subscript = nil )
-    super( subscript )
+  def initialize(subscript = nil)
+    super(subscript)
   end
 end
 
@@ -236,8 +236,8 @@ class CPtrType < PtrType
 
   include CType
 
-  def initialize( referto = nil )
-    super( referto )
+  def initialize(referto = nil)
+    super(referto)
   end
 
 end

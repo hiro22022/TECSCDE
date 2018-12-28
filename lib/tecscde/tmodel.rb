@@ -58,8 +58,8 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
 module TECSCDE
 
-  def self.error( msg )
-    puts( msg )
+  def self.error(msg)
+    puts(msg)
   end
 
   #== TmObject: base class for TECSModel & its children
@@ -99,11 +99,11 @@ module TECSCDE
 
     def copy_from tm_object
       tm_object.instance_variables.each{ |iv|
-        val = tm_object.instance_variable_get( iv )
-        if val.kind_of?( Array ) || val.kind_of?( Hash )
-          instance_variable_set( iv, val.dup )
+        val = tm_object.instance_variable_get(iv)
+        if val.kind_of?(Array) || val.kind_of?(Hash)
+          instance_variable_set(iv, val.dup)
         else
-          instance_variable_set( iv, val )
+          instance_variable_set(iv, val)
         end
       }
     end
@@ -120,7 +120,7 @@ module TECSCDE
       end
 
       def add tm_object
-        if ! @set.has_key?( tm_object )
+        if ! @set.has_key?(tm_object)
           # flush_print "add_change_set #{tm_object.class} number=#{@number}\n"
           @set[ tm_object ] = tm_object.clone_for_undo
         end
@@ -148,7 +148,7 @@ module TECSCDE
       def initialize
         @change_no = 0
         @change_set_list = [ ]
-        @change_set_next = ChangeSet.new( @change_no )
+        @change_set_next = ChangeSet.new(@change_no)
       end
 
       #=== ChangeSetManager#add_change_set
@@ -165,13 +165,13 @@ module TECSCDE
           # p "* set_undo_point change_no=#{@change_no}, count=#{count}\n"
           @change_set_list[ @change_no ] = @change_set_next
           @change_no += 1
-          @change_set_next = ChangeSet.new( @change_no )
+          @change_set_next = ChangeSet.new(@change_no)
 
           if @change_set_list.length > @change_no
             flush_print "truncate undo buffer #{@change_set_list.length} to #{@change_no}\n"
             # print( "range: #{(@change_no)..(@change_set_list.length)-1}\n" )
             # p "length0=#{@change_set_list.length}"
-            @change_set_list.slice!( (@change_no)..(@change_set_list.length-1) )
+            @change_set_list.slice!((@change_no)..(@change_set_list.length-1))
             # p "length1=#{@change_set_list.length}"
           end
         else
@@ -186,7 +186,7 @@ module TECSCDE
           flush_print "* undo change_no=#{@change_no}\n"
           @change_set_list[ @change_no ].apply
           # flush_print "* undo1 change_no=#{@change_no}\n"
-          @change_set_next = ChangeSet.new( @change_no )
+          @change_set_next = ChangeSet.new(@change_no)
         end
       end
 
@@ -288,31 +288,31 @@ module TECSCDE
 
     #=== TECSModel#new_cell ***
     # namespace_path::String : namespace path string of celltype
-    def new_cell( xm, ym, celltype_name, ct_namespace_path, tecsgen_cell = nil )
+    def new_cell(xm, ym, celltype_name, ct_namespace_path, tecsgen_cell = nil)
 
-      ct_nsp = NamespacePath.analyze( ct_namespace_path )
+      ct_nsp = NamespacePath.analyze(ct_namespace_path)
       ct_nsp.append! celltype_name.to_sym
       ct = Namespace.find ct_nsp
       if ct == nil
-        TECSCDE.error( "TM9999 celltype #{ct_nsp.to_s}: not found for cell #{@name}")
+        TECSCDE.error("TM9999 celltype #{ct_nsp.to_s}: not found for cell #{@name}")
         return
       end
 
       if tecsgen_cell
-        region = get_region_from_tecsgen_region( tecsgen_cell.get_region )
+        region = get_region_from_tecsgen_region(tecsgen_cell.get_region)
       else
-        region = get_region_by_location( xm, ym )
+        region = get_region_by_location(xm, ym)
       end
-      return new_cell2( xm, ym, ct, region, tecsgen_cell )
+      return new_cell2(xm, ym, ct, region, tecsgen_cell)
     end
 
     # celltype::Celltype : in tecsgen (should be changed to TmCelltype)
     # region:TmRegion    :
     # tecsgen_cell:Cell  : in tecsgen
-    def new_cell2( xm, ym, celltype, region, tecsgen_cell )
+    def new_cell2(xm, ym, celltype, region, tecsgen_cell)
       modified {
 
-        name = celltype.get_name.to_s.gsub( /t(.*)/, '\\1' ).to_sym
+        name = celltype.get_name.to_s.gsub(/t(.*)/, '\\1').to_sym
         if @cell_hash[ name ]
           count = 0
           while @cell_hash[ (name.to_s + count.to_s).to_sym ]
@@ -321,17 +321,17 @@ module TECSCDE
           name = (name.to_s + count.to_s).to_sym
         end
 
-        cell = TmCell.new( name, celltype, xm, ym, region, tecsgen_cell )
+        cell = TmCell.new(name, celltype, xm, ym, region, tecsgen_cell)
         @cell_list << cell
         @cell_hash[ name ] = cell
 
-        w, h = @view.get_text_extent( name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
-        w2, h = @view.get_text_extent( celltype.get_name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
+        w, h = @view.get_text_extent(name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
+        w2, h = @view.get_text_extent(celltype.get_name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
         w += 2
         w = w2 if w2 > w
         w = 20 if w < 20
         h = 13 if h < 13
-        cell.set_geometry( xm, ym, w, h )
+        cell.set_geometry(xm, ym, w, h)
 
         return cell
       }
@@ -351,7 +351,7 @@ module TECSCDE
     # old_name::Symbol
     # cell:: TmCell
     # don't call externally, use TmCell#change_name instead
-    def rename_cell( cell, new_name )
+    def rename_cell(cell, new_name)
       modified {
 
         if ! new_name.kind_of? Symbol
@@ -361,12 +361,12 @@ module TECSCDE
           return true
         end
 
-        if ! ( new_name =~ IDENTIFIER_RE )
-          TECSCDE.message_box( "'#{new_name}' has unsuitable character for identifier", nil )
+        if ! (new_name =~ IDENTIFIER_RE)
+          TECSCDE.message_box("'#{new_name}' has unsuitable character for identifier", nil)
           return false
         end
         if @cell_hash[ new_name ] then
-          TECSCDE.message_box( "'#{new_name}' already exists", nil )
+          TECSCDE.message_box("'#{new_name}' already exists", nil)
           return false
         end
         @cell_hash.delete cell.get_name
@@ -376,10 +376,10 @@ module TECSCDE
     end
 
     #=== TECSModel#new_join ***
-    def new_join( cport, eport )
+    def new_join(cport, eport)
       modified {
 
-        join = TmJoin.new( cport, eport, self )
+        join = TmJoin.new(cport, eport, self)
         @join_list << join
         return join
       }
@@ -396,27 +396,27 @@ module TECSCDE
 
     #=== TECSModel.normal direction of edge
     # RETURN:: 1: if direction is positive, -1: negative
-    def self.get_sign_of_normal( edge_side )
+    def self.get_sign_of_normal(edge_side)
       ((edge_side & 0b01)) != 0 ? 1 : -1
     end
 
     #=== TECSModel.is_vertical?
     # RETURN:: true if vertical, false if horizontal
-    def self.is_vertical?( edge_side )
+    def self.is_vertical?(edge_side)
       ((edge_side & 0b10) != 0) ? true : false
     end
 
     #=== TECSModel.is_parallel?
     # RETURN:: true if parallel, false if right anble
-    def self.is_parallel?( edge_side1, edge_side2 )
+    def self.is_parallel?(edge_side1, edge_side2)
       # p "edge val", edge_side1, edge_side2, edge_side1 ^ edge_side2
-      ( edge_side1 ^ edge_side2) < 0b10
+      (edge_side1 ^ edge_side2) < 0b10
     end
 
     #=== TECSModel.is_opposite?
     # this function can be applicable only when edge_side1, edge_side2 are parallel
-    def self.is_opposite?( edge_side1, edge_side2 )
-      ((( edge_side1 ^ edge_side2 ) & 0b01 ) !=  0) ? true : false
+    def self.is_opposite?(edge_side1, edge_side2)
+      (((edge_side1 ^ edge_side2) & 0b01) !=  0) ? true : false
     end
 
     #=== TECSModel.round_length_val
@@ -473,14 +473,14 @@ module TECSCDE
     end
 
     #=== TECSModel#get_region_by_location
-    def get_region_by_location( x, y )
+    def get_region_by_location(x, y)
       @root_region   # mikan
     end
 
     #=== TECSModel#create_root_region
     def create_root_region
-      nsp = NamespacePath.new( "::", true )
-      @root_region = TmRegion.new( nsp, self )
+      nsp = NamespacePath.new("::", true)
+      @root_region = TmRegion.new(nsp, self)
     end
 
     #=== TECSModel#get_file_editing
@@ -525,8 +525,8 @@ module TECSCDE
     #=== TECSModel.setup_clone
     def copy_from model
       model.instance_variables.each{ |iv|
-        val = model.instance_variable_get( iv )
-        instance_variable_set( iv, val )
+        val = model.instance_variable_get(iv)
+        instance_variable_set(iv, val)
       }
       @cell_list = (model.instance_variable_get :@cell_list).dup
       @cell_hash = (model.instance_variable_get :@cell_hash).dup
@@ -576,7 +576,7 @@ module TECSCDE
 
       include TmUneditable
 
-      def initialize( name, celltype, x, y, region, tecsgen_cell = nil )
+      def initialize(name, celltype, x, y, region, tecsgen_cell = nil)
         dbgPrint "TmCell.new\n"
         @name = name
         @celltype = celltype
@@ -598,17 +598,17 @@ module TECSCDE
           if port_def.get_port_type == :ENTRY then
             # if ! port_def.is_reverse_required? then
             if port_def.get_array_size == nil
-              @eports[ port_def.get_name ] = TmEPort.new( self, port_def )
+              @eports[ port_def.get_name ] = TmEPort.new(self, port_def)
             else
-              @eports[ port_def.get_name ] = TmEPortArray.new( self, port_def )
+              @eports[ port_def.get_name ] = TmEPortArray.new(self, port_def)
             end
             # end
           else
             if ! port_def.is_require? then
               if port_def.get_array_size == nil
-                @cports[ port_def.get_name] = TmCPort.new( self, port_def )
+                @cports[ port_def.get_name] = TmCPort.new(self, port_def)
               else
-                @cports[ port_def.get_name] = TmCPortArray.new( self, port_def )
+                @cports[ port_def.get_name] = TmCPortArray.new(self, port_def)
               end
             end
           end
@@ -621,17 +621,17 @@ module TECSCDE
       end
 
       #=== TmCell#set_geometry
-      def set_geometry( x, y, w, h )
+      def set_geometry(x, y, w, h)
         x_inc = x - @x
         y_inc = y - @y
-        x_inc_r = x + w - ( @x + @width )
-        y_inc_b = y + h - ( @y + @height )
+        x_inc_r = x + w - (@x + @width)
+        y_inc_b = y + h - (@y + @height)
 
         @cports.each{ |name, cport|
-            cport.moved_edge( x_inc, x_inc_r, y_inc, y_inc_b )
+            cport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         }
         @eports.each{ |name, eport|
-            eport.moved_edge( x_inc, x_inc_r, y_inc, y_inc_b )
+            eport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         }
 
         w_min, h_min = get_min_wh
@@ -676,7 +676,7 @@ module TECSCDE
       # return::Bool: true if succeed
       # if cell of new_name already exists, results false
       def change_name name
-        if @owner.rename_cell( self, name )
+        if @owner.rename_cell(self, name)
           modified {
             @name = name
             return true
@@ -703,23 +703,23 @@ module TECSCDE
 
           dbgPrint "cell move #{@name}\n"
           x0 = @x; y0 = @y
-          @x = get_model.clip_x( TECSModel.round_length_val( @x + x_inc ) )
-          @y = get_model.clip_y( TECSModel.round_length_val( @y + y_inc ) )
+          @x = get_model.clip_x(TECSModel.round_length_val(@x + x_inc))
+          @y = get_model.clip_y(TECSModel.round_length_val(@y + y_inc))
           x_inc2 = @x - x0; y_inc2 = @y - y0
 
           @cports.each{ |name, cport|
-            cport.moved( x_inc2, y_inc2 )
+            cport.moved(x_inc2, y_inc2)
           }
           @eports.each{ |name, eport|
-            eport.moved( x_inc2, y_inc2 )
+            eport.moved(x_inc2, y_inc2)
           }
         }
       end
 
       #=== TmCell::is_near?( x, y )  ***
-      def is_near?( x, y )
+      def is_near?(x, y)
         # p "is_near? @x=#{@x} @width=#{@width} @y=#{@y} @height=#{@height} x=#{x} y=#{y}"
-        if( @x < x ) &&( x < ( @x+@width) )&&( @y < y )&&( y < (@y+@height) )then
+        if(@x < x) &&(x < (@x+@width))&&(@y < y)&&(y < (@y+@height))then
           true
         else
           false
@@ -727,12 +727,12 @@ module TECSCDE
       end
 
       #=== TmCell::get_near_port ***
-      def get_near_port( x, y )
+      def get_near_port(x, y)
         (@cports.merge @eports).each{ |name, port|
           if port.kind_of? TmPort
             xp, yp = port.get_position
           else
-            pt = port.get_near_port( x, y )
+            pt = port.get_near_port(x, y)
             if pt
               return pt
             end
@@ -748,7 +748,7 @@ module TECSCDE
       end
 
       #=== TmCell#get_edge_position_in_normal_dir
-      def get_edge_position_in_normal_dir( edge_side )
+      def get_edge_position_in_normal_dir(edge_side)
         case edge_side
         when  EDGE_TOP
           @y
@@ -762,8 +762,8 @@ module TECSCDE
       end
 
       #=== TmCell#get_right_angle_edges_position
-      def get_right_angle_edges_position( edge_side )
-       if TECSModel.is_vertical?( edge_side ) then
+      def get_right_angle_edges_position(edge_side)
+       if TECSModel.is_vertical?(edge_side) then
           [@y, @y+@height]
        else
           [@x, @x+@width]
@@ -807,7 +807,7 @@ module TECSCDE
         # p "adjust_port_position_to_insert"
         nearest_port = find_nearest_next_port port
         if nearest_port
-          dist = ( nearest_port.get_offset - port.get_offset )
+          dist = (nearest_port.get_offset - port.get_offset)
           if dist < (DIST_PORT * 2)
             offs = (DIST_PORT * 2) - dist
             adjust_port_position_after_port port, offs
@@ -828,7 +828,7 @@ module TECSCDE
             # p "dist=#{dist}"
             if dist > 0
               if nearest_port
-                if ( nearest_port.get_offset - offs ) > dist
+                if (nearest_port.get_offset - offs) > dist
                   nearest_port = port
                 end
               else
@@ -842,11 +842,11 @@ module TECSCDE
         (@eports.values+@cports.values).each{ |port|
           if port.kind_of? TmPortArray
             port.get_ports.each{ |pt|
-              nearest_port = proc_judge_near.call( pt, offs, edge_side, nearest_port )
+              nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
             }
           else
-            nearest_port = proc_judge_near.call( port, offs, edge_side, nearest_port )
+            nearest_port = proc_judge_near.call(port, offs, edge_side, nearest_port)
             # p "nearest=#{nearest_port}"
           end
         }
@@ -864,17 +864,17 @@ module TECSCDE
           if port.get_edge_side == edge_side
             dist = port.get_offset - offs
             if dist > 0
-              port.move( move_offs, move_offs )    # move same value for x, y (only x or y applied in the method)
+              port.move(move_offs, move_offs)    # move same value for x, y (only x or y applied in the method)
             end
           end
         }
         (@eports.values+@cports.values).each{ |port|
           if port.kind_of? TmPortArray
             port.get_ports.each{ |pt|
-              proc_adjust.call( pt, offs, edge_side, move_offs )
+              proc_adjust.call(pt, offs, edge_side, move_offs)
             }
           else
-            proc_adjust.call( port, offs, edge_side, move_offs )
+            proc_adjust.call(port, offs, edge_side, move_offs)
           end
         }
       end
@@ -892,21 +892,21 @@ module TECSCDE
       def get_cport_for_new_join cport_name, cport_subscript
         cp = @cports[ cport_name ]
         if cp == nil
-          TECSCDE.error( "TM9999 cell #{@name} not have call port #{cport_name}")
+          TECSCDE.error("TM9999 cell #{@name} not have call port #{cport_name}")
         end
 
         if cport_subscript == nil
           if ! cp.is_array?
             return cp
           else
-            TECSCDE.error( "TM9999 cell #{@name}.#{cport_name} is call port array" )
+            TECSCDE.error("TM9999 cell #{@name}.#{cport_name} is call port array")
             return nil
           end
         else
           if cp.is_array?
-            return cp.get_port_for_new_join( cport_subscript )
+            return cp.get_port_for_new_join(cport_subscript)
           else
-            TECSCDE.error( "TM9999 cell #{@name}.#{cport_name} is not call port array" )
+            TECSCDE.error("TM9999 cell #{@name}.#{cport_name} is not call port array")
             return nil
           end
         end
@@ -916,21 +916,21 @@ module TECSCDE
       def get_eport_for_new_join eport_name, eport_subscript
         ep = @eports[ eport_name ]
         if ep == nil
-          TECSCDE.error( "TM9999 cell #{@name} not have entry port #{eport_name}")
+          TECSCDE.error("TM9999 cell #{@name} not have entry port #{eport_name}")
         end
 
         if eport_subscript == nil
           if ! ep.is_array?
             return ep
           else
-            TECSCDE.error( "TM9999 cell #{@name}.#{eport_name} is entry port array" )
+            TECSCDE.error("TM9999 cell #{@name}.#{eport_name} is entry port array")
             return nil
           end
         else
           if ep.is_array?
-            return ep.get_port_for_new_join( eport_subscript )
+            return ep.get_port_for_new_join(eport_subscript)
           else
-            TECSCDE.error( "TM9999 cell #{@name}.#{eport_name} is not entry port array" )
+            TECSCDE.error("TM9999 cell #{@name}.#{eport_name} is not entry port array")
             return nil
           end
         end
@@ -939,7 +939,7 @@ module TECSCDE
       #=== TmCell#set_attr
       # name::Symbol
       # init::String|Nil  (from Expression)
-      def set_attr( name, init )
+      def set_attr(name, init)
         modified {
 
           if init == nil
@@ -964,7 +964,7 @@ module TECSCDE
           end
         }
         @cports.each{ |name, cport|
-          if ( ! cport.complete? ) && ( ! cport.is_optional? )
+          if (! cport.complete?) && (! cport.is_optional?)
             return false
           end
         }
@@ -1021,7 +1021,7 @@ module TECSCDE
       #=== TmRegion#initialize
       # namespace_path::NamespacePath
       # owner::TmRegion (parent) or TECSModel (root region)
-      def initialize( namespace_path, owner )
+      def initialize(namespace_path, owner)
         @namespace_path = namespace_path
         @owner = owner
 
@@ -1051,7 +1051,7 @@ module TECSCDE
           modified {
 
             parent = self
-            @sub_region[name] = TmRegion.new( @namespace_path.append( name ), parent )
+            @sub_region[name] = TmRegion.new(@namespace_path.append(name), parent)
           }
         end
         return @sub_region[name]
@@ -1081,12 +1081,12 @@ module TECSCDE
 
       # TmPortArray#get_port_for_new_join
       # this method is for load
-      def get_port_for_new_join( subscript )
+      def get_port_for_new_join(subscript)
         if @subscript1 == nil
           # 1st element of this entry array
           @subscript1 = subscript
-        elsif ( @subscript1 >= 0 && subscript < 0 ) || ( @subscript1 < 0 && subscript >= 0 )
-          TECSCDE.error( "TM9999 array subscript inconsistent (similar error to S1128)" )
+        elsif (@subscript1 >= 0 && subscript < 0) || (@subscript1 < 0 && subscript >= 0)
+          TECSCDE.error("TM9999 array subscript inconsistent (similar error to S1128)")
           return nil
         end
 
@@ -1110,14 +1110,14 @@ module TECSCDE
                 return @ports[ subscript ]
               end
 
-              TECSCDE.error( "#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size-1})" )
+              TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size-1})")
               return nil
             else
               port = @ports[ subscript ]
               # p "new_join: 2 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
               if self.instance_of? TmCPortArray   # CPort cannot have multiple join
                 if port.get_join
-                  TECSCDE.error( "#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: duplicate join" )
+                  TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: duplicate join")
                   return nil
                 end
               end
@@ -1155,7 +1155,7 @@ module TECSCDE
       end
 
       #=== TmPortArray#get_near_port
-      def get_near_port( x, y )
+      def get_near_port(x, y)
         @ports.each{ |port|
           xp, yp = port.get_position
           # p "get_near_port x=#{x} y=#{y} xp=#{xp} yp=#{yp}"
@@ -1172,15 +1172,15 @@ module TECSCDE
         true
       end
 
-      def moved_edge( x_inc_l, x_inc_r, y_inc_t, y_inc_b )
+      def moved_edge(x_inc_l, x_inc_r, y_inc_t, y_inc_b)
         @ports.each{ |port|
-          port.moved_edge( x_inc_l, x_inc_r, y_inc_t, y_inc_b )
+          port.moved_edge(x_inc_l, x_inc_r, y_inc_t, y_inc_b)
         }
       end
 
-      def moved( x_inc, y_inc )
+      def moved(x_inc, y_inc)
         @ports.each{ |port|
-          port.moved( x_inc, y_inc )
+          port.moved(x_inc, y_inc)
         }
       end
 
@@ -1204,7 +1204,7 @@ module TECSCDE
       # this method is called from Control
       def delete_hilited port
         if @port_def.get_array_size != "[]" then
-          TECSCDE::message_box( <<EOT, :OK )
+          TECSCDE::message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
 Cannot delete array member.
 EOT
@@ -1215,7 +1215,7 @@ EOT
           modified {
             p "delete #### subscript=#{port.get_subscript}"
             port.delete
-            if @ports.delete( port ) == nil
+            if @ports.delete(port) == nil
               p "delete: not found"
             end
             index = 0
@@ -1225,7 +1225,7 @@ EOT
             }
           }
         else
-          TECSCDE::message_box( <<EOT, :OK )
+          TECSCDE::message_box(<<EOT, :OK)
 cannot delete array member with subscript==0
 EOT
         end
@@ -1235,7 +1235,7 @@ EOT
       # this method is called from Control
       def insert port, before_after
         if @port_def.get_array_size != "[]" then
-          TECSCDE::message_box( <<EOT, :OK )
+          TECSCDE::message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
 Cannot insert array member.
 EOT
@@ -1247,12 +1247,12 @@ EOT
           subsc = port.get_subscript
           i = @ports.length - 1
           while i > subsc
-            @ports[i].set_subscript( @ports[i].get_subscript + 1 )
+            @ports[i].set_subscript(@ports[i].get_subscript + 1)
             @ports[i+1] = @ports[i]
             i -= 1
           end
-          new_port = new_port( subsc + 1 )
-          new_port.set_position( port.get_edge_side, port.get_offset + DIST_PORT )
+          new_port = new_port(subsc + 1)
+          new_port.set_position(port.get_edge_side, port.get_offset + DIST_PORT)
           @ports[ subsc + 1 ] =  new_port
 
           p "insert ####"
@@ -1309,7 +1309,7 @@ EOT
         @ports = []
         (0..(@actual_size-1)).each{ |subscript|
           # p "TmCPortArray: length=#{@ports.length}  subscript=#{subscript}"
-          @ports << TmCPort.new( self, port_def, subscript )
+          @ports << TmCPort.new(self, port_def, subscript)
         }
         modified {
         }
@@ -1342,7 +1342,7 @@ EOT
 
       #=== TmCPortArray#new_port
       def new_port subscript
-        TmCPort.new( self, @port_def, subscript )
+        TmCPort.new(self, @port_def, subscript)
       end
     end # class TmCPortArray
 
@@ -1359,7 +1359,7 @@ EOT
 
         @ports = []
         (0..(@actual_size-1)).each{ |subscript|
-          @ports << TmEPort.new( self, port_def, subscript )
+          @ports << TmEPort.new(self, port_def, subscript)
         }
         modified {
         }
@@ -1367,7 +1367,7 @@ EOT
 
       #=== TmEPortArray#new_port
       def new_port subscript
-        TmEPort.new( self, @port_def, subscript )
+        TmEPort.new(self, @port_def, subscript)
       end
     end # class TmEPortArray
 
@@ -1379,20 +1379,20 @@ EOT
       # @subscript::Integer | Nil
 
       #=== TmPort#move
-      def move( x_inc, y_inc )
+      def move(x_inc, y_inc)
         modified {
 
           # p "move x=#{x_inc} y=#{y_inc}"
           x, y, w, h = get_owner_cell.get_geometry
           case @edge_side
           when EDGE_LEFT, EDGE_RIGHT
-            offs = TECSModel.round_length_val( @offs + y_inc )
+            offs = TECSModel.round_length_val(@offs + y_inc)
             if offs < 0 || offs > h
               return
             end
             x_inc = 0
           when EDGE_TOP, EDGE_BOTTOM
-            offs = TECSModel.round_length_val( @offs + x_inc )
+            offs = TECSModel.round_length_val(@offs + x_inc)
             # p "offs=#{offs} x=#{x} w=#{w}"
             if offs < 0 || offs > w
               return
@@ -1400,7 +1400,7 @@ EOT
             y_inc = 0
           end
           @offs = offs
-          moved_edge( x_inc, x_inc, y_inc, y_inc )
+          moved_edge(x_inc, x_inc, y_inc, y_inc)
         }
       end
 
@@ -1410,14 +1410,14 @@ EOT
       # x_inc_r::Float : right edge moved,  value is incremental
       # y_inc_t::Float : top edge moved,    value is incremental
       # y_inc_b::Float : bottom edge moved, value is incremental
-      def moved_edge( x_inc_l, x_inc_r, y_inc_t, y_inc_b )
+      def moved_edge(x_inc_l, x_inc_r, y_inc_t, y_inc_b)
         case @edge_side
         when EDGE_TOP, EDGE_LEFT
-          moved( x_inc_l, y_inc_t )
+          moved(x_inc_l, y_inc_t)
         when EDGE_BOTTOM
-          moved( x_inc_l, y_inc_b )
+          moved(x_inc_l, y_inc_b)
         when EDGE_RIGHT
-          moved( x_inc_r, y_inc_t )
+          moved(x_inc_r, y_inc_t)
         end
       end
 
@@ -1425,18 +1425,18 @@ EOT
       # (1)  (6) bar from call port. this indicate A position.
       # join::TmJoin
       def get_normal_bar_of_edge join
-        pos = get_cell.get_edge_position_in_normal_dir( @edge_side ) + CPGap * TECSModel.get_sign_of_normal( @edge_side )
-        TECSModel.is_vertical?( @edge_side ) ? HBar.new( pos, join ) : VBar.new( pos, join )
+        pos = get_cell.get_edge_position_in_normal_dir(@edge_side) + CPGap * TECSModel.get_sign_of_normal(@edge_side)
+        TECSModel.is_vertical?(@edge_side) ? HBar.new(pos, join) : VBar.new(pos, join)
       end
 
       #=== TmPort#get_position_in_tangential_dir
       def get_position_in_tangential_dir
         x, y, w, h = get_cell.get_geometry
-        ( TECSModel.is_vertical? @edge_side ) ? y + @offs : x + @offs
+        (TECSModel.is_vertical? @edge_side) ? y + @offs : x + @offs
       end
 
       def get_position_in_normal_dir
-        get_cell.get_edge_position_in_normal_dir( @edge_side )
+        get_cell.get_edge_position_in_normal_dir(@edge_side)
       end
 
       def get_sign_of_normal
@@ -1582,9 +1582,9 @@ EOT
         }
       end
 
-      def moved( x_inc, y_inc )
+      def moved(x_inc, y_inc)
         if @join then
-          @join.moved_cport( x_inc, y_inc )
+          @join.moved_cport(x_inc, y_inc)
         end
       end
 
@@ -1646,9 +1646,9 @@ EOT
         }
       end
 
-      def moved( x_inc, y_inc )
+      def moved(x_inc, y_inc)
         @joins.each{ |join|
-          join.moved_eport( x_inc, y_inc )
+          join.moved_eport(x_inc, y_inc)
         }
       end
 
@@ -1693,7 +1693,7 @@ EOT
 
       #=== TmEPort#complete?
       def complete?
-        ( @joins.length > 0 ) ? true : false
+        (@joins.length > 0) ? true : false
       end
 
       #=== TmEPort#clone_for_undo
@@ -1734,8 +1734,8 @@ EOT
 
       #=== TmJoin#create_bars_to dest_port
       def create_bars
-        if TECSModel.is_parallel?( @cport.get_edge_side, @eport.get_edge_side )
-          if TECSModel.is_opposite?( @cport.get_edge_side, @eport.get_edge_side )
+        if TECSModel.is_parallel?(@cport.get_edge_side, @eport.get_edge_side)
+          if TECSModel.is_opposite?(@cport.get_edge_side, @eport.get_edge_side)
             create_bars_a
           else
             create_bars_e
@@ -1753,19 +1753,19 @@ EOT
         @bars[0] = @cport.get_normal_bar_of_edge self
 
         posa = @cport.get_position_in_tangential_dir
-        e1, e2 = @eport.get_cell.get_right_angle_edges_position( @cport.get_edge_side )
+        e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
         # p "posa=#{posa} e1=#{e1}, e2=#{e2}"
-        pos1 = (( posa - e1 ).abs > ( posa - e2 ).abs) ? (e2 + Gap ) : ( e1 - Gap )
-        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new( pos1, self ) : HBar.new( pos1, self )
+        pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + Gap) : (e1 - Gap)
+        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new(pos1, self) : HBar.new(pos1, self)
 
         pos2 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
-        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new( pos2, self ) : HBar.new( pos2, self )
+        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new(pos2, self) : HBar.new(pos2, self)
 
         pos3 = @eport.get_position_in_tangential_dir
-        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new( pos3, self ) : HBar.new( pos3, self )
+        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new(pos3, self) : HBar.new(pos3, self)
 
         pos4 = @eport.get_position_in_normal_dir
-        @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new( pos4, self ) : HBar.new( pos4, self )
+        @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new(pos4, self) : HBar.new(pos4, self)
       end
 
       #=== TmJoin#create_bars_c
@@ -1776,13 +1776,13 @@ EOT
         @bars[0] = @cport.get_normal_bar_of_edge self
 
         pos1 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
-        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new( pos1, self ) : HBar.new( pos1, self )
+        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new(pos1, self) : HBar.new(pos1, self)
 
         pos2 = @eport.get_position_in_tangential_dir
-        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new( pos2, self ) : HBar.new( pos2, self )
+        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new(pos2, self) : HBar.new(pos2, self)
 
         pos3 = @eport.get_position_in_normal_dir
-        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new( pos3, self ) : HBar.new( pos3, self )
+        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new(pos3, self) : HBar.new(pos3, self)
       end
 
       #=== TmJoin#create_bars_e
@@ -1793,18 +1793,18 @@ EOT
         @bars[0] = @cport.get_normal_bar_of_edge self
 
         posa = @cport.get_position_in_tangential_dir
-        e1, e2 = @eport.get_cell.get_right_angle_edges_position( @cport.get_edge_side )
-        pos1 = (( posa - e1 ).abs > ( posa - e2 ).abs) ? (e2 + Gap ) : ( e1 - Gap )
-        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new( pos1, self ) : HBar.new( pos1, self )
+        e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
+        pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + Gap) : (e1 - Gap)
+        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new(pos1, self) : HBar.new(pos1, self)
 
         pos2 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
-        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new( pos2, self ) : HBar.new( pos2, self )
+        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new(pos2, self) : HBar.new(pos2, self)
 
         pos3 = @eport.get_position_in_tangential_dir
-        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new( pos3, self ) : HBar.new( pos3, self )
+        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new(pos3, self) : HBar.new(pos3, self)
 
         pos4 = @eport.get_position_in_normal_dir
-        @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new( pos4, self ) : HBar.new( pos4, self )
+        @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new(pos4, self) : HBar.new(pos4, self)
       end
 
       #=== TmJoin#get_ports_bars ***
@@ -1823,7 +1823,7 @@ EOT
         @eport
       end
 
-      def moved_cport( x_inc, y_inc )
+      def moved_cport(x_inc, y_inc)
         if @bars[0].instance_of? VBar then
           @bars[0].moved y_inc
         else
@@ -1831,7 +1831,7 @@ EOT
         end
       end
 
-      def moved_eport( x_inc, y_inc )
+      def moved_eport(x_inc, y_inc)
         dbgPrint "moved_eport=(#{x_inc} #{y_inc})\n"
         len = @bars.length
 
@@ -1867,7 +1867,7 @@ EOT
       end
 
       #=== TmJoin#get_near_bar ***
-      def get_near_bar( xm, ym )
+      def get_near_bar(xm, ym)
         xs, ys = @cport.get_position
         xe = xs; ye = ys
         min_dist = 999999999
@@ -1875,7 +1875,7 @@ EOT
         @bars.each{ |bar|
           if bar.instance_of? HBar
             xe = bar.get_position
-            if is_between?( xm, xs, xe ) && is_near?( ym, ys )
+            if is_between?(xm, xs, xe) && is_near?(ym, ys)
               dist = (ym-ys).abs
               if dist < min_dist then
                 min_dist = dist
@@ -1884,7 +1884,7 @@ EOT
             end
           else # VBar
             ye = bar.get_position
-            if is_between?( ym, ys, ye ) && is_near?( xm, xs )
+            if is_between?(ym, ys, ye) && is_near?(xm, xs)
               dist = (xm-xs).abs
               if dist < min_dist then
                 min_dist = dist
@@ -1899,7 +1899,7 @@ EOT
 
       #=== TmJoin#is_between?
       # RETURN:: true if x is between a & b
-      def is_between?( x, a, b )
+      def is_between?(x, a, b)
         if a >= b
           if  b <= x && x <= a
             true
@@ -1916,7 +1916,7 @@ EOT
       end
 
       #=== TmJoin#is_near
-      def is_near?( x, a )
+      def is_near?(x, a)
         (x-a).abs < NEAR_DIST
       end
 
@@ -1956,7 +1956,7 @@ EOT
     class TmJoinBar < TmObject
       # @position::Integer(mm)     # horizontal(x) or vertical(y) position
       # @owner::TmJoin (Reverse Reference)
-      def initialize( position, owner_join )
+      def initialize(position, owner_join)
         @position = position
         @owner = owner_join
         modified {
@@ -1968,7 +1968,7 @@ EOT
         @position
       end
 
-      def set_position( position )
+      def set_position(position)
         modified {
 
           @position = TECSModel.round_length_val position
@@ -1976,7 +1976,7 @@ EOT
       end
 
       def moved inc
-        set_position( @position + inc )
+        set_position(@position + inc)
       end
 
       # def set_join join
@@ -1991,14 +1991,14 @@ EOT
       #=== TmJoinBar#move ***
       # actually moving previous next bar
       # 1st bar and last bar can not be moved (necessary cport, eport move)
-      def move( x_inc, y_inc )
+      def move(x_inc, y_inc)
         modified {
 
           bar_prev = nil
           bars = @owner.get_bars
 
           if bars.length >= 1 && bars[ bars.length - 1 ] == self then
-            @owner.get_eport.move( x_inc, y_inc )
+            @owner.get_eport.move(x_inc, y_inc)
             return   # last bar
           end
 
@@ -2013,14 +2013,14 @@ EOT
             # p "bar_prev exist"
             if bar_prev.instance_of? HBar
               xm = bar_prev.get_position + x_inc
-              bar_prev.set_position( get_model.clip_x xm )
+              bar_prev.set_position(get_model.clip_x xm)
             else
               ym = bar_prev.get_position + y_inc
-              bar_prev.set_position( get_model.clip_y ym )
+              bar_prev.set_position(get_model.clip_y ym)
             end
           else
             # 1st bar
-            @owner.get_cport.move( x_inc, y_inc )
+            @owner.get_cport.move(x_inc, y_inc)
           end
         }
       end

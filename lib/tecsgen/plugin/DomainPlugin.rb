@@ -43,7 +43,7 @@ class DomainPlugin < Plugin
   # region で domain 指定があった
   # domain_type_name::Symbol : domain 指定子の第一引数
   # option::String : domain 指定子の第二引数
-  def initialize( region, domain_type_name, option )
+  def initialize(region, domain_type_name, option)
     super()
   end
 
@@ -61,7 +61,7 @@ class DomainPlugin < Plugin
   # このメソッドが呼出された時点では Join#get_rhs_cell など意味解析後
   # にしか呼び出せないメソッドを呼出しても、有効な値は得られない
   #
-  def add_through_plugin( join, current_region, next_region, through_type )
+  def add_through_plugin(join, current_region, next_region, through_type)
     # join.get_owner:Cell  左辺のセル
     # join.get_definition:Port 呼び口
     # join.get_subscript:Integer or nil 呼び口配列の添数 (Join::@subscript の説明参照)
@@ -73,7 +73,7 @@ class DomainPlugin < Plugin
   end
 
   #== require が結合可能か？
-  def joinable?(current_region, next_region, through_type )
+  def joinable?(current_region, next_region, through_type)
     return false
   end
 

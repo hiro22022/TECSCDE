@@ -51,36 +51,36 @@ module PluginModule
   #
   # すでにロードされているものは、重複してロードしない
   # load 時の例外はこのメソッドの中でキャッチされて false が返される
-  def load_plugin( plugin_name, superClass )
+  def load_plugin(plugin_name, superClass)
 
     dbgPrint "PluginModule: load_plugin: #{plugin_name}\n"
     begin
       unless @@loaded_plugin_list[ plugin_name.to_sym ] then
         @@loaded_plugin_list[ plugin_name.to_sym ] = 0
-        if ( $verbose ) then
-          print( "load '#{plugin_name}.rb'\n" )
+        if ($verbose) then
+          print("load '#{plugin_name}.rb'\n")
         end
         # "#{plugin_name}.rb" をロード（システム用ではないので、fatal エラーにしない）
-        if require_tecsgen_lib( "#{plugin_name}.rb", false ) == false then
-          cdl_error( "P2001 $1.rb : fail to load plugin" , plugin_name )
+        if require_tecsgen_lib("#{plugin_name}.rb", false) == false then
+          cdl_error("P2001 $1.rb : fail to load plugin" , plugin_name)
           return nil
         end
       end
 
       plClass = Object.const_get plugin_name
-      if ( plClass <= superClass ) then       # plClass inherits superClass
+      if (plClass <= superClass) then       # plClass inherits superClass
         return plClass
       elsif (plClass <= MultiPlugin) then     # plClass inherits MultiPlugin
         dbgPrint "pluginClass=#{plClass}\n"
         plugin_object = plClass.get_plugin superClass
         dbgPrint "pluginClass=#{plugin_object}\n"
         if plugin_object == nil then
-          cdl_error( "P9999 '$1': MultiPlugin not support '$2'", plugin_name, superClass.name )
+          cdl_error("P9999 '$1': MultiPlugin not support '$2'", plugin_name, superClass.name)
         end
         @@loaded_plugin_list[ plugin_name.to_sym ] = :MultiPlugin
         return plugin_object
       else
-        cdl_error( "P2002 $1: not kind of $2" ,  plugin_name, superClass.name )
+        cdl_error("P2002 $1: not kind of $2" ,  plugin_name, superClass.name)
         return nil
       end
     rescue Exception => evar
@@ -88,7 +88,7 @@ module PluginModule
         p evar.class
         pp evar.backtrace
       end
-      cdl_error( "P2003 $1: load failed" , plugin_name )
+      cdl_error("P2003 $1: load failed" , plugin_name)
       return nil
     end
     # ここへは来ない
@@ -115,28 +115,28 @@ module PluginModule
     tmp_file_name = "#{$gen}/tmp_#{plugin_name}_#{count}.cdl"
 
     begin
-      tmp_file = CFile.open( tmp_file_name, "w" )
+      tmp_file = CFile.open(tmp_file_name, "w")
     rescue Exception => evar
-      cdl_error( "P2004 $1: open error \'$2\'" , plugin_name, tmp_file_name )
-      print_exception( evar )
+      cdl_error("P2004 $1: open error \'$2\'" , plugin_name, tmp_file_name)
+      print_exception(evar)
     end
     dbgPrint "generate_and_parse: #{plugin_object.class}: gen_cdl_file\n"
     begin
-      plugin_object.gen_cdl_file( tmp_file )
+      plugin_object.gen_cdl_file(tmp_file)
     rescue Exception => evar
-      cdl_error( "P2005 $1: plugin error in gen_through_cell_code " , plugin_name )
-      print_exception( evar )
+      cdl_error("P2005 $1: plugin error in gen_through_cell_code " , plugin_name)
+      print_exception(evar)
     end
     begin
       tmp_file.close
     rescue Exception => evar
-      cdl_error( "P2006 $1: close error \'$2\'" , plugin_name, tmp_file_name )
-      print_exception( evar )
+      cdl_error("P2006 $1: close error \'$2\'" , plugin_name, tmp_file_name)
+      print_exception(evar)
     end
 
     generator = Generator.new
-    generator.set_plugin( plugin_object )
-    generator.parse( [ tmp_file_name ] )
+    generator.set_plugin(plugin_object)
+    generator.parse([ tmp_file_name ])
     generator.finalize
   end
 
@@ -154,11 +154,11 @@ module PluginModule
         print "gen_plugin_post_code: #{eval_str}\n"
       end
       begin
-        eval( eval_str )
+        eval(eval_str)
       rescue Exception => evar
-        Generator.error( "P2007 $1: fail to generate post code" , plugin_name )
+        Generator.error("P2007 $1: fail to generate post code" , plugin_name)
 
-        print_exception( evar )
+        print_exception(evar)
       end
     }
   end

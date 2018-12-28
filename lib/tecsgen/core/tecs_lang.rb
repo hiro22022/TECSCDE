@@ -63,7 +63,7 @@ class TECS_LANG
   #=== LANG のパース
   # lang::String  "ja_JP.eucJP@cjknarrow", "C" など
   # RETURN:: [ :ja_JP, :eucJP, :cjknarrow ]
-  def self.parse_lang( lang )
+  def self.parse_lang(lang)
     lang =~ /([^\.@]*)(\.([^@]*))?(@(.*))?/
 
     lang_terri = $1.to_sym if $1 != nil && $1 != ""
@@ -83,7 +83,7 @@ class TECS_LANG
   # charset::Symbol : :eucJP, :utf8 など
   # RETURN:
   #  [ lang, charset, result ]::　　result = false の場合 lang, charset は不適切
-  def self.resolve_alias_and_check( lang, charset )
+  def self.resolve_alias_and_check(lang, charset)
     if LANG_ALIAS[ lang.to_s.upcase ] then
       ln = LANG_ALIAS[ lang.to_s.upcase ]
     else
@@ -96,7 +96,7 @@ class TECS_LANG
       cs = charset
     end
 
-    if SUITABLE_CHARSET[ ln ] == nil || SUITABLE_CHARSET[ ln ].index( cs ) == nil
+    if SUITABLE_CHARSET[ ln ] == nil || SUITABLE_CHARSET[ ln ].index(cs) == nil
       res = false
     else
       res = true
@@ -135,11 +135,11 @@ class TECS_LANG
   #   ・-k オプション (ファイルの文字コードのみ)
   def self.set_lang_var
 
-    if $IN_EXERB && ( ENV[ 'TERM' ] == nil || ENV[ 'TERM' ] == "cygwin" ) then
+    if $IN_EXERB && (ENV[ 'TERM' ] == nil || ENV[ 'TERM' ] == "cygwin") then
       # exerb 版で端末 cygwin の時は codepage のみを見る
       cp = get_win_codepage
       lang = codepage_to_lang cp
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang( lang )
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(lang)
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
 
@@ -147,19 +147,19 @@ class TECS_LANG
       # 非 exerb 版では LANG 環境変数を見る
       # cygwin console では codepage に従って出力した方が平和なため
 
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang( ENV[ 'LANG' ] )
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV[ 'LANG' ])
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
     if ENV[ 'TECSGEN_LANG' ]then
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang( ENV[ 'TECSGEN_LANG' ] )
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV[ 'TECSGEN_LANG' ])
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
     if ENV[ 'TECSGEN_FILE_LANG' ]then
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang( ENV[ 'TECSGEN_FILE_LANG' ] )
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV[ 'TECSGEN_FILE_LANG' ])
     end
 
     self.set_lang_by_option
@@ -173,7 +173,7 @@ class TECS_LANG
 
     code = $kcode
     found = false
-    res = $CODE_TYPE_ARRAY.index( code )
+    res = $CODE_TYPE_ARRAY.index(code)
     if res == nil then
       print "-k: illegal kcode type #{code}. (#{$CODE_TYPE_ARRAY.join(", ")})\n"
       exit 1
@@ -286,13 +286,13 @@ class TECS_LANG
 
   # 言語、コードのチェックと正規化
   lang_file, charset_file, res =
-    self.resolve_alias_and_check( $LANG_FILE, $CHARSET_FILE )
+    self.resolve_alias_and_check($LANG_FILE, $CHARSET_FILE)
   if res == false then
     # lang_file, charset_file = lang_file_default, charset_file_default
     lang_file, charset_file = $LANG_FILE_DEFAULT, $CHARSET_FILE_DEFAULT
   end
   lang_console, charset_console, res =
-    self.resolve_alias_and_check( $LANG_CONSOLE, $CHARSET_CONSOLE )
+    self.resolve_alias_and_check($LANG_CONSOLE, $CHARSET_CONSOLE)
   if res == false then
     # lang_console, charset_console = lang_console_default, charset_console_default
     lang_console, charset_console = $LANG_CONSOLE_DEFAULT, $CHARSET_CONSOLE_DEFAULT
@@ -327,7 +327,7 @@ class TECS_LANG
     print "#{$LANG_FILE} #{$LANG_CONSOLE}\n"
     print "#{$CHARSET_FILE} #{$CHARSET_CONSOLE}\n"
 
-    $LANG_FILE, $CHARSET_FILE, res = self.resolve_alias_and_check( $LANG_FILE, $CHARSET_FILE )
+    $LANG_FILE, $CHARSET_FILE, res = self.resolve_alias_and_check($LANG_FILE, $CHARSET_FILE)
     print "#{$LANG_FILE} #{$CHARSET_FILE}, #{res}\n"
   end
 end
@@ -339,14 +339,14 @@ class Console
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
       STDOUT.print str
     else
-      STDOUT.print str.kconv( $KCONV_CONSOLE, $KCONV_TECSGEN )
+      STDOUT.print str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
     end
   end
   def self.puts str
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
       STDOUT.puts str
     else
-      STDOUT.puts str.kconv( $KCONV_CONSOLE, $KCONV_TECSGEN )
+      STDOUT.puts str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
     end
   end
 end

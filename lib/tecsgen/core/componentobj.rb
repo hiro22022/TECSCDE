@@ -108,10 +108,10 @@ class Signature < NSBDNode  # < Nestable
 
   #
   # STAGE: B
-  def initialize( name )
+  def initialize(name)
     super()
     @name = name
-    Namespace.new_signature( self )
+    Namespace.new_signature(self)
     set_namespace_path # @NamespacePath の設定
     if "#{Namespace.get_global_name}" == "" then
       @global_name = @name
@@ -128,12 +128,12 @@ class Signature < NSBDNode  # < Nestable
     @descriptor_list = nil
     @generate = nil
     @@current_object = self
-    set_specifier_list( Generator.get_statement_specifier )
+    set_specifier_list(Generator.get_statement_specifier)
   end
 
   #
   # STAGE: B
-  def end_of_parse( function_head_list )
+  def end_of_parse(function_head_list)
     @function_head_list = function_head_list
 
     # id を割付ける
@@ -162,7 +162,7 @@ class Signature < NSBDNode  # < Nestable
   # STAGE: B
   # spec_list::      [ [ :CONTEXT,  String ], ... ]
   #                     s[0]        s[1]
-  def set_specifier_list( spec_list )
+  def set_specifier_list(spec_list)
     return if spec_list == nil  # 空ならば何もしない
 
     spec_list.each { |s|
@@ -171,24 +171,24 @@ class Signature < NSBDNode  # < Nestable
         @b_callback = true
       when :CONTEXT         # [context("non-task")] etc
         if @context then
-          cdl_error( "S1001 context specifier duplicate"  )
+          cdl_error("S1001 context specifier duplicate")
         end
         # @context = s[1].gsub( /\A\"(.*)\"$/, "\\1" )
         @context = CDLString.remove_dquote s[1]
         case @context
         when "non-task", "task", "any"
         else
-          cdl_warning( "W1001 \'$1\': unknown context type. usually specifiy task, non-task or any" , @context )
+          cdl_warning("W1001 \'$1\': unknown context type. usually specifiy task, non-task or any" , @context)
         end
       when :DEVIATE
         @b_deviate = true
       when :GENERATE
         if @generate then
-          cdl_error( "S9999 generate specifier duplicate"  )
+          cdl_error("S9999 generate specifier duplicate")
         end
         @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
       else
-        cdl_error( "S1002 \'$1\': unknown specifier for signature" , s[0] )
+        cdl_error("S1002 \'$1\': unknown specifier for signature" , s[0])
       end
     }
   end
@@ -209,8 +209,8 @@ class Signature < NSBDNode  # < Nestable
     end
   end
 
-  def get_function_head( func_name )
-    return @function_head_list.get_item( func_name.to_sym )
+  def get_function_head(func_name)
+    return @function_head_list.get_item(func_name.to_sym)
   end
 
   #=== Signature# 関数名から signature 内の id を得る
@@ -242,7 +242,7 @@ class Signature < NSBDNode  # < Nestable
       fd = fh.get_declarator                            # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function? then                           # fd が関数でなければ、すでにエラー
         fd.get_type.get_paramlist.get_items.each{ |par| # すべてのパラメータについて
-          pr.call( fd, par )
+          pr.call(fd, par)
         }
       end
     }
@@ -272,44 +272,44 @@ class Signature < NSBDNode  # < Nestable
           found_alloc = true
           params = fd.get_type.get_paramlist.get_items
           if params then
-            if ! params[0].instance_of?( ParamDecl ) ||
-                ! params[0].get_type.get_original_type.kind_of?( IntType ) ||
+            if ! params[0].instance_of?(ParamDecl) ||
+                ! params[0].get_type.get_original_type.kind_of?(IntType) ||
                 params[0].get_direction != :IN then
               # 第一引数が int 型でない
-              if ! params[0].instance_of?( ParamDecl ) ||
-                  ! params[0].get_type.kind_of?( PtrType ) ||
-                  ! params[0].get_type.get_type.kind_of?( PtrType ) ||
-                  params[0].get_type.get_type.get_type.kind_of?( PtrType ) ||
+              if ! params[0].instance_of?(ParamDecl) ||
+                  ! params[0].get_type.kind_of?(PtrType) ||
+                  ! params[0].get_type.get_type.kind_of?(PtrType) ||
+                  params[0].get_type.get_type.get_type.kind_of?(PtrType) ||
                   params[0].get_direction != :OUT then
                 # 第一引数がポインタ型でもない
-                cdl_error3( @locale, "S1003 $1: \'alloc\' 1st parameter neither [in] integer type nor [out] double pointer type", @name )
+                cdl_error3(@locale, "S1003 $1: \'alloc\' 1st parameter neither [in] integer type nor [out] double pointer type", @name)
               end
-            elsif ! params[1].instance_of?( ParamDecl ) ||
-                ! params[1].get_type.kind_of?( PtrType ) ||
-                ! params[1].get_type.get_type.kind_of?( PtrType ) ||
-                params[1].get_type.get_type.get_type.kind_of?( PtrType ) ||
+            elsif ! params[1].instance_of?(ParamDecl) ||
+                ! params[1].get_type.kind_of?(PtrType) ||
+                ! params[1].get_type.get_type.kind_of?(PtrType) ||
+                params[1].get_type.get_type.get_type.kind_of?(PtrType) ||
                 params[0].get_direction != :IN then
               # (第一引数が整数で) 第二引数がポインタでない
-              cdl_error3( @locale, "S1004 $1: \'alloc\' 2nd parameter not [in] double pointer" , @name )
+              cdl_error3(@locale, "S1004 $1: \'alloc\' 2nd parameter not [in] double pointer" , @name)
             end
           else
-            cdl_error3( @locale, "S1005 $1: \'alloc\' has no parameter, unsuitable for allocator signature" , @name )
+            cdl_error3(@locale, "S1005 $1: \'alloc\' has no parameter, unsuitable for allocator signature" , @name)
           end
         elsif func_name == :dealloc then
           found_dealloc = true
           params = fd.get_type.get_paramlist.get_items
           if params then
-            if ! params[0].instance_of?( ParamDecl ) ||
-                ! params[0].get_type.kind_of?( PtrType ) ||
-                params[0].get_type.get_type.kind_of?( PtrType ) ||
+            if ! params[0].instance_of?(ParamDecl) ||
+                ! params[0].get_type.kind_of?(PtrType) ||
+                params[0].get_type.get_type.kind_of?(PtrType) ||
                 params[0].get_direction != :IN then
-              cdl_error3( @locale, "S1006 $1: \'dealloc\' 1st parameter not [in] pointer type" , @name )
+              cdl_error3(@locale, "S1006 $1: \'dealloc\' 1st parameter not [in] pointer type" , @name)
 #            elsif params[1] != nil then    # 第二引き数はチェックしない
 #              cdl_error3( @locale, "S1007 Error message is changed to empty" )
 #                 cdl_error3( @locale, "S1007 $1: \'dealloc\' cannot has 2nd parameter" , @name )
             end
           else
-            cdl_error3( @locale, "S1008 $1: \'dealloc\' has no parameter, unsuitable for allocator signature" , @name )
+            cdl_error3(@locale, "S1008 $1: \'dealloc\' has no parameter, unsuitable for allocator signature" , @name)
           end
         end
         if found_alloc && found_dealloc then
@@ -318,10 +318,10 @@ class Signature < NSBDNode  # < Nestable
       end
     }
     if ! found_alloc then
-      cdl_error3( @locale, "S1009 $1: \'alloc\' function not found, unsuitable for allocator signature" , @name )
+      cdl_error3(@locale, "S1009 $1: \'alloc\' function not found, unsuitable for allocator signature" , @name)
     end
     if ! found_dealloc then
-      cdl_error3( @locale, "S1010 $1: \'dealloc\' function not found, unsuitable for allocator signature" , @name )
+      cdl_error3(@locale, "S1010 $1: \'dealloc\' function not found, unsuitable for allocator signature" , @name)
     end
     return false
   end
@@ -330,28 +330,28 @@ class Signature < NSBDNode  # < Nestable
   def signature_plugin
     plugin_name = @generate[0]
     option = @generate[1]
-    apply_plugin( plugin_name, option )
+    apply_plugin(plugin_name, option)
   end
 
   #== Signature#apply_plugin
   def apply_plugin plugin_name, option
     if is_empty? then
-      cdl_warning( "S9999 $1 is empty. cannot apply signature plugin. ignored" , @name )
+      cdl_warning("S9999 $1 is empty. cannot apply signature plugin. ignored" , @name)
       return
     end
 
-    plClass = load_plugin( plugin_name, SignaturePlugin )
+    plClass = load_plugin(plugin_name, SignaturePlugin)
     return if plClass == nil
     if $verbose then
       print "new through: plugin_object = #{plClass.class.name}.new( #{@name}, #{option} )\n"
     end
 
     begin
-      plugin_object = plClass.new( self, option )
+      plugin_object = plClass.new(self, option)
       plugin_object.set_locale @locale
     rescue Exception => evar
-      cdl_error( "S1150 $1: fail to new" , plugin_name )
-      print_exception( evar )
+      cdl_error("S1150 $1: fail to new" , plugin_name)
+      print_exception(evar)
     end
     generate_and_parse plugin_object
 end
@@ -388,7 +388,7 @@ end
         if params then
           params.each{ |param|
             t = param.get_type.get_original_type
-            while( t.kind_of? PtrType )
+            while(t.kind_of? PtrType)
               t = t.get_referto
             end
             # p "has_desc #{param.get_name} #{t}"
@@ -400,7 +400,7 @@ end
               end
               dir = param.get_direction
               if dir != :IN && dir != :OUT && dir != :INOUT then
-                cdl_error( "S9999 Descriptor argument '$1' cannot be specified for $2 parameter", param.get_name, dir.to_s.downcase )
+                cdl_error("S9999 Descriptor argument '$1' cannot be specified for $2 parameter", param.get_name, dir.to_s.downcase)
               end
             end
           }
@@ -443,11 +443,11 @@ end
 
   #=== Signature# Push Pop Allocator が必要か？
   # Transparent RPC の場合 oneway かつ in の配列(size_is, count_is, string のいずれかで修飾）がある
-  def need_PPAllocator?( b_opaque = false )
+  def need_PPAllocator?(b_opaque = false)
     fha = get_function_head_array                       # 呼び口または受け口のシグニチャの関数配列
     fha.each{ |fh|
       fd = fh.get_declarator
-      if fd.get_type.need_PPAllocator?( b_opaque ) then
+      if fd.get_type.need_PPAllocator?(b_opaque) then
         # p "#{fd.get_name} need_PPAllocator: true"
         @b_need_PPAllocator = true
         return true
@@ -457,14 +457,14 @@ end
     return false
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "Signature: name: #{@name} context: #{@context} deviate : #{@b_deviate} PPAllocator: #{@b_PPAllocator} #{self}"
     (indent+1).times { print "  " }
     puts "namespace_path: #{@NamespacePath}"
     (indent+1).times { print "  " }
     puts "function head list:"
-    @function_head_list.show_tree( indent + 2 )
+    @function_head_list.show_tree(indent + 2)
   end
 
 end
@@ -474,11 +474,11 @@ module CelltypePluginModule
   def celltype_plugin
     plugin_name = @generate[0]
     option = @generate[1]
-    @generate[2] = apply_plugin( plugin_name, option )
+    @generate[2] = apply_plugin(plugin_name, option)
   end
 
   #=== Celltype# セルタイププラグインをこのセルタイプに適用
-  def apply_plugin( plugin_name, option )
+  def apply_plugin(plugin_name, option)
 
     # plClass = load_plugin( plugin_name, CelltypePlugin )
     if kind_of? Celltype then
@@ -489,20 +489,20 @@ module CelltypePluginModule
       raise "unknown class #{self.class.name}"
     end
     
-    plClass = load_plugin( plugin_name, plugin_class )
+    plClass = load_plugin(plugin_name, plugin_class)
     return if plClass == nil
     if $verbose then
       print "new celltype plugin: plugin_object = #{plClass.class.name}.new( #{@name}, #{option} )\n"
     end
 
     begin
-      plugin_object = plClass.new( self, option )
+      plugin_object = plClass.new(self, option)
       @generate_list << [ plugin_name, option, plugin_object ]
       plugin_object.set_locale @locale
       generate_and_parse plugin_object
     rescue Exception => evar
-      cdl_error( "S1023 $1: fail to new" , plugin_name )
-      print_exception( evar )
+      cdl_error("S1023 $1: fail to new" , plugin_name)
+      print_exception(evar)
     end
 
     # 既に存在するセルに new_cell を適用
@@ -517,8 +517,8 @@ module CelltypePluginModule
     begin
       plugin.new_cell cell
     rescue Exception => evar
-      cdl_error( "S1037 $1: celltype plugin fail to new_cell" , plugin.class.name )
-      print_exception( evar )
+      cdl_error("S1037 $1: celltype plugin fail to new_cell" , plugin.class.name)
+      print_exception(evar)
     end
   end
 
@@ -528,8 +528,8 @@ module CelltypePluginModule
       begin
         celltype_plugin.new_cell cell
       rescue Exception => evar
-        cdl_error( "S1037 $1: celltype plugin fail to new_cell" , celltype_plugin.class.name )
-        print_exception( evar )
+        cdl_error("S1037 $1: celltype plugin fail to new_cell" , celltype_plugin.class.name)
+        print_exception(evar)
       end
     }
   end
@@ -604,7 +604,7 @@ class Celltype < NSBDNode # < Nestable
     end
   end
 
-  def initialize( name )
+  def initialize(name)
     super()
     @@current_object = self
     @name = name
@@ -614,7 +614,7 @@ class Celltype < NSBDNode # < Nestable
       @global_name = name
     end
 
-    @name_list = NamedList.new( nil, "symbol in celltype #{name}" )
+    @name_list = NamedList.new(nil, "symbol in celltype #{name}")
     @port = []
     @attribute = []
     @var = []
@@ -667,9 +667,9 @@ class Celltype < NSBDNode # < Nestable
     end
     @idx_is_id_act = @idx_is_id
 
-    Namespace.new_celltype( self )
+    Namespace.new_celltype(self)
     set_namespace_path # @NamespacePath の設定
-    set_specifier_list( Generator.get_statement_specifier )
+    set_specifier_list(Generator.get_statement_specifier)
 
     @included_header = {}
     @domain_roots = {}
@@ -700,8 +700,8 @@ class Celltype < NSBDNode # < Nestable
     }
 
     if @n_entry_port == 0 && @active == false && @factory_list.length == 0 &&
-        ( @singleton && @ct_factory_list.length == 0 || ! @singleton )then
-      cdl_warning( "W1002 $1: non-active celltype has no entry port & factory" , @name )
+        (@singleton && @ct_factory_list.length == 0 || ! @singleton)then
+      cdl_warning("W1002 $1: non-active celltype has no entry port & factory" , @name)
     end
 
     if @generate then
@@ -713,14 +713,14 @@ class Celltype < NSBDNode # < Nestable
     @@current_object = nil
   end
 
-  def self.new_port( port )
-    @@current_object.new_port( port )
+  def self.new_port(port)
+    @@current_object.new_port(port)
   end
 
-  def new_port( port )
+  def new_port(port)
     port.set_owner self
     @port << port
-    @name_list.add_item( port )
+    @name_list.add_item(port)
     if port.get_port_type == :CALL then
       @n_call_port += 1
       @n_call_port_array += 1 if port.get_array_size != nil
@@ -745,27 +745,27 @@ class Celltype < NSBDNode # < Nestable
     @port
   end
 
-  def self.new_attribute( attribute )
-    @@current_object.new_attribute( attribute )
+  def self.new_attribute(attribute)
+    @@current_object.new_attribute(attribute)
   end
 
   #=== Celltype# new_attribute for Celltype
   # attribute:: [Decl]
-  def new_attribute( attribute )
+  def new_attribute(attribute)
     @attribute += attribute
     attribute.each { |a|
       a.set_owner self
-      @name_list.add_item( a )
-      if( a.is_omit? )then
+      @name_list.add_item(a)
+      if(a.is_omit?)then
         @n_attribute_omit += 1
-      elsif( a.is_rw? )then
+      elsif(a.is_rw?)then
         @n_attribute_rw += 1
       else
         @n_attribute_ro += 1
       end
       if a.get_initializer then
         # 登録後にチェックしても問題ない（attr を参照できないので、自己参照しない）
-        a.get_type.check_init( @locale, a.get_identifier, a.get_initializer, :ATTRIBUTE )
+        a.get_type.check_init(@locale, a.get_identifier, a.get_initializer, :ATTRIBUTE)
       end
     }
   end
@@ -778,33 +778,33 @@ class Celltype < NSBDNode # < Nestable
     # attribute の size_is 指定が妥当かチェック
     (@attribute+@var).each{ |a|
       if a.get_size_is then
-        if ! a.get_type.kind_of?( PtrType ) then
+        if ! a.get_type.kind_of?(PtrType) then
           # size_is がポインタ型以外に指定された
-          cdl_error( "S1011 $1: size_is specified for non-pointer type" , a.get_identifier )
+          cdl_error("S1011 $1: size_is specified for non-pointer type" , a.get_identifier)
         else
 
           # 参照する変数が存在し、計算可能な型かチェックする
-          size = a.get_size_is.eval_const( @name_list )  # C_EXP の可能性あり
+          size = a.get_size_is.eval_const(@name_list)  # C_EXP の可能性あり
           init = a.get_initializer
           if init then
-            if ! init.instance_of?( Array ) then
+            if ! init.instance_of?(Array) then
               # 初期化子が配列ではない
-              cdl_error( "S1012 $1: unsuitable initializer, need array initializer" , a.get_identifier )
-            elsif size.kind_of?( Integer ) && size < init.length then
+              cdl_error("S1012 $1: unsuitable initializer, need array initializer" , a.get_identifier)
+            elsif size.kind_of?(Integer) && size < init.length then
               # size_is 指定された個数よりも初期化子の配列要素が多い
-              cdl_error( "S1013 $1: too many initializer, $2 for $3" , a.get_identifier, init.length, size )
+              cdl_error("S1013 $1: too many initializer, $2 for $3" , a.get_identifier, init.length, size)
             # elsif a.get_size_is.eval_const( nil ) == nil  # C_EXP の可能性あり
             end
 
           end
         end
       else
-        if a.get_type.kind_of?( PtrType ) then
-          if a.get_initializer.instance_of?( Array ) ||
-              ( a.get_initializer.instance_of?( Expression ) &&
-                a.get_initializer.eval_const2(@name_list).instance_of?( Array ) ) then
+        if a.get_type.kind_of?(PtrType) then
+          if a.get_initializer.instance_of?(Array) ||
+              (a.get_initializer.instance_of?(Expression) &&
+                a.get_initializer.eval_const2(@name_list).instance_of?(Array)) then
             # size_is 指定されていないポインタが Array で初期化されていたら、エラー
-            cdl_error( "S1159 $1: non-size_is pointer cannot be initialized with array initializer" , a.get_identifier )
+            cdl_error("S1159 $1: non-size_is pointer cannot be initialized with array initializer" , a.get_identifier)
           end
         end
       end
@@ -829,15 +829,15 @@ class Celltype < NSBDNode # < Nestable
             # alloc_sig_path = [ par.get_allocator.get_name ]  # mikan Namespace アロケータ呼び口のシグニチャ #1
             alloc_sig_path = par.get_allocator.get_namespace_path
             array_size = port.get_array_size            # 呼び口または受け口配列のサイズ
-            created_port = Port.new( cp_name, alloc_sig_path, :CALL, array_size ) # 呼び口を生成
-            created_port.set_allocator_port( port, fd, par )
+            created_port = Port.new(cp_name, alloc_sig_path, :CALL, array_size) # 呼び口を生成
+            created_port.set_allocator_port(port, fd, par)
             if port.is_optional? then
               created_port.set_optional
             end
             if port.is_omit? then
               created_port.set_omit
             end
-            new_port( created_port )                    # セルタイプに新しい呼び口を追加
+            new_port(created_port)                    # セルタイプに新しい呼び口を追加
           # else
           #  already error "not found or not signature" in class ParamDecl
           end
@@ -850,13 +850,13 @@ class Celltype < NSBDNode # < Nestable
     @name_list
   end
 
-  def self.new_var( var )
-    @@current_object.new_var( var )
+  def self.new_var(var)
+    @@current_object.new_var(var)
   end
 
   #=== Celltype# 新しい内部変数
   # var:: [Decl]
-  def new_var( var )
+  def new_var(var)
     @var += var
     var.each { |i|     # i: Decl
       i.set_owner self
@@ -865,7 +865,7 @@ class Celltype < NSBDNode # < Nestable
       else
         @n_var += 1
       end
-      @name_list.add_item( i )
+      @name_list.add_item(i)
 
       # size_is 指定された配列? mikan  count_is
       if i.get_size_is then
@@ -873,7 +873,7 @@ class Celltype < NSBDNode # < Nestable
       end
 
       if i.get_initializer then
-        i.get_type.check_init( @locale, i.get_identifier, i.get_initializer, :VAR, @name_list )
+        i.get_type.check_init(@locale, i.get_identifier, i.get_initializer, :VAR, @name_list)
         @n_var_init += 1
       end
     }
@@ -884,7 +884,7 @@ class Celltype < NSBDNode # < Nestable
   end
 
   #=== Celltype# celltype の指定子を設定
-  def set_specifier_list( spec_list )
+  def set_specifier_list(spec_list)
     return if spec_list == nil
 
     spec_list.each { |s|
@@ -898,11 +898,11 @@ class Celltype < NSBDNode # < Nestable
         @active = true
       when :GENERATE
         if @generate then
-          cdl_error( "S1014 generate specifier duplicate"  )
+          cdl_error("S1014 generate specifier duplicate")
         end
         @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
       else
-        cdl_error( "S1015 $1 cannot be specified for composite" , s[0] )
+        cdl_error("S1015 $1 cannot be specified for composite" , s[0])
       end
     }
     if @singleton then
@@ -911,13 +911,13 @@ class Celltype < NSBDNode # < Nestable
   end
 
   #
-  def self.new_require( ct_or_cell_nsp, ep_name, cp_name = nil )
-    @@current_object.new_require( ct_or_cell_nsp, ep_name.to_sym, cp_name )
+  def self.new_require(ct_or_cell_nsp, ep_name, cp_name = nil)
+    @@current_object.new_require(ct_or_cell_nsp, ep_name.to_sym, cp_name)
   end
 
-  def new_require( ct_or_cell_nsp, ep_name, cp_name )
+  def new_require(ct_or_cell_nsp, ep_name, cp_name)
     # Require: set_owner するものがない
-    obj = Namespace.find( ct_or_cell_nsp )    # 1
+    obj = Namespace.find(ct_or_cell_nsp)    # 1
     if obj.instance_of? Celltype then
       # Celltype 名で指定
       ct = obj
@@ -925,25 +925,25 @@ class Celltype < NSBDNode # < Nestable
       # Cell 名で指定
       ct = obj.get_celltype
     elsif obj == nil then
-      cdl_error( "S1016 $1 not found" , ct_or_cell_nsp.get_path_str )
+      cdl_error("S1016 $1 not found" , ct_or_cell_nsp.get_path_str)
       return
     else
-      cdl_error( "S1017 $1 : neither celltype nor cell" , ct_or_cell_nsp.get_path_str )
+      cdl_error("S1017 $1 : neither celltype nor cell" , ct_or_cell_nsp.get_path_str)
       return
     end
 
-    if( ! ct.is_singleton? ) then
+    if(! ct.is_singleton?) then
       # シングルトンではない
-      cdl_error( "S1018 $1 : not singleton cell" , obj.get_name )
+      cdl_error("S1018 $1 : not singleton cell" , obj.get_name)
     end
 
     # 受け口を探す
-    obj2 = ct.find( ep_name )
-    if( ( ! obj2.instance_of? Port ) || obj2.get_port_type != :ENTRY ) then
-      cdl_error( "S1019 \'$1\' : not entry port" , ep_name )
+    obj2 = ct.find(ep_name)
+    if((! obj2.instance_of? Port) || obj2.get_port_type != :ENTRY) then
+      cdl_error("S1019 \'$1\' : not entry port" , ep_name)
       return
     elsif obj2.get_array_size then
-      cdl_error( "S1020 \'$1\' : required port cannot be array" , ep_name )
+      cdl_error("S1020 \'$1\' : required port cannot be array" , ep_name)
       return
     end
 
@@ -962,14 +962,14 @@ class Celltype < NSBDNode # < Nestable
         port = req[2]
         if port.get_signature == obj2.get_signature then
           # 同じ signature （すべて同じ関数名を持つ）個別に出すのではなく、まとめてエラーとする
-          cdl_error( "S1021 $1 : require cannot have same signature with \'$2\'" , obj2.get_name, port.get_name )
+          cdl_error("S1021 $1 : require cannot have same signature with \'$2\'" , obj2.get_name, port.get_name)
           next
         end
         port.get_signature.get_function_head_array.each{ |f|
           # mikan ここは、namedList からの検索にならないの？（効率が悪い）
           obj2.get_signature.get_function_head_array.each{ |f2|
-            if( f.get_name == f2.get_name ) then
-              cdl_error( "S1022 $1.$2 : \'$3\' conflict function name in $4.$5" , obj.get_name, obj2.get_name, f.get_name, req[1].get_name, req[2].get_name )
+            if(f.get_name == f2.get_name) then
+              cdl_error("S1022 $1.$2 : \'$3\' conflict function name in $4.$5" , obj.get_name, obj2.get_name, f.get_name, req[1].get_name, req[2].get_name)
             end
           }
         }
@@ -986,16 +986,16 @@ class Celltype < NSBDNode # < Nestable
     @require << [ cp_name, obj, obj2 ]  # [ lhs:cp_name, rhs:Celltype, rhs:Port ]
 
     # require port を追加 (呼び口として追加する。ただし require をセットしておく)
-    port = Port.new( cp_name, obj2.get_signature.get_namespace_path, :CALL )
-    port.set_require( b_has_name )
+    port = Port.new(cp_name, obj2.get_signature.get_namespace_path, :CALL)
+    port.set_require(b_has_name)
     self.new_port port
   end
 
-  def self.new_factory( factory )
-    @@current_object.new_factory( factory )
+  def self.new_factory(factory)
+    @@current_object.new_factory(factory)
   end
 
-  def new_factory( factory )
+  def new_factory(factory)
     factory.set_owner self
     if factory.get_f_celltype then
       @ct_factory_list << factory
@@ -1003,7 +1003,7 @@ class Celltype < NSBDNode # < Nestable
       @factory_list << factory
     end
 
-    factory.check_arg( self )
+    factory.check_arg(self)
 
   end
 
@@ -1023,21 +1023,21 @@ class Celltype < NSBDNode # < Nestable
       signature = port.get_signature
       next if signature == nil   # すでにエラー
       if port.is_dynamic? then
-        dbgPrint( "[DYNAMIC] checking dynamic port: #{@global_name}.#{port.get_name}\n" )
+        dbgPrint("[DYNAMIC] checking dynamic port: #{@global_name}.#{port.get_name}\n")
         # print( "[DYNAMIC] checking dynamic port: #{@global_name}.#{port.get_name}\n" )
         next if find_ref_desc_port signature
         next if find_descriptor_param signature, :DYNAMIC
-        cdl_warning( 'W9999 $1 cannot get information for dynamic port $2', @name, port.get_name )
+        cdl_warning('W9999 $1 cannot get information for dynamic port $2', @name, port.get_name)
       elsif port.is_ref_desc? then
-        dbgPrint( "[DYNAMIC] checking ref_desc port: #{@global_name}.#{port.get_name}\n" )
+        dbgPrint("[DYNAMIC] checking ref_desc port: #{@global_name}.#{port.get_name}\n")
         # print( "[DYNAMIC] checking ref_desc port: #{@global_name}.#{port.get_name}\n" )
         next if find_dynamic_port signature
         next if find_descriptor_param signature, :REF_DESC
-        cdl_warning( 'W9999 $1 cannot put information from ref_desc port $2', @name, port.get_name )
+        cdl_warning('W9999 $1 cannot put information from ref_desc port $2', @name, port.get_name)
       elsif port.get_signature then
         if port.get_signature.has_descriptor? then
           port.get_signature.get_descriptor_list.each{ |signature, param|
-            dbgPrint( "[DYNAMIC] checking Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
+            dbgPrint("[DYNAMIC] checking Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n")
             # print( "[DYNAMIC] checking Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
             if port.get_port_type == :CALL then
               if param.get_direction == :IN
@@ -1056,7 +1056,7 @@ class Celltype < NSBDNode # < Nestable
                 next if find_descriptor_param signature, :DYNAMIC
               end
             end
-            cdl_warning( 'W9999 "$1" cannot handle Descriptor "$2" infromation for port "$3"', @name, param.get_name, port.get_name )
+            cdl_warning('W9999 "$1" cannot handle Descriptor "$2" infromation for port "$3"', @name, param.get_name, port.get_name)
           }
         end
       end
@@ -1092,26 +1092,26 @@ class Celltype < NSBDNode # < Nestable
         while type.kind_of? PtrType
           type = type.get_type
         end
-        dbgPrint( "[DYNAMIC] dyn_ref=#{dyn_ref} port_type=#{port.get_port_type} dir=#{param.get_direction} paramName=#{param.get_name} paramType=#{type.class}\n" )
+        dbgPrint("[DYNAMIC] dyn_ref=#{dyn_ref} port_type=#{port.get_port_type} dir=#{param.get_direction} paramName=#{param.get_name} paramType=#{type.class}\n")
         # print( "[DYNAMIC] dyn_ref=#{dyn_ref} port_type=#{port.get_port_type} dir=#{param.get_direction} paramName=#{param.get_name} paramType=#{type.class}\n" )
         if type.kind_of? DescriptorType then
           if type.get_signature == signature then
             dir = param.get_direction
             if dir == :INOUT then
-              dbgPrint( "[DYNAMIC] found INOUT Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
+              dbgPrint("[DYNAMIC] found INOUT Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n")
               # print( "[DYNAMIC] found INOUT Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
               return param
             elsif dyn_ref == :DYNAMIC then
               if dir == :IN && port.get_port_type == :ENTRY ||
                  dir == :OUT && port.get_port_type == :CALL then
-                dbgPrint( "[DYNAMIC] found INBOUND Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
+                dbgPrint("[DYNAMIC] found INBOUND Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n")
                 # print( "[DYNAMIC] found INBOUND Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
                 return param
               end
             elsif dyn_ref == :REF_DESC
               if dir == :IN && port.get_port_type == :CALL ||
                  dir == :OUT && port.get_port_type == :ENTRY then
-                dbgPrint( "[DYNAMIC] found OUTBOUND Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
+                dbgPrint("[DYNAMIC] found OUTBOUND Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n")
                 # print( "[DYNAMIC] found OUTBOUND Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
                 return param
               end
@@ -1130,14 +1130,14 @@ class Celltype < NSBDNode # < Nestable
   # 新しいセルをセルタイプに追加．
   # セルの構文解釈の最後でこのメソドを呼出される．
   # シングルトンセルが同じ linkunit に複数ないかチェック
-  def new_cell( cell )
+  def new_cell(cell)
     dbgPrint "Celltype#new_cell( #{cell.get_name} )\n"
     # Celltype では Cell の set_owner しない
     # シングルトンで、プロトタイプ宣言でない場合、コード生成対象リージョンの場合
     if @singleton  then
       @cell_list.each{ |c|
         if c.get_region.get_link_root == cell.get_region.get_link_root then
-          cdl_error( "S1024 $1: multiple cell for singleton celltype" , @name )
+          cdl_error("S1024 $1: multiple cell for singleton celltype" , @name)
         end
       }
     end
@@ -1165,7 +1165,7 @@ class Celltype < NSBDNode # < Nestable
     result = $rom &&
              (@n_attribute_ro > 0 ||
               @n_var_size_is > 0 ||
-              ( @n_call_port - @n_call_port_omitted_in_CB - (@n_call_port_dynamic-@n_call_port_array_dynamic) ) > 0 ||
+              (@n_call_port - @n_call_port_omitted_in_CB - (@n_call_port_dynamic-@n_call_port_array_dynamic)) > 0 ||
               $ram_initializer && @n_call_port_dynamic > 0 ||
               @n_entry_port_array_ns > 0)
     # print "name=#{@name} n_attribute_ro=#{@n_attribute_ro}  n_var_size_is=#{@n_var_size_is} n_call_port=#{@n_call_port} n_call_port_omitted_in_CB=#{@n_call_port_omitted_in_CB} n_call_port_dynamic=#{@n_call_port_dynamic} n_call_port_array_dynamic=#{@n_call_port_array_dynamic} n_entry_port_array_ns=#{@n_entry_port_array_ns} has_INIB?=#{result}\n"
@@ -1192,7 +1192,7 @@ class Celltype < NSBDNode # < Nestable
 
   #=== Celltype# SET_CB_INIB_POINTER, INITIALIZE_CB が必要か
   def need_CB_initializer?
-    @n_var_init > 0 || has_CB? || ( @n_call_port_dynamic && $ram_initializer )
+    @n_var_init > 0 || has_CB? || (@n_call_port_dynamic && $ram_initializer)
   end
 
   #=== Celltype# 逆require の結合を生成する
@@ -1212,7 +1212,7 @@ class Celltype < NSBDNode # < Nestable
     # require: celltype で指定
     @cell_list.each{ |c|
       # 到達可能で最も近いセルを探す（複数の singleton があるかもしれない）
-      d = region.distance( c.get_region )
+      d = region.distance(c.get_region)
       # debug
       dbgPrint "distance #{d} from #{region.get_name} to #{c.get_name} in #{c.get_region.get_name}\n"
       # print "DOMAIN: distance #{d} from #{region.get_name} to #{c.get_name} in #{c.get_region.get_name}\n"
@@ -1226,8 +1226,8 @@ class Celltype < NSBDNode # < Nestable
     return cell
   end
 
-  def find( name )
-    @name_list.get_item( name )
+  def find(name)
+    @name_list.get_item(name)
   end
 
   #=== Celltype# セルタイププラグインを得る
@@ -1257,7 +1257,7 @@ class Celltype < NSBDNode # < Nestable
   # このメソッドでは active の他に factory (singleton においては FACTORYを含む)がなければ inactive とする
   def is_inactive?
     if @active == false && @factory_list.length == 0 &&
-        ( @singleton && @ct_factory_list.length == 0 || ! @singleton )then
+        (@singleton && @ct_factory_list.length == 0 || ! @singleton)then
       return true
     end
     return false
@@ -1291,7 +1291,7 @@ class Celltype < NSBDNode # < Nestable
       cell_or_ct = req[1]
       port = req[2]
       @cell_list.each{ |c|
-        c.set_require_join( cp_name, cell_or_ct, port )
+        c.set_require_join(cp_name, cell_or_ct, port)
       }
     }
   end
@@ -1311,7 +1311,7 @@ class Celltype < NSBDNode # < Nestable
     @@celltype_list
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "Celltype: name=#{@name} global_name=#{@global_name}"  
     (indent+1).times { print "  " }
@@ -1320,19 +1320,19 @@ class Celltype < NSBDNode # < Nestable
     puts "namespace_path: #{@NamespacePath}"
     (indent+1).times { print "  " }
     puts "port:"
-    @port.each { |i| i.show_tree( indent + 2 ) }
+    @port.each { |i| i.show_tree(indent + 2) }
     (indent+1).times { print "  " }
     puts "attribute:"
-    @attribute.each { |i| i.show_tree( indent + 2 ) }
+    @attribute.each { |i| i.show_tree(indent + 2) }
     (indent+1).times { print "  " }
     puts "var:"
-    @var.each { |i| i.show_tree( indent + 2 ) }
+    @var.each { |i| i.show_tree(indent + 2) }
 #    (indent+1).times { print "  " }
 #    puts "require:"   mikan
 #    @require.each { |i| i.show_tree( indent + 2 ) }
     (indent+1).times { print "  " }
     puts "factory:"
-    @factory_list.each { |i| i.show_tree( indent + 2 ) }
+    @factory_list.each { |i| i.show_tree(indent + 2) }
     (indent+1).times { print "  " }
     puts "@n_attribute_ro #{@n_attribute_ro}"
     (indent+1).times { print "  " }
@@ -1441,25 +1441,25 @@ class Cell < NSBDNode # < Nestable
     end
   end
 
-  def initialize( ct_path, in_composite = false )
+  def initialize(ct_path, in_composite = false)
     super()
     @region = Region.get_current
 
     # celltype のplugin/存在をチェック
-    object = Namespace.find( ct_path )    # 1
+    object = Namespace.find(ct_path)    # 1
     if object == nil then
       # mikan celltype の名前が不完全 "::ct1ct2" になる
-      cdl_error( "S1027 \'$1\' celltype not found" , ct_path.get_path_str )
-    elsif ! object.instance_of?( Celltype ) && ! object.instance_of?( CompositeCelltype ) then
+      cdl_error("S1027 \'$1\' celltype not found" , ct_path.get_path_str)
+    elsif ! object.instance_of?(Celltype) && ! object.instance_of?(CompositeCelltype) then
       # mikan celltype の名前が不完全
-      cdl_error( "S1028 \'$1\' not celltype" , ct_path.get_path_str )
+      cdl_error("S1028 \'$1\' not celltype" , ct_path.get_path_str)
     else
       @celltype = object
     end
 
     @in_composite = in_composite
     if @in_composite then
-      @compositecelltypejoin_list = NamedList.new( nil, "in cell '#{@name}'" )
+      @compositecelltypejoin_list = NamedList.new(nil, "in cell '#{@name}'")
       @plugin = nil
     else
       @compositecelltypejoin_list = nil
@@ -1486,11 +1486,11 @@ class Cell < NSBDNode # < Nestable
     @cell_list2 = []
   end
 
-  def self.set_name( name )
-    @@current_object.set_name( name )
+  def self.set_name(name)
+    @@current_object.set_name(name)
   end
 
-  def set_name( name )
+  def set_name(name)
 
     @name = name
     @local_name = name
@@ -1504,29 +1504,29 @@ class Cell < NSBDNode # < Nestable
     # set_f_def で再度登録しなおす
     # Celltype への登録は、end_of_parse で行う
     if @in_composite then
-      cell_prev = CompositeCelltype.find( name )
+      cell_prev = CompositeCelltype.find(name)
       if cell_prev == nil then
-        CompositeCelltype.new_cell_in_composite( self )
+        CompositeCelltype.new_cell_in_composite(self)
       end
     else
       # cell_prev = Namespace.find( [ name ] )   # 親まで捜しにいく
-      cell_prev = Namespace.get_current.find( name )
+      cell_prev = Namespace.get_current.find(name)
       if cell_prev == nil then
-        Namespace.new_cell( self )
+        Namespace.new_cell(self)
         set_namespace_path # @NamespacePath の設定
       end
     end
 
     if cell_prev then
-      if ! cell_prev.instance_of?( Cell ) then
-        cdl_error( "S1029 $1 mismatch with previous one" , name )
+      if ! cell_prev.instance_of?(Cell) then
+        cdl_error("S1029 $1 mismatch with previous one" , name)
         # celltype が一致しているか ?
       elsif get_celltype != cell_prev.get_celltype then
-        cdl_error( "S1030 $1: celltype mismatch with previous one" , name )
+        cdl_error("S1030 $1: celltype mismatch with previous one" , name)
       else
         # region が一致しているか?
         if ! cell_prev.get_region.equal? get_region then
-          cdl_error( "S1031 $1 region \'$2\' mismatch  with previous one \'$3\'" , name, @region.get_name, cell_prev.get_region.get_name )
+          cdl_error("S1031 $1 region \'$2\' mismatch  with previous one \'$3\'" , name, @region.get_name, cell_prev.get_region.get_name)
         end
 
         @@current_object = cell_prev
@@ -1535,7 +1535,7 @@ class Cell < NSBDNode # < Nestable
       end
     end
 
-    @join_list = NamedList.new( nil, "in cell '#{@name}'" )
+    @join_list = NamedList.new(nil, "in cell '#{@name}'")
     @reverse_join_list = nil
 
     # debug
@@ -1544,8 +1544,8 @@ class Cell < NSBDNode # < Nestable
     # 内部アロケータを @alloc_list に追加
     if @celltype.instance_of? CompositeCelltype then
       @celltype.get_internal_allocator_list.each{ |cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
-        nsp = NamespacePath.new( @name, false )
-        rhs = Expression.new( [:OP_DOT, [:IDENTIFIER, nsp], Token.new( ext_alloc_ent.to_s.to_sym, nil, nil, nil ) ] )  # 1 構文解析段階なので locale 不要
+        nsp = NamespacePath.new(@name, false)
+        rhs = Expression.new([:OP_DOT, [:IDENTIFIER, nsp], Token.new(ext_alloc_ent.to_s.to_sym, nil, nil, nil) ])  # 1 構文解析段階なので locale 不要
 
         @alloc_list << [:NORMAL_ALLOC,port_name,nil,fd_name,par_name,rhs]
 # print "add alloc_list: #{port_name}.#{fd_name}.#{par_name}=#{rhs.to_s}\n"
@@ -1563,18 +1563,18 @@ class Cell < NSBDNode # < Nestable
   # 本体(join)の定義の直前に呼び出される
   # このメソッドは cell tCelltype Cell { };  '{', '}' の部分がある場合に呼出される
   def new_def
-    set_specifier_list( Generator.get_statement_specifier )
+    set_specifier_list(Generator.get_statement_specifier)
 
     # prototype 指定子ないか
     if ! @b_prototype then
       # 二重定義のチェック
       if @b_defined == true then
-        cdl_error( "S1032 $1: duplicate cell" , @name )
+        cdl_error("S1032 $1: duplicate cell" , @name)
         dbgPrint "previous: #{@prev_locale[0]}: line #{@prev_locale[1]} '#{@name}' defined here\n"
 
         # セルの重複定義エラーの処置
         # 前の定義は捨てる
-        @join_list = NamedList.new( nil, "in cell '#{@name}'" )
+        @join_list = NamedList.new(nil, "in cell '#{@name}'")
       end
 
       @b_defined = true
@@ -1582,8 +1582,8 @@ class Cell < NSBDNode # < Nestable
     end
   end
 
-  def self.new_join( join, b_regular = false )
-    @@current_object.new_join( join, b_regular )
+  def self.new_join(join, b_regular = false)
+    @@current_object.new_join(join, b_regular)
   end
 
   #===  Cell# 新しい結合をチェック
@@ -1591,7 +1591,7 @@ class Cell < NSBDNode # < Nestable
   #
   # join::  Join : 新しい結合
   # b_regular:: bool : 通常の場所 (bnf.y.rb)からならば true, それ以外(allocator, require) では false
-  def new_join( join, b_regular = false )
+  def new_join(join, b_regular = false)
     join.set_owner self
 
     # composite の新文法対応．
@@ -1599,12 +1599,12 @@ class Cell < NSBDNode # < Nestable
     # cell 内の attr_ext = composite.attr; 構文を処理
     if @in_composite then
       if @celltype then
-        if @celltype.find(join.get_name).instance_of?( Decl ) then # mikan a::b で指定されていたものがエラーにならないかも
+        if @celltype.find(join.get_name).instance_of?(Decl) then # mikan a::b で指定されていたものがエラーにならないかも
           rhs = join.get_rhs
           if rhs.instance_of? Expression then
             ele = rhs.get_elements
-            if( ele[0]==:IDENTIFIER )then    #  attr = attr_ext （右辺単項）か？ #1
-              if( CompositeCelltype.has_attribute?(ele[1].get_name ) )then    # mikan a::b.ePort がエラーにならないかも
+            if(ele[0]==:IDENTIFIER)then    #  attr = attr_ext （右辺単項）か？ #1
+              if(CompositeCelltype.has_attribute?(ele[1].get_name))then    # mikan a::b.ePort がエラーにならないかも
                 ident = ele[1].get_name   # 右辺は attribute．
               else
                 # 右辺は attribute にないのであれば、定数のはず
@@ -1614,7 +1614,7 @@ class Cell < NSBDNode # < Nestable
             else
               if join.get_rhs.eval_const2(nil) == nil then   # 定数式ではないか？
                 # 右辺が、単一のシンボルでない場合、現状は扱えない
-                cdl_error( "S1033 rhs expression is not supported. Only attribute is permitted on current version."  )
+                cdl_error("S1033 rhs expression is not supported. Only attribute is permitted on current version.")
                 return
               else
                 # 定数は下へ渡す (cell の join にする)
@@ -1624,8 +1624,8 @@ class Cell < NSBDNode # < Nestable
 
             if ident then
               # attr = attr; のような参照はエラー (a = composite.a とする必要がある)
-              if @celltype.find( ident ) then
-                cdl_error( "S1034 $1 : cannot refer to $2\'s attribute here. Use \'composite.$3\' to refer to composite celltype\'s" , ident, @celltype.get_name, ident )
+              if @celltype.find(ident) then
+                cdl_error("S1034 $1 : cannot refer to $2\'s attribute here. Use \'composite.$3\' to refer to composite celltype\'s" , ident, @celltype.get_name, ident)
               end
             end
           elsif rhs.instance_of? Array then
@@ -1642,7 +1642,7 @@ class Cell < NSBDNode # < Nestable
           if ident then
             # composite の旧文法の構文処理へ渡す．セル外の attr_ext = Cell.attr; 構文の処理に渡す
             #                        export_name, internal_cell_name, internal_cell_elem_name
-            decl = CompositeCelltype.new_join( ident, @name, join.get_name, :ATTRIBUTE )  # mikan a::b.ePort がエラーにならないかも
+            decl = CompositeCelltype.new_join(ident, @name, join.get_name, :ATTRIBUTE)  # mikan a::b.ePort がエラーにならないかも
             if ! decl.instance_of? Decl then
               return
             end
@@ -1653,7 +1653,7 @@ class Cell < NSBDNode # < Nestable
             # 以下の旧文法実装に渡す．
             # 旧文法では cell に初期値を与えることで、composite で属性の初期値を指定することができた
             # attribute で指定された初期値を cell の属性として処理させる
-            join.change_rhs( ini )
+            join.change_rhs(ini)
           else
             # ident がない．定数式
           end
@@ -1668,7 +1668,7 @@ class Cell < NSBDNode # < Nestable
       rhs = join.get_rhs
       if rhs[0] == :COMPOSITE then
         # composite の中でないのに attr = composite.attr が使われた
-        cdl_error( "S1035 composite : cannot specify out of composite celltype definition"  )
+        cdl_error("S1035 composite : cannot specify out of composite celltype definition")
         return
       end
     end
@@ -1676,7 +1676,7 @@ class Cell < NSBDNode # < Nestable
     # 以下 composite 文法変更前からある処理
 
     # 既に左辺が同じ名前の初期化が存在するか？
-    j = @join_list.get_item( join.get_name )   # mikan NamespacePath がパスを持っている
+    j = @join_list.get_item(join.get_name)   # mikan NamespacePath がパスを持っている
     if j.instance_of? Join then    # mikan ここでは j が Join or Nil 以外は、ないはず
 
       # debug
@@ -1687,7 +1687,7 @@ class Cell < NSBDNode # < Nestable
     else
       dbgPrint "new_join: cell=#{@name} add_item=#{join.get_name}\n"
       # join
-      @join_list.add_item( join )
+      @join_list.add_item(join)
     end
 
     # if get_owner then   # error S1030 発生時 get_owner が見つからなくて例外になる
@@ -1705,13 +1705,13 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell.新しい逆結合
-  def self.new_reverse_join( reverse_join )
-    @@current_object.new_reverse_join( reverse_join )
+  def self.new_reverse_join(reverse_join)
+    @@current_object.new_reverse_join(reverse_join)
   end
 
   #=== Cell#新しい逆結合
-  def new_reverse_join( reverse_join )
-    dbgPrint( "new_reverse_join name=#{reverse_join.get_name}\n")
+  def new_reverse_join(reverse_join)
+    dbgPrint("new_reverse_join name=#{reverse_join.get_name}\n")
     b_cb = false
     if @celltype then
       ep_name = reverse_join.get_name
@@ -1723,7 +1723,7 @@ class Cell < NSBDNode # < Nestable
       end
     end
     if ! @b_prototype && ! b_cb then
-      cdl_error( "S9999 '$1': reverse join can be used in prototype cell, or with callback signature", @name )
+      cdl_error("S9999 '$1': reverse join can be used in prototype cell, or with callback signature", @name)
     end
     if @reverse_join_list == nil then
 #      @reverse_join_list = NamedList.new( reverse_join, "in cell '#{@name}'" )
@@ -1756,7 +1756,7 @@ class Cell < NSBDNode # < Nestable
         end
 
         if ! cell.instance_of? Cell then
-          cdl_error( "S9999 '$1': not cell for reverse join", cp_cell_nsp.get_path_str )
+          cdl_error("S9999 '$1': not cell for reverse join", cp_cell_nsp.get_path_str)
           next
         end
         ct = cell.get_celltype
@@ -1771,10 +1771,10 @@ class Cell < NSBDNode # < Nestable
           ep_cell_nsp = NamespacePath.new @name, false
           ep_cell_nsp_str = @name
         end
-        ep_subscript_val = ep_subscript ? ep_subscript.eval_const( nil ) : nil
-        rhs = Expression.create_cell_join_expression( ep_cell_nsp, ep_subscript_val, ep_name, rj.get_locale )
-        join = Join.new( cp_name, cp_subscript, rhs, rj.get_locale )
-        cell.new_join( join )
+        ep_subscript_val = ep_subscript ? ep_subscript.eval_const(nil) : nil
+        rhs = Expression.create_cell_join_expression(ep_cell_nsp, ep_subscript_val, ep_name, rj.get_locale)
+        join = Join.new(cp_name, cp_subscript, rhs, rj.get_locale)
+        cell.new_join(join)
         # join.set_definition( ct.find(join.get_name) )
         if cp_subscript then
           ss_str = "[#{cp_subscript}]"
@@ -1786,8 +1786,8 @@ class Cell < NSBDNode # < Nestable
     end
   end
 
-  def self.external_join( internal_cell_elem_name, export_name, b_composite )
-    @@current_object.external_join( internal_cell_elem_name, export_name, b_composite )
+  def self.external_join(internal_cell_elem_name, export_name, b_composite)
+    @@current_object.external_join(internal_cell_elem_name, export_name, b_composite)
   end
 
   #=== Cell# cell 内に記述する呼び口の外部結合
@@ -1795,17 +1795,17 @@ class Cell < NSBDNode # < Nestable
   # export_name:: string: composite の外部に公開する呼び口名
   #  呼び口を外部結合する．
   #  このメソッドは、composite の中の cell でしか呼ばれない．
-  def external_join( internal_cell_elem_name, export_name, b_composite )
+  def external_join(internal_cell_elem_name, export_name, b_composite)
 
     # cCall => composite.cCall; ではないか？
-    if( b_composite == false )then
+    if(b_composite == false)then
       # cCall => cCall; のような場合
-      if @celltype.find( export_name ) then
-        cdl_error( "S1036 $1 : cannot refer to $2\'s here. Use \'composite.$3\' to refer to composite celltype\'s" , export_name, @celltype.get_name, export_name )
+      if @celltype.find(export_name) then
+        cdl_error("S1036 $1 : cannot refer to $2\'s here. Use \'composite.$3\' to refer to composite celltype\'s" , export_name, @celltype.get_name, export_name)
       end
     end
     # composite の旧文法における、cell 外の cCall = Cell.cCall; の構文処理に渡す
-    CompositeCelltype.new_join( export_name, @name,  internal_cell_elem_name, :CALL )
+    CompositeCelltype.new_join(export_name, @name,  internal_cell_elem_name, :CALL)
   end
 
   def self.end_of_parse f_def
@@ -1823,7 +1823,7 @@ class Cell < NSBDNode # < Nestable
     if f_def == false then
       # cell tCelltype Cell; の形式の場合
       # f_def == true の場合 new_def で、呼出される
-      set_specifier_list( Generator.get_statement_specifier )
+      set_specifier_list(Generator.get_statement_specifier)
     end
     if TECSGEN.post_coded?
       @b_post_code_generated = true
@@ -1876,10 +1876,10 @@ class Cell < NSBDNode # < Nestable
   #    受け口側に生成されるアロケータ呼び口の結合を内部生成する
   #    呼び口側は Port の create_allocator_join にて生成
   #    リレーアロケータの場合 create_relay_allocator_join にて生成す
-  def set_specifier_list( spec_list )
+  def set_specifier_list(spec_list)
     return if spec_list == nil  # 空ならば何もしない
 
-    dbgPrint( "set_spec_list: #{@name}\n" )
+    dbgPrint("set_spec_list: #{@name}\n")
     b_generate = false   # generate が指定された
 
     spec_list.each{ |s|
@@ -1895,27 +1895,27 @@ class Cell < NSBDNode # < Nestable
             subscript = nil
           end
           # アロケータ呼び口の結合を生成
-          join = Join.new( cp_name, subscript, a[4+1] )   # 構文解析段階なので locale 不要
-          dbgPrint( "new allocator join #{cp_name} #{subscript} #{a[4+1]}\n" )
-          Cell.new_join( join )
+          join = Join.new(cp_name, subscript, a[4+1])   # 構文解析段階なので locale 不要
+          dbgPrint("new allocator join #{cp_name} #{subscript} #{a[4+1]}\n")
+          Cell.new_join(join)
           @alloc_list << a 
         }
       when :ID          # [id(0)]
         if ! s[1].instance_of? Expression then
-          cdl_error( "S1160 $1 must be constant for id", s[1].to_s )
+          cdl_error("S1160 $1 must be constant for id", s[1].to_s)
         else
           id = s[1].eval_const nil
           if id == nil || Integer(id) != id then
-            cdl_error( "S1161 $1 must be constant for id", s[1].to_s )
+            cdl_error("S1161 $1 must be constant for id", s[1].to_s)
           elsif id == 0 then
-            cdl_error( "S1162 $1: id cannot be 0", s[1].to_s )
+            cdl_error("S1162 $1: id cannot be 0", s[1].to_s)
           else
             @id_specified = id
           end
         end
       when :GENERATE      # [generate(CellPlugin,"option")]
         if @generate then
-          cdl_error( "S1163 generate specifier duplicate"  )
+          cdl_error("S1163 generate specifier duplicate")
         end
         @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
         b_generate = true
@@ -1926,15 +1926,15 @@ class Cell < NSBDNode # < Nestable
           add_restrict re[0], re[1], re[2]
         }
       else
-          cdl_error( "S1039 \'$1\': unknown specifier for cell" , s[0] )
+          cdl_error("S1039 \'$1\': unknown specifier for cell" , s[0])
       end
     }
     if @b_prototype then
       if b_generate then
-         cdl_error( "S9999 '$1': generate and prototype specified simultaneously" , @name )
+         cdl_error("S9999 '$1': generate and prototype specified simultaneously" , @name)
       end
       if @b_defined then
-         cdl_error( "S9999 '$1': prototype specified after definition" , @name )
+         cdl_error("S9999 '$1': prototype specified after definition" , @name)
       end
     end
   end
@@ -1957,10 +1957,10 @@ class Cell < NSBDNode # < Nestable
   # このメソッドは、プラグインで cell の生成順序を制御したい場合のために設けた
   # 通常の id 指定子では使っていない
   def set_specified_id id
-    if Integer( id ) != id || id <= 0 then
-      cdl_error( "S1164 '$1' set_specified_id: id not positive integer '$2'", @name, id )
+    if Integer(id) != id || id <= 0 then
+      cdl_error("S1164 '$1' set_specified_id: id not positive integer '$2'", @name, id)
     elsif @id_specified then
-      cdl_error( "S1165 '$1' set_specified_id: id duplicate", @name )
+      cdl_error("S1165 '$1' set_specified_id: id duplicate", @name)
     else
       @id_specified = id
     end
@@ -1975,22 +1975,22 @@ class Cell < NSBDNode # < Nestable
 
   def apply_plugin plugin_name, option
     if ! @b_defined then
-      cdl_error( "S9999 plugin cannot apply to prototype cell '$1'", @name )
+      cdl_error("S9999 plugin cannot apply to prototype cell '$1'", @name)
     end
 
-    plClass = load_plugin( plugin_name, CellPlugin )
+    plClass = load_plugin(plugin_name, CellPlugin)
     # return if plClass == nil # 従来と仕様が変わるので、継続する
     if $verbose then
       print "new cell plugin: plugin_object = #{plClass.class.name}.new( #{@name}, #{option} )\n"
     end
 
     begin
-      plugin_object = plClass.new( self, option )
+      plugin_object = plClass.new(self, option)
       plugin_object.set_locale @locale
       generate_and_parse plugin_object
     rescue Exception => evar
-      cdl_error( "S1166 $1: fail to new", plugin_name )
-      print_exception( evar )
+      cdl_error("S1166 $1: fail to new", plugin_name)
+      print_exception(evar)
     end
     return  plugin_object
   end
@@ -2006,7 +2006,7 @@ class Cell < NSBDNode # < Nestable
   # ct_name::     string : 親セルのセルタイプ名
   # region::      Region : 元のセルが属する region
   # このメソッドは CompositeCelltype の expand から呼出される
-  def clone_for_composite( name, global_name, namespacePath, join_array, ct_name, region, plugin, locale )
+  def clone_for_composite(name, global_name, namespacePath, join_array, ct_name, region, plugin, locale)
 
     # debug
     dbgPrint "  CLONING Cell#clone_for_composite : cloning: #{@name} #{global_name}  b_defined=#{@b_defined} #{self}=>#{@my_clone} \n"
@@ -2015,13 +2015,13 @@ class Cell < NSBDNode # < Nestable
     @my_clone = self.clone
 
     # clone したセルの内部に持つ名前情報を調整する
-    @my_clone.set_cloned( name, global_name, namespacePath, join_array, ct_name, region, plugin, locale )
+    @my_clone.set_cloned(name, global_name, namespacePath, join_array, ct_name, region, plugin, locale)
 
     # @celltype == nil は以前にセルタイプ未定義エラー
     if @b_defined == true && @celltype != nil then
-      if @celltype.instance_of?( Celltype ) then
+      if @celltype.instance_of?(Celltype) then
         # celltype に登録（コード生成の対象となる）
-        @celltype.new_cell( @my_clone )
+        @celltype.new_cell(@my_clone)
       end
     end
 
@@ -2034,7 +2034,7 @@ class Cell < NSBDNode # < Nestable
   # join_array::  Join[] : composite の cell の join で、この cell に対応するもの
   # parent_ct_name:: string : 親セルのセルタイプ名（composite セルタイプ）
   #  このメソッドはすぐ上の clone_for_composite から呼出され、clone されたセルを整える
-  def set_cloned( name, global_name, namespacePath, join_array, parent_ct_name, region, plugin, locale )
+  def set_cloned(name, global_name, namespacePath, join_array, parent_ct_name, region, plugin, locale)
 
     # debug
     dbgPrint "cell.set_cloned : global_name: #{global_name}  name: #{name}  @name: #{@name}\n"
@@ -2051,13 +2051,13 @@ class Cell < NSBDNode # < Nestable
     @f_cloned = true
 
     # Namespace.new_cell( self )  # mikan namespace 対応
-    region.new_cell( self )  # mikan  namespace に cell を置けないことを仮定
+    region.new_cell(self)  # mikan  namespace に cell を置けないことを仮定
 
     # join_list : NamedList の clone を作る
     if @celltype then
       dbgPrint "set_cloned: #{@celltype.get_name} #{@name} #{region.get_name}\n"
     end
-    @join_list = @join_list.clone_for_composite( parent_ct_name, name, locale )
+    @join_list = @join_list.clone_for_composite(parent_ct_name, name, locale)
     @referenced_port_list = {}
 
     @alloc_list = []
@@ -2081,9 +2081,9 @@ class Cell < NSBDNode # < Nestable
     end
 
     # clone しようとするセルが composit セルタイプ？
-    if @celltype.instance_of?( CompositeCelltype ) then
+    if @celltype.instance_of?(CompositeCelltype) then
       # composite cell を再帰的に展開
-      @cell_list, @cell_list2 = @celltype.expand( @name, @global_name, @NamespacePath, @join_list, @region, @plugin, @locale )
+      @cell_list, @cell_list2 = @celltype.expand(@name, @global_name, @NamespacePath, @join_list, @region, @plugin, @locale)
     end
   end
 
@@ -2095,7 +2095,7 @@ class Cell < NSBDNode # < Nestable
     dbgPrint "=====   Cell#change_rhs_port: name=#{@name}   =====\n"
 
     @join_list.get_items.each { |j|
-      j.change_rhs_port( cloned_cell_list, @celltype )
+      j.change_rhs_port(cloned_cell_list, @celltype)
     }
   end
 
@@ -2174,7 +2174,7 @@ class Cell < NSBDNode # < Nestable
 
   # composite cell の port に対応する内部の cell の port の名前（リンク時に必要な名前）
   def get_real_global_name port_name
-    if @celltype.instance_of?( CompositeCelltype ) then
+    if @celltype.instance_of?(CompositeCelltype) then
 
       # debug
       dbgPrint "get_real_global_name: cell name: #{@name} #{@local_name} #{@global_name} #{port_name}\n"
@@ -2184,12 +2184,12 @@ class Cell < NSBDNode # < Nestable
         dbgPrint "\n\n"
       }
 
-      cj = @celltype.find_export( port_name )
+      cj = @celltype.find_export(port_name)
 
       # debug
       dbgPrint " composite join name: #{cj.get_name}  cell: #{cj.get_cell_name}  cell elem: #{cj.get_cell_elem_name}\n"
 
-      name = @cell_list[ "#{cj.get_cell_name}" ].get_real_global_name( cj.get_cell_elem_name )
+      name = @cell_list[ "#{cj.get_cell_name}" ].get_real_global_name(cj.get_cell_elem_name)
       return name
 
     else
@@ -2205,7 +2205,7 @@ class Cell < NSBDNode # < Nestable
   def get_real_global_port_name port_name
 
     # composite か？
-    if @celltype.instance_of?( CompositeCelltype ) then
+    if @celltype.instance_of?(CompositeCelltype) then
 
       # debug
       dbgPrint "get_real_global_port_name: cell name: #{@name} #{@local_name} #{@global_name} #{port_name}\n"
@@ -2216,13 +2216,13 @@ class Cell < NSBDNode # < Nestable
       }
 
       # セルタイプ内で port_name の CompositeCelltypeJoin を探す（コード生成段階では必ず見つかる）
-      cj = @celltype.find_export( port_name )
+      cj = @celltype.find_export(port_name)
 
       # debug
       dbgPrint "   composite join name: #{cj.get_name}  cell: #{cj.get_cell_name}  cell elem: #{cj.get_cell_elem_name}\n"
 
       # composite の内部のセルに対し再帰的に get_real_global_port_name を適用
-      name = @cell_list[ "#{cj.get_cell_name}" ].get_real_global_port_name( cj.get_cell_elem_name )
+      name = @cell_list[ "#{cj.get_cell_name}" ].get_real_global_port_name(cj.get_cell_elem_name)
       return name
 
     else
@@ -2234,37 +2234,37 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell# PORT (celltype の定義) を得る
-  def get_real_port( port_name )
+  def get_real_port(port_name)
 
     # composite か？
-    if @celltype.instance_of?( CompositeCelltype ) then
+    if @celltype.instance_of?(CompositeCelltype) then
 
       # セルタイプ内で port_name の CompositeCelltypeJoin を探す（コード生成段階では必ず見つかる）
-      cj = @celltype.find_export( port_name )
+      cj = @celltype.find_export(port_name)
 
       # composite の内部のセルに対し再帰的に get_real_port を適用
-      port = @cell_list[ "#{cj.get_cell_name}" ].get_real_port( cj.get_cell_elem_name )
+      port = @cell_list[ "#{cj.get_cell_name}" ].get_real_port(cj.get_cell_elem_name)
       return port
     else
 
-      return @celltype.find( port_name )
+      return @celltype.find(port_name)
     end
   end
 
   #=== Cell# cell を得る
   #    composite でなければ自分自身を返す
-  def get_real_cell( port_name )
+  def get_real_cell(port_name)
 
     # composite か？
-    if @celltype.instance_of?( CompositeCelltype ) then
+    if @celltype.instance_of?(CompositeCelltype) then
 
       # セルタイプ内で port_name の CompositeCelltypeJoin を探す（コード生成段階では必ず見つかる）
       # print "get_real_cell: cell=#{@name} port=#{port_name}\n"
       # pp @cell_list
-      cj = @celltype.find_export( port_name )
+      cj = @celltype.find_export(port_name)
 
       # composite の内部のセルに対し再帰的に get_real_port を適用
-      cell = @cell_list[ "#{cj.get_cell_name}" ].get_real_cell( cj.get_cell_elem_name )
+      cell = @cell_list[ "#{cj.get_cell_name}" ].get_real_cell(cj.get_cell_elem_name)
       return cell
     else
 
@@ -2274,8 +2274,8 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell#get_real_celltype
   #
-  def get_real_celltype( port_name )
-    if @celltype.instance_of?( CompositeCelltype ) then
+  def get_real_celltype(port_name)
+    if @celltype.instance_of?(CompositeCelltype) then
       return @celltype.get_real_celltype port_name
     else
       return @celltype
@@ -2292,10 +2292,10 @@ class Cell < NSBDNode # < Nestable
     end
 
     # composite か？
-    if @celltype.instance_of?( CompositeCelltype ) then
+    if @celltype.instance_of?(CompositeCelltype) then
 
       # セルタイプ内で port_name の CompositeCelltypeJoin を探す（コード生成段階では必ず見つかる）
-      cj = @celltype.find_export( port.get_name )
+      cj = @celltype.find_export(port.get_name)
 
       dbgPrint " port_referenced: #{@celltype.get_name} #{@name} cj=#{cj&&(cj.get_name)||"nil"}\n"
 
@@ -2303,17 +2303,17 @@ class Cell < NSBDNode # < Nestable
         # composite の内部のセルに対し再帰的に get_real_port を適用
         cell = @cell_list[ "#{cj.get_cell_name}" ]
         if cell && cell.get_celltype then
-          cell.port_referenced( cell.get_celltype.find( cj.get_cell_elem_name ) )
+          cell.port_referenced(cell.get_celltype.find(cj.get_cell_elem_name))
         end
       end
     end
   end
 
   def get_internal_port_name port_name
-    if @celltype.instance_of?( CompositeCelltype ) then
-      cj = @celltype.find_export( port_name )
+    if @celltype.instance_of?(CompositeCelltype) then
+      cj = @celltype.find_export(port_name)
 #      return "#{@name}_#{cj.get_cell.get_internal_port_name cj.get_cell_elem_name}"
-      return cj.get_cell.get_internal_port_name( cj.get_cell_elem_name )
+      return cj.get_cell.get_internal_port_name(cj.get_cell_elem_name)
     else
 
       # debug
@@ -2326,7 +2326,7 @@ class Cell < NSBDNode # < Nestable
   # Cell#属性の初期値を得る
   # attr_name::Symbol  必ず初期化されていないと Ruby 例外となる
   def get_attr_initializer attr_name
-    val = @join_list.get_item( attr_name )
+    val = @join_list.get_item(attr_name)
     if val == nil then
       val = (@celltype.find  attr_name).get_initializer
     else
@@ -2365,18 +2365,18 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell# 受け口配列の添数の最大値を設定
-  def set_entry_port_max_subscript( port, num )
-    dbgPrint( "set_entry_port_max_subscript: #{@name}.#{port.get_name}: #{num}\n" )
+  def set_entry_port_max_subscript(port, num)
+    dbgPrint("set_entry_port_max_subscript: #{@name}.#{port.get_name}: #{num}\n")
     subscript = @entry_array_max_subscript[port]
 
     if subscript == nil || num > subscript then
       @entry_array_max_subscript[port] = num
-      set_entry_inner_port_max_subscript( port, num )
+      set_entry_inner_port_max_subscript(port, num)
     end
   end
 
   #=== Cell# composite の内側セルの受け口配列の添数の最大値を設定
-  def set_entry_inner_port_max_subscript( port, num )
+  def set_entry_inner_port_max_subscript(port, num)
     if @cell_list == nil then
       return    # プロトタイプ宣言しかされていなくて、内側セルが展開されていない　or composite 展開前
     end
@@ -2391,8 +2391,8 @@ class Cell < NSBDNode # < Nestable
         inner_cell = @cell_list[ cj.get_cell_name.to_s ]
         ct = inner_cell.get_celltype
         if ct then
-          inner_port = ct.find( cj.get_cell_elem_name )
-          inner_cell.set_entry_port_max_subscript( inner_port, num )
+          inner_port = ct.find(cj.get_cell_elem_name)
+          inner_cell.set_entry_port_max_subscript(inner_port, num)
         end
       end
     end
@@ -2401,7 +2401,7 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# 受け口配列の添数の最大値を返す
   # 長さは +1 する
   # 1つもない場合は -1 を返す
-  def get_entry_port_max_subscript( port )
+  def get_entry_port_max_subscript(port)
     subscript = @entry_array_max_subscript[port]
     if subscript == nil then
       subscript = -1
@@ -2424,7 +2424,7 @@ class Cell < NSBDNode # < Nestable
         dbgPrint "create_relay_allocator_join: #{@name}, #{p.get_name}\n"
         if p.get_array_size then
           # mikan relay allocator が array に対応できてもよいのでは？
-          cdl_error( "S1040 array not supported for relay allocator"  )
+          cdl_error("S1040 array not supported for relay allocator")
           next
         end
         ail.each{ |name,ai2|
@@ -2432,7 +2432,7 @@ class Cell < NSBDNode # < Nestable
           if ai2[0] == :RELAY_ALLOC then
             dbgPrint "create_relay_allocator_join: #{@name}, #{name}\n"
             # 呼び口側の結合を取り出す
-            ja = @join_list.get_item( :"#{ai2[3]}_#{ai2[4]}_#{ai2[5]}" )
+            ja = @join_list.get_item(:"#{ai2[3]}_#{ai2[4]}_#{ai2[5]}")
             if ja == nil then
               # 見つからない場合
               found = false
@@ -2440,7 +2440,7 @@ class Cell < NSBDNode # < Nestable
               # composite 内で外部に結合されているか
               if @in_composite then
                 @compositecelltypejoin_list.get_items.each { |cj|
-                  dbgPrint( "create relay_allocator in_composite\n" )
+                  dbgPrint("create relay_allocator in_composite\n")
                   dbgPrint("    #{cj.get_cell_name} #{@name} #{cj.get_cell_elem_name} #{ai2[3]}_#{ai2[4]}_#{ai2[5]}\n")
                   if cj.get_cell_name == @name &&
                       cj.get_cell_elem_name == :"#{ai2[3]}_#{ai2[4]}_#{ai2[5]}" then
@@ -2452,8 +2452,8 @@ class Cell < NSBDNode # < Nestable
               end
 
               if found == false then
-                cdl_error( "S1041 \'$1_$2_$3\': not joined. cannot create internal join for relay allocator" , ai2[3], ai2[4], ai2[5] )
-                print( "      In cell #{get_name}\n" )
+                cdl_error("S1041 \'$1_$2_$3\': not joined. cannot create internal join for relay allocator" , ai2[3], ai2[4], ai2[5])
+                print("      In cell #{get_name}\n")
                 # join が未結合であることのエラーは二度でる (S1043)
               end
               next    # 打ち切る
@@ -2483,10 +2483,10 @@ class Cell < NSBDNode # < Nestable
                 subscript = ja2.get_subscript
                 if b_export == false then
                   # CompositeCelltype の場合、内側のセルで生成させる
-                  join = Join.new( :"#{p.get_name}_#{ai2[1]}_#{ai2[2]}", subscript, rhs, @loacle )
+                  join = Join.new(:"#{p.get_name}_#{ai2[1]}_#{ai2[2]}", subscript, rhs, @loacle)
                   # p ( "#{p.get_name}_#{ai2[1]}_#{ai2[2]}", subscript, rhs )
-                  new_join( join )
-                  join.set_definition( @celltype.find(join.get_name) )
+                  new_join(join)
+                  join.set_definition(@celltype.find(join.get_name))
                   # mikan relay mismatch チェックができていない（下方を参照）
                 end
                 @alloc_list << [ :NORMAL_ALLOC, p.get_name, subscript, ai2[1], ai2[2], rhs ]
@@ -2494,15 +2494,15 @@ class Cell < NSBDNode # < Nestable
             else
               if b_export == false then
                 # CompositeCelltype の場合、内側のセルで生成させる
-                join = Join.new( :"#{p.get_name}_#{ai2[1]}_#{ai2[2]}", nil, ja.get_rhs, @locale )
-                new_join( join )
-                join.set_definition( @celltype.find(join.get_name) )
+                join = Join.new(:"#{p.get_name}_#{ai2[1]}_#{ai2[2]}", nil, ja.get_rhs, @locale)
+                new_join(join)
+                join.set_definition(@celltype.find(join.get_name))
                 if @celltype.instance_of? CompositeCelltype then
-                  jr = @join_list.get_item( :"#{ai2[3]}_#{ai2[4]}_#{ai2[5]}" )
+                  jr = @join_list.get_item(:"#{ai2[3]}_#{ai2[4]}_#{ai2[5]}")
                   if jr.get_rhs_cell2 != join.get_rhs_cell2 || jr.get_rhs_port2 != join.get_rhs_port2 then
-                    cdl_error( "S1167 \'$1\': relay mismatch \'$2\'",
+                    cdl_error("S1167 \'$1\': relay mismatch \'$2\'",
                                       "#{p.get_name}_#{ai2[1]}_#{ai2[2]}",
-                                      "#{ai2[3]}_#{ai2[4]}_#{ai2[5]}" )
+                                      "#{ai2[3]}_#{ai2[4]}_#{ai2[5]}")
                     # 本当は composite の呼び口と受け口の間で行うべきだが、内部で多段接続されている場合
                   else
                     dbgPrint "relay success:  #{p.get_name}_#{ai2[1]}_#{ai2[2]}=>#{ai2[3]}_#{ai2[4]}_#{ai2[5]} #{jr.get_rhs_cell2.get_name}.#{jr.get_rhs_port2} \n"
@@ -2577,21 +2577,21 @@ class Cell < NSBDNode # < Nestable
             next if j2 == nil    # optional で一部が欠落しているケース
             cell = j2.get_rhs_cell2
             next if cell == nil     # 右辺が見つからなかった．既にエラー
-            port = cell.get_celltype.find( j2.get_rhs_port2 )
-            dbgPrint( "set_port_reference_count: #{@name}.#{j2.get_name} => #{cell.get_name}.#{port.get_name}\n")
+            port = cell.get_celltype.find(j2.get_rhs_port2)
+            dbgPrint("set_port_reference_count: #{@name}.#{j2.get_name} => #{cell.get_name}.#{port.get_name}\n")
             cell.port_referenced port
           }
         else
           cell = j.get_rhs_cell2
           next if cell == nil || cell.get_celltype == nil     # 右辺が見つからなかった．既にエラー
-          port = cell.get_celltype.find( j.get_rhs_port2 )
+          port = cell.get_celltype.find(j.get_rhs_port2)
           if port == nil then
             dbgPrint "set_port_ref: #{@name}.#{j.get_name} = #{cell.get_name}.#{j.get_rhs_port2}\n"
             # through プラグインで生成されたセルの受け口が見つからないケース (のハズ)
-            cdl_error( "entry '$1' not found in '$2' refered from $3.$4", j.get_rhs_port2, cell.get_name, @name, j.get_name )
+            cdl_error("entry '$1' not found in '$2' refered from $3.$4", j.get_rhs_port2, cell.get_name, @name, j.get_name)
             next
           end
-          dbgPrint( "set_port_reference_count: #{@name}.#{j.get_name} => #{cell.get_name}.#{port.get_name}\n")
+          dbgPrint("set_port_reference_count: #{@name}.#{j.get_name} => #{cell.get_name}.#{port.get_name}\n")
           cell.port_referenced port
         end
       end
@@ -2629,7 +2629,7 @@ class Cell < NSBDNode # < Nestable
       dbgPrint "check_join: #{@name} #{get_celltype.get_name} #{p.get_name}\n"
 
       # 結合リストの中から呼び口名に一致するものを取りだす
-      j = @join_list.get_item( p.get_name )
+      j = @join_list.get_item(p.get_name)
 
       if j == nil then
         # 未結合の呼び口
@@ -2650,16 +2650,16 @@ class Cell < NSBDNode # < Nestable
         # 呼び口配列の場合 optional で全ての要素が初期化されない場合に、ここへ来る
         if ! found && ! p.is_require? && ! p.is_optional? then
           if ! p.is_allocator_port? then
-            cdl_error( "S1042 call port \'$1\' not initialized in cell \'$2\'" , p.get_name, @name )
+            cdl_error("S1042 call port \'$1\' not initialized in cell \'$2\'" , p.get_name, @name)
           else
-            cdl_error( "S1043 call port \'$1\' not initialized in cell \'$2\'. this call port is created by tecsgen. check allocator specifier" , p.get_name, @name )
+            cdl_error("S1043 call port \'$1\' not initialized in cell \'$2\'. this call port is created by tecsgen. check allocator specifier" , p.get_name, @name)
           end
         end
       elsif p.get_array_size.kind_of? Integer then
         # 添数あり呼び口配列の場合、すべての添数要素が初期化されているかチェックする
 
         am = j.get_array_member2
-        if( am )then
+        if(am)then
           # join は配列
 
           # 呼び口配列定義での配列の大きさ
@@ -2669,7 +2669,7 @@ class Cell < NSBDNode # < Nestable
           if am.length != length then
             if ! p.is_optional? || am.length >= length then
               # optional の場合、要素数が少なすぎるのは OK
-              cdl_error( "S1044 $1: array initializer too many or few, $2 for $3" , p.get_name, am.length, length )
+              cdl_error("S1044 $1: array initializer too many or few, $2 for $3" , p.get_name, am.length, length)
             end
 
             # am の要素に nil を追加しておく (#_CPA_# のコード生成時、この配列要素数分生成)
@@ -2685,10 +2685,10 @@ class Cell < NSBDNode # < Nestable
 #            length = am.length
 #          end
           i = 0
-          while( i < length )
+          while(i < length)
             if am[i] == nil then
               if ! p.is_optional? then
-                cdl_error( "S1045 $1[$2]: not initialized" , p.get_name, i )
+                cdl_error("S1045 $1[$2]: not initialized" , p.get_name, i)
               end
             else
               # 生成されないリージョンへの結合かチェック
@@ -2710,7 +2710,7 @@ class Cell < NSBDNode # < Nestable
         while i < length
           if am[i] == nil then
             if ! p.is_optional? then
-              cdl_error( "S1046 $1[$2]: not initialized" , p.get_name, i )
+              cdl_error("S1046 $1[$2]: not initialized" , p.get_name, i)
             end
           end
           i += 1
@@ -2745,23 +2745,23 @@ class Cell < NSBDNode # < Nestable
           next
         end
 
-        if( ! a.get_type.kind_of?( PtrType ) ) then
-          cdl_error( "S1048 $1: size_is specified for non-pointer type" , a.get_name )
+        if(! a.get_type.kind_of?(PtrType)) then
+          cdl_error("S1048 $1: size_is specified for non-pointer type" , a.get_name)
         else
-          size = a.get_size_is.eval_const( @join_list, @celltype.get_name_list )
-          a.get_type.set_scs( a.get_size_is, nil, nil, nil, false )
-          if( ! size.kind_of? Integer )then               # C_EXP の可能性あり
+          size = a.get_size_is.eval_const(@join_list, @celltype.get_name_list)
+          a.get_type.set_scs(a.get_size_is, nil, nil, nil, false)
+          if(! size.kind_of? Integer)then               # C_EXP の可能性あり
             # mikan 多分ここでのエラー発生は不要、eval_const の中で変数が存在しない、型が不適切などのエラーになるはず
-            cdl_error( "S1049 $1: size_is arg not constant" , a.get_name )
+            cdl_error("S1049 $1: size_is arg not constant" , a.get_name)
           else
-            j = @join_list.get_item( a.get_identifier )
+            j = @join_list.get_item(a.get_identifier)
             if j then
               ini = j.get_rhs
               if ini then
-                if ! ini.instance_of?( Array ) then
-                  cdl_error( "S1050 unsuitable initializer, need array initializer"  )
+                if ! ini.instance_of?(Array) then
+                  cdl_error("S1050 unsuitable initializer, need array initializer")
                 elsif size < ini.length then
-                  cdl_error( "S1051 too many initializer for array, $1 for $2" , ini.length, size )
+                  cdl_error("S1051 too many initializer for array, $1 for $2" , ini.length, size)
                 else
                   # a.get_type.set_scs( a.get_size_is, nil, nil )
                 end
@@ -2770,11 +2770,11 @@ class Cell < NSBDNode # < Nestable
               # size_is 引数がセルで指定されていて、初期化子がセルタイプで指定されているケースのチェック
               ini = a.get_initializer
               if ini.instance_of? Expression
-                ini = ini.eval_const( @celltype.get_name_list )
+                ini = ini.eval_const(@celltype.get_name_list)
               end
               if ini.instance_of? Array then
-                if( ini.length > size )then
-                  cdl_error( "S1168 too many initializer for array, $1 for $2", ini.length, size )
+                if(ini.length > size)then
+                  cdl_error("S1168 too many initializer for array, $1 for $2", ini.length, size)
                 end
               end
             end
@@ -2783,11 +2783,11 @@ class Cell < NSBDNode # < Nestable
       else
         if ! a.instance_of? CompositeCelltypeJoin then
           # composite は size_is 指定できない
-          if a.get_type.kind_of?( PtrType ) then
-            j = @join_list.get_item( a.get_identifier )
-            if j && j.get_rhs.instance_of?( Array ) then
+          if a.get_type.kind_of?(PtrType) then
+            j = @join_list.get_item(a.get_identifier)
+            if j && j.get_rhs.instance_of?(Array) then
               ## size_is 指定されていないポインタが Array で初期化されていたら、エラーとする
-              cdl_error( "S1169 $1: non-size_is pointer cannot be initialized with array initializer" , a.get_identifier )
+              cdl_error("S1169 $1: non-size_is pointer cannot be initialized with array initializer" , a.get_identifier)
             end
           end
         end
@@ -2802,7 +2802,7 @@ class Cell < NSBDNode # < Nestable
         b_init = true
         # @in_composite で export されている場合には、この初期値は使われない
         # export されている、いないに関わらず、初期化されていることが保証される
-      elsif @join_list.get_item( a.get_name ) then            # セルで初期化されている
+      elsif @join_list.get_item(a.get_name) then            # セルで初期化されている
         b_init = true
       elsif @in_composite && @compositecelltypejoin_list then
         # 属性が export されているか調べる。export されていれば未初期化とはしない
@@ -2825,7 +2825,7 @@ class Cell < NSBDNode # < Nestable
               # cj_size_is は、外部公開される attr の size_is
               cj_size_is = cj.get_port_decl.get_size_is
               if cj_size_is == nil then
-                cdl_error( "S1170 \'$1\' has size_is but export attr \'$2\' doesn't have", a.get_name, cj.get_name )
+                cdl_error("S1170 \'$1\' has size_is but export attr \'$2\' doesn't have", a.get_name, cj.get_name)
               end
               exprs = a.get_size_is.to_s
               ### p "exprs : ", exprs
@@ -2849,7 +2849,7 @@ class Cell < NSBDNode # < Nestable
                   end
                 }
                 if cj2 == nil then
-                  cdl_error( "S1171 \'$1\' size_is argument of \'$2\' not exported", a.get_name, cj.get_name )
+                  cdl_error("S1171 \'$1\' size_is argument of \'$2\' not exported", a.get_name, cj.get_name)
                   next
                 end
                 if cj2.get_port_decl.instance_of? Decl then
@@ -2863,12 +2863,12 @@ class Cell < NSBDNode # < Nestable
               inner_to_export.each{ |arg_name, exp_name|
                 ### p "changing #{arg_name}=>#{exp_name}"
                 # exprs.gsub!( Regexp.new("#{arg_name}[^0-9A-Za-z_]"), exp_name.to_s )
-                exprs.gsub!( Regexp.new("#{arg_name}(\\W)"), exp_name.to_s+"\\1" )  # 文字列末尾にないケース
-                exprs.gsub!( Regexp.new("#{arg_name}\\Z"), exp_name.to_s )          # 文字列末尾にあるケース
+                exprs.gsub!(Regexp.new("#{arg_name}(\\W)"), exp_name.to_s+"\\1")  # 文字列末尾にないケース
+                exprs.gsub!(Regexp.new("#{arg_name}\\Z"), exp_name.to_s)          # 文字列末尾にあるケース
               }
               ### p "changed: #{exprs} #{cj_size_is.to_s}"
               if exprs != cj_size_is.to_s then
-                cdl_error( "S1172 \'$1\' size_is argument mismatch with exporting one \'$2\'", a.get_name, cj.get_name )
+                cdl_error("S1172 \'$1\' size_is argument mismatch with exporting one \'$2\'", a.get_name, cj.get_name)
               end
             # else cj は Port (既にエラー)
             end
@@ -2877,7 +2877,7 @@ class Cell < NSBDNode # < Nestable
       end
 
       if b_init == false then
-          cdl_error( "S1052 attribute \'$1\' not initialized in cell \'$2\'" , a.get_name, @name )
+          cdl_error("S1052 attribute \'$1\' not initialized in cell \'$2\'" , a.get_name, @name)
       end
    
     }
@@ -2897,7 +2897,7 @@ class Cell < NSBDNode # < Nestable
       # p port.class, count
       # p port.get_name, port.get_port_type, port.get_signature.get_name
       if port.is_reverse_required? && count > 1 then
-        cdl_warning( "W1009 $1: fixed join entry port has multi join", port.get_name )
+        cdl_warning("W1009 $1: fixed join entry port has multi join", port.get_name)
       end
     }
   end
@@ -2907,7 +2907,7 @@ class Cell < NSBDNode # < Nestable
   # cp_name:: Symbol           : 呼び口名
   # cell_or_t:: Celltype|Cell  : celltype の require の右辺で指定されたセルタイプまたはセル
   # port::  Port               : celltype の Port オブジェクト
-  def set_require_join( cp_name, cell_or_ct, port )
+  def set_require_join(cp_name, cell_or_ct, port)
 
     # set_require_join は2度呼び出される
     # 2度目は post コードを生成した後       #####  いったん見合わせ（重複エラーを見逃す）
@@ -2923,30 +2923,30 @@ class Cell < NSBDNode # < Nestable
       # print "DOMAIN: not considered\n"
       cell = cell_or_ct.get_singleton_cell @region
       if cell == nil then
-        cdl_error( "S1025 not found reachable cell for require \'$1\' in celltype \'$2\'" , port.get_name, cell_or_ct.get_name )
+        cdl_error("S1025 not found reachable cell for require \'$1\' in celltype \'$2\'" , port.get_name, cell_or_ct.get_name)
         return
       end
     else
       # require: cell で指定
       cell = cell_or_ct
-      if @region.distance( cell.get_region ) == nil then
-        cdl_error( "S1026 required cell \'$1\' not reachable" , cell.get_name )
+      if @region.distance(cell.get_region) == nil then
+        cdl_error("S1026 required cell \'$1\' not reachable" , cell.get_name)
       end
     end
 
-    if @join_list.get_item( cp_name ) then
-      cdl_warning( "W1003 $1 : require call port overridden in $2" , cp_name, @name )
+    if @join_list.get_item(cp_name) then
+      cdl_warning("W1003 $1 : require call port overridden in $2" , cp_name, @name)
     else
       # require の join を生成(呼び口の結合)
 #      rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, Token.new( cell.get_name, nil, nil, nil ) ],
-      nsp = NamespacePath.new( cell.get_name, false, cell.get_namespace )
+      nsp = NamespacePath.new(cell.get_name, false, cell.get_namespace)
       nsp.set_locale @locale
-      rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, nsp ],
-                              Token.new( port.get_name, nil, nil, nil ) ], @locale )   # 1
-      join = Join.new( cp_name, nil, rhs, @locale )
-      self.new_join( join )
+      rhs = Expression.new([ :OP_DOT, [ :IDENTIFIER, nsp ],
+                              Token.new(port.get_name, nil, nil, nil) ], @locale)   # 1
+      join = Join.new(cp_name, nil, rhs, @locale)
+      self.new_join(join)
 
-      join.set_definition( @celltype.find(join.get_name) )
+      join.set_definition(@celltype.find(join.get_name))
     end
   end
 
@@ -2980,11 +2980,11 @@ class Cell < NSBDNode # < Nestable
               end
               next
             end
-            am.set_definition( port )
+            am.set_definition(port)
           }
         else
           dbgPrint "set_definition_join: #{@name}.#{join.get_name} celltype=#{@celltype.get_name}\n"
-          join.set_definition( @celltype.find(join.get_name) )
+          join.set_definition(@celltype.find(join.get_name))
         end
       }
     end
@@ -2994,7 +2994,7 @@ class Cell < NSBDNode # < Nestable
     create_relay_allocator_join
 
     # composite セルの展開
-    if ! @in_composite && ! @f_cloned && @celltype.instance_of?( CompositeCelltype ) then
+    if ! @in_composite && ! @f_cloned && @celltype.instance_of?(CompositeCelltype) then
       # composite セルタイプ内の composite は展開しない
       # compoiste セル展開中の composite は展開しない (CompositeCelltype::expand 内で再帰的に expnad)
       expand
@@ -3009,7 +3009,7 @@ class Cell < NSBDNode # < Nestable
     dbgPrint "=====    expanding   #{@name}     =====\n"
 
     # composite celltype の cell を展開
-    @cell_list, @cell_list2 = @celltype.expand( @name, @global_name, @NamespacePath, @join_list, @region, @plugin, @locale )
+    @cell_list, @cell_list2 = @celltype.expand(@name, @global_name, @NamespacePath, @join_list, @region, @plugin, @locale)
 
     # プロトタイプが参照されている場合、子も参照されていることにする
     if @f_ref then
@@ -3029,19 +3029,19 @@ class Cell < NSBDNode # < Nestable
     # プロトタイプ宣言で設定されていたものを反映する
     @entry_array_max_subscript.each{ |port,name|
       dbgPrint "set_entry_inner_port_max_subscript( #{port}, #{name} )\n"
-      set_entry_inner_port_max_subscript( port, name )
+      set_entry_inner_port_max_subscript(port, name)
     }
   end
 
   #=== Cell#restrict を追加
-  def add_restrict( entry_name, func_name, region_name_list )
+  def add_restrict(entry_name, func_name, region_name_list)
     if @restrict_list[ entry_name ] then
       if @restrict_list[ entry_name ][ func_name ] then
         @restrict_list[ entry_name ][ func_name ].each{ |rn|
           if region_name_list.include? rn then
             # p func_name
             name = func_name ? entry_name : entry_name+"."+func_name
-            cdl_warning( "W9999 $1 restrict region duplicate $2", name, rn )
+            cdl_warning("W9999 $1 restrict region duplicate $2", name, rn)
           end
         }
       else
@@ -3061,16 +3061,16 @@ class Cell < NSBDNode # < Nestable
       func_hash.each{ |func_name, region_list|
         region_list.each{ |rn|
           obj = Namespace.find [ rn ]
-          if ( obj.kind_of? Region ) then
+          if (obj.kind_of? Region) then
             if obj.get_domain_root != @region.get_domain_root then
             else
-              cdl_info( "I9999 $1: restrict calling domain to $2, which is same domain as the cell locates", @name, rn )
+              cdl_info("I9999 $1: restrict calling domain to $2, which is same domain as the cell locates", @name, rn)
               # restrict を同じドメインを指定してもよいこととする (HRP3)
               # KernelDoamin 内のセルに対し、KernelDomain に restrict している場合、
               # 無所属経由で結合されているが、KernelDomain から呼出すことを想定した許可
             end
           else
-            cdl_error( "S9999 $1 not region", rn )
+            cdl_error("S9999 $1 not region", rn)
           end
         }
       }
@@ -3078,25 +3078,25 @@ class Cell < NSBDNode # < Nestable
   end
 
   #=== Cell#callable?
-  def callable?( callee_cell, entry_name, func_name )
-    res = callee_cell.callable_from?( entry_name, func_name, self )
+  def callable?(callee_cell, entry_name, func_name)
+    res = callee_cell.callable_from?(entry_name, func_name, self)
     dbgPrint "callable? #{callee_cell.get_namespace_path}.#{entry_name}.#{func_name} from #{@NamespacePath} is #{res}\n"
     return res
   end
 
   #=== Cell#callable_from? (private)
-  def callable_from?( entry_name, func_name, caller_cell )
+  def callable_from?(entry_name, func_name, caller_cell)
     if @restrict_list.length == 0 then
       return true
     end
 
     if @restrict_list[entry_name] then
       if @restrict_list[entry_name][nil] &&
-         @restrict_list[entry_name][nil].include?( caller_cell.get_region.get_domain_root.get_name )then
+         @restrict_list[entry_name][nil].include?(caller_cell.get_region.get_domain_root.get_name)then
         return true
       end
       if @restrict_list[entry_name][func_name] &&
-         @restrict_list[entry_name][func_name].include?( caller_cell.get_region.get_domain_root.get_name )then
+         @restrict_list[entry_name][func_name].include?(caller_cell.get_region.get_domain_root.get_name)then
         return true
       else
         return false
@@ -3106,7 +3106,7 @@ class Cell < NSBDNode # < Nestable
     end
   end
   
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "Cell: name: #{@name} in_composite: #{@in_composite} def: #{@b_defined} ref: #{@f_ref} cloned: #{@f_cloned}"
     (indent+1).times { print "  " }
@@ -3120,7 +3120,7 @@ class Cell < NSBDNode # < Nestable
       (indent+1).times { print "  " }
       puts "celltype: #{@celltype.get_name}"
     end
-    @join_list.show_tree( indent + 1 )
+    @join_list.show_tree(indent + 1)
     @entry_array_max_subscript.each{ |port, num|
       (indent+1).times { print "  " }
       puts "entry array #{port.get_name}: max subscript=#{num}"
@@ -3135,7 +3135,7 @@ class Cell < NSBDNode # < Nestable
     end
     if @compositecelltypejoin_list then
       @compositecelltypejoin_list.get_items.each{ |cj|
-        cj.show_tree( indent+1 )
+        cj.show_tree(indent+1)
       }
     end
     if @alloc_list.length > 0 then
@@ -3156,7 +3156,7 @@ class Cell < NSBDNode # < Nestable
     end
     @referenced_port_list.each{ |port,count|
       (indent+1).times { print "  " }
-      puts( "#{port.get_name} : #{count} times referenced" )
+      puts("#{port.get_name} : #{count} times referenced")
     }
   end
 
@@ -3200,13 +3200,13 @@ class CompositeCelltype < NSBDNode # < Nestable
     end
   end
 
-  def initialize( name )
+  def initialize(name)
     super()
     @name = name
-    @cell_list_in_composite = NamedList.new( nil, "in composite celltype #{name}" )
+    @cell_list_in_composite = NamedList.new(nil, "in composite celltype #{name}")
     @cell_list = []
-    @export_name_list = NamedList.new( nil, "export in composite celltype #{name}" )
-    @name_list = NamedList.new( nil, "in composite celltype #{name}" )
+    @export_name_list = NamedList.new(nil, "export in composite celltype #{name}")
+    @name_list = NamedList.new(nil, "in composite celltype #{name}")
     @@current_object = self
 
     @b_singleton = false
@@ -3219,14 +3219,14 @@ class CompositeCelltype < NSBDNode # < Nestable
       @global_name = :"#{Namespace.get_global_name}_#{@name}"
     end
 
-    Namespace.new_compositecelltype( self )
+    Namespace.new_compositecelltype(self)
     set_namespace_path # @NamespacePath の設定
 
     @port_list = []
     @attr_list = []
     @internal_allocator_list = []
     @generate_list = []
-    set_specifier_list( Generator.get_statement_specifier )
+    set_specifier_list(Generator.get_statement_specifier)
   end
 
   def self.end_of_parse
@@ -3238,18 +3238,18 @@ class CompositeCelltype < NSBDNode # < Nestable
   def end_of_parse
     # singleton に関するチェック
     if @b_singleton && @real_singleton == nil then
-      cdl_warning( "W1004 $1 : specified singleton but has no singleton in this celltype" , @name )
+      cdl_warning("W1004 $1 : specified singleton but has no singleton in this celltype" , @name)
     elsif ! @b_singleton && @real_singleton != nil then
       if ! @b_singleton then
-        cdl_error( "S1053 $1 must be singleton. inner cell \'$2\' is singleton" , @name, @real_singleton.get_name )
+        cdl_error("S1053 $1 must be singleton. inner cell \'$2\' is singleton" , @name, @real_singleton.get_name)
       end
     end
 
     # active に関するチェック
     if @b_active && @real_active == nil then
-      cdl_error( "S1054 $1 : specified active but has no active in this celltype" , @name )
+      cdl_error("S1054 $1 : specified active but has no active in this celltype" , @name)
     elsif ! @b_active && @real_active != nil then
-      cdl_error( "S1055 $1 must be active. inner cell \'$2\' is active" , @name, @real_active.get_name )
+      cdl_error("S1055 $1 must be active. inner cell \'$2\' is active" , @name, @real_active.get_name)
     end
 
     # @allocator_instance を設定する
@@ -3268,7 +3268,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
         p.get_allocator_instance.each{ |name,ai|
           if ai[0] == :RELAY_ALLOC then
-            self.new_join( :"#{p.get_name}_#{ai[4]}_#{ai[5]}", p.get_cell_name, :"#{p.get_cell_elem_name}_#{ai[4]}_#{ai[5]}", :CALL )
+            self.new_join(:"#{p.get_name}_#{ai[4]}_#{ai[5]}", p.get_cell_name, :"#{p.get_cell_elem_name}_#{ai[4]}_#{ai[5]}", :CALL)
           end
         }
       end
@@ -3302,16 +3302,16 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     # すべてのエクスポート定義に対応した呼び口、受け口、属性が存在するかチェック
     @name_list.get_items.each{ |n|
-      if( @export_name_list.get_item( n.get_name ) == nil )then
-        cdl_error( "S1056 $1 : cannot export, nothing designated" , n.get_name )
+      if(@export_name_list.get_item(n.get_name) == nil)then
+        cdl_error("S1056 $1 : cannot export, nothing designated" , n.get_name)
       end
     }
 
     # 内部アロケータを設定する
     @internal_allocator_list.each{ |cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
-      res = ext_alloc_ent.get_allocator_rhs_elements( :INTERNAL_ALLOC )
+      res = ext_alloc_ent.get_allocator_rhs_elements(:INTERNAL_ALLOC)
       ep_name = res[0]
-      cj = @export_name_list.get_item( ep_name )
+      cj = @export_name_list.get_item(ep_name)
       internal_alloc_name_from_port_def = cj.get_cell_name
       internal_alloc_ep_name_from_port_def = cj.get_cell_elem_name
 
@@ -3322,7 +3322,7 @@ class CompositeCelltype < NSBDNode # < Nestable
           dbgPrint "internal_allocator {cp_internal_name} #{a[1]}_#{a[3]}_#{a[4]}\n"
           dbgPrint "internal_allocator: #{a[5]}, #{internal_alloc_name_from_port_def}.#{internal_alloc_ep_name_from_port_def}\n"
           if a[5].to_s != "#{internal_alloc_name_from_port_def}.#{internal_alloc_ep_name_from_port_def}" then
-            cdl_error( "S1173 $1: allocator mismatch from $2's allocator", "#{port_name}.#{fd_name}.#{par_name}", cell.get_name  )
+            cdl_error("S1173 $1: allocator mismatch from $2's allocator", "#{port_name}.#{fd_name}.#{par_name}", cell.get_name)
           end
         end
       }
@@ -3335,14 +3335,14 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
  ### CompositeCelltype#new_cell_in_composite
-  def self.new_cell_in_composite( cell )
-    @@current_object.new_cell_in_composite( cell )
+  def self.new_cell_in_composite(cell)
+    @@current_object.new_cell_in_composite(cell)
 
   end
 
-  def new_cell_in_composite( cell )
+  def new_cell_in_composite(cell)
     cell.set_owner self  # Cell (in_omposite)
-    @cell_list_in_composite.add_item( cell )
+    @cell_list_in_composite.add_item(cell)
     if cell.get_celltype then    # nil ならば、すでにセルタイプなしエラー
       if cell.get_celltype.is_singleton? then
         @real_singleton = cell
@@ -3354,10 +3354,10 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
  ### join
-  def self.new_join( export_name, internal_cell_name,
-    internal_cell_elem_name, type )
-    @@current_object.new_join( export_name, internal_cell_name,
-           internal_cell_elem_name, type )
+  def self.new_join(export_name, internal_cell_name,
+    internal_cell_elem_name, type)
+    @@current_object.new_join(export_name, internal_cell_name,
+           internal_cell_elem_name, type)
     
   end
 
@@ -3381,14 +3381,14 @@ class CompositeCelltype < NSBDNode # < Nestable
   #   attr = composite.attr;        (セル内)
   #   composite.eEnt => cell2.eEnt; (セル外)
   # の構文要素の出現に対して呼び出される
-  def new_join( export_name, internal_cell_name,
-    internal_cell_elem_name, type )
+  def new_join(export_name, internal_cell_name,
+    internal_cell_elem_name, type)
 
     dbgPrint "new_join: #{export_name} #{internal_cell_name} #{internal_cell_elem_name}\n"
 
-    cell = @cell_list_in_composite.get_item( internal_cell_name )
+    cell = @cell_list_in_composite.get_item(internal_cell_name)
     if cell == nil then
-      cdl_error( "S1057 $1 not found in $2" , internal_cell_name, @name )
+      cdl_error("S1057 $1 not found in $2" , internal_cell_name, @name)
       return
     end
 
@@ -3398,70 +3398,70 @@ class CompositeCelltype < NSBDNode # < Nestable
     # 内部セルのセルタイプから対応要素を探す
     # このメソッドは、構文上、呼び口、受け口、属性が記述できる箇所から呼出される
     # 構文上の呼出し位置（記述位置）と、要素が対応したものかチェック
-    obj = celltype.find( internal_cell_elem_name )
-    if obj.instance_of?( Decl ) then
+    obj = celltype.find(internal_cell_elem_name)
+    if obj.instance_of?(Decl) then
       if obj.get_kind == :VAR then
-        cdl_error( "S1058 \'$1\' : cannot export var" , internal_cell_elem_name )
+        cdl_error("S1058 \'$1\' : cannot export var" , internal_cell_elem_name)
         return
       elsif type != :ATTRIBUTE then
-        cdl_error( "S1059 \'$1\' : exporting attribute. write in cell or use \'=\' to export attribute" , export_name )
+        cdl_error("S1059 \'$1\' : exporting attribute. write in cell or use \'=\' to export attribute" , export_name)
         # return 次のエラーを避けるために処理続行し、付け加えてみる
       end
-    elsif obj.instance_of?( Port ) then
+    elsif obj.instance_of?(Port) then
       if obj.get_port_type != type then
-        cdl_error( "S1060 \'$1\' : port type mismatch. $2 type is allowed here." , export_name, type )
+        cdl_error("S1060 \'$1\' : port type mismatch. $2 type is allowed here." , export_name, type)
         # return 次のエラーを避けるために処理続行し、付け加えてみる
       end
     else
-      cdl_error( "S1061 \'$1\' : not defined" , internal_cell_elem_name )
+      cdl_error("S1061 \'$1\' : not defined" , internal_cell_elem_name)
       dbgPrint "S1061 CompositeCelltypeJoin#new_join: #{export_name} => #{internal_cell_name}.#{internal_cell_elem_name} #{type}\n"
       return
     end
 
     # エクスポート定義と一致するかどうかチェック
-    obj2 = @name_list.get_item( export_name )
-    if( obj2 == nil )then
-      cdl_error( "S1062 $1 has no export definition" , export_name )
-    elsif obj2.instance_of?( Decl ) then
-      if( ! obj.instance_of? Decl )then
-        cdl_error( "S1063 $1 is port but previously defined as an attribute" , export_name )
+    obj2 = @name_list.get_item(export_name)
+    if(obj2 == nil)then
+      cdl_error("S1062 $1 has no export definition" , export_name)
+    elsif obj2.instance_of?(Decl) then
+      if(! obj.instance_of? Decl)then
+        cdl_error("S1063 $1 is port but previously defined as an attribute" , export_name)
       elsif ! obj.get_type.equal? obj2.get_type then
-        cdl_error( "S1064 $1 : type \'$2$3\' mismatch with pprevious definition\'$4$5\'" , export_name, obj.get_type.get_type_str, obj.get_type.get_type_str_post, obj2.get_type.get_type_str, obj2.get_type.get_type_str_post )
+        cdl_error("S1064 $1 : type \'$2$3\' mismatch with pprevious definition\'$4$5\'" , export_name, obj.get_type.get_type_str, obj.get_type.get_type_str_post, obj2.get_type.get_type_str, obj2.get_type.get_type_str_post)
       end
-    elsif obj2.instance_of?( Port ) then
-      if( obj.instance_of? Port )then
-        if( obj.get_port_type != obj2.get_port_type )then
-          cdl_error( "S1065 $1 : port type $2 mismatch with previous definition $3" , export_name, obj.get_port_type, obj2.get_port_type )
+    elsif obj2.instance_of?(Port) then
+      if(obj.instance_of? Port)then
+        if(obj.get_port_type != obj2.get_port_type)then
+          cdl_error("S1065 $1 : port type $2 mismatch with previous definition $3" , export_name, obj.get_port_type, obj2.get_port_type)
         elsif obj.get_signature != obj2.get_signature then
           if obj.get_signature != nil && obj2.get_signature != nil then
             # nil ならば既にエラーなので報告しない
-            cdl_error( "S1066 $1 : signature \'$2\' mismatch with previous definition \'$3\'" , export_name, obj.get_signature.get_name, obj2.get_signature.get_name )
+            cdl_error("S1066 $1 : signature \'$2\' mismatch with previous definition \'$3\'" , export_name, obj.get_signature.get_name, obj2.get_signature.get_name)
           end
         elsif obj.get_array_size != obj2.get_array_size then
-          cdl_error( "S1067 $1 : array size mismatch with previous definition" , export_name )
+          cdl_error("S1067 $1 : array size mismatch with previous definition" , export_name)
         elsif obj.is_optional? != obj2.is_optional? then
-          cdl_error( "S1068 $1 : optional specifier mismatch with previous definition" , export_name )
+          cdl_error("S1068 $1 : optional specifier mismatch with previous definition" , export_name)
         elsif obj.is_omit? != obj2.is_omit? then
-          cdl_error( "S9999 $1 : omit specifier mismatch with previous definition" , export_name )
+          cdl_error("S9999 $1 : omit specifier mismatch with previous definition" , export_name)
         elsif obj.is_dynamic? != obj2.is_dynamic? then
-          cdl_error( "S9999 $1 : dynamic specifier mismatch with previous definition" , export_name )
+          cdl_error("S9999 $1 : dynamic specifier mismatch with previous definition" , export_name)
         elsif obj.is_ref_desc? != obj2.is_ref_desc? then
-          cdl_error( "S9999 $1 : ref_desc specifier mismatch with previous definition" , export_name )
+          cdl_error("S9999 $1 : ref_desc specifier mismatch with previous definition" , export_name)
         end
       else
-        cdl_error( "S1069 $1 is an attribute but previously defined as a port" , export_name )
+        cdl_error("S1069 $1 is an attribute but previously defined as a port" , export_name)
       end
     end
 
-    join = CompositeCelltypeJoin.new( export_name, internal_cell_name,
-      internal_cell_elem_name, cell, obj2 )
+    join = CompositeCelltypeJoin.new(export_name, internal_cell_name,
+      internal_cell_elem_name, cell, obj2)
     join.set_owner self   # CompositeCelltypeJoin
     cell.add_compositecelltypejoin join
 
     # debug
     dbgPrint "compositecelltype join: add #{cell.get_name} #{export_name} = #{internal_cell_name}.#{internal_cell_elem_name}\n"
 
-    if obj.instance_of?( Decl ) then
+    if obj.instance_of?(Decl) then
       # attribute
 #      # 内部から外部へ複数の結合がないかチェック
 #      found = false
@@ -3490,12 +3490,12 @@ class CompositeCelltype < NSBDNode # < Nestable
     end
 
     # join を @export_name_list に登録（重複チェックとともに，後で行われる CompositeCelltypeJoin の clone に備える）
-    if obj.instance_of?( Decl ) && @export_name_list.get_item( export_name ) then
+    if obj.instance_of?(Decl) && @export_name_list.get_item(export_name) then
       # 既に存在する。追加しない。新仕様では、@export_name_list に同じ名前が含まれることがある。
-    elsif obj.instance_of?( Port ) && obj.get_port_type == :CALL && @export_name_list.get_item( export_name ) then
+    elsif obj.instance_of?(Port) && obj.get_port_type == :CALL && @export_name_list.get_item(export_name) then
       # 既に存在する。追加しない。新仕様では、@export_name_list に同じ名前が含まれることがある。
     else
-      @export_name_list.add_item( join )
+      @export_name_list.add_item(join)
     end
 
     # export するポートに含まれる send/receive パラメータのアロケータ(allocator)呼び口をセルと結合
@@ -3527,7 +3527,7 @@ class CompositeCelltype < NSBDNode # < Nestable
           end
 
           # 外部アロケータの場合
-          new_join( cp_name, internal_cell_name, cp_internal_name, :CALL )
+          new_join(cp_name, internal_cell_name, cp_internal_name, :CALL)
         end
       }
     end
@@ -3541,7 +3541,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
   def has_attribute? attr
-    @name_list.get_item( attr ) != nil
+    @name_list.get_item(attr) != nil
   end
 
   def self.new_port port
@@ -3580,12 +3580,12 @@ class CompositeCelltype < NSBDNode # < Nestable
           #           ポート名          関数名         パラメータ名
           alloc_sig_path = [ par.get_allocator.get_name ]  # mikan Namespace アロケータ呼び口のシグニチャ
           array_size = port.get_array_size            # 呼び口または受け口配列のサイズ
-          created_port = Port.new( cp_name, alloc_sig_path, :CALL, array_size ) # 呼び口を生成
-          created_port.set_allocator_port( port, fd, par )
+          created_port = Port.new(cp_name, alloc_sig_path, :CALL, array_size) # 呼び口を生成
+          created_port.set_allocator_port(port, fd, par)
           if port.is_omit? then
             created_port.set_omit
           end
-          new_port( created_port )           # セルタイプに新しい呼び口を追加
+          new_port(created_port)           # セルタイプに新しい呼び口を追加
         # else
         #   already error
         end
@@ -3599,16 +3599,16 @@ class CompositeCelltype < NSBDNode # < Nestable
 
   #=== CompositeCelltype# new_attribute for CompositeCelltype
   # attribute:: [Decl]
-  def new_attribute( attribute )
+  def new_attribute(attribute)
     attribute.each { |a|
       a.set_owner self   # Decl (CompositeCelltype)
       # V1.1.0.10 composite の attr の size_is は可となった
       # if a.get_size_is then
       #  cdl_error( "S1070 $1: size_is pointer cannot be exposed for composite attribute" , a.get_name )
       # end
-      @name_list.add_item( a )
+      @name_list.add_item(a)
       if a.get_initializer then
-        a.get_type.check_init( @locale, a.get_identifier, a.get_initializer, :ATTRIBUTE )
+        a.get_type.check_init(@locale, a.get_identifier, a.get_initializer, :ATTRIBUTE)
       end
     }
   end
@@ -3623,7 +3623,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
   # false : if not in celltype definition, nil : if not found in celltype
-  def self.find( name )
+  def self.find(name)
     if @@current_object == nil then
       return false
     end
@@ -3632,11 +3632,11 @@ class CompositeCelltype < NSBDNode # < Nestable
 
   def find name
     dbgPrint "CompositeCelltype: find in composite: #{name}\n"
-    cell = @cell_list_in_composite.get_item( name )
+    cell = @cell_list_in_composite.get_item(name)
     return cell if cell
 
-    dbgPrint "CompositeCelltype: #{name}, #{@name_list.get_item( name )}\n"
-    return @name_list.get_item( name )
+    dbgPrint "CompositeCelltype: #{name}, #{@name_list.get_item(name)}\n"
+    return @name_list.get_item(name)
 
     # 従来仕様
 #    cj = @export_name_list.get_item( name )
@@ -3652,7 +3652,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   # name:: string:
   # attribute の場合、同じ名前に対し複数存在する可能性があるが、最初のものしか返さない
   def find_export name
-    return @export_name_list.get_item( name )
+    return @export_name_list.get_item(name)
   end
 
   #=== CompositeCelltype# composite celltype の cell を展開
@@ -3662,7 +3662,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   # RETURN:
   # [ { name => cell }, [ cell, ... ] ]
   #  戻り値 前は 名前⇒cloneされた内部セル、後ろは composite の出現順のリスト
-  def expand( name, global_name, namespacePath, join_list, region, plugin, locale )
+  def expand(name, global_name, namespacePath, join_list, region, plugin, locale)
 
     # debug
     dbgPrint "expand composite: #{@name} name: #{name}  global_name: #{global_name}\njoin_list:\n"
@@ -3693,10 +3693,10 @@ class CompositeCelltype < NSBDNode # < Nestable
         dbgPrint "        cj : #{cj.get_name}\n"
 
         # CompositeCelltypeJoin (export) の対象セルか？
-        if cj.match?( c ) then
+        if cj.match?(c) then
 
           # 対象セル内の CompositeCelltype の export する Join (attribute または call port)
-          j = join_list.get_item( cj.get_name )
+          j = join_list.get_item(cj.get_name)
 
           # debug
           if j then
@@ -3709,14 +3709,14 @@ class CompositeCelltype < NSBDNode # < Nestable
             # 呼び口、属性の場合
             #  ComositeCell 用のもの(j) を対象セル用に clone (@through_list もコピーされる)
             # p "expand: cloning Join #{j.get_name} #{@name} #{name}"
-            jc = j.clone_for_composite( @name, name, locale )
+            jc = j.clone_for_composite(@name, name, locale)
                                         # celltype_name, cell_name
 
             # debug
             # p "cn #{jc.get_name} #{cj.get_cell_elem_name}"
 
             # 対象セルの呼び口または属性の名前に変更
-            jc.change_name( cj.get_cell_elem_name )
+            jc.change_name(cj.get_cell_elem_name)
 
             # 対象セルに対する Join の配列
             ja << jc
@@ -3732,7 +3732,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
       # セルの clone を生成
 #      clone_cell_list[ "#{name}_#{c.get_name}" ] =  c.clone_for_composite( name, global_name, ja )
-      c2 =  c.clone_for_composite( name, global_name, namespacePath, ja, @name, region, plugin, locale )
+      c2 =  c.clone_for_composite(name, global_name, namespacePath, ja, @name, region, plugin, locale)
       clone_cell_list[ "#{c.get_local_name}" ] = c2
       clone_cell_list2 << c2
       clone_cell_list3[ c ] = c2
@@ -3743,7 +3743,7 @@ class CompositeCelltype < NSBDNode # < Nestable
       dbgPrint "  cloned: #{nm} = #{c.get_global_name}\n"
       # join の owner を clone されたセルに変更する V1.1.0.25
       c.get_join_list.get_items.each{ |j|
-        j.set_cloned( clone_cell_list[ "#{c.get_local_name}" ] )
+        j.set_cloned(clone_cell_list[ "#{c.get_local_name}" ])
       }
       dbgPrint "change_rhs_port: inner cell #{c.get_name}\n"
       c.change_rhs_port clone_cell_list3
@@ -3755,7 +3755,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   end
 
   #=== CompositeCelltype 指定子リストの設定
-  def set_specifier_list( spec_list )
+  def set_specifier_list(spec_list)
     return if spec_list == nil
 
     spec_list.each { |s|
@@ -3763,16 +3763,16 @@ class CompositeCelltype < NSBDNode # < Nestable
       when :SINGLETON
         @b_singleton = true
       when :IDX_IS_ID
-        cdl_warning( "W1005 $1 : idx_is_id is ineffective for composite celltype" , @name )
+        cdl_warning("W1005 $1 : idx_is_id is ineffective for composite celltype" , @name)
       when :ACTIVE
         @b_active = true
       when :GENERATE
         if @generate then
-          cdl_error( "S9999 generate specifier duplicate"  )
+          cdl_error("S9999 generate specifier duplicate")
         end
         @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
       else
-        cdl_error( "S1071 $1 cannot be specified for composite" , s[0] )
+        cdl_error("S1071 $1 cannot be specified for composite" , s[0])
       end
     }
   end
@@ -3803,7 +3803,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
   #== CompositeCelltype#get_real_celltype
   # port_name に接続されている内部のセルタイプを得る
-  def get_real_celltype( port_name )
+  def get_real_celltype(port_name)
     cj = find_export port_name
     inner_celltype = cj.get_cell.get_celltype
     if inner_celltype.instance_of? CompositeCelltype then
@@ -3849,18 +3849,18 @@ class CompositeCelltype < NSBDNode # < Nestable
     raise "get_id_base"
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "CompositeCelltype: name: #{@name}"
     (indent+1).times { print "  " }
     puts "active: #{@b_active}, singleton: #{@b_singleton}"
-    @cell_list_in_composite.show_tree( indent + 1 )
+    @cell_list_in_composite.show_tree(indent + 1)
     (indent+1).times { print "  " }
     puts "name_list"
-    @name_list.show_tree( indent + 2 )
+    @name_list.show_tree(indent + 2)
     (indent+1).times { print "  " }
     puts "export_name_list"
-    @export_name_list.show_tree( indent + 2 )
+    @export_name_list.show_tree(indent + 2)
     if @internal_allocator_list.length > 0 then
       (indent+1).times { print "  " }
       puts "internal_allocator_list:"
@@ -3917,7 +3917,7 @@ class Port < BDNode
 # @b_VMT_useless:: bool                     # VMT 関数テーブルが不要
 # @b_skelton_useless:: bool                 # スケルトン関数不要
 
-  def initialize( name, sig_path, port_type, array_size = nil, reverse_require_cell_path = nil, reverse_require_entry_port_name = nil )
+  def initialize(name, sig_path, port_type, array_size = nil, reverse_require_cell_path = nil, reverse_require_entry_port_name = nil)
     super()
     @name = name
     @port_type = port_type
@@ -3934,23 +3934,23 @@ class Port < BDNode
         @array_size = array_size   # これはアロケータ呼び口の場合（元の呼び口で既に評価済み）
       end
       if @array_size == nil then
-        cdl_error( "S1073 Not constant expression $1" , array_size.to_s )
+        cdl_error("S1073 Not constant expression $1" , array_size.to_s)
       end
 
       # if Integer( @array_size ) != @array_size || @array_size <= 0 then
       if ! @array_size.kind_of? Integer then
-        cdl_error( "S1074 Not Integer $1" , array_size.to_s )
+        cdl_error("S1074 Not Integer $1" , array_size.to_s)
       end
 
     end
 
-    object = Namespace.find( sig_path )    # 1
+    object = Namespace.find(sig_path)    # 1
     if object == nil then
       # mikan signature の名前が不完全
-      cdl_error( "S1075 \'$1\' signature not found" , sig_path )
-    elsif ! object.instance_of?( Signature ) then
+      cdl_error("S1075 \'$1\' signature not found" , sig_path)
+    elsif ! object.instance_of?(Signature) then
       # mikan signature の名前が不完全
-      cdl_error( "S1076 \'$1\' not signature" , sig_path )
+      cdl_error("S1076 \'$1\' not signature" , sig_path)
     else
       @signature = object
 
@@ -3961,28 +3961,28 @@ class Port < BDNode
     @reverse_require_entry_port_name = nil
     if reverse_require_cell_path then
       if port_type == :CALL then
-        cdl_error( "S1152 $1 call port cannot have fixed join", @name )
+        cdl_error("S1152 $1 call port cannot have fixed join", @name)
       else
         @reverse_require_cell_path       = reverse_require_cell_path
         @reverse_require_entry_port_name = reverse_require_entry_port_name
 
         # 受け口配列か？
         if array_size then
-          cdl_error( "S1153 $1: cannot be entry port array for fixed join port", @name )
+          cdl_error("S1153 $1: cannot be entry port array for fixed join port", @name)
         end
 
         # 呼び口のセルタイプを探す
-        ct_or_cell = Namespace.find( @reverse_require_cell_path )  # 1
+        ct_or_cell = Namespace.find(@reverse_require_cell_path)  # 1
         if ct_or_cell.instance_of? Cell then
           ct = ct_or_cell.get_celltype
         elsif ct_or_cell.instance_of? Celltype then
           ct = ct_or_cell
           if ! ct.is_singleton? then
-            cdl_error( "S1154 $1: must be singleton celltype for fixed join", @reverse_require_cell_path.to_s )
+            cdl_error("S1154 $1: must be singleton celltype for fixed join", @reverse_require_cell_path.to_s)
           end
         else
           ct = nil
-          cdl_error( "S1155 $1: not celltype or not found", @reverse_require_cell_path.get_path_str)
+          cdl_error("S1155 $1: not celltype or not found", @reverse_require_cell_path.get_path_str)
         end
 
         if ct == nil then
@@ -3990,12 +3990,12 @@ class Port < BDNode
         end
 
         # 添え字なしの呼び口配列か？
-        port = ct.find( @reverse_require_entry_port_name )
+        port = ct.find(@reverse_require_entry_port_name)
         if port == nil || port.get_port_type != :CALL
-          cdl_error( "S1156 $1: not call port or not found", @reverse_require_entry_port_name )
+          cdl_error("S1156 $1: not call port or not found", @reverse_require_entry_port_name)
         else
           if port.get_array_size != "[]" then
-            cdl_error( "S1157 $1: sized array or not array", @reverse_require_entry_port_name )
+            cdl_error("S1157 $1: sized array or not array", @reverse_require_entry_port_name)
           end
         end
 
@@ -4065,7 +4065,7 @@ end
   # fd:: Decl : 関数の declarator
   # par:: ParamDecl : send/receive のあった引数
   # この呼び口が生成されるもとになった呼び口または受け口の情報を設定
-  def set_allocator_port( port, fd, par )
+  def set_allocator_port(port, fd, par)
     @allocator_port = port
     @allocator_func_decl = fd
     @allocator_param_decl = par
@@ -4087,7 +4087,7 @@ end
     @allocator_param_decl
   end
 
-  def set_require( b_has_name )
+  def set_require(b_has_name)
     @b_require = true
     @b_has_name = b_has_name
   end
@@ -4112,7 +4112,7 @@ end
 
   #=== Port# omit 指定されている?
   def is_omit?
-    @b_omit || ( @signature && @signature.is_empty? )
+    @b_omit || (@signature && @signature.is_empty?)
   end
 
   def set_omit
@@ -4138,40 +4138,40 @@ end
       case s[0]
       when :INLINE
         if @port_type == :CALL then
-          cdl_error( "S1077 inline: cannot be specified for call port"  )
+          cdl_error("S1077 inline: cannot be specified for call port")
           next
         end
         @b_inline = true
       when :OMIT
         if @port_type == :ENTRY then
-          cdl_error( "S9999 omit: cannot be specified for entry port"  )
+          cdl_error("S9999 omit: cannot be specified for entry port")
           next
         end
         @b_omit = true
       when :OPTIONAL
         if @port_type == :ENTRY then
-          cdl_error( "S1078 optional: cannot be specified for entry port"  )
+          cdl_error("S1078 optional: cannot be specified for entry port")
           next
         end
         @b_optional = true
       when :REF_DESC
         if @port_type == :ENTRY then
-          cdl_error( "S9999 ref_desc: cannnot be specified for entry port" )
+          cdl_error("S9999 ref_desc: cannnot be specified for entry port")
           next
         end
         @b_ref_desc = true
       when :DYNAMIC
         if @port_type == :ENTRY then
-          cdl_error( "S9999 dynamic: cannnot be specified for entry port" )
+          cdl_error("S9999 dynamic: cannnot be specified for entry port")
           next
         end
         @b_dynamic = true
       when :ALLOCATOR
         if @port_type == :CALL then
-          cdl_error( "S1079 allocator: cannot be specified for call port"  )
+          cdl_error("S1079 allocator: cannot be specified for call port")
         end
         if @allocator_instance_tmp then
-          cdl_error( "S1080 duplicate allocator specifier"  )
+          cdl_error("S1080 duplicate allocator specifier")
           next
         end
         @allocator_instance_tmp = s[1]
@@ -4179,22 +4179,22 @@ end
         raise "unknown specifier #{s[0]}"
       end
     }
-    if ( @b_dynamic || @b_ref_desc ) then
+    if (@b_dynamic || @b_ref_desc) then
       if @b_dynamic then
         dyn_ref = "dynamic"
       else
         dyn_ref = "ref_desc"
       end
       if @b_omit then     # is_omit? は is_empty? も含んでいるので使えない
-        cdl_error( "S9999 omit cannot be specified with $1", dyn_ref  )
+        cdl_error("S9999 omit cannot be specified with $1", dyn_ref)
       elsif @signature && @signature.is_empty? then
-        cdl_error( "S9999 $1 cannot be specified for empty signature", dyn_ref  )
+        cdl_error("S9999 $1 cannot be specified for empty signature", dyn_ref)
       elsif @signature && @signature.has_descriptor? then
         # cdl_error( "S9999 $1 port '$2' cannot have Descriptor in its signature", dyn_ref, @name )
       end
 
     elsif @b_dynamic && @b_ref_desc then
-      cdl_error( "S9999 both dynamic & ref_desc cannot be specified simultaneously"  )
+      cdl_error("S9999 both dynamic & ref_desc cannot be specified simultaneously")
     end
   end
 
@@ -4213,7 +4213,7 @@ end
       case alloc_type
       when :INTERNAL_ALLOC
         if ! @owner.instance_of? CompositeCelltype then # ミスを防ぐために composite でなければとした
-          cdl_error( "S1081 self allocator not supported yet"  )   # mikan これはサポートされているはず。要調査 12/1/15
+          cdl_error("S1081 self allocator not supported yet")   # mikan これはサポートされているはず。要調査 12/1/15
           next
         end
         # OK
@@ -4221,7 +4221,7 @@ end
         # OK
       when :NORMAL_ALLOC
         # ここへ来るのは composite の受け口で右辺が "eEnt.func.param" 形式で指定されていた場合
-        cdl_error( "S1174 $1 not suitable for lhs, suitable lhs: 'func.param'", "#{ai[1]}.#{ai[3]}.#{ai[4]}" )
+        cdl_error("S1174 $1 not suitable for lhs, suitable lhs: 'func.param'", "#{ai[1]}.#{ai[3]}.#{ai[4]}")
         next
       else
         raise "Unknown allocator type #{ai[1]}"
@@ -4229,18 +4229,18 @@ end
 
       # '=' 左辺(func_name,param_name)は実在するか?
       if @signature then       # signature = nil なら既にエラー
-        fh = @signature.get_function_head( ai[1] )
+        fh = @signature.get_function_head(ai[1])
         if fh == nil then
-          cdl_error( "S1082 function \'$1\' not found in signature" , ai[1] )
+          cdl_error("S1082 function \'$1\' not found in signature" , ai[1])
           next
         end
         decl = fh.get_declarator
         if ! decl.is_function? then
           next   # 既にエラー
         end
-        paramdecl = decl.get_type.get_paramlist.find( ai[2] )
+        paramdecl = decl.get_type.get_paramlist.find(ai[2])
         if paramdecl == nil then
-          cdl_error( "S1083 \'$1\' not found in function \'$2\'" , ai[2], ai[1] )
+          cdl_error("S1083 \'$1\' not found in function \'$2\'" , ai[2], ai[1])
           next
         end
         case paramdecl.get_direction
@@ -4248,14 +4248,14 @@ end
           # OK
           direction = paramdecl.get_direction
         else
-          cdl_error( "S1084 \'$1\' in function \'$2\' is not send or receive" , ai[2], ai[1] )
+          cdl_error("S1084 \'$1\' in function \'$2\' is not send or receive" , ai[2], ai[1])
           next
         end
       end
 
       # 重複指定がないか?
       if @allocator_instance[ "#{@name}_#{ai[1]}_#{ai[2]}" ] then
-        cdl_error( "S1085 duplicate allocator specifier for \'$1_$2\'" , ai[1], ai[2] )
+        cdl_error("S1085 duplicate allocator specifier for \'$1_$2\'" , ai[1], ai[2])
       end
 
       # 右辺のチェック
@@ -4263,15 +4263,15 @@ end
       when :INTERNAL_ALLOC
 
         ele = ai[3].get_elements
-        if( ele[0] != :IDENTIFIER )then
-          cdl_error( "S1086 $1: rhs not in 'allocator_entry_port' form", ai[3].to_s )
+        if(ele[0] != :IDENTIFIER)then
+          cdl_error("S1086 $1: rhs not in 'allocator_entry_port' form", ai[3].to_s)
           next
         end
 
         ep_name = ele[1]   # アロケータ受け口名
         ep = @owner.find ep_name.get_path[0]  # mikan "a::b"
-        if ep == nil || ! ep.instance_of?( Port ) || ep.get_port_type != :ENTRY || ! ep.get_signature.is_allocator? then
-          cdl_error( "S1175 $1 not found or not allocator entry port for $2" , ep_name, ai[1] )
+        if ep == nil || ! ep.instance_of?(Port) || ep.get_port_type != :ENTRY || ! ep.get_signature.is_allocator? then
+          cdl_error("S1175 $1 not found or not allocator entry port for $2" , ep_name, ai[1])
         end
         # 右辺チェック終わり
         # ai2 = [ :INTERNAL_ALLOC, func_name, param_name, rhs_ep_name ]
@@ -4279,15 +4279,15 @@ end
 
       when :RELAY_ALLOC
         ele = ai[3].get_elements
-        if( ele[0] != :OP_DOT ||
+        if(ele[0] != :OP_DOT ||
             ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || ! ele[1][1][1].is_name_only? ||
-            ! ele[1][2].instance_of?( Token ) || ! ele[2].instance_of?( Token ) )then   # 1
+            ! ele[1][2].instance_of?(Token) || ! ele[2].instance_of?(Token))then   # 1
           # [ :OP_DOT, [ :OP_DOT, [ :IDENTIFIER,  name_space_path ],  Token(1) ],  Token(2) ]
           #    ele[0]    ele[1][0]  ele[1][1][0]  ele[1][1][1]        ele[1][2]    ele[2]
           #      name_space_path.Token(1).Token(2) === call_port.func.param
           #  mikan Expression#analyze_cell_join_expression の変種を作成して置き換えるべき
 
-          cdl_error( "S1176 rhs not in 'call_port.func.param' form for for $1_$2" , ai[1], ai[2] )   # S1086
+          cdl_error("S1176 rhs not in 'call_port.func.param' form for for $1_$2" , ai[1], ai[2])   # S1086
           next
         end
         func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
@@ -4297,28 +4297,28 @@ end
 # mikan 受け口から受け口へのリレーへの対応 (呼び口から呼び口へのリレーはありえない)  <=== 文法にかかわる事項（呼び口側でアロケータが決定される）
           sig = cp.get_signature
           if sig && @signature then
-            fh = @signature.get_function_head( func_name )
+            fh = @signature.get_function_head(func_name)
             if fh == nil then
-              cdl_error( "S1087 function \'$1\' not found in signature \'$2\'" , func_name, sig.get_name )
+              cdl_error("S1087 function \'$1\' not found in signature \'$2\'" , func_name, sig.get_name)
               next
             end
             decl = fh.get_declarator
             if ! decl.is_function? then
               next   # 既にエラー
             end
-            paramdecl = decl.get_type.get_paramlist.find( param_name )
+            paramdecl = decl.get_type.get_paramlist.find(param_name)
             if paramdecl == nil then
-              cdl_error( "S1088 \'$1\' not found in function \'$2\'" , param_name, func_name )
+              cdl_error("S1088 \'$1\' not found in function \'$2\'" , param_name, func_name)
               next
             end
             case paramdecl.get_direction
             when :SEND, :RECEIVE
               # OK
               if alloc_type == :RELAY_ALLOC && direction != paramdecl.get_direction then
-                cdl_error( "S1089 relay allocator send/receive mismatch between $1.$2 and $3_$4.$5" , ai[1], ai[2], cp_name, func_name, param_name )
+                cdl_error("S1089 relay allocator send/receive mismatch between $1.$2 and $3_$4.$5" , ai[1], ai[2], cp_name, func_name, param_name)
               end
             else
-              cdl_error( "S1090 \'$1\' in function \'$2\' is not send or receive" , param_name, func_name )
+              cdl_error("S1090 \'$1\' in function \'$2\' is not send or receive" , param_name, func_name)
               next
             end
 
@@ -4331,7 +4331,7 @@ end
           else
             ct_name = "(None)"
           end
-          cdl_error( "S1091 call port \'$1\' not found in celltype $2" , cp_name, ct_name )
+          cdl_error("S1091 call port \'$1\' not found in celltype $2" , cp_name, ct_name)
           next
         end
         # 右辺チェック終わり
@@ -4375,7 +4375,7 @@ end
   # この受け口を参照する呼び口が VMT, skelton を必要としているかどうかを設定
   # 一つでも呼び口が必要としている（すなわち b_*_useless が false）場合は、
   # この受け口の最適化を false とする
-  def set_entry_VMT_skelton_useless( b_VMT_useless, b_skelton_useless )
+  def set_entry_VMT_skelton_useless(b_VMT_useless, b_skelton_useless)
     if ! b_VMT_useless then
       @b_VMT_useless = false
     end
@@ -4388,7 +4388,7 @@ end
   # 最適化で使用
   #  b_VMT_useless == true || b_skelton_useless == true の時に設定される
   #  optional の場合 callee_cell, callee_port が nil となる
-  def set_only_callee( callee_port, callee_cell )
+  def set_only_callee(callee_port, callee_cell)
     @only_callee_port = callee_port
     @only_callee_cell = callee_cell
   end
@@ -4397,7 +4397,7 @@ end
   # optional 呼び口で未結合の場合 nil を返す
   def get_real_callee_port
     if @only_callee_cell then
-      return @only_callee_cell.get_real_port( @only_callee_port.get_name )
+      return @only_callee_cell.get_real_port(@only_callee_port.get_name)
     end
   end
 
@@ -4405,7 +4405,7 @@ end
   # optional 呼び口で未結合の場合 nil を返す
   def get_real_callee_cell
     if @only_callee_cell then
-      return @only_callee_cell.get_real_cell( @only_callee_port.get_name )
+      return @only_callee_cell.get_real_cell(@only_callee_port.get_name)
     end
   end
 
@@ -4425,7 +4425,7 @@ end
     end
 
     # 呼び元セルを探す
-    ct_or_cell = Namespace.find( @reverse_require_cell_path )   # mikan namespace    #1
+    ct_or_cell = Namespace.find(@reverse_require_cell_path)   # mikan namespace    #1
     if ct_or_cell.instance_of? Cell then
       cell2 = ct_or_cell
       ct = cell2.get_celltype
@@ -4433,9 +4433,9 @@ end
         return    # 既にエラー
       end
     elsif ct_or_cell.instance_of? Celltype then
-      cell2 = ct_or_cell.get_singleton_cell( cell.get_region )
+      cell2 = ct_or_cell.get_singleton_cell(cell.get_region)
       if cell2 == nil then
-        cdl_error( "S1158 $1: singleton cell not found for fixed join", ct_or_cell.get_name )
+        cdl_error("S1158 $1: singleton cell not found for fixed join", ct_or_cell.get_name)
         return
       end
       ct = ct_or_cell
@@ -4446,13 +4446,13 @@ end
 
     # 結合を生成する
     dbgPrint "create_reverse_require_join #{cell2.get_name}.#{@reverse_require_entry_port_name}[] = #{cell.get_name}.#{@name}"
-    nsp = NamespacePath.new( cell.get_name, false, cell.get_namespace )
+    nsp = NamespacePath.new(cell.get_name, false, cell.get_namespace)
 #    rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, Token.new( cell.get_name, nil, nil, nil ) ],
-    rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, nsp ],
-                            Token.new( @name, nil, nil, nil ) ], cell.get_locale )   # 1
-    join = Join.new( @reverse_require_entry_port_name, -1, rhs, cell.get_locale )
-    cell2.new_join( join )
-    join.set_definition( ct.find(join.get_name) )
+    rhs = Expression.new([ :OP_DOT, [ :IDENTIFIER, nsp ],
+                            Token.new(@name, nil, nil, nil) ], cell.get_locale)   # 1
+    join = Join.new(@reverse_require_entry_port_name, -1, rhs, cell.get_locale)
+    cell2.new_join(join)
+    join.set_definition(ct.find(join.get_name))
 
   end
 
@@ -4471,7 +4471,7 @@ end
       fd = fh.get_declarator                            # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function? then                           # fd が関数でなければ、すでにエラー
         fd.get_type.get_paramlist.get_items.each{ |par| # すべてのパラメータについて
-          pr.call( port, fd, par )
+          pr.call(port, fd, par)
         }
       end
     }
@@ -4492,7 +4492,7 @@ end
     @b_ref_desc
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "Port: name:#{@name} port_type:#{@port_type} require:#{@b_require} inline:#{@b_inline} omit:#{@b_omit} optional:#{@b_optional} ref_desc:#{@b_ref_desc} dynamic:#{@b_dynamic}"
     (indent+1).times { print "  " }
@@ -4597,27 +4597,27 @@ class Namespace < NSBDNode
     end
   end
 
-  def initialize( name )
+  def initialize(name)
 
     super()
     @name = name
 
-    if( name == "::" )then
-      if( @@root_namespace != nil )then
+    if(name == "::")then
+      if(@@root_namespace != nil)then
         # root は一回のみ生成できる
         raise "try to re-create root namespace"
       end
       @@root_namespace = self
-      @NamespacePath = NamespacePath.new( name, true )
+      @NamespacePath = NamespacePath.new(name, true)
     else
-      ns = @@namespace_stack[ @@namespace_sp ].find( name )
+      ns = @@namespace_stack[ @@namespace_sp ].find(name)
       if ns.kind_of? Namespace then
         dbgPrint "namespace: re-appear #{@name}\n"
         # 登録済み namespace の再登録
         ns.push ns
         return
       elsif ns then
-        cdl_error( "S1151 $1: not namespace", @name )
+        cdl_error("S1151 $1: not namespace", @name)
         prev_locale = ns.get_locale
         puts "previous: #{prev_locale[0]}: line #{prev_locale[1]} \'#{name}\' defined here"
       end
@@ -4625,13 +4625,13 @@ class Namespace < NSBDNode
     end
 
     if @@namespace_sp >= 0 then   # root は除外
-      @@namespace_stack[@@namespace_sp].new_namespace( self )
+      @@namespace_stack[@@namespace_sp].new_namespace(self)
     end
     push self
 
     @global_name = Namespace.get_global_name    # stack 登録後取る
-    @name_list = NamedList.new( nil, "symbol in namespace '#{@name}'" )
-    @struct_tag_list = NamedList.new( nil, "struct tag" )
+    @name_list = NamedList.new(nil, "symbol in namespace '#{@name}'")
+    @struct_tag_list = NamedList.new(nil, "struct tag")
 
     @namespace_list = []
     @signature_list = []
@@ -4724,24 +4724,24 @@ class Namespace < NSBDNode
   # in_path:: Array : 古い形式
   #  path [ "::", "ns1", "ns2" ]   absolute
   #  path [ "ns1", "ns2" ]         relative
-  def self.find( in_path )
+  def self.find(in_path)
 
     if in_path.instance_of? Array then
       # raise "Namespace.find: old fashion"
 
       path = in_path
       length = path.length
-      return self.find_one( path[0] ) if length == 1
+      return self.find_one(path[0]) if length == 1
 
       name = path[0]
       if name == "::" then
         i = 1
         name = path[i]   # 構文的に必ず存在
-        object = @@root_namespace.find( name )  # root
+        object = @@root_namespace.find(name)  # root
       else
         # 相対パス
         i = 0
-        object = @@namespace_stack[@@namespace_sp].find_one( name ) # crrent
+        object = @@namespace_stack[@@namespace_sp].find_one(name) # crrent
       end
 
     elsif in_path.instance_of? NamespacePath then
@@ -4759,10 +4759,10 @@ class Namespace < NSBDNode
       i = 0
       name = path[0]
       if in_path.is_absolute? then
-        object = @@root_namespace.find( name )  # root
+        object = @@root_namespace.find(name)  # root
       else
         bns = in_path.get_base_namespace
-        object = bns.find_one( name )           # crrent
+        object = bns.find_one(name)           # crrent
       end
     else
       raise "unexpected path"
@@ -4771,7 +4771,7 @@ class Namespace < NSBDNode
     i += 1
     while i < length
 
-      unless object.kind_of?( Namespace ) then
+      unless object.kind_of?(Namespace) then
         # クラスメソッド内で cdl_error を呼び出すことはできない
         # また、前方参照対応後、正確な行番号が出ない問題も生じる
         # cdl_error( "S1092 \'$1\' not namespace" , name )
@@ -4779,7 +4779,7 @@ class Namespace < NSBDNode
         return nil
       end
 
-      object = object.find( path[i] )
+      object = object.find(path[i])
       i += 1
     end
 
@@ -4787,25 +4787,25 @@ class Namespace < NSBDNode
   end
 
 
-  def find( name )
+  def find(name)
     @name_list.get_item(name)
   end
 
   #=== Namespace# namespace から探す。見つからなければ親 namespace から探す
-  def self.find_one( name )
-    return @@namespace_stack[@@namespace_sp].find_one( name )
+  def self.find_one(name)
+    return @@namespace_stack[@@namespace_sp].find_one(name)
   end
 
-  def find_one( name )
+  def find_one(name)
 
-    object = find( name )
+    object = find(name)
     # これは出すぎ
     # dbgPrint "in '#{@name}' find '#{name}' object #{object ? object.class : "Not found"}\n"
 
     if object != nil then
       return object
     elsif @name != "::" then
-      return @owner.find_one( name )
+      return @owner.find_one(name)
     else
       return nil
     end
@@ -4815,13 +4815,13 @@ class Namespace < NSBDNode
     @@namespace_stack[@@namespace_sp]
   end
 
-  def self.find_tag( name )
+  def self.find_tag(name)
     # mikan tag : namespace の path に対応しない
     # namespace の中にあっても、root namespace にあるものと見なされる
     # よって カレント namespace から根に向かって探す
     i = @@namespace_sp
     while i >= 0
-      res = @@namespace_stack[i].find_tag( name )
+      res = @@namespace_stack[i].find_tag(name)
       if res then
         return res
       end
@@ -4829,68 +4829,68 @@ class Namespace < NSBDNode
     end
   end
 
-  def find_tag( name )
-    @struct_tag_list.get_item( name )
+  def find_tag(name)
+    @struct_tag_list.get_item(name)
   end
 
  ### namespace
-  def self.new_namespace( namespace )
-    @@namespace_stack[@@namespace_sp].new_namespace( namespace )
+  def self.new_namespace(namespace)
+    @@namespace_stack[@@namespace_sp].new_namespace(namespace)
   end
 
-  def new_namespace( namespace )
+  def new_namespace(namespace)
     dbgPrint "new_namespace: #{@name}:#{self} #{namespace.get_name}:#{namespace} \n"
     namespace.set_owner self   # Namespace (Namespace)
 
-    @name_list.add_item( namespace )
+    @name_list.add_item(namespace)
     @namespace_list << namespace
   end
 
  ### signature
-  def self.new_signature( signature )
-    @@namespace_stack[@@namespace_sp].new_signature( signature )
+  def self.new_signature(signature)
+    @@namespace_stack[@@namespace_sp].new_signature(signature)
   end
 
-  def new_signature( signature )
+  def new_signature(signature)
     signature.set_owner self   # Signature (Namespace)
-    @name_list.add_item( signature )
+    @name_list.add_item(signature)
     @signature_list << signature
   end
 
  ### celltype
-  def self.new_celltype( celltype )
-    @@namespace_stack[@@namespace_sp].new_celltype( celltype )
+  def self.new_celltype(celltype)
+    @@namespace_stack[@@namespace_sp].new_celltype(celltype)
   end
 
-  def new_celltype( celltype )
+  def new_celltype(celltype)
     celltype.set_owner self   # Celltype (Namespace)
-    @name_list.add_item( celltype )
+    @name_list.add_item(celltype)
     @celltype_list << celltype
   end
 
  ### compositecelltype
-  def self.new_compositecelltype( compositecelltype )
-    @@namespace_stack[@@namespace_sp].new_compositecelltype( compositecelltype )
+  def self.new_compositecelltype(compositecelltype)
+    @@namespace_stack[@@namespace_sp].new_compositecelltype(compositecelltype)
   end
 
-  def new_compositecelltype( compositecelltype )
+  def new_compositecelltype(compositecelltype)
     compositecelltype.set_owner self   # CompositeCelltype (Namespace)
-    @name_list.add_item( compositecelltype )
+    @name_list.add_item(compositecelltype)
     @compositecelltype_list << compositecelltype
   end
 
  ### cell (Namespace)
-  def self.new_cell( cell )
-    @@namespace_stack[@@namespace_sp].new_cell( cell )
+  def self.new_cell(cell)
+    @@namespace_stack[@@namespace_sp].new_cell(cell)
   end
 
-  def new_cell( cell )
+  def new_cell(cell)
     dbgPrint "Namespace.new_cell: #{@NamespacePath.get_path_str}::#{cell.get_name}\n"
-    if ! is_root? && ! ( instance_of? Region ) then
-      cdl_error( "S9999 '$1' cell cannot be placed under namespace", cell.get_name )
+    if ! is_root? && ! (instance_of? Region) then
+      cdl_error("S9999 '$1' cell cannot be placed under namespace", cell.get_name)
     end
     cell.set_owner self   # Cell (Namespace)
-    @name_list.add_item( cell )
+    @name_list.add_item(cell)
     @cell_list << cell
   end
 
@@ -4901,16 +4901,16 @@ class Namespace < NSBDNode
     @cell_list.each { |c|
       if ! c.get_f_def then   # Namespace の @cell_list にはプロトタイプが含まれるケースあり
         if c.get_f_ref then
-          cdl_error( "S1093 $1 : undefined cell" , c.get_namespace_path.get_path_str )
+          cdl_error("S1093 $1 : undefined cell" , c.get_namespace_path.get_path_str)
         elsif $verbose then
-          cdl_warning( "W1006 $1 : only prototype, unused and undefined cell" , c.get_namespace_path.get_path_str )
+          cdl_warning("W1006 $1 : only prototype, unused and undefined cell" , c.get_namespace_path.get_path_str)
         end
       else
         dbgPrint "check_ref_but_undef: #{c.get_global_name}\n"
         ct = c.get_celltype
         # if c.get_f_ref == false && c.is_generate? && ct && ct.is_inactive? then
         if c.get_f_ref == false && ct && ct.is_inactive? then
-          cdl_warning( "W1007 $1 : non-active cell has no entry join and no factory" , c.get_namespace_path.get_path_str )
+          cdl_warning("W1007 $1 : non-active cell has no entry join and no factory" , c.get_namespace_path.get_path_str)
         end
       end
     }
@@ -4930,11 +4930,11 @@ class Namespace < NSBDNode
   end
 
  ### struct
-  def self.new_structtype( struct )
-    @@namespace_stack[@@namespace_sp].new_structtype( struct )
+  def self.new_structtype(struct)
+    @@namespace_stack[@@namespace_sp].new_structtype(struct)
   end
 
-  def new_structtype( struct )
+  def new_structtype(struct)
     # struct.set_owner self   # StructType (Namespace) # StructType は BDNode ではない
     dup = @struct_tag_list.get_item(struct.get_name)
     if dup != nil then
@@ -4945,16 +4945,16 @@ class Namespace < NSBDNode
       end
     end
 
-    @struct_tag_list.add_item( struct )
+    @struct_tag_list.add_item(struct)
     @decl_list << struct
   end
 
  ### typedef
-  def self.new_typedef( typedef )
-    @@namespace_stack[@@namespace_sp].new_typedef( typedef )
+  def self.new_typedef(typedef)
+    @@namespace_stack[@@namespace_sp].new_typedef(typedef)
   end
 
-  def new_typedef( typedef )
+  def new_typedef(typedef)
     typedef.set_owner self   # TypeDef (Namespace)
     dup = @name_list.get_item(typedef.get_name)
     if dup != nil then
@@ -4978,15 +4978,15 @@ class Namespace < NSBDNode
     # p "typedef: #{typedef.get_name}  #{typedef.get_declarator.get_type.get_original_type.get_type_str}#{typedef.get_declarator.get_type.get_original_type.get_type_str_post}"
     # typedef.show_tree 0
 
-    @name_list.add_item( typedef )
+    @name_list.add_item(typedef)
     @typedef_list << typedef
     @decl_list << typedef
   end
 
-  def self.is_typename?( str )
+  def self.is_typename?(str)
     i = @@namespace_sp
     while i >= 0
-      if @@namespace_stack[i].is_typename?( str ) then
+      if @@namespace_stack[i].is_typename?(str) then
         return true
       end
       i -= 1
@@ -4994,8 +4994,8 @@ class Namespace < NSBDNode
     false
   end
 
-  def is_typename?( str )
-    if @name_list.get_item( str ).instance_of?( Typedef ) then
+  def is_typename?(str)
+    if @name_list.get_item(str).instance_of?(Typedef) then
       true
     else
       false
@@ -5003,30 +5003,30 @@ class Namespace < NSBDNode
   end
 
  ### const_decl
-  def self.new_const_decl( decl )
-    @@namespace_stack[@@namespace_sp].new_const_decl( decl )
+  def self.new_const_decl(decl)
+    @@namespace_stack[@@namespace_sp].new_const_decl(decl)
   end
 
-  def new_const_decl( decl )
+  def new_const_decl(decl)
     decl.set_owner self   # Decl (Namespace:const)
     if ! decl.is_const? then      # const 修飾さていること
-      if decl.is_type?( PtrType ) then
-        cdl_error( "S1094 $1: pointer is not constant. check \'const\'" , decl.get_name )
+      if decl.is_type?(PtrType) then
+        cdl_error("S1094 $1: pointer is not constant. check \'const\'" , decl.get_name)
       else
-        cdl_error( "S1095 $1: not constant" , decl.get_name )
+        cdl_error("S1095 $1: not constant" , decl.get_name)
       end
-    elsif ! decl.is_type?( IntType ) && ! decl.is_type?( FloatType ) &&
-        ! decl.is_type?( BoolType ) && ! decl.is_type?( PtrType ) then
+    elsif ! decl.is_type?(IntType) && ! decl.is_type?(FloatType) &&
+        ! decl.is_type?(BoolType) && ! decl.is_type?(PtrType) then
                                             # IntType, FloatType であること
-      cdl_error( "S1096 $1: should be int, float, bool or pointer type" , decl.get_name )
+      cdl_error("S1096 $1: should be int, float, bool or pointer type" , decl.get_name)
     elsif decl.get_initializer == nil then   # 初期値を持つこと
-      cdl_error( "S1097 $1: has no initializer" , decl.get_name )
+      cdl_error("S1097 $1: has no initializer" , decl.get_name)
 #    elsif decl.get_initializer.eval_const(nil) == nil then  #eval_const は check_init で呼出されるので二重チェック
 #                                            # mikan 初期値が型に対し適切であること
 #      cdl_error( "S1098 $1: has unsuitable initializer" , decl.get_name )
     else
-      decl.get_type.check_init( @locale, decl.get_name, decl.get_initializer, :CONSTANT )
-      @name_list.add_item( decl )
+      decl.get_type.check_init(@locale, decl.get_name, decl.get_initializer, :CONSTANT)
+      @name_list.add_item(decl)
       @const_decl_list << decl
     end
 
@@ -5105,11 +5105,11 @@ class Namespace < NSBDNode
     @@root_namespace
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "#{self.class}: name: #{@name} path: #{get_namespace_path.get_path_str}"
-    @struct_tag_list.show_tree( indent + 1 )
-    @name_list.show_tree( indent + 1 )
+    @struct_tag_list.show_tree(indent + 1)
+    @name_list.show_tree(indent + 1)
   end
 
 end
@@ -5149,7 +5149,7 @@ class Join < BDNode
   # name:: string: 名前（属性名、呼び口名）
   # subscript:: Nil=非配列, -1="[]", N="[N]"
   # rhs:: Expression: 右辺の式
-  def initialize( name, subscript, rhs, locale = nil )
+  def initialize(name, subscript, rhs, locale = nil)
     # dbgPrint "Join#new: #{name}, #{subscript} #{rhs.eval_const(nil)}\n"
     dbgPrint "Join#new: #{name}, #{subscript}\n"
 
@@ -5159,11 +5159,11 @@ class Join < BDNode
     end
 
     @name = name
-    if subscript.instance_of?( Expression ) then
+    if subscript.instance_of?(Expression) then
        # mikan 配列添数が整数であることを未チェック
        @subscript = subscript.eval_const(nil)
        if @subscript == nil then
-         cdl_error( "S1099 array subscript not constant"  )
+         cdl_error("S1099 array subscript not constant")
        end
     else
        @subscript = subscript
@@ -5198,7 +5198,7 @@ class Join < BDNode
   #     代入可能かチェックする
   # definition:: Decl (attribute,varの時) または Port (callの時) または nil (definition が見つからなかった時)
 
-  def set_definition( definition )
+  def set_definition(definition)
 
     dbgPrint "set_definition: #{@owner.get_name}.#{@name} = #{definition.class}\n"
 
@@ -5213,16 +5213,16 @@ class Join < BDNode
     @definition = definition
 
     # mikan 左辺値、右辺値の型チェックなど
-    if @definition.instance_of?( Decl ) then
+    if @definition.instance_of?(Decl) then
       check_var_init
-    elsif @definition.instance_of?( Port ) then
+    elsif @definition.instance_of?(Port) then
       check_call_port_init
       if @definition.get_port_type == :CALL then   # :ENTRY ならエラー。無視しない
         check_and_gen_through
         create_allocator_join  # through プラグイン生成した後でないと、挿入前のセルのアロケータを結合してしまう
       end
     elsif @definition == nil then
-      cdl_error( "S1117 \'$1\' not in celltype", @name )
+      cdl_error("S1117 \'$1\' not in celltype", @name)
     else
       raise "UnknownToken"
     end
@@ -5234,10 +5234,10 @@ class Join < BDNode
     if @definition.get_kind == :ATTRIBUTE then
 #        check_cell_cb_init( definition.get_type, @rhs )
       # 右辺で初期化可能かチェック
-      @definition.get_type.check_init( @locale, @definition.get_identifier, @rhs, :ATTRIBUTE )
+      @definition.get_type.check_init(@locale, @definition.get_identifier, @rhs, :ATTRIBUTE)
     elsif @definition.get_kind == :VAR then
       # var は初期化できない
-      cdl_error( "S1100 $1: cannot initialize var" , @name )
+      cdl_error("S1100 $1: cannot initialize var" , @name)
     else
       # Bug trap
       raise "UnknownDeclKind"
@@ -5250,17 +5250,17 @@ class Join < BDNode
 
     # 左辺は受け口か（受け口を初期化しようとしている）？
     if @definition.get_port_type == :ENTRY then
-      cdl_error( "S1101 \'$1\' cannot initialize entry port" , @name )
+      cdl_error("S1101 \'$1\' cannot initialize entry port" , @name)
       return
     end
 
 #      # 配列添数の整合性チェック
 #      # 呼び口の定義で、非配列なら添数なし、添数なし配列なら添数なし、添数あり配列なら添数あり
     as = @definition.get_array_size
-    if ( @subscript == nil && as != nil ) then
-      cdl_error( "S1102 $1: must specify array subscript here" , @name )
-    elsif ( @subscript != nil && as == nil ) then
-      cdl_error( "S1103 $1: cannot specify array subscript here" , @name )
+    if (@subscript == nil && as != nil) then
+      cdl_error("S1102 $1: must specify array subscript here" , @name)
+    elsif (@subscript != nil && as == nil) then
+      cdl_error("S1103 $1: cannot specify array subscript here" , @name)
     end
 #    if @subscript == nil then
 #      if as != nil then
@@ -5295,17 +5295,17 @@ class Join < BDNode
 
     # cCall = composite.cCall; のチェック．この形式は属性用
     # 呼び口を export するには cCall => composite.cCall; の形式を用いる
-    if @rhs.instance_of?( Array ) == true && @rhs[0] == :COMPOSITE then
-      cdl_error( "S1107 to export port, use \'cCall => composite.cCall\'"  )
+    if @rhs.instance_of?(Array) == true && @rhs[0] == :COMPOSITE then
+      cdl_error("S1107 to export port, use \'cCall => composite.cCall\'")
       return
-    elsif ! @rhs.instance_of?( Expression ) then
+    elsif ! @rhs.instance_of?(Expression) then
       raise "Unknown bug. specify -t to find problem in source"
     end
 
     # 右辺の Expression の要素を取り出す
     ret = @rhs.analyze_cell_join_expression
     if ret == nil then   # 1
-      cdl_error( "S1108 $1: rhs not \'Cell.ePort\' form" , @name )
+      cdl_error("S1108 $1: rhs not \'Cell.ePort\' form" , @name)
       return
     end
 
@@ -5314,23 +5314,23 @@ class Join < BDNode
 
     # composite の定義の中なら object は結合先 cell か、見つからなければ nil が返る
     # composite の定義外なら false が返る
-    object = CompositeCelltype.find( @cell_name )
+    object = CompositeCelltype.find(@cell_name)
     if object == false then
 #     mikan 左辺が namespace に対応していないため。 path にして find
       # p nsp.get_path_str, nsp.get_path
-      object = Namespace.find( nsp )    # 1
+      object = Namespace.find(nsp)    # 1
       in_composite = false
     else
       if nsp.get_path.length != 1 then
-        cdl_error( "$1 cannot have path", nsp.get_path_str )
+        cdl_error("$1 cannot have path", nsp.get_path_str)
       end
       in_composite = true
     end
 
     if object == nil then                                             # (2)
-      cdl_error( "S1109 \'$1\' not found" , nsp.to_s )
-    elsif ! object.instance_of?( Cell ) then                          # (3)
-      cdl_error( "S1110 \'$1\' not cell" , nsp.to_s )
+      cdl_error("S1109 \'$1\' not found" , nsp.to_s)
+    elsif ! object.instance_of?(Cell) then                          # (3)
+      cdl_error("S1110 \'$1\' not cell" , nsp.to_s)
     else
       dbgPrint "set_definition: set_f_ref #{@owner.get_name}.#{@name} => #{object.get_name}\n"
       object.set_f_ref
@@ -5339,26 +5339,26 @@ class Join < BDNode
       celltype = object.get_celltype
 
       if celltype then                                                # (4)
-        object2 = celltype.find( @port_name )
+        object2 = celltype.find(@port_name)
         if object2 == nil then                                        # (5)
-          cdl_error( "S1111 \'$1\' not found" , @port_name )
+          cdl_error("S1111 \'$1\' not found" , @port_name)
         elsif ! object2.instance_of? Port \
              || object2.get_port_type != :ENTRY then                  # (6)
-          cdl_error( "S1112 \'$1\' not entry port" , @port_name )
+          cdl_error("S1112 \'$1\' not entry port" , @port_name)
         elsif @definition.get_signature != object2.get_signature then # (7)
-          cdl_error( "S1113 \'$1\' signature mismatch" , @port_name )
+          cdl_error("S1113 \'$1\' signature mismatch" , @port_name)
         elsif object2.get_array_size then
           # 受け口配列
 
           unless @rhs_subscript then
             # 右辺に添数指定がなかった
-            cdl_error( "S1114 \'$1\' should be array" , @port_name )
+            cdl_error("S1114 \'$1\' should be array" , @port_name)
           else
 
             as = object2.get_array_size
-            if( as.kind_of?( Integer ) && as <= @rhs_subscript )then
+            if(as.kind_of?(Integer) && as <= @rhs_subscript)then
               # 受け口配列の大きさに対し、右辺の添数が同じか大きい
-              cdl_error( "S1115 $1[$2]: subscript out of range (< $3)" , @port_name, @rhs_subscript, as )
+              cdl_error("S1115 $1[$2]: subscript out of range (< $3)" , @port_name, @rhs_subscript, as)
             else
               dbgPrint "Join OK #{@owner.get_name}.#{@name}[#{@rhs_subscript}] = #{object.get_name}.#{@port_name} #{self}\n"
               @cell = object
@@ -5366,7 +5366,7 @@ class Join < BDNode
               @port = object2
               # 右辺のセルの受け口 object2 を参照済みにする
               # object2: Port, @definition: Port
-              @cell.set_entry_port_max_subscript( @port, @rhs_subscript )
+              @cell.set_entry_port_max_subscript(@port, @rhs_subscript)
             end
 
             # debug
@@ -5375,7 +5375,7 @@ class Join < BDNode
           end
         elsif @rhs_subscript then
           # 受け口配列でないのに右辺で添数指定されている
-          cdl_error( "S1116 \'$1\' entry port is not array" , @port_name )
+          cdl_error("S1116 \'$1\' entry port is not array" , @port_name)
         else
           dbgPrint "Join OK #{@owner.get_name}.#{@name} = #{object.get_name}.#{@port_name} #{self}\n"
           @cell = object
@@ -5394,7 +5394,7 @@ class Join < BDNode
       end  # end of celltyep チェック
 
 
-      check_region( object )
+      check_region(object)
 
     end  # end of cell (object) チェック
 
@@ -5412,18 +5412,18 @@ class Join < BDNode
     cell = get_rhs_cell2   # 右辺のセルを得る
     port = get_rhs_port2
 
-    if( cell && cell.get_allocator_list ) then      # cell == nil なら既にエラー
+    if(cell && cell.get_allocator_list) then      # cell == nil なら既にエラー
 
       dbgPrint "create_allocator_join: #{@owner.get_name}.#{@name}=>#{cell ? cell.get_name : "nil"}\n"
 
       cell.get_allocator_list.each { |a|
 
-        if( a[0+1] == port && a[1+1] == @rhs_subscript )then
+        if(a[0+1] == port && a[1+1] == @rhs_subscript)then
           # 名前の一致するものの結合を生成する
           # 過不足は、別途チェックされる
           cp_name = :"#{@name}_#{a[2+1]}_#{a[3+1]}"
           # p "creating allocator join #{cp_name} #{@subscript} #{a[1+1]}"
-          join = Join.new( cp_name, @subscript, a[4+1], @locale )
+          join = Join.new(cp_name, @subscript, a[4+1], @locale)
 
           # debug
           dbgPrint "create_allocator_join: #{@owner.get_name}.#{cp_name} [#{@subscript}] #{@name}\n"
@@ -5439,7 +5439,7 @@ class Join < BDNode
   # リージョン間の through による @region_through_list の作成
   # 実際の生成は check_and_gen_through で行う
   # mikan Cell#distance とRegion へたどり着くまでための処理に共通部分が多い
-  def check_region( object )
+  def check_region(object)
 
     # debug
     dbgPrint "check_region #{@owner.get_name}.#{@name} => #{object.get_name}\n"
@@ -5449,7 +5449,7 @@ class Join < BDNode
     # さもないとプラグイン生成されたものとの間で、無限に生成される
 ##    if Generator.get_nest >= 1 then
 ##    if Generator.get_plugin then     # mikan これは必要？ (意味解析段階での実行になるので不適切)
-    if @owner.get_plugin.kind_of?( ThroughPlugin ) then
+    if @owner.get_plugin.kind_of?(ThroughPlugin) then
       # プラグイン生成されたセルの場合、結合チェックのみ
       return
     end
@@ -5467,8 +5467,8 @@ class Join < BDNode
 
       # 不一致になるところ（兄弟）を探す
       i = 1  # i = 0 は :RootRegion なので必ず一致
-      while( i < len1 && i < len2 )
-        if( f1[i] != f2[i] )then
+      while(i < len1 && i < len2)
+        if(f1[i] != f2[i])then
           break
         end
         i += 1
@@ -5502,12 +5502,12 @@ class Join < BDNode
         out_through_list = f1[i].get_out_through_list   # [ plugin_name, plugin_arg ]
         domain = f1[i].get_domain_type
         if domain then
-          domain_through = f1[i].get_domain_type.add_through_plugin( self, f1[i], f1[i-1], :OUT_THROUGH )
+          domain_through = f1[i].get_domain_type.add_through_plugin(self, f1[i], f1[i-1], :OUT_THROUGH)
           if domain_through == nil then
-            cdl_error( "S9999 $1: going out from regin '$2' not permitted by domain '$3'" , @name, f1[i].get_name, f1[i].get_domain_type.get_name )
+            cdl_error("S9999 $1: going out from regin '$2' not permitted by domain '$3'" , @name, f1[i].get_name, f1[i].get_domain_type.get_name)
           end
         elsif out_through_list.length == 0 then
-          cdl_error( "S1118 $1: going out from region \'$2\' not permitted" , @name, f1[i].get_name )
+          cdl_error("S1118 $1: going out from region \'$2\' not permitted" , @name, f1[i].get_name)
         end
 
         out_through_list.each { |ol|
@@ -5528,7 +5528,7 @@ class Join < BDNode
       if f1[sibling_level] && f2[sibling_level] then
         dbgPrint "going from #{f1[sibling_level].get_name} to #{f2[sibling_level].get_name}\n"
         found = 0
-        region_count = f1[i].next_to_through_count( f2[sibling_level].get_name )   # to_through の region カウント
+        region_count = f1[i].next_to_through_count(f2[sibling_level].get_name)   # to_through の region カウント
         f1[sibling_level].get_to_through_list.each { |t|
           if t[0][0] == f2[sibling_level].get_name then   # region 名が一致するか ?
             if t[1] then    # plugin_name が指定されていなければ登録しない
@@ -5541,16 +5541,16 @@ class Join < BDNode
         }
         domain = f1[sibling_level].get_domain_type
         if domain then
-          domain_through = f1[sibling_level].get_domain_type.add_through_plugin( self, f1[sibling_level], f2[sibling_level], :TO_THROUGH )
+          domain_through = f1[sibling_level].get_domain_type.add_through_plugin(self, f1[sibling_level], f2[sibling_level], :TO_THROUGH)
           if domain_through == nil then
-            cdl_error( "S9999 $1: going from regin '$2' not permitted by domain'$3'" , @name, f1[sibling_level].get_name, f2[sibling_level].get_domain_type.get_name )
+            cdl_error("S9999 $1: going from regin '$2' not permitted by domain'$3'" , @name, f1[sibling_level].get_name, f2[sibling_level].get_domain_type.get_name)
           end
           if domain_through && domain_through.length > 0 then
             through = [ domain_through[0], :"Join_domain_to_through_", domain_through[1], f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count ]
             @region_through_list << through
           end
         elsif found == 0 then
-          cdl_error( "S1119 $1: going from region \'$2\' to \'$3\' not permitted" , @name, f1[sibling_level].get_name, f2[sibling_level].get_name )
+          cdl_error("S1119 $1: going from region \'$2\' to \'$3\' not permitted" , @name, f1[sibling_level].get_name, f2[sibling_level].get_name)
         end
       end
 
@@ -5566,17 +5566,17 @@ class Join < BDNode
         in_through_list = f2[i].get_in_through_list   # [ plugin_name, plugin_arg ]
         domain = f2[i].get_domain_type
         if domain then
-          domain_through = f2[i].get_domain_type.add_through_plugin( self, f2[i-1], f2[i], :IN_THROUGH )
+          domain_through = f2[i].get_domain_type.add_through_plugin(self, f2[i-1], f2[i], :IN_THROUGH)
           if domain_through == nil then
-            cdl_error( "S9999 $1: going in from regin '$2' to '$3' not permitted by domain '$4'",
-                        @name, f2[i-1].get_name, f2[i].get_name, f2[i].get_domain_type.get_name )
+            cdl_error("S9999 $1: going in from regin '$2' to '$3' not permitted by domain '$4'",
+                        @name, f2[i-1].get_name, f2[i].get_name, f2[i].get_domain_type.get_name)
           end
           if domain_through && domain_through.length > 0 then
             through = [ domain_through[0], :"Join_domain_in_through_", domain_through[1], f2[i-1], f2[i], :IN_THROUGH, region_count ]
             @region_through_list << through
           end
         elsif in_through_list.length == 0 then
-          cdl_error( "S1120 $1: going in to region \'$2\' not permitted" , @name, f2[i].get_name )
+          cdl_error("S1120 $1: going in to region \'$2\' not permitted" , @name, f2[i].get_name)
         end
         in_through_list.each { |il|
           if il[0] then    # plugin_name が指定されていなければ登録しない
@@ -5610,7 +5610,7 @@ class Join < BDNode
 
       # if get_rhs_region.is_generate? != true then  #3
       if @owner.get_region.get_link_root != get_rhs_region.get_link_root then
-        cdl_error( "S1121 \'$1\' in region \'$2\' cannot be directly joined $3 in  $4" , lhs_cell.get_name, lhs_cell.get_region.get_namespace_path.get_path_str, @rhs.to_s, get_rhs_region.get_namespace_path.get_path_str )
+        cdl_error("S1121 \'$1\' in region \'$2\' cannot be directly joined $3 in  $4" , lhs_cell.get_name, lhs_cell.get_region.get_namespace_path.get_path_str, @rhs.to_s, get_rhs_region.get_namespace_path.get_path_str)
       end
     else
       # rhs のセルが存在しなかった (既にエラー)
@@ -5626,7 +5626,7 @@ class Join < BDNode
   # set_specifier_list は、join の解析の最後で呼び出される
   # through 指定子を設定
   #  check_and_gen_through を呼出して、through 生成
-  def set_specifier_list( specifier_list )
+  def set_specifier_list(specifier_list)
 
     specifier_list.each { |s|
       case s[0]
@@ -5658,16 +5658,16 @@ class Join < BDNode
     dbgPrint "check_and_gen_through #{@owner.get_name}.#{@name}\n"
 
     if ! @definition.instance_of? Port then
-      cdl_error( "S1123 $1 : not port: \'through\' can be specified only for port" , @name )
+      cdl_error("S1123 $1 : not port: \'through\' can be specified only for port" , @name)
       return
     end
     if @cp_through_list.length > 0 then
       # is_empty? must check before is_omit?
       if @definition.get_signature && @definition.get_signature.is_empty? then
-        cdl_warning( "W9999 'through' is specified for empty signature, ignored"  )
+        cdl_warning("W9999 'through' is specified for empty signature, ignored")
         return
       elsif @definition.is_omit? then
-        cdl_warning( "W9999 'through' is specified for omitted port, ignored"  )
+        cdl_warning("W9999 'through' is specified for omitted port, ignored")
         return
       end
     end
@@ -5683,7 +5683,7 @@ class Join < BDNode
     cp_len = @cp_through_list.length
 
     if @owner.is_in_composite? && len > 0 then
-      cdl_error( "S1177 cannot specify 'through' in composite in current version" )
+      cdl_error("S1177 cannot specify 'through' in composite in current version")
       return
     end
 
@@ -5703,16 +5703,16 @@ class Join < BDNode
           next_port_name      = @through_generated_list[ i + 1 ].get_through_entry_port_name
           next_port_subscript = @through_generated_list[ i + 1 ].get_through_entry_port_subscript
         rescue Exception => evar
-          cdl_error( "S1124 $1: plugin function failed: \'get_through_entry_port_name\'" , plugin_name )
-          print_exception( evar )
+          cdl_error("S1124 $1: plugin function failed: \'get_through_entry_port_name\'" , plugin_name)
+          print_exception(evar)
           i -= 1
           next
         end
 
-        next_cell = Namespace.find( next_cell_nsp )    # 1
+        next_cell = Namespace.find(next_cell_nsp)    # 1
         if next_cell == nil then
           # p "next_cell_path: #{next_cell_nsp.get_path_str}"
-          cdl_error( "S1125 $1: not generated cell \'$2\'" , @through_generated_list[ i + 1 ].class, next_cell_nsp.get_path_str )
+          cdl_error("S1125 $1: not generated cell \'$2\'" , @through_generated_list[ i + 1 ].class, next_cell_nsp.get_path_str)
           return
         end
 
@@ -5732,7 +5732,7 @@ class Join < BDNode
         # region_through_list 部分
         # region から @cell_name.@port_name への through がないか探す
         # rp = @through_list[i][3].find_cell_port_through_plugin( @cell_name, @port_name ) #762
-        rp = @through_list[i][3].find_cell_port_through_plugin( @cell.get_global_name, @port_name, @rhs_subscript )
+        rp = @through_list[i][3].find_cell_port_through_plugin(@cell.get_global_name, @port_name, @rhs_subscript)
            # @through_list[i] と @region_through_list[i-cp_len] は同じ
         # 共用しないようにするには、見つからなかったことにすればよい
         # rp = nil
@@ -5743,9 +5743,9 @@ class Join < BDNode
       end
 
       if rp == nil then
-        plClass = load_plugin( plugin_name, ThroughPlugin )
-        if( plClass ) then
-          gen_through_cell_code_and_parse( plugin_name, i, next_cell, next_port_name, next_port_subscript, plClass )
+        plClass = load_plugin(plugin_name, ThroughPlugin)
+        if(plClass) then
+          gen_through_cell_code_and_parse(plugin_name, i, next_cell, next_port_name, next_port_subscript, plClass)
         end
       else
         # 見つかったものを共用する
@@ -5758,7 +5758,7 @@ class Join < BDNode
         if rp == nil then
           # 生成したものを region(@through_list[i][3]) のリストに追加
           # @through_list[i][3].add_cell_port_through_plugin( @cell_name, @port_name, @through_generated_list[i] ) #762
-          @through_list[i][3].add_cell_port_through_plugin( @cell.get_global_name, @port_name, @rhs_subscript, @through_generated_list[i] )
+          @through_list[i][3].add_cell_port_through_plugin(@cell.get_global_name, @port_name, @rhs_subscript, @through_generated_list[i])
         end
       end
 
@@ -5769,7 +5769,7 @@ class Join < BDNode
         if @through_generated_list[0] == nil then
           return  # plugin_object の生成に失敗している
         end
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
+        cell = Namespace.find(@through_generated_list[0].get_cell_namespace_path)    # 1
         if cell.instance_of? Cell then
           cell.set_f_ref
         end
@@ -5792,7 +5792,7 @@ class Join < BDNode
   end
 
   #=== Join# through プラグインを呼び出して CDL 生成させるとともに、import する
-  def gen_through_cell_code_and_parse( plugin_name, i, next_cell, next_port_name, next_port_subscript, plClass )
+  def gen_through_cell_code_and_parse(plugin_name, i, next_cell, next_port_name, next_port_subscript, plClass)
 
     through = @through_list[ i ]
     plugin_name           = through[ 0 ]
@@ -5819,16 +5819,16 @@ class Join < BDNode
     caller_cell = @owner
 
     begin
-      plugin_object = plClass.new( generating_cell_name.to_sym, plugin_arg.to_s,
+      plugin_object = plClass.new(generating_cell_name.to_sym, plugin_arg.to_s,
                                    next_cell, next_port_name.to_sym, next_port_subscript,
-                                   @definition.get_signature, @celltype, caller_cell )
+                                   @definition.get_signature, @celltype, caller_cell)
       plugin_object.set_locale @locale
     rescue Exception => evar
-      cdl_error( "S1126 $1: fail to new" , plugin_name )
+      cdl_error("S1126 $1: fail to new" , plugin_name)
       if @celltype && @definition.get_signature && caller_cell && next_cell then
         print "signature: #{@definition.get_signature.get_name} from: #{caller_cell.get_name} to: #{next_cell.get_name} of celltype: #{@celltype.get_name}\n"
       end
-      print_exception( evar )
+      print_exception(evar)
       return 
     end
 
@@ -5853,10 +5853,10 @@ class Join < BDNode
   # このメソッドは ThroughPlugin#initialize から呼び出される
   # plugin_object を生成する際の引数では不足する情報を追加する
   def self.set_through_info plugin_object
-    plugin_object.set_through_info( @@start_region, @@end_region, @@through_type,
+    plugin_object.set_through_info(@@start_region, @@end_region, @@through_type,
                                     @@plugin_creating_join,
                                     @@plugin_creating_join.get_cell,
-                                    @@region_count )
+                                    @@region_count)
   end
 
   def get_name
@@ -5891,16 +5891,16 @@ class Join < BDNode
       # mikan through で生成したものが root namespace 限定
       if @through_generated_list[0] then
         # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name.to_sym ] )    #1
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
+        cell = Namespace.find(@through_generated_list[0].get_cell_namespace_path)    # 1
         # cell が nil になるのはプラグインの get_cell_namespace_path が正しくないか、
         # プラグイン生成コードがエラーになっている。
         # できの悪いプラグインが多ければ、cell == nil をはじいた方がよい。
-        return cell.get_real_cell( @through_generated_list[0].get_through_entry_port_name )
+        return cell.get_real_cell(@through_generated_list[0].get_through_entry_port_name)
       else
         return nil            # generate に失敗している
       end
     elsif @cell then
-      return @cell.get_real_cell( @port_name )
+      return @cell.get_real_cell(@port_name)
     else
       # 右辺が未定義の場合 @cell は nil (既にエラー)
       return nil
@@ -5919,7 +5919,7 @@ class Join < BDNode
       # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name ] )
       if @through_generated_list[0] then
         # cell = Namespace.find( [ @through_generated_list[0].get_cell_name ] )    #1
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
+        cell = Namespace.find(@through_generated_list[0].get_cell_namespace_path)    # 1
       else
         cell = @cell            # generate に失敗している
       end
@@ -5936,7 +5936,7 @@ class Join < BDNode
   # このメソッドは get_rhs_port3 と対になっている
   def get_rhs_cell3
     if @cell then
-      return @cell.get_real_cell( @port_name )
+      return @cell.get_real_cell(@port_name)
     end
   end
 
@@ -5950,7 +5950,7 @@ class Join < BDNode
       if @through_generated_list[0] then
         # mikan through で生成したものが root namespace 限定
         # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name.to_sym ] )    #1
-        cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
+        cell = Namespace.find(@through_generated_list[0].get_cell_namespace_path)    # 1
         if cell then
           return cell.get_region
         end
@@ -5971,7 +5971,7 @@ class Join < BDNode
     # @cell.show_tree( 1 )
 
     if @cell then
-      return @cell.get_real_global_name( @port_name )
+      return @cell.get_real_global_name(@port_name)
     else
       return "NonDefinedCell?"
     end
@@ -5981,7 +5981,7 @@ class Join < BDNode
   #===  Join# 結合の右辺の受け口の名前
   #     namespace 名 + '_' + セル名 + '_' + 受け口名   （このセルが composite ならば展開後のセル名、受け口名）
   # subscript:: Integer  呼び口配列の時添数 または nil 呼び口配列でない時
-  def get_port_global_name( subscript = nil )  # 受け口名（コンポジットなら展開した内側のセル）
+  def get_port_global_name(subscript = nil)  # 受け口名（コンポジットなら展開した内側のセル）
 
     # debug
     dbgPrint "Cell get_port_global_name:  #{@cell_name}\n"
@@ -5991,15 +5991,15 @@ class Join < BDNode
 
       # mikan through で生成したものが root namespace 限定
       # cell = Namespace.find( [ "::", @through_generated_list[0].get_cell_name.to_sym ] )    #1
-      cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
+      cell = Namespace.find(@through_generated_list[0].get_cell_namespace_path)    # 1
 
       # through で挿入されたセルで、実際に接続されるセル（compositeの場合内部の)の受け口の C 言語名前
-      return cell.get_real_global_port_name( @through_generated_list[0].get_through_entry_port_name )
+      return cell.get_real_global_port_name(@through_generated_list[0].get_through_entry_port_name)
     else
 
       # 実際に接続されるセルの受け口の C 言語名前
       if @cell then
-        return @cell.get_real_global_port_name( @port_name )
+        return @cell.get_real_global_port_name(@port_name)
       else
         return "UndefinedCellsPort?"
       end
@@ -6034,12 +6034,12 @@ class Join < BDNode
     # through 指定あり？
     if @through_list[0] then
       # through で生成されたセルを探す
-      cell = Namespace.find( @through_generated_list[0].get_cell_namespace_path )    # 1
+      cell = Namespace.find(@through_generated_list[0].get_cell_namespace_path)    # 1
       # cell のプラグインで生成されたポート名のポートを探す (composite なら内部の繋がるポート)
-      return cell.get_real_port( @through_generated_list[0].get_through_entry_port_name )
+      return cell.get_real_port(@through_generated_list[0].get_through_entry_port_name)
     else
       # ポートを返す(composite なら内部の繋がるポートを返す)
-      return @cell.get_real_port( @port_name )
+      return @cell.get_real_port(@port_name)
     end
   end
 
@@ -6077,7 +6077,7 @@ class Join < BDNode
   # through は適用しないが、composite は展開した後のセルの対応するポート
   def get_rhs_port3
     if @cell then
-      return @cell.get_real_port( @port_name )
+      return @cell.get_real_port(@port_name)
     end
   end
 
@@ -6092,18 +6092,18 @@ class Join < BDNode
 
     if @subscript == nil then    # not array : initialize duplicate
       # 非配列の場合、join が重複している
-      cdl_error( "S1127 \'$1\' duplicate", @name )
+      cdl_error("S1127 \'$1\' duplicate", @name)
       # print "add_array_member2: #{@owner.get_name}\n"
 
     elsif @subscript >= 0 then
       # 添数指定ありの場合
-      if( subscript2 == nil || subscript2 < 0 ) then
+      if(subscript2 == nil || subscript2 < 0) then
         # join2 左辺は非配列または添数なし
         # 配列が不一致
-        cdl_error( "S1128 \'$1\' inconsistent array definition", @name )
+        cdl_error("S1128 \'$1\' inconsistent array definition", @name)
       elsif @array_member[subscript2] != nil then
         # 同じ添数が既に定義済み
-        cdl_error( "S1129 \'$1\' redefinition of subscript $2" ,@name, subscript2 )
+        cdl_error("S1129 \'$1\' redefinition of subscript $2" ,@name, subscript2)
       else
         # 添数の位置に要素を追加
         @array_member[subscript2] = join2.get_rhs
@@ -6113,10 +6113,10 @@ class Join < BDNode
 
     else
       # 添数指定なしの場合
-      if( subscript2 == nil || subscript2 >= 0 ) then
+      if(subscript2 == nil || subscript2 >= 0) then
         # join2 左辺は非配列または添数有
         # 配列が不一致
-        cdl_error( "S1130 \'R1\' inconsistent array definition", @name )
+        cdl_error("S1130 \'R1\' inconsistent array definition", @name)
       end
 
       # 添数なし配列の場合、配列要素を追加
@@ -6146,7 +6146,7 @@ class Join < BDNode
           # @array_member2[i] が nil になるのは optional の時と、
           # Join の initialize で無駄に @array_member2 が設定されている場合
           # 無駄に設定されているものについては、再帰的に呼び出す必要はない（clone_for_composite では対策している）
-          @array_member2[i].change_name( name )
+          @array_member2[i].change_name(name)
         end
         i += 1
       end
@@ -6154,7 +6154,7 @@ class Join < BDNode
   end
 
   # composite cell を展開したセルの結合を clone したセルの名前に変更
-  def change_rhs_port( clone_cell_list, celltype )
+  def change_rhs_port(clone_cell_list, celltype)
     dbgPrint "change_rhs_port: name=#{@name}\n"
 
     # debug
@@ -6189,7 +6189,7 @@ class Join < BDNode
     else
       # セル名を composite 内部の名前から、外部の名前に入れ替える
       # elements[1][1] = Token.new( c.get_name, nil, nil, nil )
-      elements[1][1] = NamespacePath.new( c.get_name, false, c.get_namespace )
+      elements[1][1] = NamespacePath.new(c.get_name, false, c.get_namespace)
     end
 
     @cell_name = c.get_name
@@ -6208,7 +6208,7 @@ class Join < BDNode
         # 無駄に設定されているものについては、再帰的に呼び出す必要はない（clone_for_composite では対策している）
         if @array_member2[i] != self && @array_member[i] != nil then
           dbgPrint "change_rhs array_member #{i}: #{@name}  #{@cell_name}\n"
-          @array_member2[i].change_rhs_port( clone_cell_list, celltype )
+          @array_member2[i].change_rhs_port(clone_cell_list, celltype)
         end
         i += 1
       end
@@ -6222,16 +6222,16 @@ class Join < BDNode
   # ここで置換するのは composite の attribute の C_EXP を composite セルタイプおよびセル名に置換するため
   # （内部セルの C_EXP もここで置換される）
   # @through_list などもコピーされるので、これが呼び出される前に確定する必要がある
-  def clone_for_composite( ct_name, cell_name, locale, b_need_recursive = true )
+  def clone_for_composite(ct_name, cell_name, locale, b_need_recursive = true)
     # debug
     dbgPrint "=====  clone_for_composite: #{@name} #{@cell_name} #{self}   =====\n"
     cl = self.clone
 
     if @array_member2 && b_need_recursive then
-      cl.clone_array_member( ct_name, cell_name, self, locale )
+      cl.clone_array_member(ct_name, cell_name, self, locale)
     end
 
-    rhs = CDLInitializer.clone_for_composite( @rhs, ct_name, cell_name, locale )
+    rhs = CDLInitializer.clone_for_composite(@rhs, ct_name, cell_name, locale)
     cl.change_rhs rhs
 
     # debug
@@ -6239,7 +6239,7 @@ class Join < BDNode
     return cl
   end
 
-  def clone_array_member( ct_name, cell_name, prev, locale )
+  def clone_array_member(ct_name, cell_name, prev, locale)
     # 配列のコピーを作る
     am  = @array_member.clone
     am2 = @array_member2.clone
@@ -6253,7 +6253,7 @@ class Join < BDNode
         am[i] = am2[i].get_rhs
       elsif @array_member2[i] then
 #        am2[i] = @array_member2[i].clone_for_composite( ct_name, cell_name, locale, false )
-        am2[i] = @array_member2[i].clone_for_composite( ct_name, cell_name, locale, true )
+        am2[i] = @array_member2[i].clone_for_composite(ct_name, cell_name, locale, true)
         am[i] = am2[i].get_rhs
       else
         # 以前のエラーで array_member2[i] は nil になっている
@@ -6283,7 +6283,7 @@ class Join < BDNode
   end
 
   #=== Join# clone された join の owner を変更
-  def set_cloned( owner )
+  def set_cloned(owner)
     dbgPrint "Join#set_cloned: #{@name}  prev owner: #{@owner.get_name} new owner: #{owner.get_name}\n"
     @owner = owner
     if @array_member2 then
@@ -6294,7 +6294,7 @@ class Join < BDNode
     end
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "Join: name: #{@name} owner: #{@owner.get_name} id: #{self}"
     if @subscript == nil then
@@ -6307,31 +6307,31 @@ class Join < BDNode
     end
     (indent+1).times { print "  " }
     puts "rhs: "
-    if @rhs.instance_of?( Array )then
+    if @rhs.instance_of?(Array)then
       @rhs.each{ |i|
-        if i.instance_of?( Array )then
+        if i.instance_of?(Array)then
           i.each{ |j|
-            j.show_tree( indent + 3 )
+            j.show_tree(indent + 3)
           }
         elsif i.instance_of? Symbol then
           (indent+2).times { print "  " }
           print i
           print "\n"
         else
-          i.show_tree( indent + 2 )
+          i.show_tree(indent + 2)
         end
       }
     else
-      @rhs.show_tree( indent + 2 )
+      @rhs.show_tree(indent + 2)
       (indent+1).times { print "  " }
       if @definition then
         puts "definition:"
-        @definition.show_tree( indent + 2 )
+        @definition.show_tree(indent + 2)
       else
         puts "definition: not found"
       end
     end
-    if @definition.instance_of?( Port ) then
+    if @definition.instance_of?(Port) then
       (indent+2).times { print "  " }
       if @cell then
         puts "cell: #{@cell_name} #{@cell}  port: #{@port_name}  cell_global_name: #{@cell.get_global_name}"
@@ -6345,7 +6345,7 @@ class Join < BDNode
         (indent+2).times { print "  " }
         puts "through: plugin name :  '#{t[0]}' arg : '#{t[2]}'"
         if @through_generated_list[i] then
-          @through_generated_list[i].show_tree( indent+3 )
+          @through_generated_list[i].show_tree(indent+3)
         end
         i += 1
       }
@@ -6383,7 +6383,7 @@ class ReverseJoin < BDNode
 # @cell_nsp: NamespacePath
 # @cp_name:: Symbol
 # @cp_subscript:: Expression or nil
-  def initialize( ep_name, ep_subscript, cell_nsp, cp_name, cp_subscript = nil )
+  def initialize(ep_name, ep_subscript, cell_nsp, cp_name, cp_subscript = nil)
     super()
     @ep_name = ep_name
     @ep_subscript = ep_subscript
@@ -6426,17 +6426,17 @@ class CompositeCelltypeJoin < BDNode
   #
   #     CompositeCelltypeJoin と cell の名前が一致するかチェックする
   #     port_decl が指定された場合は、現状使われていない
-  def match?( cell, port_decl = nil )
+  def match?(cell, port_decl = nil)
 
     # debug
     if port_decl
-      dbgPrint(  "match?"  )
-      dbgPrintf( "  @cell:      %-20s      %08x\n", @cell.get_name, @cell.object_id )
-      dbgPrintf( "  @port_decl: %-20s      %08x\n", @port_decl.get_name, @port_decl.object_id )
-      dbgPrintf( "  cell:       %-20s      %08x\n", cell.get_name, cell.object_id )
-      dbgPrintf( "  port_decl:  %-20s      %08x\n", port_decl.get_name, port_decl.object_id )
-      dbgPrint(  "  cell_name: #{cell.get_name.class}=#{cell.get_name} cell_elem_name: #{port_decl.get_name.class}=#{port_decl.get_name}\n" )
-      dbgPrint(  "  @cell_name: #{@cell.get_name.class}=#{@cell.get_name} cell_elem_name: #{@port_decl.get_name.class}=#{@port_decl.get_name}\n" )
+      dbgPrint("match?")
+      dbgPrintf("  @cell:      %-20s      %08x\n", @cell.get_name, @cell.object_id)
+      dbgPrintf("  @port_decl: %-20s      %08x\n", @port_decl.get_name, @port_decl.object_id)
+      dbgPrintf("  cell:       %-20s      %08x\n", cell.get_name, cell.object_id)
+      dbgPrintf("  port_decl:  %-20s      %08x\n", port_decl.get_name, port_decl.object_id)
+      dbgPrint("  cell_name: #{cell.get_name.class}=#{cell.get_name} cell_elem_name: #{port_decl.get_name.class}=#{port_decl.get_name}\n")
+      dbgPrint("  @cell_name: #{@cell.get_name.class}=#{@cell.get_name} cell_elem_name: #{@port_decl.get_name.class}=#{@port_decl.get_name}\n")
 
     end
 
@@ -6454,7 +6454,7 @@ class CompositeCelltypeJoin < BDNode
     return if get_port_type != :CALL
 
     if @cell.get_join_list.get_item @internal_cell_elem_name then
-      cdl_error( "S1131 \'$1.$2\' has duplicate initializer" , @internal_cell_name, @internal_cell_elem_name )
+      cdl_error("S1131 \'$1.$2\' has duplicate initializer" , @internal_cell_name, @internal_cell_elem_name)
     end
   end
 
@@ -6564,7 +6564,7 @@ class CompositeCelltypeJoin < BDNode
     end
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "CompositeCelltypeJoin: export_name: #{@export_name} #{self}"
     (indent+1).times { print "  " }
@@ -6572,7 +6572,7 @@ class CompositeCelltypeJoin < BDNode
     (indent+1).times { print "  " }
     puts "internal_cell_elem_name: #{@internal_cell_elem_name}"
     if @port_decl then
-      @port_decl.show_tree( indent + 1 )
+      @port_decl.show_tree(indent + 1)
     end
   end
 end
@@ -6586,7 +6586,7 @@ class Factory < BDNode
 
   @@f_celltype = false
 
-  def initialize( name, file_name, format, arg_list )
+  def initialize(name, file_name, format, arg_list)
     super()
     @f_celltype = @@f_celltype
 
@@ -6598,18 +6598,18 @@ class Factory < BDNode
       # write 関数の第一引数：出力先ファイル名
         # 式を評価する（通常単一の文字列であるから、単一の文字列が返される）
       @file_name = file_name.eval_const(nil).val  # file_name : Expression
-      if ! @file_name.instance_of?( String ) then
+      if ! @file_name.instance_of?(String) then
         # 文字列定数ではなかった
-        cdl_error( "S1132 $1: 1st parameter is not string(file name)" , @name )
+        cdl_error("S1132 $1: 1st parameter is not string(file name)" , @name)
         @file_name = nil
       end
 
       # write 関数の第二引数：フォーマット文字列
       @format    = format.eval_const(nil).val     # format : Expression
         # 式を評価する（通常単一の文字列であるから、単一の文字列が返される）
-      if ! @format.instance_of?( String ) then
+      if ! @format.instance_of?(String) then
         # 文字列定数ではなかった
-        cdl_error( "S1133 $1: 2nd parameter is not string(fromat)" , @name )
+        cdl_error("S1133 $1: 2nd parameter is not string(fromat)" , @name)
         @format = nil
       end
 
@@ -6617,18 +6617,18 @@ class Factory < BDNode
       @arg_list = arg_list
 
     else
-      cdl_error( "S1134 $1: unknown factory function" , name )
+      cdl_error("S1134 $1: unknown factory function" , name)
     end
-    Celltype.new_factory( self )
+    Celltype.new_factory(self)
   end
 
-  def check_arg( celltype )
+  def check_arg(celltype)
     if ! @arg_list then
       return
     end
 
     if @f_celltype then
-      cdl_error( "S1135 celltype factory can\'t have parameter(s)"  )
+      cdl_error("S1135 celltype factory can\'t have parameter(s)")
       return
     end
 
@@ -6636,21 +6636,21 @@ class Factory < BDNode
 
       case elements[0]
       when :IDENTIFIER  # 1
-        obj = celltype.find( elements[1] )
+        obj = celltype.find(elements[1])
         if obj == nil then
-          cdl_error( "S1136 \'$1\': not found" , elements[1] )
-        elsif ! obj.instance_of?( Decl ) || obj.get_kind != :ATTRIBUTE then
-          cdl_error( "S1137 \'$1\': not attribute" , elements[1] )
+          cdl_error("S1136 \'$1\': not found" , elements[1])
+        elsif ! obj.instance_of?(Decl) || obj.get_kind != :ATTRIBUTE then
+          cdl_error("S1137 \'$1\': not attribute" , elements[1])
         end
       when :STRING_LITERAL
       else
-        cdl_error( "S1138 internal error Factory.check_arg()"  )
+        cdl_error("S1138 internal error Factory.check_arg()")
       end
 
     }
   end
 
-  def self.set_f_celltype( f_celltype )
+  def self.set_f_celltype(f_celltype)
     @@f_celltype = f_celltype
   end
 
@@ -6674,7 +6674,7 @@ class Factory < BDNode
     @arg_list
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "Factory: name: #{@name}"
     if @arg_list then
@@ -6705,16 +6705,16 @@ class DomainType < Node
   # ルートリージョンは option = "OutOfDomain" で登録される (domain 指定が無ければ登録されない)
   @@domain_regions = { }  # { :domain_type => [ region, ... ] }
 
-  def initialize( region, name, option )
+  def initialize(region, name, option)
     super()
     @name = name
     @plugin_name = (name.to_s + "Plugin").to_sym
-    plClass = load_plugin( @plugin_name, DomainPlugin )
+    plClass = load_plugin(@plugin_name, DomainPlugin)
     @region = region
     @option = option
 
     if @@domain_regions[ name ] then
-      if ! @@domain_regions[ name ].include?( region ) then
+      if ! @@domain_regions[ name ].include?(region) then
         @@domain_regions[ name ] << region
       end
     else
@@ -6726,19 +6726,19 @@ class DomainType < Node
     if ! @plugin then
       pluginClass = Object.const_get @plugin_name
       return if pluginClass == nil
-      @plugin = pluginClass.new( @region, @name, @option )
+      @plugin = pluginClass.new(@region, @name, @option)
       @plugin.set_locale @locale
     end
   end
 
-  def add_through_plugin( join, from_region, to_region, through_type )
+  def add_through_plugin(join, from_region, to_region, through_type)
     # print( "DOMAIN: add_through_plugin: from=#{from_region.get_name}#{join.get_owner.get_name}.#{join.get_name} to=#{to_region}#{join.get_cell.get_name}.#{join.get_port_name} through_type=#{through_type}\n" )
-    return @plugin.add_through_plugin( join, from_region, to_region, through_type )
+    return @plugin.add_through_plugin(join, from_region, to_region, through_type)
   end
 
-  def joinable?( from_region, to_region, through_type )
+  def joinable?(from_region, to_region, through_type)
     # print( "DOMAIN: joinable? from_region=#{from_region.get_name} to_region=#{to_region} through_type=#{through_type}\n" )
-    return @plugin.joinable?( from_region, to_region, through_type )
+    return @plugin.joinable?(from_region, to_region, through_type)
   end
 
   def get_name
@@ -6765,8 +6765,8 @@ class DomainType < Node
     @plugin.get_kind
   end
 
-  def show_tree( indent )
-    (indent+1).times { print( "  " ) }
+  def show_tree(indent)
+    (indent+1).times { print("  ") }
     puts "domain: name=#{@name} plugin=#{@plugin_name} option=#{@option}"
   end
 end
@@ -6806,11 +6806,11 @@ class Region < Namespace
 
   @@link_roots = []
 
-  def initialize( name )
+  def initialize(name)
     # mikan name の Namespace 修飾
     # object = Namespace.find( [ name ] )   # 親まで捜しにいく
     if name != "::" then
-      object = Namespace.get_current.find( name )    # 1
+      object = Namespace.get_current.find(name)    # 1
     else
       # root リージョン
       object = nil
@@ -6826,7 +6826,7 @@ class Region < Namespace
     if @@domain_name then
       dbgPrint "Region=#{name} domain_type=#{@@domain_name} option=#{@@domain_option}\n"
       domain_option = CDLString.remove_dquote @@domain_option.to_s
-      @domain_type = DomainType.new( self, @@domain_name, domain_option )
+      @domain_type = DomainType.new(self, @@domain_name, domain_option)
       @@domain_name       = nil
       @@domain_option     = nil
     else
@@ -6843,10 +6843,10 @@ class Region < Namespace
     @out_through_count = -1
     @to_through_count = {}
 
-    super( name )
+    super(name)
     if object then
 
-      if object.instance_of?( Region ) then
+      if object.instance_of?(Region) then
         dbgPrint "Region.new: re-appear #{@name}\n"
 
         # # Region path が前回出現と一致するか？
@@ -6863,9 +6863,9 @@ class Region < Namespace
         # @@region_stack[@@region_stack_sp] = object
 
         # 再出現時に specifier が指定されているか？
-        if( @in_through_list.length != 0 || @out_through_list.length != 0 || @to_through_list.length != 0 ||
-            @region_type != nil || @domain_type != nil )then
-          cdl_error( "S1140 $1: region specifier must place at first appearence" , name )
+        if(@in_through_list.length != 0 || @out_through_list.length != 0 || @to_through_list.length != 0 ||
+            @region_type != nil || @domain_type != nil)then
+          cdl_error("S1140 $1: region specifier must place at first appearence" , name)
         end
         return
 
@@ -6873,7 +6873,7 @@ class Region < Namespace
         # エラー用ダミー定義
 
         # 異なる同名のオブジェクトが定義済み
-        cdl_error( "S1141 $1 duplication, previous one : $2" , name, object.class )
+        cdl_error("S1141 $1 duplication, previous one : $2" , name, object.class)
         # @@region_stack[@@region_stack_sp] = self    # エラー時暫定 region
       end
     else
@@ -6901,30 +6901,30 @@ class Region < Namespace
     Namespace.get_current.end_of_parse
   end
 
-  def self.new_in_through( plugin_name = nil, plugin_arg = nil )
+  def self.new_in_through(plugin_name = nil, plugin_arg = nil)
     @@in_through_list << [ plugin_name, plugin_arg ]
   end
 
-  def self.new_out_through( plugin_name = nil, plugin_arg = nil )
+  def self.new_out_through(plugin_name = nil, plugin_arg = nil)
     @@out_through_list << [ plugin_name, plugin_arg ]
   end
 
-  def self.new_to_through( dst_region, plugin_name, plugin_arg )
+  def self.new_to_through(dst_region, plugin_name, plugin_arg)
     # p "New to_through #{dst_region}"
     @@to_through_list  << [ dst_region, plugin_name, plugin_arg ]
   end
 
-  def self.set_type( type, param = nil )
+  def self.set_type(type, param = nil)
     if @@region_type then
-      Generator.error( "S1178 $1 region type specifier duplicate, previous $2", type, @@region_type )
+      Generator.error("S1178 $1 region type specifier duplicate, previous $2", type, @@region_type)
     end
     @@region_type = type
     @@region_type_param = param
   end
 
-  def self.set_domain( name, option )
+  def self.set_domain(name, option)
     if @@domain_name then
-      Generator.error( "S9999 $1 domain specifier duplicate, previous $2", type, @@region_type )
+      Generator.error("S9999 $1 domain specifier duplicate, previous $2", type, @@region_type)
     end
     @@domain_name = name
     @@domain_option = option
@@ -6963,7 +6963,7 @@ class Region < Namespace
     end
 
     if @owner then
-      @family_line = ( @owner.get_family_line.dup ) << self
+      @family_line = (@owner.get_family_line.dup) << self
     else
       @family_line = [ self ]    # root region
     end
@@ -7007,10 +7007,10 @@ class Region < Namespace
     if @region_type == :NODE then
       if @domain_type then
         if @domain_type.get_name != domain_type.get_name then
-          cdl_error( "S9999 '$1' node root cannot belong to both $2 and $3", @name, @domain_type.get_name, domain_type.get_name )
+          cdl_error("S9999 '$1' node root cannot belong to both $2 and $3", @name, @domain_type.get_name, domain_type.get_name)
         end
       else
-        @domain_type = DomainType.new( self, domain_type.get_name, "OutOfDomain" )
+        @domain_type = DomainType.new(self, domain_type.get_name, "OutOfDomain")
         @domain_type.create_domain_plugin
       end
     elsif @domain_type == nil then
@@ -7081,7 +7081,7 @@ class Region < Namespace
     @out_through_count += 1
   end
 
-  def next_to_through_count( symRegionName )
+  def next_to_through_count(symRegionName)
     if @to_through_count[ symRegionName ] == nil then
       @to_through_count[ symRegionName ] = 0
     else
@@ -7106,14 +7106,14 @@ class Region < Namespace
 
   #=== Region# through プラグインで、この region から cell_name.port_name へのプラグインオブジェクトを登録
   # mikan namesppace 対応 (cell_name)
-  def add_cell_port_through_plugin( cell_name, port_name, subscript, through_plugin_object )
+  def add_cell_port_through_plugin(cell_name, port_name, subscript, through_plugin_object)
     if subscript then
       subscript = '[' + subscript.to_s + ']'
     end
     @cell_port_throug_plugin_list[ "#{cell_name}.#{port_name}#{subscript}" ] = through_plugin_object
   end
 
-  def find_cell_port_through_plugin( cell_name, port_name, subscript )
+  def find_cell_port_through_plugin(cell_name, port_name, subscript)
     if subscript then
       subscript = '[' + subscript.to_s + ']'
     end
@@ -7129,7 +7129,7 @@ class Region < Namespace
   #=== Region# to_region への距離（unreachable な場合 nil)
   # mikan Cell#check_region とRegion へたどり着くまでための処理に共通性が高い
   # region#distance は require で用いられる
-  def distance( to_region )
+  def distance(to_region)
 
     r1 = self                   # 出発 region
     r2 = to_region              # 目的 region
@@ -7145,8 +7145,8 @@ class Region < Namespace
 
       # 不一致になるところ（兄弟）を探す
       i = 1  # i = 0 は :RootRegion なので必ず一致
-      while( i < len1 && i < len2 )
-        if( f1[i] != f2[i] )then
+      while(i < len1 && i < len2)
+        if(f1[i] != f2[i])then
           break
         end
         i += 1
@@ -7166,7 +7166,7 @@ class Region < Namespace
         domain = f1[i].get_domain_type
         domain_ok = false
         if domain then
-          if ! f1[i].get_domain_type.joinable?( f1[i], f1[i-1], :OUT_THROUGH ) then
+          if ! f1[i].get_domain_type.joinable?(f1[i], f1[i-1], :OUT_THROUGH) then
             return nil
           end
           domain_ok = true
@@ -7188,7 +7188,7 @@ class Region < Namespace
         domain = f1[sibling_level].get_domain_type
         domain_ok = false
         if domain then
-          if ! f1[i].get_domain_type.joinable?( f1[i], f1[i-1], :TO_THROUGH ) then
+          if ! f1[i].get_domain_type.joinable?(f1[i], f1[i-1], :TO_THROUGH) then
             return nil
           end
           domain_ok = true
@@ -7215,7 +7215,7 @@ class Region < Namespace
         domain = f2[i].get_domain_type
         domain_ok = false
         if domain then
-          if ! f2[i].get_domain_type.joinable?( f2[i-1], f2[i], :IN_THROUGH ) then
+          if ! f2[i].get_domain_type.joinable?(f2[i-1], f2[i], :IN_THROUGH) then
             return nil
           end
           domain_ok = true
@@ -7236,14 +7236,14 @@ class Region < Namespace
     return dist
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     super
-    (indent+1).times { print( "  " ) }
+    (indent+1).times { print("  ") }
     puts "path: #{get_path_string}"
-    (indent+1).times { print( "  " ) }
+    (indent+1).times { print("  ") }
     puts "namespace: #{@namespace ? @namespace.get_name : "nil"}  owner: #{@owner.class}.#{@owner ? @owner.get_name : "nil"}"
     if @domain
-      @domain.show_tree( indent+1 )
+      @domain.show_tree(indent+1)
     end
   end
 end
@@ -7264,7 +7264,7 @@ module Importable
       else
         pt = "#{path}/#{file}"
       end
-      if File.exist?( pt )
+      if File.exist?(pt)
         if ! $base_dir[ Dir.pwd ]
           $base_dir[ Dir.pwd ] = true
         end
@@ -7287,7 +7287,7 @@ module Importable
         begin
           Dir.chdir $run_dir
           Dir.chdir bd
-          if File.exist?( pt )
+          if File.exist?(pt)
             if $verbose then
               print "#{file} is found in #{bd}/#{path}\n"
             end
@@ -7328,7 +7328,7 @@ class Import_C < Node
   #=== Import_C# import_C の生成（ヘッダファイルを取込む）
   # header:: Token : import_C の第一引数文字列リテラルトークン
   # define:: Token : import_C の第二引数文字列リテラルトークン
-  def initialize( header, define = nil )
+  def initialize(header, define = nil)
     super()
     # ヘッダファイル名文字列から前後の "" を取り除く
     # header = header.to_s.gsub( /\A"(.*)"\z/, '\1' )
@@ -7341,10 +7341,10 @@ class Import_C < Node
       def_opt = CDLString.remove_dquote define.to_s
 
       # "," を -D に置き換え
-      def_opt = def_opt.gsub( /,/, " -D " )
+      def_opt = def_opt.gsub(/,/, " -D ")
 
       # 先頭に -D を挿入 # mikan 不適切な define 入力があった場合、CPP 時にエラー
-      def_opt = def_opt.gsub( /^/, "-D " )
+      def_opt = def_opt.gsub(/^/, "-D ")
 
     end
 
@@ -7388,7 +7388,7 @@ class Import_C < Node
     if found == false then
 =end
     if header_path == nil then
-      cdl_error( "S1142 $1 not found in search path" , header )
+      cdl_error("S1142 $1 not found in search path" , header)
       return
     end
 
@@ -7403,10 +7403,10 @@ class Import_C < Node
     }
 
     # 読込み済み？
-    if( @@header_list[ header ] ) then
+    if(@@header_list[ header ]) then
       # 第二引数 define が以前と異なる
       if @@define_list[ header ].to_s != define.to_s then
-        cdl_error( "S1143 import_C: arg2: mismatch with previous one"  )
+        cdl_error("S1143 import_C: arg2: mismatch with previous one")
       end
       # いずれにせよ読み込まない
       return
@@ -7423,32 +7423,32 @@ class Import_C < Node
 
     begin
       tmp_C = "#{$gen}/tmp_C_src.c"
-      file = File.open( tmp_C, "w" )
+      file = File.open(tmp_C, "w")
     rescue => evar
-      cdl_error( "S1144 $1: temporary C source: open error" , tmp_C )
-      print_exception( evar )
+      cdl_error("S1144 $1: temporary C source: open error" , tmp_C)
+      print_exception(evar)
     end
 
     begin
       print_defines file
 
-      file.print( "#include \"#{header}\"\n" )
+      file.print("#include \"#{header}\"\n")
     rescue => evar
-      cdl_error( "S1145 $1: temporary C source: writing error" , tmp_C )
-      print_exception( evar )
+      cdl_error("S1145 $1: temporary C source: writing error" , tmp_C)
+      print_exception(evar)
     ensure
       file.close
     end
 
     # CPP 出力用 tmp ファイル名
-    tmp_header = header.gsub( /\//, "_" )
+    tmp_header = header.gsub(/\//, "_")
     tmp_header = "#{$gen}/tmp_#{tmp_header}"
 
     # CPP コマンドラインを作成
     cmd = "#{$cpp} #{def_opt} #{include_opt} #{tmp_C}"
 
     begin
-      if( $verbose )then
+      if($verbose)then
         puts "CPP: #{cmd}"
       end
 
@@ -7456,31 +7456,31 @@ class Import_C < Node
           # cmd は cygwin/Linux では bash(sh) 経由で実行される
           # Exerb 版では cmd.exe 経由で実行される
           # この差は引き数の (), $, % などシェルの特別な文字の評価に現れるので注意
-          cpp = IO.popen( cmd, "r:ASCII-8BIT" )
+          cpp = IO.popen(cmd, "r:ASCII-8BIT")
       begin
         tmp_file = nil
-        tmp_file = File.open( tmp_header, "w:ASCII-8BIT" )
+        tmp_file = File.open(tmp_header, "w:ASCII-8BIT")
         cpp.each { |line|
-          line = line.gsub( /^#(.*)$/, '/* \1 */' )
-          tmp_file.puts( line )
+          line = line.gsub(/^#(.*)$/, '/* \1 */')
+          tmp_file.puts(line)
         }
       rescue => evar
-        cdl_error( "S1146 $1: error occured while CPP" , header )
-        print_exception( evar )
+        cdl_error("S1146 $1: error occured while CPP" , header)
+        print_exception(evar)
       ensure
         tmp_file.close if tmp_file    # mikan File.open に失敗した時 tmp_file == nil は保証されている ?
         cpp.close
       end
     rescue => evar
-      cdl_error( "S1147 $1: popen for CPP failed" , header )
-      print_exception( evar )
+      cdl_error("S1147 $1: popen for CPP failed" , header)
+      print_exception(evar)
     end
 
     # C 言語のパーサインスタンスを生成
     c_parser = C_parser.new
 
     # tmp_header をパース
-    c_parser.parse( [tmp_header] )
+    c_parser.parse([tmp_header])
 
     # 終期化　パーサスタックを戻す
     c_parser.finalize
@@ -7575,13 +7575,13 @@ class Import < Node
   #=== Import# import を行う
   # cdl::      string   cdl へのパス．"" で囲まれていることを仮定
   # b_reuse::  bool     true: template を生成しない
-  def initialize( cdl, b_reuse = false, b_imported = true )
+  def initialize(cdl, b_reuse = false, b_imported = true)
     Import.push self
     @b_imported = b_imported
     super()
     @@current_import = self
     # ヘッダファイル名文字列から前後の "", <> を取り除くn
-    @cdl = cdl.to_s.gsub( /\A["<](.*)[">]\z/, '\1' )
+    @cdl = cdl.to_s.gsub(/\A["<](.*)[">]\z/, '\1')
 
     # サーチパスから探す
     found = false
@@ -7590,7 +7590,7 @@ class Import < Node
     @b_reuse = b_reuse
     @b_reuse_real = @b_reuse || Generator.is_reuse?
 
-    if( Generator.get_plugin ) &&( File.exist? "#{$gen}/#{@cdl}" ) then
+    if(Generator.get_plugin) &&(File.exist? "#{$gen}/#{@cdl}") then
       @cdl_path = "#{$gen}/#{@cdl}"
       found = true
     else
@@ -7602,21 +7602,21 @@ class Import < Node
     end
 
     if found == false then
-      cdl_error( "S1148 $1 not found in search path" , @cdl )
+      cdl_error("S1148 $1 not found in search path" , @cdl)
       return
     end
 
     # 読込み済みなら、読込まない
-    prev = @@import_list[ File.expand_path( @cdl_path ) ]
-    if( prev ) then
+    prev = @@import_list[ File.expand_path(@cdl_path) ]
+    if(prev) then
       if prev.is_reuse_real? != @b_reuse_real then
-        cdl_warning( "W1008 $1: reuse designation mismatch with previous import" , @cdl )
+        cdl_warning("W1008 $1: reuse designation mismatch with previous import" , @cdl)
       end
       return
     end
 
     # import リストを記録
-    @@import_list[ File.expand_path( @cdl_path ) ] = self
+    @@import_list[ File.expand_path(@cdl_path) ] = self
 
     # plugin から import されている場合
     plugin = Generator.get_plugin
@@ -7631,7 +7631,7 @@ class Import < Node
     parser.set_reuse @b_reuse_real
 
     # cdl をパース
-    parser.parse( [@cdl_path] )
+    parser.parse([@cdl_path])
 
     # 終期化　パーサスタックを戻す
     parser.finalize
@@ -7674,7 +7674,7 @@ class Generate < Node
 
   include PluginModule
 
-  def initialize( plugin_name, object_nsp, option )
+  def initialize(plugin_name, object_nsp, option)
     super()
     @plugin_name = plugin_name
     @object_nsp = object_nsp
@@ -7684,19 +7684,19 @@ class Generate < Node
 
     dbgPrint "generate: #{plugin_name} #{object_nsp.to_s} option=#{option}\n"
 
-    object = Namespace.find( object_nsp )
-    if object.kind_of?( Signature ) ||
-       object.kind_of?( Celltype ) ||
-       object.kind_of?( CompositeCelltype ) ||
-       object.kind_of?( Cell )then
-      @plugin_object = object.apply_plugin( @plugin_name, @option )
+    object = Namespace.find(object_nsp)
+    if object.kind_of?(Signature) ||
+       object.kind_of?(Celltype) ||
+       object.kind_of?(CompositeCelltype) ||
+       object.kind_of?(Cell)then
+      @plugin_object = object.apply_plugin(@plugin_name, @option)
     elsif object then
       # V1.5.0 以前の仕様では、signature のみ可能だった
 #      cdl_error( "S1149 $1 not signature" , signature_nsp )
-      cdl_error( "S9999 generate: '$1' neither signature, celltype nor cell", object_nsp )
+      cdl_error("S9999 generate: '$1' neither signature, celltype nor cell", object_nsp)
       return
     else
-      cdl_error( "S9999 generate: '$1' not found", object_nsp )
+      cdl_error("S9999 generate: '$1' not found", object_nsp)
     end
   end
 end
@@ -7711,7 +7711,7 @@ class NamespacePath < Node
   # ident::Symbol           最初の名前, ただし "::" のみの場合は String
   # b_absolute:Bool         "::" で始まっている場合 true
   # namespace::Namespace    b_absolute = false かつ、構文解釈段階以外で呼び出す場合は、必ず指定すること 
-  def initialize( ident, b_absolute, namespace = nil )
+  def initialize(ident, b_absolute, namespace = nil)
     super()
 
     if ident == "::" then   # RootNamespace
@@ -7739,17 +7739,17 @@ class NamespacePath < Node
   #=== NamespacePath# append する
   # RETURN self
   # このメソッドは、元の NamespacePath オブジェクトを変形して返す
-  def append!( ident )
+  def append!(ident)
     @path << ident
     return self
   end
   #=== NamespacePath# append する
   # このメソッドは、元の NamespacePath オブジェクトを変形しない
   # RETURN:: 複製した NamespacePath
-  def append( ident )
+  def append(ident)
     cl = self.clone
     cl.set_clone
-    cl.append!( ident )
+    cl.append!(ident)
     return cl
   end
 
@@ -7857,13 +7857,13 @@ class NamespacePath < Node
   # NamespacePath は通常構文解析されて作成される
   # このメソッドは、オプションなどで指定される文字列を分解して NamespacePath を生成するのに用いる
   # チェックはゆるい。不適切なパス指定は、不適切な NamespacePath が生成される
-  def self.analyze( path_str, b_force_absolute = false )
+  def self.analyze(path_str, b_force_absolute = false)
 
     if path_str == "::" then
-      return self.new( "::", true )
+      return self.new("::", true)
     end
 
-    pa = path_str.split( "::" )
+    pa = path_str.split("::")
     if pa[0] == "" then
       pa.shift
       b_absolute = true
@@ -7876,9 +7876,9 @@ class NamespacePath < Node
     end
 
     if pa[0] then
-      nsp = self.new( pa[0].to_sym, b_absolute )
+      nsp = self.new(pa[0].to_sym, b_absolute)
     else
-      nsp = self.new( "::", b_absolute )
+      nsp = self.new("::", b_absolute)
     end
     pa.shift
 
@@ -7899,18 +7899,18 @@ end
 if $unit_test then
   root_namespace = Namespace.new("::")
 
-  puts( "===== Unit Test: NamespacePath ===== (componentobj.rb)")
-  a = NamespacePath.new( :"ABC", true )
-  printf( "Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name )
+  puts("===== Unit Test: NamespacePath ===== (componentobj.rb)")
+  a = NamespacePath.new(:"ABC", true)
+  printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
-  a.append( :"DEF" )
-  printf( "Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name )
+  a.append(:"DEF")
+  printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
-  a = NamespacePath.new( :"abc", false )
-  printf( "Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name )
+  a = NamespacePath.new(:"abc", false)
+  printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
-  a.append( :"def" )
-  printf( "Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name )
+  a.append(:"def")
+  printf("Path: %-10s global_name: %s\n", a.get_path_str, a.get_global_name)
 
   puts ""
 end

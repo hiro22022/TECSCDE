@@ -43,7 +43,7 @@ class RepeatJoinPlugin < CellPlugin
     "count" => Proc.new { |obj,rhs| obj.set_count rhs }
   }
 
-  def initialize( cell, option )
+  def initialize(cell, option)
     super
     print "RepeatJoinPlugin: #{@cell.get_name}\n"
     # cell.show_tree 0
@@ -89,7 +89,7 @@ class RepeatJoinPlugin < CellPlugin
 
           if b_rhs_name_count then
             if n_digits - count_str.length > 0 then
-              leading_zero = "0" * ( n_digits - count_str.length )
+              leading_zero = "0" * (n_digits - count_str.length)
             else
               leading_zero = ""
             end
@@ -100,8 +100,8 @@ class RepeatJoinPlugin < CellPlugin
           end
           rhs_nsp2 = rhs_nsp.change_name_clone rhs_name_real.to_sym
 
-          rhs = Expression.create_cell_join_expression( rhs_nsp2, rhs_subscript, rhs_port_name )
-          j2 = Join.new( j.get_name, count, rhs )
+          rhs = Expression.create_cell_join_expression(rhs_nsp2, rhs_subscript, rhs_port_name)
+          j2 = Join.new(j.get_name, count, rhs)
           cell.new_join j2
 
           count += 1
@@ -115,11 +115,11 @@ class RepeatJoinPlugin < CellPlugin
     if rhs =~ /\A\d+\z/
       @count = rhs.to_i
     else
-      nsp = NamespacePath.new( rhs.to_sym, true )
-      expr = Expression.create_single_identifier( nsp, nil )
-      res = expr.eval_const( nil )
+      nsp = NamespacePath.new(rhs.to_sym, true)
+      expr = Expression.create_single_identifier(nsp, nil)
+      res = expr.eval_const(nil)
       if res == nil then
-        cdl_error( "count value ($1): not single identifier or integer number", rhs.to_s )
+        cdl_error("count value ($1): not single identifier or integer number", rhs.to_s)
         @count = 0
       else
         @count = res

@@ -63,7 +63,7 @@ class RPCPlugin < ThroughPlugin
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
-  def initialize( cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell )
+  def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
     super
     @b_noClientSemaphore = false
     @semaphoreCelltype = "tSemaphore"
@@ -78,7 +78,7 @@ class RPCPlugin < ThroughPlugin
 
     if @signature.need_PPAllocator? then
       if @PPAllocatorSize == nil then
-        cdl_error( "PPAllocatorSize must be speicified for oneway [in] array" )
+        cdl_error("PPAllocatorSize must be speicified for oneway [in] array")
         # @PPAllocatorSize = 0   # 仮に 0 としておく (cdl の構文エラーを避けるため)
       end
     end
@@ -95,7 +95,7 @@ class RPCPlugin < ThroughPlugin
   end
 
   #=== plugin の宣言コード (celltype の定義) 生成
-  def gen_plugin_decl_code( file )
+  def gen_plugin_decl_code(file)
 
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
@@ -131,7 +131,7 @@ EOT
       semaphore2 = ""
     end
 
-    f = CFile.open( @rpc_channel_celltype_file_name, "w" )
+    f = CFile.open(@rpc_channel_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     f.print <<EOT
@@ -179,14 +179,14 @@ EOT
   #===  through cell コードを生成
   #
   #
-  def gen_through_cell_code( file )
+  def gen_through_cell_code(file)
 
-    gen_plugin_decl_code( file )
+    gen_plugin_decl_code(file)
 
     # セルを探す
     # path =["::",@next_cell.get_global_name]
     # cell = Namespace.find( path )
-    cell = Namespace.find( @next_cell.get_namespace_path )
+    cell = Namespace.find(@next_cell.get_namespace_path)
 
     file.print <<EOT
 import( "#{@rpc_channel_celltype_file_name}" );
@@ -254,17 +254,17 @@ EOT
     elsif rhs == :false then
       @b_noClientSemaphore = false
     else
-      cdl_error( "RPCPlugin: specify true or false for noClientSemaphore" )
+      cdl_error("RPCPlugin: specify true or false for noClientSemaphore")
     end
   end
 
   #=== プラグイン引数 semaphoreCelltype のチェック
   def set_semaphoreCelltype rhs
     @semaphoreCelltype = rhs.to_sym
-    nsp = NamespacePath.analyze( @semaphoreCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: semaphoreCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: semaphoreCelltype '#{rhs}' not celltype or not defined")
     end
   end
 end

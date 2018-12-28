@@ -56,7 +56,7 @@ class Plugin < Node
   # set_locale が呼び出されるまで @error_backlog に保存し保留する
   def cdl_error *arg
     if @locale then
-      Generator.error2( @locale, *arg )
+      Generator.error2(@locale, *arg)
     else
       @error_backlog << arg
     end
@@ -69,7 +69,7 @@ class Plugin < Node
   def set_locale locale
     @locale = locale
     @error_backlog.each { |arg|
-      Generator.error2( locale, *arg )
+      Generator.error2(locale, *arg)
     }
   end
 
@@ -92,7 +92,7 @@ class Plugin < Node
   # gen_ep_func 定義   ⇒ テンプレートではない、セルタイプコード(tCelltype.c)を生成 
   # gen_ep_func 未定義 ⇒ テンプレート(tCelltype_templ.c)を生成
   def gen_ep_func?
-    self.class.method_defined?( :gen_ep_func_body )
+    self.class.method_defined?(:gen_ep_func_body)
   end
 
   #===  受け口関数の本体(C言語)を生成する
@@ -118,7 +118,7 @@ class Plugin < Node
   # b_singleton::    bool        true if singleton
   # ct_name::        Symbol
   # global_ct_name:: string
-  def gen_preamble( file, b_singleton, ct_name, global_ct_name )
+  def gen_preamble(file, b_singleton, ct_name, global_ct_name)
     # デフォルトでは何も出力しない
   end
 
@@ -129,7 +129,7 @@ class Plugin < Node
   # b_singleton::    bool        true if singleton
   # ct_name::        Symbol
   # global_ct_name:: string
-  def gen_postamble( file, b_singleton, ct_name, global_ct_name )
+  def gen_postamble(file, b_singleton, ct_name, global_ct_name)
     # デフォルトでは何も出力しない
   end
 
@@ -149,34 +149,34 @@ class Plugin < Node
     arg = @plugin_arg_str.dup
 
     # 改行を消す
-    arg.gsub!( /\\\n/, "" )
+    arg.gsub!(/\\\n/, "")
 
     while arg != ""
 
       # 前の空白読み飛ばす
-      arg.sub!( /\A\s*(?:\\\n)*\s*(.*)/, '\1')
+      arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
       #  識別子取得
       if arg =~ /\A[a-zA-Z_]\w*/ then
         ident = $~
         arg = $'
       else
-        cdl_error( "P1001 plugin arg: cannot find identifier in $1" , arg )
+        cdl_error("P1001 plugin arg: cannot find identifier in $1" , arg)
         return
       end
       
       # 前の空白読み飛ばす
-      arg.sub!( /\A\s*(?:\\\n)*\s*(.*)/, '\1')
+      arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
       if arg =~ /=/ then
         arg = $'
       else
-        cdl_error( "P1002 plugin arg: expecting \'=\' not \'$1\'" , arg )
+        cdl_error("P1002 plugin arg: expecting \'=\' not \'$1\'" , arg)
         return
       end
 
       # 前の空白読み飛ばす
-      arg.sub!( /\A\s*(?:\\\n)*\s*(.*)/, '\1')
+      arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
       # 右辺文字列
       if arg =~ /\A\\"(.*?)\\"\s*,/ then      # \"  \" で囲まれている場合
@@ -214,12 +214,12 @@ class Plugin < Node
         rhs = $1
         remain = $'
         # 前の空白読み飛ばす
-        rhs.sub!( /\A\s*(.*)\s*\z/, '\1')
+        rhs.sub!(/\A\s*(.*)\s*\z/, '\1')
       elsif arg =~ /\A(.*?)\s*\z/ then
         rhs = $1
         remain = $'
       else
-        cdl_error( "P1003 plugin arg: unexpected $1" , arg )
+        cdl_error("P1003 plugin arg: unexpected $1" , arg)
         return
       end
 
@@ -229,14 +229,14 @@ class Plugin < Node
       end
 
       arg = remain         # arg の残りの部分
-      arg.sub!( /\A\s*(?:\\\n)*\s*(.*)/, '\1')      # 前の空白読み飛ばす
+      arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')      # 前の空白読み飛ばす
 
       # \ を外す
-      rhs = rhs.gsub( /\\(.)/, "\\1" )   # ここで $' が変わることに注意！
+      rhs = rhs.gsub(/\\(.)/, "\\1")   # ここで $' が変わることに注意！
       # print "parse_plugin_arg:  #{ident} #{rhs}\n"
       @plugin_arg_list[ ident ] = rhs
 
-      check_plugin_arg( ident, rhs )
+      check_plugin_arg(ident, rhs)
     end
     # @plugin_arg_list.each{|i,r|  print "ident: #{i}  rhs: #{r}\n" }
   end
@@ -246,7 +246,7 @@ class Plugin < Node
   # 古い用法：子クラスでオーバーライドし、引数識別子が正しいかチェックする
   # ident:: string: 引数識別子
   # rhs:: string: 右辺文字列
-  def check_plugin_arg( ident, rhs )
+  def check_plugin_arg(ident, rhs)
 
     dbgPrint "check_plugin_arg: #{ident} #{rhs.to_str}\n"
     proc = nil
@@ -258,7 +258,7 @@ class Plugin < Node
     end
     if proc.instance_of? Proc then
       dbgPrint "calling: #{self.class.name}.#{proc.to_s}\n"
-      proc.call( self, rhs )
+      proc.call(self, rhs)
     else
       params = ""
       delim = ""
@@ -266,12 +266,12 @@ class Plugin < Node
         params = "#{params}#{delim}#{j}"
         delim = ", "
       }
-      cdl_error( "P1004 $1: unknown plugin argument\'s identifier\n  $2 are acceptible for RPCPlugin." , ident, params )
+      cdl_error("P1004 $1: unknown plugin argument\'s identifier\n  $2 are acceptible for RPCPlugin." , ident, params)
     end
   end
 
   #=== プラグインのメッセージ出力
-  def print_msg( msg )
+  def print_msg(msg)
     if @b_silent == true then
       return
     end
@@ -294,39 +294,39 @@ end
 # generate.rb で出力するものは APPFile クラスを使用している
 # mikan: CFile で出力したものに factory で追記できない (cdl ファイルの場合、追記できても意味がない)
 class CFile
-  def self.open( path, mode )
-    CFile.new( path, mode )
+  def self.open(path, mode)
+    CFile.new(path, mode)
   end
 
-  def initialize( path, mode )
+  def initialize(path, mode)
     if $b_no_kcode then 
       mode += ":" + $Ruby19_File_Encode
     end
-    @file = File.open( path, mode )
+    @file = File.open(path, mode)
   end
 
   def print str
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
-      @file.print( str )
+      @file.print(str)
     else
-      @file.print( str.kconv( $KCONV_CDL, $KCONV_TECSGEN ) )
+      @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
     end
   end
 
   def puts str
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
-      @file.print( str )
+      @file.print(str)
     else
-      @file.print( str.kconv( $KCONV_CDL, $KCONV_TECSGEN ) )
+      @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
     end
-    @file.print( "\n" )
+    @file.print("\n")
   end
 
-  def printf( format, *arg )
+  def printf(format, *arg)
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY then 
-      @file.print( sprintf( format, *arg ) )
+      @file.print(sprintf(format, *arg))
     else
-      @file.print( sprintf( format, *arg ).kconv( $KCONV_CDL, $KCONV_TECSGEN ) )
+      @file.print(sprintf(format, *arg).kconv($KCONV_CDL, $KCONV_TECSGEN))
     end
   end
 

@@ -43,7 +43,7 @@ class Namespace
     begin
       file_name = $gen_base + "/" + $target + ".xml"
       dbgPrint "generating XML file:#{file_name}\n"
-      file = AppFile.open( file_name )
+      file = AppFile.open(file_name)
 
       file.print <<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -57,12 +57,12 @@ EOT
 
       file.close
     rescue => evar
-      Generator.error( "T2001 fail to create XML file $1", file_name)
-      print_exception( evar )
+      Generator.error("T2001 fail to create XML file $1", file_name)
+      print_exception(evar)
     end
   end
 
-  def gen_XML( file, nest )
+  def gen_XML(file, nest)
     # signature のコードを生成
     @signature_list.each { |s|
       s.gen_XML file, nest
@@ -70,27 +70,27 @@ EOT
 
     # celltype のコードを生成
     @celltype_list.each { |t|
-      t.gen_XML( file, nest )
+      t.gen_XML(file, nest)
     }
 
     # composite のコードを生成
     @compositecelltype_list.each { |t|
-      t.gen_XML( file, nest )
+      t.gen_XML(file, nest)
     }
 
     # cell のコードを生成
     @cell_list.each { |t|
-      t.gen_XML( file, nest )
+      t.gen_XML(file, nest)
     }
 
     # サブネームスペースのコードを生成
     @namespace_list.each { |n|
-      kind = n.instance_of?( Namespace ) ? "namespace" : "region"
+      kind = n.instance_of?(Namespace) ? "namespace" : "region"
       file.print <<EOT
 #{XML_INDENT * nest}<#{kind}>
 #{XML_INDENT * (nest+1)}<name> #{n.get_name} </name>
 EOT
-      n.gen_XML( file, nest + 1 )
+      n.gen_XML(file, nest + 1)
       file.print <<EOT
 #{XML_INDENT * nest}</#{kind}>
 EOT

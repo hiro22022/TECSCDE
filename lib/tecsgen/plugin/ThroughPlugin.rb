@@ -77,7 +77,7 @@ class ThroughPlugin < Plugin
   # signature::      Signature          シグニチャ
   # celltype::       Celltype           セルタイプ (呼び先のセルのセルタイプ)
   # caller_cell::    Cell               呼び元のセル．@caller_cell の項を参照
-  def initialize( cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell )
+  def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
     super()
     @cell_name = cell_name                      # 生成すべきセル名（受け口側のセル名）
                                                 # この呼び先に別セルを生成する場合、この名前を接頭辞とすべき
@@ -93,7 +93,7 @@ class ThroughPlugin < Plugin
     @plugin_arg_list = {}                       # プラグイン引数をパースした結果のハッシュ変数
     @caller_cell     = caller_cell
     Join.set_through_info self                  # 引数で渡らない(後から追加された)ものは set_through_info で設定される
-    print( "#{self.class.name}.new( '#{cell_name}', '#{plugin_arg}', '#{next_cell.get_name}', '#{next_cell_port_name}', #{celltype.get_name} )\n" )
+    print("#{self.class.name}.new( '#{cell_name}', '#{plugin_arg}', '#{next_cell.get_name}', '#{next_cell_port_name}', #{celltype.get_name} )\n")
   end
 
   #=== 情報を設定する
@@ -102,7 +102,7 @@ class ThroughPlugin < Plugin
   # このメソッドは、オーバーライドしないでください
   # Join と ThrougPlugin の間の連絡用で、今後とも引数が追加される可能性があるため
   # このメソッドは V1.C.0.34 で位置が移動され、ThroughPlugin#initialize で呼び出される
-  def set_through_info( start_region, end_region, through_type, join, callee_cell, count )
+  def set_through_info(start_region, end_region, through_type, join, callee_cell, count)
     @start_region = start_region
     @end_region = end_region
     @through_type = through_type
@@ -131,7 +131,7 @@ class ThroughPlugin < Plugin
   def get_cell_namespace_path
 #    nsp = @region.get_namespace.get_namespace_path
     nsp = @region.get_namespace_path
-    return nsp.append( @cell_name )
+    return nsp.append(@cell_name)
   end
 
   #===  生成されたセルの受け口の名前を得る
@@ -148,7 +148,7 @@ class ThroughPlugin < Plugin
   #      typedef, signature, celltype など（cell 以外）のコードを生成
   #          重複して生成してはならない（すでに生成されている場合は出力しないこと）
   # file::        FILE       生成するファイル
-  def gen_plugin_decl_code( file )
+  def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[ @ct_name ] == nil then
@@ -158,7 +158,7 @@ class ThroughPlugin < Plugin
       return
     end
 
-    file2 = CFile.open( "#{$gen}/#{@ct_name}.cdl", "w" )
+    file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
 
     send_receive = []
     if @signature != nil then
@@ -197,15 +197,15 @@ EOT
 
   #=== CDL ファイルの生成
   # file::     FILE    生成するファイル
-  def gen_cdl_file( file )
-    gen_plugin_decl_code( file )
-    gen_through_cell_code( file )
+  def gen_cdl_file(file)
+    gen_plugin_decl_code(file)
+    gen_through_cell_code(file)
   end
 
   #===  セルコードの生成
   #     through 指定により生じるセルコード(CDL)を生成する
   # file::        FILE       生成するファイル
-  def gen_through_cell_code( file )
+  def gen_through_cell_code(file)
 
     nest = @region.gen_region_str_pre file
     nest_str = "  " * nest
@@ -222,7 +222,7 @@ EOT
   #=== 後ろのコードを生成
   # プラグインの後ろのコード (CDL) を生成
   # file:: File: 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
   end
@@ -239,13 +239,13 @@ EOT
   # func_name::      string
   # func_global_name:: string
   # func_type::      class derived from Type
-  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     ret_type = func_type.get_type
     b_ret_void = ret_type.is_void?
 
     if ! b_ret_void then
-      file.print( "  #{ret_type.get_type_str}  retval;\n" )
+      file.print("  #{ret_type.get_type_str}  retval;\n")
     end
 
     if ! b_singleton then
@@ -266,10 +266,10 @@ EOT
 
     delim = ""
     if ! b_ret_void then
-      file.print( "  retval = " )
+      file.print("  retval = ")
     end
 
-    file.print( "#{@call_port_name}_#{func_name}(" )
+    file.print("#{@call_port_name}_#{func_name}(")
 
 #    if ( ! b_singleton ) then
 #      file.print( " tecs_this" )
@@ -277,21 +277,21 @@ EOT
 #    end
 
     params.each{ |param|
-      file.printf( "#{delim} #{param.get_name}" )
+      file.printf("#{delim} #{param.get_name}")
       delim = ","
     }
 
-    file.print( " );\n" )
+    file.print(" );\n")
 
     if ! b_ret_void then
-      file.print( "  return retval;\n" )
+      file.print("  return retval;\n")
     end
   end
 
   #=== Through プラグインの引数の名前を置換する
-  def check_plugin_arg( ident, rhs )
+  def check_plugin_arg(ident, rhs)
     rhs = subst_name rhs
-    super( ident, rhs )
+    super(ident, rhs)
   end
 
   #=== ThroughPlugin#名前の置換
@@ -309,26 +309,26 @@ EOT
   #   $preferred_region$  … 適切な region (global_name), start_region または end_region
   #   $count$        … region 間の through の適用数
   #   $$             … $ に置換
-  def subst_name( str )
+  def subst_name(str)
     # セル名の置換
-    str = str.gsub( /(^|[^\$])\$source\$/, "\\1#{@caller_cell.get_name}" )
-    str = str.gsub( /(^|[^\$])\$destination\$/, "\\1#{@callee_cell.get_name}" )
-    str = str.gsub( /(^|[^\$])\$SOURCE\$/, "\\1#{@caller_cell.get_global_name}" )
-    str = str.gsub( /(^|[^\$])\$DESTINATION\$/, "\\1#{@callee_cell.get_global_name}" )
-    str = str.gsub( /(^|[^\$])\$next\$/, "\\1#{@next_cell.get_name}" )
-    str = str.gsub( /(^|[^\$])\$NEXT\$/, "\\1#{@next_cell.get_global_name}" )
+    str = str.gsub(/(^|[^\$])\$source\$/, "\\1#{@caller_cell.get_name}")
+    str = str.gsub(/(^|[^\$])\$destination\$/, "\\1#{@callee_cell.get_name}")
+    str = str.gsub(/(^|[^\$])\$SOURCE\$/, "\\1#{@caller_cell.get_global_name}")
+    str = str.gsub(/(^|[^\$])\$DESTINATION\$/, "\\1#{@callee_cell.get_global_name}")
+    str = str.gsub(/(^|[^\$])\$next\$/, "\\1#{@next_cell.get_name}")
+    str = str.gsub(/(^|[^\$])\$NEXT\$/, "\\1#{@next_cell.get_global_name}")
     # region 名の置換
-    str = str.gsub( /(^|[^\$])\$start_region\$/, "\\1#{@start_region.get_global_name}" )
-    str = str.gsub( /(^|[^\$])\$end_region\$/, "\\1#{@end_region.get_global_name}" )
-    str = str.gsub( /(^|[^\$])\$preferred_region\$/, "\\1#{@region.get_global_name}" )
-    str = str.gsub( /(^|[^\$])\$count\$/, "\\1#{@count}" )
+    str = str.gsub(/(^|[^\$])\$start_region\$/, "\\1#{@start_region.get_global_name}")
+    str = str.gsub(/(^|[^\$])\$end_region\$/, "\\1#{@end_region.get_global_name}")
+    str = str.gsub(/(^|[^\$])\$preferred_region\$/, "\\1#{@region.get_global_name}")
+    str = str.gsub(/(^|[^\$])\$count\$/, "\\1#{@count}")
 
-    str = str.gsub( /\$\$/, "\$" )                       # $$ を $ に置換
+    str = str.gsub(/\$\$/, "\$")                       # $$ を $ に置換
 
     return str
   end
 
-  def show_tree( indent )
+  def show_tree(indent)
     indent.times { print "  " }
     puts "Plugin: celltype: #{@ct_name} cell: #{@cell_name}"
     (indent+1).times { print "  " }

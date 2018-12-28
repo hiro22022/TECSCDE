@@ -56,7 +56,7 @@ module TECSCDE
     # control::TECSCDE::Control
     def initialize control
       @control = control
-      Dir.chdir( "#{$tecsgen_base_path}/../glade" ){
+      Dir.chdir("#{$tecsgen_base_path}/../glade"){
         setup
       }
       @window.show_all
@@ -71,7 +71,7 @@ module TECSCDE
       @window = @builder[ "window_palette" ]
       @window.realize
 #      @window.type = ( Gtk::Window::TOPLEVEL )
-      @window.window.set_functions( Gdk::Window::FUNC_RESIZE | Gdk::Window::FUNC_MOVE )
+      @window.window.set_functions(Gdk::Window::FUNC_RESIZE | Gdk::Window::FUNC_MOVE)
 
       #----- save BUTTON -----#
       @button_save = @builder[ "button_save" ]
@@ -148,7 +148,7 @@ module TECSCDE
     end
 
     def set_view view
-      @window.set_transient_for( view.get_window )
+      @window.set_transient_for(view.get_window)
       @window.window.set_group view.get_window.window
       @window.window.raise
     end

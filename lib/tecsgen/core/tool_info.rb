@@ -62,7 +62,7 @@ class TOOL_INFO
     }
   }
 
-  def initialize( name, val )
+  def initialize(name, val)
     @@tool_info[name] = val
 
     # __tool_info__( "tecsgen" ): validate & reflect immediately
@@ -79,9 +79,9 @@ class TOOL_INFO
   #=== TOOL_INFO#set_tecsgen_tool_info
   # __tool_info__( "tecsgen" )
   def set_tecsgen_tool_info
-    validator = TOOL_INFO::VALIDATOR.new( :tecsgen, @@TECSGEN_schema )
+    validator = TOOL_INFO::VALIDATOR.new(:tecsgen, @@TECSGEN_schema)
     if validator.validate || $b_force_apply_tool_info
-      info = TOOL_INFO.get_tool_info( :tecsgen )
+      info = TOOL_INFO.get_tool_info(:tecsgen)
       (info[ :base_dir ]).each{ |bd|
         if ! $base_dir.include? bd
           $base_dir[ bd ] = true
@@ -89,13 +89,13 @@ class TOOL_INFO
       }
 
       info[ :import_path ].each{ |path|
-        if ! $import_path.include?( path )
+        if ! $import_path.include?(path)
           $import_path << path
         end
       }
 
       info[ :define_macro ].each{ |define|
-        if ! $define.include?( define )
+        if ! $define.include?(define)
           $define << define
         end
       }
@@ -107,7 +107,7 @@ class TOOL_INFO
       end
 
       info[ :direct_import ] && info[ :direct_import ].each{ |import|
-        Import.new( import, false, false )
+        Import.new(import, false, false)
       }
     end
   end
@@ -120,8 +120,8 @@ class TOOL_INFO
 
     # @b_ok::Bool
 
-    def error( msg )
-      STDERR.print( "__tool_info__: " + msg )
+    def error(msg)
+      STDERR.print("__tool_info__: " + msg)
       @b_ok = false
     end
 
@@ -135,14 +135,14 @@ class TOOL_INFO
     def validate
       info = TOOL_INFO.get_tool_info @name
       if info == nil
-        error( "\"#{@name}\" not found\n" )
+        error("\"#{@name}\" not found\n")
         return @b_ok
       end
       validate_object info, @name, @name
       return @b_ok
     end
 
-    def validate_object( object, require_type, path )
+    def validate_object(object, require_type, path)
       obj_type = @schema[ require_type ]
       dbgPrint "validate_object: #{path}  object=#{obj_type[ :type ]}  required=#{object[:type]}\n"
 
@@ -150,7 +150,7 @@ class TOOL_INFO
         val = object[name]
         path2 = path.to_s + "." + name.to_s
         if val == nil
-          error( "#{path}: required property not found '#{name}'\n" )
+          error("#{path}: required property not found '#{name}'\n")
           next
         end
         if val_type.kind_of? Array
@@ -184,7 +184,7 @@ class TOOL_INFO
 
     def validate_array_member array, val_types, path
       if ! array.kind_of? Array
-        error( "#{path2}: array required as value\n" )
+        error("#{path2}: array required as value\n")
         return
       end
       index=0
@@ -197,7 +197,7 @@ class TOOL_INFO
           end
         end
         if i == nil
-          error( "#{path}: array member type mismatch, #{type} for #{val_types}\n" )
+          error("#{path}: array member type mismatch, #{type} for #{val_types}\n")
           next
         end
         val_type = val_types[ i ]
@@ -236,12 +236,12 @@ class TOOL_INFO
           end
         else
           if type.to_sym == val_type
-            validate_object( obj, val_type, path + val_type.to_s )
+            validate_object(obj, val_type, path + val_type.to_s)
             return
           end
         end
       end
-      error( "#{path}: type mismatch, #{type} for #{val_type}\n" )
+      error("#{path}: type mismatch, #{type} for #{val_type}\n")
     end
 
     def get_object_type obj
@@ -298,7 +298,7 @@ class TECSGEN
     # x,y,w,h::Expression
     # port_location_list::[ [Symbol(ep_or_cp_name), Symbol(edge_name), Expression(offset)], ... ]
     # ep_name::Symbol
-    def initialize( cell_nspath, x, y, w, h, port_location_list )
+    def initialize(cell_nspath, x, y, w, h, port_location_list)
       # p "Cell_location: #{cell_nspath}, #{x}, #{y}, #{w}, #{h}, #{port_location_list}"
       @cell_nspath = cell_nspath
       @x = x.eval_const nil
@@ -327,7 +327,7 @@ class TECSGEN
     # ep_cell_nspath::NamespacePath
     # ep_name::Symbol
     # bar_list::[[Symbol (VBar or HBar), Expression(position mm)], ....]
-    def initialize( cp_cell_nspath, cp_name, ep_cell_path, ep_name, bar_list )
+    def initialize(cp_cell_nspath, cp_name, ep_cell_path, ep_name, bar_list)
       # p "Join_location  #{cp_cell_nspath}, #{cp_name}, #{ep_cell_path}, #{ep_name} #{bar_list}"
       @cp_cell_nspath = cp_cell_nspath
       @cp_name = cp_name

@@ -46,7 +46,7 @@ class HRPHandlerPlugin < HRPKernelObjectPlugin
     def new_cell cell
         domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
         if (domainOption == "OutOfDomain") || (domainOption != "kernel")
-          cdl_error( "HRP9999 HRP handler '$1' must belong to kernel domain", cell.get_name )
+          cdl_error("HRP9999 HRP handler '$1' must belong to kernel domain", cell.get_name)
         end
     end
 
@@ -58,7 +58,7 @@ class HRPHandlerPlugin < HRPKernelObjectPlugin
     # tab  : 
     def print_cfg_cre(file, cell, val, tab)
         if !val[:id].nil?
-            val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}" )
+            val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
         end
         # $cbp$の代わり
         index = cell.get_id - @celltype.get_id_base
@@ -80,13 +80,13 @@ EOT
 EOT
         elsif @plugin_arg_str == "DEF_INH"
             name_array = @celltype.get_name_array cell
-            start = @celltype.subst_name( "$id$_start", name_array )
+            start = @celltype.subst_name("$id$_start", name_array)
             file.print <<EOT
 #{tab}DEF_INH(#{val[:interruptHandlerNumber]}, { #{val[:attribute]}, #{start} });
 EOT
         elsif @plugin_arg_str == "DEF_EXC"
             name_array = @celltype.get_name_array cell
-            start = @celltype.subst_name( "$id$_start", name_array )
+            start = @celltype.subst_name("$id$_start", name_array)
             file.print <<EOT
 #{tab}DEF_EXC(#{val[:cpuExceptionHandlerNumber]}, { #{val[:attribute]}, #{start} });
 EOT

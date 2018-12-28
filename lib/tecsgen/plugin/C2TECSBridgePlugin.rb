@@ -52,7 +52,7 @@ class C2TECSBridgePlugin < SignaturePlugin
   @@signature_list = { }
 
   # signature::     Signature        シグニチャ（インスタンス）
-  def initialize( signature, option )
+  def initialize(signature, option)
     super
 
     @signature = signature
@@ -67,7 +67,7 @@ class C2TECSBridgePlugin < SignaturePlugin
   def gen_cdl_file file
     if @@signature_list[ @signature.get_global_name ] then
       @@signature_list[ @signature.get_global_name ] << self
-      cdl_warning( "C2TW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path )
+      cdl_warning("C2TW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return
     end
 
@@ -86,7 +86,7 @@ EOT
   #=== 後ろのコードを生成
   # プラグインの後ろのコードを生成
   # file:: File: 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
   end
@@ -103,16 +103,16 @@ EOT
   # func_name::      string
   # func_global_name:: string
   # func_type::      class derived from Type
-  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     # nothing to do
 
   end
 
 
-  def gen_postamble( file, b_singleton, ct_name, global_name )
+  def gen_postamble(file, b_singleton, ct_name, global_name)
 
-    header_file = open( @header_name, "w" )
+    header_file = open(@header_name, "w")
 
     header_comment =<<EOT
 /*
@@ -147,41 +147,41 @@ EOT
       # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
       # function header
-      file.print( "#{ret_type.get_type_str}\n" )
-      header_file.printf( "%-16s", ret_type.get_type_str )
-      file.print( "#{@prefix}#{func_name}#{@suffix}(" )
-      header_file.print( "#{@prefix}#{func_name}#{@suffix}(" )
+      file.print("#{ret_type.get_type_str}\n")
+      header_file.printf("%-16s", ret_type.get_type_str)
+      file.print("#{@prefix}#{func_name}#{@suffix}(")
+      header_file.print("#{@prefix}#{func_name}#{@suffix}(")
 
       delim = ""
       params.each{ |param|
-        file.printf( "#{delim} #{param.get_type.get_type_str} #{param.get_name}#{param.get_type.get_type_str_post}" )
-        header_file.printf( "#{delim} #{param.get_type.get_type_str} #{param.get_name}#{param.get_type.get_type_str_post}" )
+        file.printf("#{delim} #{param.get_type.get_type_str} #{param.get_name}#{param.get_type.get_type_str_post}")
+        header_file.printf("#{delim} #{param.get_type.get_type_str} #{param.get_name}#{param.get_type.get_type_str_post}")
         delim = ","
       }
-      file.print( " )\n{\n" )
-      header_file.print( " );\n" )
+      file.print(" )\n{\n")
+      header_file.print(" );\n")
 
       # call function in call port
       if ! ret_type.is_void? then
-        file.print( "  #{ret_type.get_type_str}  retval;\n" )
-        file.print( "  retval = " )
+        file.print("  #{ret_type.get_type_str}  retval;\n")
+        file.print("  retval = ")
       else
-        file.print( "  " )
+        file.print("  ")
       end
 
-      file.print( "cCall_#{func_name}(" )
+      file.print("cCall_#{func_name}(")
 
       delim = ""
       params.each{ |param|
-        file.printf( "#{delim} #{param.get_name}" )
+        file.printf("#{delim} #{param.get_name}")
         delim = ","
       }
-      file.print( " );\n" )
+      file.print(" );\n")
 
       if ! ret_type.is_void? then
-        file.print( "  return retval;\n" )
+        file.print("  return retval;\n")
       end
-      file.print( "}\n\n" )
+      file.print("}\n\n")
     }
 
     header_file.print <<EOT
@@ -204,7 +204,7 @@ EOT
   #===  set_header_name - header_name プラグインオプション
   def set_header_name rhs
     @header_name = "#{$gen}/" + rhs.to_s
-    if ! ( @header_name =~ /\.h\Z/ ) then
+    if ! (@header_name =~ /\.h\Z/) then
       @header_name += ".h"
     end
   end

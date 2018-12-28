@@ -42,7 +42,7 @@ class ATK1ResourcePlugin < CelltypePlugin
 # @option:: String     :オプション文字列
 
   # signature::     Celltype        シグニチャ（インスタンス）
-  def initialize( celltype, option )
+  def initialize(celltype, option)
     super
   end
 
@@ -75,8 +75,8 @@ class ATK1ResourcePlugin < CelltypePlugin
 
   def gen_factory file
 
-  file2 = CFile.open( "#{$gen}/RESOURCE_tecsgen.oil", "w" )
-  file3 = CFile.open( "#{$gen}/#{@celltype.get_name}_factory.#{$h_suffix}", "w" )
+  file2 = CFile.open("#{$gen}/RESOURCE_tecsgen.oil", "w")
+  file3 = CFile.open("#{$gen}/#{@celltype.get_name}_factory.#{$h_suffix}", "w")
 
   # RESOURCE
   @celltype.get_cell_list.each { |cell|
@@ -87,7 +87,7 @@ class ATK1ResourcePlugin < CelltypePlugin
 
       if str.to_s == "RES_SCHEDULER" then
 
-        cell.set_specified_id( 1 )
+        cell.set_specified_id(1)
 
       else
 
@@ -96,13 +96,13 @@ class ATK1ResourcePlugin < CelltypePlugin
         file2.print "\tRESOURCE #{cell.get_name} {\n"
 
         # PROPERTY
-        join = cell.get_join_list.get_item( :property )
+        join = cell.get_join_list.get_item(:property)
         if join then
           str = join.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
 
           if str == "LINKED" then
             file2.print "\t\tRESOURCEPROPERTY = #{str} {\n"
-            join2 = cell.get_join_list.get_item( :linkedResource )
+            join2 = cell.get_join_list.get_item(:linkedResource)
             str2 = join2.get_rhs.to_s.gsub(/^"(.*)"$/, '\1')
             file2.print "\t\t\tLINKEDRESOURCE = #{str2};\n"
             file2.print "\t\t};\n"

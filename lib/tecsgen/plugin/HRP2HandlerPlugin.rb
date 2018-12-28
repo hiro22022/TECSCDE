@@ -50,7 +50,7 @@ class HRP2HandlerPlugin < HRP2KernelObjectPlugin
     # tab  : 
     def print_cfg_cre(file, cell, val, tab)
         if !val[:id].nil?
-            val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}" )
+            val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
         end
         # $cbp$  #983
         name_array = @celltype.get_name_array cell

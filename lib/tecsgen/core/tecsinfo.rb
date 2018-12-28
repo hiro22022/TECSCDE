@@ -43,7 +43,7 @@ module TECSInfo
     # p "region: "+ region.get_name.to_s
     nest = region.gen_region_str_pre f
     indent0 = "    " * nest
-    indent = "    " * ( nest + 1 )
+    indent = "    " * (nest + 1)
     f.print <<EOT
 #{indent0}region rTECSInfo {
 EOT
@@ -136,7 +136,7 @@ EOT
     }
   end
 
-  def self.print_info( f, indent )
+  def self.print_info(f, indent)
     @@root_namespace.print_info_ns f, indent
   end
 
@@ -242,7 +242,7 @@ EOT
     }
   end
 
-  def print_info_region( f, indent )
+  def print_info_region(f, indent)
     self.print_info_region_sub f, indent
     @namespace_list.each { |region|
       if region.instance_of? Region then
@@ -251,7 +251,7 @@ EOT
     }
   end
   
-  def print_info( f, indent )
+  def print_info(f, indent)
     # p "print_info: #{self.get_global_name}"
     self.print_info_region f, indent
   end
@@ -483,7 +483,7 @@ EOT
     end
     @port.each{ |port|
       next if port.get_port_type == :ENTRY
-      if port.is_omit? || ( port.is_VMT_useless? && port.is_cell_unique? ) || @n_cell_gen == 0 then
+      if port.is_omit? || (port.is_VMT_useless? && port.is_cell_unique?) || @n_cell_gen == 0 then
         place = "CALL_PLACE_NON"
       elsif port.is_dynamic?
         if port.get_array_size then
@@ -504,7 +504,7 @@ EOT
           place = "CALL_PLACE_INIB_DES"
         end
       end
-      if ( port.is_VMT_useless? && port.is_cell_unique? ) || port.is_omit? || @n_cell_gen == 0 then
+      if (port.is_VMT_useless? && port.is_cell_unique?) || port.is_omit? || @n_cell_gen == 0 then
         offset = "0xffffffff"
       else
         if port.is_dynamic? || ! has_INIB? then
@@ -711,12 +711,12 @@ end
 class ParamDecl
   def print_info f, signature_global_name, func_name, paramdecl_list, indent
     if @size then
-      size = "\"#{@size.get_rpn( paramdecl_list )}\""
+      size = "\"#{@size.get_rpn(paramdecl_list)}\""
     else
       size = "(char_t*)0";
     end
     if @count then
-      count = "\"#{@count.get_rpn( paramdecl_list )}\""
+      count = "\"#{@count.get_rpn(paramdecl_list)}\""
     else
       count = "(char_t*)0";
     end
@@ -724,7 +724,7 @@ class ParamDecl
       if @string == -1 then
         string = '""'
       else
-        string =  "\"#{@string.get_rpn( paramdecl_list )}\""
+        string =  "\"#{@string.get_rpn(paramdecl_list)}\""
       end
     else
       string = "(char_t*)0";
@@ -844,7 +844,7 @@ EOT
     if kind_of? PtrType then
       str = get_referto.get_ID_str + "_Ptr_"
     elsif kind_of? ArrayType then
-      str = get_type.get_ID_str + "_Array" + get_subscript.eval_const( nil ).to_s + "_"
+      str = get_type.get_ID_str + "_Array" + get_subscript.eval_const(nil).to_s + "_"
     elsif kind_of? StructType then
       str = "struct #{@tag}"
     elsif kind_of? DescriptorType then
@@ -853,7 +853,7 @@ EOT
       str = get_type_str + get_type_str_post
     end
     # p "before: #{str}"
-    str.gsub!( / /, "__" )
+    str.gsub!(/ /, "__")
     # p "after: #{str}"
     return str
   end

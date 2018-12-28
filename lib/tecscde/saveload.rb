@@ -116,11 +116,11 @@ module TECSCDE
       argv = TECSGEN.get_argv
       if argv.length > 0
         last_arg = argv[ -1 ]
-        if ( last_arg =~ /\.cde\Z/ )
+        if (last_arg =~ /\.cde\Z/)
           @file_editing = last_arg
         else
           if last_arg =~ /\.cdl\Z/
-            @file_editing = last_arg.gsub( /\.cdl\Z/, ".cde" )
+            @file_editing = last_arg.gsub(/\.cdl\Z/, ".cde")
           else
             @file_editing = last_arg + ".cde"
           end
@@ -155,11 +155,11 @@ module TECSCDE
           end
 
           p "add_cell #{cell.get_name} #{cell.get_owner.get_namespace_path} #{cell.get_locale}"
-          new_cell_ = create_cell_from_tecsgen( cell, x, y )
+          new_cell_ = create_cell_from_tecsgen(cell, x, y)
           tecsgen_cell_list2 << cell
           cell_list[ cell ] = new_cell_
 
-          new_cell_.set_editable( cell.get_locale )
+          new_cell_.set_editable(cell.get_locale)
 
           x += 55
           if x >= @paper[ :width ] - 30
@@ -191,18 +191,18 @@ module TECSCDE
           p "=== set_cell_location ==="
           set_cell_location_from_tecsgen
         else
-          TECSCDE.error( "validate error in __tool_info__( \"tecscde\" )")
+          TECSCDE.error("validate error in __tool_info__( \"tecscde\" )")
         end
 
         p "=== create join ==="
         tecsgen_cell_list2.each{ |cell|
           cell.get_join_list.get_items.each{ |join|
             if join.get_array_member2 == nil
-              create_join_from_tecsgen( cell, join, cell_list )
+              create_join_from_tecsgen(cell, join, cell_list)
             else
               join.get_array_member2.each{ |j|
                 if j != nil
-                  create_join_from_tecsgen( cell, j, cell_list )
+                  create_join_from_tecsgen(cell, j, cell_list)
                 end
               }
             end
@@ -217,35 +217,35 @@ module TECSCDE
     end
 
     #=== TECSModel#create_cell_from_tecsgen
-    def create_cell_from_tecsgen( cell, x, y )
-      new_cell_ = new_cell( x, y, cell.get_celltype.get_name, cell.get_celltype.get_owner.get_namespace_path.to_s, cell )
+    def create_cell_from_tecsgen(cell, x, y)
+      new_cell_ = new_cell(x, y, cell.get_celltype.get_name, cell.get_celltype.get_owner.get_namespace_path.to_s, cell)
       new_name = cell.get_name          # automatically given name
-      new_cell_.change_name( new_name )
+      new_cell_.change_name(new_name)
       
       # decide cell box size from text width
-      w, h = @view.get_text_extent( new_name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
-      w2, h = @view.get_text_extent( cell.get_celltype.get_name, CELLTYPE_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
+      w, h = @view.get_text_extent(new_name, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
+      w2, h = @view.get_text_extent(cell.get_celltype.get_name, CELLTYPE_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
       w = w2 if w2 > w
       w += 2
       h += 2
       w = 25 if w < 25
       h = 15 if h < 15
-      new_cell_.set_geometry( x, y, w, h )
+      new_cell_.set_geometry(x, y, w, h)
       return new_cell_
     end
 
     #=== TECSModel#create_join_from_tecsgen
-    def create_join_from_tecsgen( cell, join, cell_list )
+    def create_join_from_tecsgen(cell, join, cell_list)
       # p join.get_name
       object = cell.get_celltype.find join.get_name
       # p "OBJECT CLASS #{object.class}"
-      if object.instance_of?( ::Port ) then
+      if object.instance_of?(::Port) then
         if object.get_port_type == :CALL then
           if ! object.is_require? then
             lhs_cell = cell_list[ cell ]
-            cport = lhs_cell.get_cport_for_new_join( join.get_name, join.get_subscript )
+            cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
             if cport == nil
-              TECSCDE.error( "#{@name}.#{join.get_name} not found")
+              TECSCDE.error("#{@name}.#{join.get_name} not found")
               return
             end
             rhs_cell = cell_list[ join.get_cell ]
@@ -253,20 +253,20 @@ module TECSCDE
               return
             end
             # eport = rhs_cell.get_eports[ join.get_port_name ]
-            eport = rhs_cell.get_eport_for_new_join( join.get_port_name, join.get_rhs_subscript1 )
+            eport = rhs_cell.get_eport_for_new_join(join.get_port_name, join.get_rhs_subscript1)
             # p "new_join #{lhs_cell.get_name}.#{cport.get_name} => #{rhs_cell.get_name}.#{eport.get_name}"
             new_join_ = new_join cport, eport
-            new_join_.set_editable( join.get_locale )
+            new_join_.set_editable(join.get_locale)
           end
         end
       else
-        cell_list[cell].set_attr( join.get_name, join.get_rhs.to_CDL_str )
+        cell_list[cell].set_attr(join.get_name, join.get_rhs.to_CDL_str)
       end
     end
 
 
     def set_paper_from_tecsgen
-      info = TOOL_INFO.get_tool_info( :tecscde )
+      info = TOOL_INFO.get_tool_info(:tecscde)
       if info == nil || info[ :paper ] == nil
         return
       end
@@ -288,7 +288,7 @@ module TECSCDE
     end
 
     def set_cell_location_from_tecsgen
-      info = TOOL_INFO.get_tool_info( :tecscde )
+      info = TOOL_INFO.get_tool_info(:tecscde)
       if info == nil || info[ :cell_list ] == nil
         return
       end
@@ -299,19 +299,19 @@ module TECSCDE
         name = cell_location[ :name ].to_sym
         loc = cell_location[ :location ]
         if loc.length != 4
-          TECSCDE.error( "#{name}: cell_location.location: array length is not inconsistent, #{loc.length} for 4")
+          TECSCDE.error("#{name}: cell_location.location: array length is not inconsistent, #{loc.length} for 4")
           next
         end
         cell = @cell_hash[ name ]
         if cell then
           # p "apply location: #{cell.get_name}"
-          cell.set_geometry( *loc )
+          cell.set_geometry(*loc)
 
           #------ port location -----#
           cell_location[ :port_location ].each{ |port_location|
             # mikan offset not set yet
             port_name = port_location[ :port_name ].to_sym
-            edge = get_edge_side_val( port_location[ :edge ] )
+            edge = get_edge_side_val(port_location[ :edge ])
             offset = port_location[ :offset ]
             subscript = port_location[ :subscript ]
             port = cell.get_cports[ port_name ]
@@ -354,7 +354,7 @@ module TECSCDE
     end
 
     def set_join_location_from_tecsgen
-      info = TOOL_INFO.get_tool_info( :tecscde )
+      info = TOOL_INFO.get_tool_info(:tecscde)
       if info == nil
         return
       end
@@ -385,36 +385,36 @@ module TECSCDE
           cport = cp_cell.get_cports[ cp_name ]
           if cport.kind_of? TmCPortArray
             if cp_subscript == nil
-              TECSCDE.error( "TM9999 location information ignored #{cp_name} is array but not specified subscript")
+              TECSCDE.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
               next
             end
             cport = cport.get_member cp_subscript
           else
             if cp_subscript != nil
-              TECSCDE.error( "TM9999 #{cp_name} is not array but specified subscript")
+              TECSCDE.error("TM9999 #{cp_name} is not array but specified subscript")
             end
           end
           eport = ep_cell.get_eports[ ep_name ]
           if eport.kind_of? TmEPortArray
             if ep_subscript == nil
-              TECSCDE.error( "TM9999 location information ignored #{ep_name} is array but not specified subscript")
+              TECSCDE.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
               next
             end
             eport = eport.get_member ep_subscript
           else
             if ep_subscript != nil
-              TECSCDE.error( "TM9999 #{ep_name} is not array but specified subscript")
+              TECSCDE.error("TM9999 #{ep_name} is not array but specified subscript")
             end
           end
           # p "1 #{cp_name} #{cp_subscript} #{ep_name} #{ep_subscript} #{cport} #{eport}"
 
           # check existance of cport & eport and direction of bar & edge (must be in right angle)
           # mikan necessary more than 2 bars
-          if cport != nil && eport != nil && eport.include?( cport.get_join( cp_subscript ) ) && bar_list.length >= 2 then
+          if cport != nil && eport != nil && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2 then
             # p "2"
-            b_vertical = TECSModel.is_vertical?( cport.get_edge_side )
+            b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0].to_sym
-            if ( b_vertical  && bar_type == :HBar ) || (! b_vertical && bar_type == :VBar ) then
+            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar) then
               # p "3"
               len = bar_list.length
 
@@ -424,18 +424,18 @@ module TECSCDE
               # p "tan_pos=#{tan_pos}, eport_tan=#{eport.get_position_in_tangential_dir}"
               # check if normal_pos & tan_pos can be evaluated and the position of bars goal
               if normal_pos != nil && tan_pos != nil &&
-                  ( (normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR ) &&
-                  ( (tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN ) then
+                  ((normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR) &&
+                  ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN) then
                 # p "4"
                 bars = []
                 bar_list.each{ |bar_info|
                   # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
                   pos = bar_info[1]
                   if pos != nil && bar_info[0].to_sym == :HBar then
-                    bar = HBar.new( pos, cport.get_join )
+                    bar = HBar.new(pos, cport.get_join)
                     bars << bar
                   elsif pos != nil && bar_info[0].to_sym == :VBar then
-                    bar = VBar.new( pos, cport.get_join )
+                    bar = VBar.new(pos, cport.get_join)
                     bars << bar
                   else
                     bars = []
@@ -462,7 +462,7 @@ module TECSCDE
     #=== TECSModel#validate
     # validate JSON format data in __tool_info__( "tecscde" )
     def validate
-      validator = TOOL_INFO::VALIDATOR.new( :tecscde, @@TECSCDE_schema )
+      validator = TOOL_INFO::VALIDATOR.new(:tecscde, @@TECSCDE_schema)
       return validator.validate
     end
 
@@ -470,13 +470,13 @@ module TECSCDE
     def save fname
       begin
         Dir.chdir $run_dir
-        f = open( fname, "w" )
+        f = open(fname, "w")
         save_tecsgen f
         save_cells f
         save_info f
         f.close
       rescue => evar
-        TECSCDE.message_box( "fail to save #{fname}\n#{evar.to_s}", :OK )
+        TECSCDE.message_box("fail to save #{fname}\n#{evar.to_s}", :OK)
       end
     end
 
@@ -510,10 +510,10 @@ module TECSCDE
       f.print "   \"import_path\" : [\n"
       delim = ""
       $import_path.each{ |path|
-        tecspath = $tecspath.gsub( /\\/, '\\\\\\\\' )
+        tecspath = $tecspath.gsub(/\\/, '\\\\\\\\')
         # p tecspath
         # p path, Regexp.new( "^A#{tecspath}" ), path =~ Regexp.new( "\\A#{tecspath}" )
-        next if path =~ Regexp.new( "\\A#{tecspath}" )
+        next if path =~ Regexp.new("\\A#{tecspath}")
         f.print "#{delim}        \"#{path}\""
         delim = ",\n"
       }
@@ -522,7 +522,7 @@ module TECSCDE
       f.print "    \"direct_import\" : [\n"
       delim = ""
       Import.get_list.each { |path, import|
-        if ( import.is_imported? == false ) && ( import.get_cdl_name != @file_editing )
+        if (import.is_imported? == false) && (import.get_cdl_name != @file_editing)
           f.print "#{delim}        \"#{import.get_cdl_name}\""
           delim = ",\n"
         end
@@ -547,7 +547,7 @@ module TECSCDE
           next
         end
 
-        f.print( "cell #{ cell.get_celltype.get_namespace_path} #{cell.get_name} {\n" )
+        f.print("cell #{ cell.get_celltype.get_namespace_path} #{cell.get_name} {\n")
 
         if cell.get_cports.length > 0
           f.print "\n    /*** call ports ***/\n"
@@ -588,7 +588,7 @@ module TECSCDE
           f.print "    #{attr} = #{attr_list[attr]};\n"
         }
 
-        f.print( "};\n" )
+        f.print("};\n")
       }
     end
 
@@ -738,7 +738,7 @@ EOT
         cell = @cell_hash[ cell_nspath.to_s.to_sym ]
         if cell then
           # p "apply location: #{cell.get_name}"
-          cell.set_geometry( x, y, w, h )
+          cell.set_geometry(x, y, w, h)
         end
       }
 
@@ -758,11 +758,11 @@ EOT
 
           # check existance of cport & eport and direction of bar & edge (must be in right angle)
           # mikan necessary more than 2 bars
-          if cport != nil && eport != nil && eport.include?( cport.get_join( cp_subscript ) ) && bar_list.length >= 2 then
+          if cport != nil && eport != nil && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2 then
             # p "2"
-            b_vertical = TECSModel.is_vertical?( cport.get_edge_side )
+            b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0]
-            if ( b_vertical  && bar_type == :HBar ) || (! b_vertical && bar_type == :VBar ) then
+            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar) then
               # p "3"
               len = bar_list.length
               # bar_list: [ [:HBar, pos]
@@ -772,18 +772,18 @@ EOT
               # p "tan_pos=#{tan_pos}, eport_tan=#{eport.get_position_in_tangential_dir}"
               # check if normal_pos & tan_pos can be evaluated and the position of bars goal
               if normal_pos != nil && tan_pos != nil &&
-                  ( (normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR ) &&
-                  ( (tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN ) then
+                  ((normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR) &&
+                  ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN) then
                 # p "4"
                 bars = []
                 bar_list.each{ |bar_info|
                   # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
                   pos = bar_info[1].eval_const nil
                   if pos != nil && bar_info[0] == :HBar then
-                    bar = HBar.new( pos, cport.get_join )
+                    bar = HBar.new(pos, cport.get_join)
                     bars << bar
                   elsif pos != nil && bar_info[0] == :VBar then
-                    bar = VBar.new( pos, cport.get_join )
+                    bar = VBar.new(pos, cport.get_join)
                     bars << bar
                   else
                     bars = []
@@ -817,7 +817,7 @@ EOT
 
       @cell_list.each{ |cell|
         x, y, w, h = cell.get_geometry
-        f.print( "    __cell__  #{cell.get_name}( #{x}, #{y}, #{w}, #{h} ) {\n" )
+        f.print("    __cell__  #{cell.get_name}( #{x}, #{y}, #{w}, #{h} ) {\n")
         cell.get_cports.each{ |name, cport|
           if cport.is_array?
             cport.get_ports.each{ |cp|
@@ -836,7 +836,7 @@ EOT
             f.print "        #{eport.get_name}( #{eport.get_edge_side_name}, #{eport.get_offset} )\n"
           end
         }
-        f.print( "    }\n" )
+        f.print("    }\n")
       }
       @join_list.each{ |join|
         cport, eport, bars = join.get_ports_bars
@@ -851,13 +851,13 @@ EOT
           ep_subsc = ""
         end
 
-        f.print( "    __join__( #{cport.get_cell.get_name}.#{cport.get_name}#{cp_subsc} => #{eport.get_cell.get_name}.#{eport.get_name}#{ep_subsc} ){\n" )
+        f.print("    __join__( #{cport.get_cell.get_name}.#{cport.get_name}#{cp_subsc} => #{eport.get_cell.get_name}.#{eport.get_name}#{ep_subsc} ){\n")
         bars.each{ |bar|
-          f.print( "        #{(bar.instance_of? HBar) ? "HBar" : "VBar"}( #{bar.get_position} )\n")
+          f.print("        #{(bar.instance_of? HBar) ? "HBar" : "VBar"}( #{bar.get_position} )\n")
         }
-        f.print( "    }\n" )
+        f.print("    }\n")
       }
-      f.print( "} //__location_information\n" )
+      f.print("} //__location_information\n")
 
     end
 

@@ -68,7 +68,7 @@ class TECSGEN
     # x,y,w,h::Expression
     # port_location_list::[ [Symbol(ep_or_cp_name), Symbol(edge_name), Expression(offset)], ... ]
     # ep_name::Symbol
-    def initialize( cell_nspath, x, y, w, h, port_location_list )
+    def initialize(cell_nspath, x, y, w, h, port_location_list)
       # p "Cell_location: #{cell_nspath}, #{x}, #{y}, #{w}, #{h}, #{port_location_list}"
       @cell_nspath = cell_nspath
       @x = x.eval_const nil
@@ -97,7 +97,7 @@ class TECSGEN
     # ep_cell_nspath::NamespacePath
     # ep_name::Symbol
     # bar_list::[[Symbol (VBar or HBar), Expression(position mm)], ....]
-    def initialize( cp_cell_nspath, cp_name, ep_cell_path, ep_name, bar_list )
+    def initialize(cp_cell_nspath, cp_name, ep_cell_path, ep_name, bar_list)
       # p "Join_location  #{cp_cell_nspath}, #{cp_name}, #{ep_cell_path}, #{ep_name} #{bar_list}"
       @cp_cell_nspath = cp_cell_nspath
       @cp_name = cp_name

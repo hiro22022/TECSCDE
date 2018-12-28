@@ -42,7 +42,7 @@ class SignaturePlugin < Plugin
 # @option:: String   '"', '"' で囲まれた文字列
 
   # signature::     Signature        シグニチャ（インスタンス）
-  def initialize( signature, option )
+  def initialize(signature, option)
     super()
     @signature = signature
     # @plugin_arg_str = option.gsub( /\A"(.*)/, '\1' )    # 前後の "" を取り除く
@@ -54,7 +54,7 @@ class SignaturePlugin < Plugin
   #=== 後ろのコードを生成
   # プラグインの後ろの CDL コードを生成
   # file:: File: 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
   end
@@ -71,7 +71,7 @@ class SignaturePlugin < Plugin
   # func_name::      string
   # func_global_name:: string
   # func_type::      class derived from Type
-  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     raise "gen_ep_func_body must be overridden by sub class"
   end
 end

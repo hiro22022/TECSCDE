@@ -49,7 +49,7 @@ class OpaqueMarshalerPlugin < SignaturePlugin
   include GenOpaqueMarshaler
   include GenParamCopy
 
-  def initialize( signature, option )
+  def initialize(signature, option)
     super
     @b_noClientSemaphore = false
     @noServerChannelOpenerCode = true
@@ -75,7 +75,7 @@ import( "#{@marshaler_celltype_file_name}" );
 EOT
   end
 
-  def subst_name( val )
+  def subst_name(val)
     return :"_"
     # return nil
   end

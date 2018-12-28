@@ -43,7 +43,7 @@ class CellPlugin < Plugin
   # cell::     Cell        セル（インスタンス）
   # このメソッドは、セルの構文解析が終わったところで呼び出される
   # この段階では意味解析が終わっていない
-  def initialize( cell, option )
+  def initialize(cell, option)
     super()
     @cell = cell
     @plugin_arg_str = CDLString.remove_dquote option
@@ -55,7 +55,7 @@ class CellPlugin < Plugin
   #=== 後ろの CDL コードを生成
   # プラグインの後ろの CDL コードを生成
   # file:: File: 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
   end

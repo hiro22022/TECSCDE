@@ -57,7 +57,7 @@ class HRPRPCPlugin < ThroughPlugin
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
-  def initialize( cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell )
+  def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
     super
     @b_noClientSemaphore = false
     @semaphoreCelltype = "tSemaphore"
@@ -71,18 +71,18 @@ class HRPRPCPlugin < ThroughPlugin
     @rpc_channel_celltype_file_name = "#{$gen}/#{@rpc_channel_celltype_name}.cdl"
 
     if @signature.get_context == "non-task" then
-        cdl_error( "HRP9999 RPC cannot be applied to non-task context signature '$1'", @signature.get_name )
+        cdl_error("HRP9999 RPC cannot be applied to non-task context signature '$1'", @signature.get_name)
     elsif @signature.get_context == "any" then
-        cdl_info( "HRP9999 RPC is applied to any context signature '$1'", @signature.get_name )
+        cdl_info("HRP9999 RPC is applied to any context signature '$1'", @signature.get_name)
     end
 
     if @signature.need_PPAllocator?(true) then
       if @PPAllocatorSize == nil then
-        cdl_error( "HRP9999 PPAllocatorSize must be speicified for pointer argments" )
+        cdl_error("HRP9999 PPAllocatorSize must be speicified for pointer argments")
         # @PPAllocatorSize = 0   # 仮に 0 としておく (cdl の構文エラーを避けるため)
       end
     elsif @PPAllocatorSize then
-      cdl_warning( "HRP9999 PPAllocatorSize speicified in spite of PPAllocator unnecessary" )
+      cdl_warning("HRP9999 PPAllocatorSize speicified in spite of PPAllocator unnecessary")
       @PPAllocatorSize = nil
     end
 
@@ -111,7 +111,7 @@ class HRPRPCPlugin < ThroughPlugin
   end
 
   #=== plugin の宣言コード (celltype の定義) 生成
-  def gen_plugin_decl_code( file )
+  def gen_plugin_decl_code(file)
 
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
@@ -123,7 +123,7 @@ class HRPRPCPlugin < ThroughPlugin
       return
     end
 
-    f = CFile.open( @rpc_channel_celltype_file_name, "w" )
+    f = CFile.open(@rpc_channel_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     f.print <<EOT
@@ -155,9 +155,9 @@ EOT
   #===  through cell コードを生成
   #
   #
-  def gen_through_cell_code( file )
+  def gen_through_cell_code(file)
 
-    gen_plugin_decl_code( file )
+    gen_plugin_decl_code(file)
     file.print <<EOT
 import( <#{@rpc_channel_celltype_file_name}> );
 EOT
@@ -387,17 +387,17 @@ EOT
     elsif rhs == :false then
       @b_noClientSemaphore = false
     else
-      cdl_error( "RPCPlugin: specify true or false for noClientSemaphore" )
+      cdl_error("RPCPlugin: specify true or false for noClientSemaphore")
     end
   end
 
   #=== プラグイン引数 semaphoreCelltype のチェック
   def set_semaphoreCelltype rhs
     @semaphoreCelltype = rhs.to_sym
-    nsp = NamespacePath.analyze( @semaphoreCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: semaphoreCelltype '#{rhs}' not celltype or not defined" )
+    nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: semaphoreCelltype '#{rhs}' not celltype or not defined")
     end
   end
 
@@ -406,7 +406,7 @@ EOT
   def get_cell_namespace_path
 #    nsp = @region.get_namespace.get_namespace_path
     nsp = @start_region.get_namespace_path
-    return nsp.append( @cell_name )
+    return nsp.append(@cell_name)
   end
 
 end

@@ -50,7 +50,7 @@ class MrubyBridgeCellPlugin < CellPlugin
   @@cell_list = {}      # gen_cdl_file'ed list to avoid duplicate generation
   @@signature_list = {}
 
-  require_tecsgen_lib( "MrubyBridgeSignaturePlugin.rb" )
+  require_tecsgen_lib("MrubyBridgeSignaturePlugin.rb")
 
   # @exclude_port::[ String(port_name) ] : 
   # @exclude_port_func::{ [ String(port_name) ] => [ String(func_name) ] } : 
@@ -60,7 +60,7 @@ class MrubyBridgeCellPlugin < CellPlugin
   # cell::     Cell        セル（インスタンス）
   # このメソッドは、セルの構文解析が終わったところで呼び出される
   # この段階では意味解析が終わっていない
-  def initialize( cell, option )
+  def initialize(cell, option)
     dbgPrint "  #{self.class.name}: initialzie=#{cell.get_name} option=#{option}\n"
     super
     @cell = cell
@@ -89,7 +89,7 @@ class MrubyBridgeCellPlugin < CellPlugin
       # この実装では、存在しない port を指定されてもチェックできない
       # print "MRBBridgeCellPlugin: exclude list\n"
       port_list.each{ |port|
-        if ! @exclude_port.include?( port.get_name.to_s ) then
+        if ! @exclude_port.include?(port.get_name.to_s) then
           # print "MRBBridgeCellPlugin: #{port.get_name} included\n"
           @port_list[ port ] = ""
         else
@@ -105,7 +105,7 @@ class MrubyBridgeCellPlugin < CellPlugin
     if @exclude_port_func.length > 0 then
       @port_list.each{ |port, opt_str|
         delim = ""
-        if @exclude_port_func.include?( port.get_name.to_s ) then
+        if @exclude_port_func.include?(port.get_name.to_s) then
           @exclude_port_func[ port.get_name.to_s ].each{ |func_name|
             opt_str += delim + "exclude=" + func_name
             delim = ","
@@ -131,7 +131,7 @@ EOT
  * This might comes from generate for celltype.
  */
 EOT
-      cdl_info( "MrubyBridgeCellPlugin: generate duplicate for cell '$1'", @cell.get_name )
+      cdl_info("MrubyBridgeCellPlugin: generate duplicate for cell '$1'", @cell.get_name)
       return
     end
     @@cell_list[ @cell ] = @cell
@@ -177,7 +177,7 @@ EOT
   #=== 後ろの CDL コードを生成
   # プラグインの後ろの CDL コードを生成
   # file:: File: 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     dbgPrint "#{self.name}: gen_post_code\n"
     if ! @@b_gen_post_code_by_dependent then
       gen_post_code_body file
@@ -210,9 +210,9 @@ EOT
     ct = @cell.get_celltype
     return if ct == nil    # error case
     ports.each{ |rhs_port|
-      obj = ct.find( rhs_port.to_sym )
-      if( ( ! obj.instance_of? Port ) || obj.get_port_type != :ENTRY ) then
-        cdl_error( "MRB9999 exclude_port '$1' not found or not entry in celltype '$2'", rhs_port, ct.get_name )
+      obj = ct.find(rhs_port.to_sym)
+      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY) then
+        cdl_error("MRB9999 exclude_port '$1' not found or not entry in celltype '$2'", rhs_port, ct.get_name)
       else
         # print "MRBBridgeCellPlugin: exclude #{rhs_port}\n"
         @exclude_port << rhs_port
@@ -228,11 +228,11 @@ EOT
     port_funcs.each{ |rhs_port_func|
       port_func = rhs_port_func.split '.'
       if port_func.length != 2 then
-        cdl_error( "MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func )
+        cdl_error("MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func)
       end
-      obj = ct.find( port_func[0].to_sym )
-      if( ( ! obj.instance_of? Port ) || obj.get_port_type != :ENTRY ) then
-        cdl_error( "MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port, ct.get_name )
+      obj = ct.find(port_func[0].to_sym)
+      if((! obj.instance_of? Port) || obj.get_port_type != :ENTRY) then
+        cdl_error("MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port, ct.get_name)
       else
         signature = obj.get_signature
         next if signature == nil     # error case
@@ -244,8 +244,8 @@ EOT
             @exclude_port_func[ port_func[0] ] = [ port_func[1] ]
           end
         else
-          cdl_error( "MRB9999 exclude_port_func: func '$1' not found in port '$2' celltype $3",
-                     port_func[1], port_func[0], ct.get_name )
+          cdl_error("MRB9999 exclude_port_func: func '$1' not found in port '$2' celltype $3",
+                     port_func[1], port_func[0], ct.get_name)
         end
       end
     }
@@ -258,7 +258,7 @@ EOT
     elsif rhs == "true" then
       @b_auto_exclude = true     # auto_exclude = true by default 
     else
-      cdl_warning( "MRB9999 auto_exclude: unknown rhs value ignored. specify true or false" )
+      cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")
     end
   end
 

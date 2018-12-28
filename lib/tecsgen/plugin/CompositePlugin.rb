@@ -40,7 +40,7 @@
 class CompositePlugin < Plugin
 
   # celltype::     CompositeCelltype        セルタイプ（インスタンス）
-  def initialize( celltype, option )
+  def initialize(celltype, option)
     super()
     @celltype = celltype
     # @plugin_arg_str = option.gsub( /\A"(.*)/, '\1' )    # 前後の "" を取り除く
@@ -54,13 +54,13 @@ class CompositePlugin < Plugin
   #
   # celltype プラグインを指定されたセルタイプのセルが生成された
   # セルタイププラグインに対する新しいセルの報告
-  def new_cell( cell )
+  def new_cell(cell)
   end
 
   #=== 後ろの CDL コードを生成
   # プラグインの後ろの CDL コードを生成
   # file:: File: 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     # 複数のプラグインの post_code が一つのファイルに含まれるため、以下のような見出しをつけること
     # file.print "/* '#{self.class.name}' post code */\n"
   end

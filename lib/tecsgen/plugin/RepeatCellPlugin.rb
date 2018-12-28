@@ -49,7 +49,7 @@ class RepeatCellPlugin < CellPlugin
     "count" => Proc.new { |obj,rhs| obj.set_count rhs }
   }
 
-  def initialize( cell, option )
+  def initialize(cell, option)
     super
     @@plugin_list << self
     print "RepeatCellPlugin: #{@cell.get_name}\n"
@@ -62,7 +62,7 @@ class RepeatCellPlugin < CellPlugin
     parse_plugin_arg
   end
 
-  def gen_cdl_file( file )
+  def gen_cdl_file(file)
     if $verbose then
       print "#{self.class}: repeat #{@cell.get_name} #(num} times\n"
     end
@@ -72,9 +72,9 @@ class RepeatCellPlugin < CellPlugin
     @cell.get_name.to_s =~ /.*[^0-9]([0-9]+)\z/
     if $1 then
       tail_zero = $1
-      bname = @cell.get_name.to_s.gsub( /[0-9]+\z/, "" )
+      bname = @cell.get_name.to_s.gsub(/[0-9]+\z/, "")
     else
-      cdl_error( "#{self.class}: #{@cell.get_name}'s name ends without '0-9'")
+      cdl_error("#{self.class}: #{@cell.get_name}'s name ends without '0-9'")
       return
     end
     base_count = tail_zero.to_i
@@ -87,7 +87,7 @@ class RepeatCellPlugin < CellPlugin
       # セル名のカウント
       count_str = (count + base_count).to_s
       if tail_zero.length > count_str.length then
-        leading_zero = "0" * ( tail_zero.length - count_str.length )
+        leading_zero = "0" * (tail_zero.length - count_str.length)
       else
         leading_zero = ""
       end
@@ -119,7 +119,7 @@ class RepeatCellPlugin < CellPlugin
           rhs_tail_num = $2
           rhs_name_count = count + rhs_tail_num.to_i
           if rhs_tail_num.length > rhs_name_count.to_s.length then
-            leading_zero = "0" * ( rhs_tail_num.length - rhs_name_count.to_s.length )
+            leading_zero = "0" * (rhs_tail_num.length - rhs_name_count.to_s.length)
           else
             leading_zero = ""
           end
@@ -153,11 +153,11 @@ class RepeatCellPlugin < CellPlugin
     if rhs =~ /\A\d+\z/
       @count = rhs.to_i
     else
-      nsp = NamespacePath.new( rhs.to_sym, true )
-      expr = Expression.create_single_identifier( nsp, nil )
-      res = expr.eval_const( nil )
+      nsp = NamespacePath.new(rhs.to_sym, true)
+      expr = Expression.create_single_identifier(nsp, nil)
+      res = expr.eval_const(nil)
       if res == nil then
-        cdl_error( "count value ($1): not single identifier or integer number", rhs.to_s )
+        cdl_error("count value ($1): not single identifier or integer number", rhs.to_s)
         @count = 0
       else
         @count = res

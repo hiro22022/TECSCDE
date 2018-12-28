@@ -41,7 +41,7 @@
 # HRP2カーネル用ドメインプラグイン
 class HRP2Plugin < DomainPlugin
 
-  def initialize( region, name, option )
+  def initialize(region, name, option)
     super
     print "HRP2Plugin: initialize: region=#{region.get_name}, domainName=#{name}, option=#{option}\n"
     @region = region
@@ -52,12 +52,12 @@ class HRP2Plugin < DomainPlugin
       # OK
       @option = option
     else
-      cdl_error( "HRPPlugin: '$1' is unacceptable domain kind, specify 'trusted' or 'nontrusted'", option )
+      cdl_error("HRPPlugin: '$1' is unacceptable domain kind, specify 'trusted' or 'nontrusted'", option)
       @option = "trusted"   # とりあえず trusted を設定しておく
     end
   end
 
-  def add_through_plugin( join, current_region, next_region, through_type )
+  def add_through_plugin(join, current_region, next_region, through_type)
     # join.get_owner:Cell  左辺のセル
     # join.get_definition:Port 呼び口
     # join.get_subscript:Integer or nil 呼び口配列の添数 (Join::@subscript の説明参照)
@@ -131,7 +131,7 @@ class HRP2Plugin < DomainPlugin
     end
   end
 
-  def joinable?(current_region, next_region, through_type )
+  def joinable?(current_region, next_region, through_type)
     print "HRP2Plugin: joinable? from #{current_region.get_name} to #{next_region.get_name} (#{through_type})\n"
     return true
   end

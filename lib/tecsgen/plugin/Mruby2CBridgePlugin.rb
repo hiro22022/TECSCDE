@@ -38,7 +38,7 @@
 class Mruby2CBridgePlugin < SignaturePlugin
   @@signature_list = { }
 
-  def initialize( signature, option )
+  def initialize(signature, option)
     super
 
     @celltype_name = :"t#{@signature.get_global_name}"
@@ -47,15 +47,15 @@ class Mruby2CBridgePlugin < SignaturePlugin
     parse_plugin_arg
   end
 
-  def gen_cdl_file( file )
-    if( @@signature_list.length == 0 )then
+  def gen_cdl_file(file)
+    if(@@signature_list.length == 0)then
       print_msg "  Mruby2CBridgePlugin: [initialize function] 'void initializeBridge( mrb_state *mrb )' must be called from VM.\n"
       c2tecs = "generate( C2TECSBridgePlugin, nMruby::sInitializeBridge, \"silent=true\" );\n"
     end
 
     if @@signature_list[ @signature.get_global_name ] then
       @@signature_list[ @signature.get_global_name ] << self
-      cdl_warning( "MRCW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path )
+      cdl_warning("MRCW001 signature '$1' duplicate. ignored current one", @signature.get_namespace_path)
       return
     end
 
@@ -63,7 +63,7 @@ class Mruby2CBridgePlugin < SignaturePlugin
     print_msg "  Mruby2CBridgePlugin: [object creattion]    object = TECS::#{@class_name}.new( 'C#{@signature.get_global_name}' )\n"
     print_msg "  Mruby2CBridgePlugin: [function call]       result = object.function( params )  # substitute 'function' and params \n"
 
-    cf = CFile.open( "#{$gen}/Mruby2C_tsInitializerBridge.cdl", "w")
+    cf = CFile.open("#{$gen}/Mruby2C_tsInitializerBridge.cdl", "w")
     cf.print <<EOT
 cell nC2TECS::tnMruby_sInitializeBridge C2TECS_tsInitializeBridge{
     cCall = VM_TECSInitializer.eInitialize;

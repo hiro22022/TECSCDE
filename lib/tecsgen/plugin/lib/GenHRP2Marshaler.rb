@@ -53,46 +53,46 @@ module GenTransparentMarshaler
   }
 
   #=== プラグイン引数 taskPriority のチェック
-  def set_taskPriority( rhs )
+  def set_taskPriority(rhs)
     @task_priority = rhs
   end
 
   #=== プラグイン引数 channelCelltype のチェック
-  def set_channelCelltype( rhs )
+  def set_channelCelltype(rhs)
     @channelCelltype = rhs.to_sym
     # path = [ "::", @channelCelltype ]
     # obj = Namespace.find( path )
-    nsp = NamespacePath.analyze( @channelCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: channeclCelltype '#{rhs}' not celltype or not found" )
+    nsp = NamespacePath.analyze(@channelCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: channeclCelltype '#{rhs}' not celltype or not found")
     end
   end
 
   #=== プラグイン引数 TDRCelltype のチェック
-  def set_TDRCelltype( rhs )
+  def set_TDRCelltype(rhs)
     @TDRCelltype = rhs.to_sym
     # path = [ "::", @TDRCelltype ]
     # obj = Namespace.find( path )
-    nsp = NamespacePath.analyze( @TDRCelltype.to_s )
-    obj = Namespace.find( nsp )
-    if ! obj.instance_of?( Celltype ) && ! obj.instance_of?( CompositeCelltype ) then
-      cdl_error( "RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found" )
+    nsp = NamespacePath.analyze(@TDRCelltype.to_s)
+    obj = Namespace.find(nsp)
+    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype) then
+      cdl_error("RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found")
     end
   end
 
   #=== プラグイン引数 channelCellName のチェック
-  def set_channelCellName( rhs )
+  def set_channelCellName(rhs)
     @channelCellName = rhs
     if @channelCellName =~ /\A[a-zA-Z_]\w*/ then
       # OK
     else
-      cdl_error( "RPCPlugin: channeclCellName '#{rhs}' unsuitable for identifier" )
+      cdl_error("RPCPlugin: channeclCellName '#{rhs}' unsuitable for identifier")
     end
   end
 
   #=== プラグイン引数 PPAllocatorSize のチェック
-  def set_PPAllocatorSize( rhs )
+  def set_PPAllocatorSize(rhs)
     @PPAllocatorSize = rhs
   end
 
@@ -117,7 +117,7 @@ module GenTransparentMarshaler
       alloc_call_port = ""
     end
 
-    f = CFile.open( @marshaler_celltype_file_name, "w" )
+    f = CFile.open(@marshaler_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     # modified by ishikawa
@@ -148,18 +148,18 @@ EOT
 
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
   # ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
-  def gen_ep_func_body( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     # unmarshaler クラスか?
     if ct_name == @unmarshaler_celltype_name.to_sym then
-      gen_ep_func_body_unmarshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+      gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     else
-      gen_ep_func_body_marshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+      gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     end
   end
 
   #===  marshal コードの生成
-  def gen_ep_func_body_marshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
     b_void = false
     b_ret_er = false
@@ -168,28 +168,28 @@ EOT
     type = func_type.get_type.get_original_type
 
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
-    if ! type.kind_of?( VoidType ) then
-      if func_type.get_type.kind_of?( DefinedType ) && ( func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT" ) then
-        file.print( "    #{func_type.get_type.get_type_str}  retval_ = E_OK;\n" )
+    if ! type.kind_of?(VoidType) then
+      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT") then
+        file.print("    #{func_type.get_type.get_type_str}  retval_ = E_OK;\n")
         b_ret_er = true
       else
-        file.print( "    #{func_type.get_type.get_type_str}  retval_;\n" )
+        file.print("    #{func_type.get_type.get_type_str}  retval_;\n")
       end
     else
       b_void = true
     end
 
-    file.print( "    ER      ercd_;\n" )
-    file.print( "    FLGPTN  flgptn;\n" )
+    file.print("    ER      ercd_;\n")
+    file.print("    FLGPTN  flgptn;\n")
 
     # 呼び先の signature を取り出す
     signature = @signature
 
     # 関数 ID （整数値）
-    func_id = signature.get_id_from_func_name( func_name )
-    file.print( "    int16_t  func_id_ = #{func_id};    /* id of #{func_name}: #{func_id} */\n" )
+    func_id = signature.get_id_from_func_name(func_name)
+    file.print("    int16_t  func_id_ = #{func_id};    /* id of #{func_name}: #{func_id} */\n")
 
-    file.print( "    uint8_t  msg[256];\n" )
+    file.print("    uint8_t  msg[256];\n")
 
     # シングルトンでないか？
     if ! b_singleton then
@@ -250,8 +250,8 @@ EOT
     # in 方向の入出力を出力
     @index = 2
     file.print "    /* 入力引数送出 */\n"
-    print_params( params, file, 1, b_marshal, b_get, true, func_type.is_oneway? )
-    print_params( params, file, 1, b_marshal, b_get, false, func_type.is_oneway? )
+    print_params(params, file, 1, b_marshal, b_get, true, func_type.is_oneway?)
+    print_params(params, file, 1, b_marshal, b_get, false, func_type.is_oneway?)
 =begin
     if ! b_void && ! func_type.is_oneway? then
       ret_ptr_type = PtrType.new( func_type.get_type )
@@ -293,12 +293,12 @@ EOT
     //  cLockChannel_signal();
 EOT
 
-    if( b_void == false )then
+    if(b_void == false)then
       # 呼び元に戻り値をリターン
-      file.print( "    cMessageBuffer_receive(&retval_);\n" )
-      file.print( "    return retval_;\n" )
+      file.print("    cMessageBuffer_receive(&retval_);\n")
+      file.print("    return retval_;\n")
     else
-      file.print( "    return;\n" )
+      file.print("    return;\n")
     end
 
     file.print <<EOT
@@ -318,17 +318,17 @@ EOT
 
 EOT
 
-    if( b_ret_er != false )then
+    if(b_ret_er != false)then
       # 呼び元に戻り値をリターン
-      file.print( "    return ercd_;\n" )
+      file.print("    return ercd_;\n")
     else
-      file.print( "    return;\n" )
+      file.print("    return;\n")
     end
 
   end
 
   #===  unmarshal コードの生成
-  def gen_ep_func_body_unmarshal( file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params )
+  def gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
 
 #    b_ret_er = true
     b_ret_er = false
@@ -391,10 +391,10 @@ EOT
     signature.get_function_head_array.each { |f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
-      id = signature.get_id_from_func_name( f_name )
+      id = signature.get_id_from_func_name(f_name)
 
       # 関数は返り値を持つか?
-      if f_type.get_type.kind_of?( VoidType ) then
+      if f_type.get_type.kind_of?(VoidType) then
         b_void = true
       else
         b_void = false
@@ -442,26 +442,26 @@ EOT
   #  b_marshal = true  && b_get == true    :  マーシャラで出力引数受取
   #  b_marshal = false && b_get == true    :  アンマーシャラで入力引数受取
   #  b_marshal = false && b_get == get     :  アンマーシャラで出力引数送出
-  def print_params( params, file, nest, b_marshal, b_get, b_referenced, b_oneway = false )
+  def print_params(params, file, nest, b_marshal, b_get, b_referenced, b_oneway = false)
     params.each{ |param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
-      if ! ( b_referenced == param.is_referenced? ) then
+      if ! (b_referenced == param.is_referenced?) then
         next
       end
 
       dir = param.get_direction
       type = param.get_type
-      if b_oneway && dir == :IN && type.get_original_type.kind_of?( PtrType ) || type.get_original_type.kind_of?( ArrayType ) then
+      if b_oneway && dir == :IN && type.get_original_type.kind_of?(PtrType) || type.get_original_type.kind_of?(ArrayType) then
         # oneway, in, PtrType の場合コピー
         alloc_cp = "cPPAllocator_alloc"
         alloc_cp_extra = nil
-        print_param( param.get_name, type, file, nest, dir, nil, nil, b_get, alloc_cp, alloc_cp_extra )
+        print_param(param.get_name, type, file, nest, dir, nil, nil, b_get, alloc_cp, alloc_cp_extra)
       else
-        if( b_get == false && b_marshal == true || b_get == true && b_marshal == false  )then
+        if(b_get == false && b_marshal == true || b_get == true && b_marshal == false)then
           case dir
 #          when :IN, :INOUT, :SEND
           when :IN, :INOUT, :OUT, :SEND, :RECEIVE
-            print_param_nc( param.get_name, type, file, nest, b_marshal, nil, nil, b_get )
+            print_param_nc(param.get_name, type, file, nest, b_marshal, nil, nil, b_get)
           end
         else
 #         case dir
@@ -475,12 +475,12 @@ EOT
   end
 
   #=== コピーしない引数渡しコードの出力
-  def print_param_nc( name, type, file, nest, b_marshal, outer, outer2, b_get )
-    indent = "    " * ( nest + 1 )
+  def print_param_nc(name, type, file, nest, b_marshal, outer, outer2, b_get)
+    indent = "    " * (nest + 1)
 
     case type
     when DefinedType
-      print_param_nc( name, type.get_type, file, nest, b_marshal, outer, outer2, b_get )
+      print_param_nc(name, type.get_type, file, nest, b_marshal, outer, outer2, b_get)
     when BoolType, IntType, FloatType, PtrType, ArrayType
       case type
       when BoolType
@@ -554,8 +554,8 @@ EOT
         cast_str = "(" + cast_str + ")"
       end
 
-      if( b_get )then
-        cast_str.gsub!( /\)$/, "*)" )
+      if(b_get)then
+        cast_str.gsub!(/\)$/, "*)")
         file.print "    " * nest
 =begin
         file.print "if( ( ercd_ = cTDR_get#{type_str}( #{cast_str}&(#{outer}#{name}#{outer2}) ) ) != E_OK )\n"
@@ -597,12 +597,12 @@ EOT
       members_decl =type.get_members_decl
       members_decl.get_items.each { |m|
         if m.is_referenced? then
-          print_param_nc( m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get )
+          print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)
         end
       }
       members_decl.get_items.each { |m|
         if ! m.is_referenced? then
-          print_param_nc( m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get )
+          print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)
         end
       }
 
@@ -625,7 +625,7 @@ EOT
     @signature.get_function_head_array.each { |f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
-      id = @signature.get_id_from_func_name( f_name )
+      id = @signature.get_id_from_func_name(f_name)
       file.print "static ER  tTransparentUnmarshaler_#{@signature.get_name}_#{f_name}();\t/* func_id: #{id} */\n"
     }
     file.print "\n"
@@ -644,10 +644,10 @@ EOT
     @signature.get_function_head_array.each { |f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
-      id = @signature.get_id_from_func_name( f_name )
+      id = @signature.get_id_from_func_name(f_name)
 
       # 関数は返り値を持つか?
-      if f_type.get_type.kind_of?( VoidType ) then
+      if f_type.get_type.kind_of?(VoidType) then
         b_void = true
       else
         b_void = false
@@ -679,9 +679,9 @@ EOT
           aster2 = ""
         end
 
-        type_str = type.get_type_str.gsub( /\bconst\b */, "" ) # "const" を外す
+        type_str = type.get_type_str.gsub(/\bconst\b */, "") # "const" を外す
 
-        file.printf( "    %-12s %s%s%s%s;\n", type_str, aster, name, aster2, type.get_type_str_post )
+        file.printf("    %-12s %s%s%s%s;\n", type_str, aster, name, aster2, type.get_type_str_post)
       }
 
       # 戻り値を受け取る変数の定義
@@ -694,7 +694,7 @@ EOT
           retval_ptr = ""
           # =end ishikawa modified
         end
-        file.printf( "    %-12s #{retval_ptr}retval_%s;\n", f_type.get_type.get_type_str, f_type.get_type.get_type_str_post )
+        file.printf("    %-12s #{retval_ptr}retval_%s;\n", f_type.get_type.get_type_str, f_type.get_type.get_type_str_post)
       end
 
       # in 方向の入出力を入力
@@ -702,8 +702,8 @@ EOT
       b_get = true    # unmarshal では get
       b_marshal  = false
       @index = 2
-      print_params( param_list, file, 1, b_marshal, b_get, true, f.is_oneway? )
-      print_params( param_list, file, 1, b_marshal, b_get, false, f.is_oneway? )
+      print_params(param_list, file, 1, b_marshal, b_get, true, f.is_oneway?)
+      print_params(param_list, file, 1, b_marshal, b_get, false, f.is_oneway?)
 =begin
       if ! b_void && ! f.is_oneway? then
         ret_ptr_type = PtrType.new( f_type.get_type )
@@ -725,9 +725,9 @@ EOT
       # 対象関数を呼出す
       file.print "    /* 対象関数の呼出し */\n"
       if b_void then
-        file.print( "    cServerCall_#{f_name}(" )
+        file.print("    cServerCall_#{f_name}(")
       else
-        file.print( "    #{retval_ptr}retval_ = cServerCall_#{f_name}(" )
+        file.print("    #{retval_ptr}retval_ = cServerCall_#{f_name}(")
       end
 
       delim = " "
@@ -736,7 +736,7 @@ EOT
         delim = ", "
         file.print "#{par.get_name}"
       }
-      file.print( " );\n" )
+      file.print(" );\n")
 
       # 戻り値、出力引数の受取コードの生成
 

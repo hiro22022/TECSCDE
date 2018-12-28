@@ -58,7 +58,7 @@ module TECSCDE
     def initialize cell
       @cell = cell
 
-      Dir.chdir( "#{$tecsgen_base_path}/../glade" ){
+      Dir.chdir("#{$tecsgen_base_path}/../glade"){
         setup
       }
     end

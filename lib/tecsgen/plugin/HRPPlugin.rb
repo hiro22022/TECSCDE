@@ -43,7 +43,7 @@ require_tecsgen_lib "HRPKernelObjectManager.rb"
 # HRPカーネル用ドメインプラグイン
 class HRPPlugin < DomainPlugin
   
-  def initialize( region, name, option )
+  def initialize(region, name, option)
     super
     dbgPrint "HRPPlugin: initialize: region=#{region.get_name}, domainName=#{name}, option=#{option}\n"
     @region = region
@@ -53,12 +53,12 @@ class HRPPlugin < DomainPlugin
       # OK
       @option = option
     else
-      cdl_error( "HRPPlugin: '$1' is unacceptable domain kind, specify 'kernel' or 'user'", option )
+      cdl_error("HRPPlugin: '$1' is unacceptable domain kind, specify 'kernel' or 'user'", option)
       @option = "kernel"   # とりあえず kernel を設定しておく
     end
   end
 
-  def add_through_plugin( join, current_region, next_region, through_type )
+  def add_through_plugin(join, current_region, next_region, through_type)
     # join.get_owner:Cell  左辺のセル
     # join.get_definition:Port 呼び口
     # join.get_subscript:Integer or nil 呼び口配列の添数 (Join::@subscript の説明参照)
@@ -127,7 +127,7 @@ class HRPPlugin < DomainPlugin
     # puts "=====Join Check End====="
   end
 
-  def joinable?(current_region, next_region, through_type )
+  def joinable?(current_region, next_region, through_type)
     dbgPrint "MyDomainPlugin: joinable? from #{current_region.get_name} to #{next_region.get_name} (#{through_type})\n"
     return true
   end
@@ -154,7 +154,7 @@ class HRPPlugin < DomainPlugin
     super
 
     if @@include_extsvc_fncd == false
-      file = AppFile.open( "#{$gen}/tecsgen.cfg" )
+      file = AppFile.open("#{$gen}/tecsgen.cfg")
       file.print "/* HRPPlugin 001 */\n"
       file.print "#include \"extsvc_fncode.h\"\n"   ## 2017.7.26
       file.close
@@ -167,12 +167,12 @@ class HRPPlugin < DomainPlugin
       #  すべてのドメインに対する cfg を先に生成しておく
       #  もし、ドメインに属するカーネルオブジェクトも、モジュールもない場合でも、cfg が出力される
       regions = DomainType.get_domain_regions[ :HRP ]
-      file = AppFile.open( "#{$gen}/tecsgen.cfg" )
+      file = AppFile.open("#{$gen}/tecsgen.cfg")
       file.print "/* HRPPlugin 002 */\n"
       regions.each{ |region|
         if ! region.is_root? then
           nsp = "#{region.get_global_name}"
-          file2 = AppFile.open( "#{$gen}/tecsgen_#{nsp}.cfg" )
+          file2 = AppFile.open("#{$gen}/tecsgen_#{nsp}.cfg")
           file2.close
           case region.get_domain_type.get_kind
           when :kernel
@@ -199,7 +199,7 @@ class HRPPlugin < DomainPlugin
       Cell.get_cell_list2.each { |cell|
         # すべてのセルを走査してセルタイプをチェック
         ct = cell.get_celltype
-        if ct.class == Celltype && check_celltype_list.include?( ct ) == false
+        if ct.class == Celltype && check_celltype_list.include?(ct) == false
           # チェック済みセルタイプに登録
           check_celltype_list << ct
 
@@ -224,10 +224,10 @@ class HRPPlugin < DomainPlugin
 
           # セル管理ブロックとスケルトンのメモリ保護
           # gen_celltype_names_domain 相当の処理
-          if regions_hrp.include?( Region.get_root ) == false && regions_hrp.length > 1
+          if regions_hrp.include?(Region.get_root) == false && regions_hrp.length > 1
             # ドメインが複数で，OutOfDomainにセルが存在しないセルタイプの場合
             # 共有のセル管理ブロックとスケルトンコードを登録する
-            file = AppFile.open( "#{$gen}/tecsgen.cfg" )
+            file = AppFile.open("#{$gen}/tecsgen.cfg")
             file.printf "%-60s/* HRPPlugin 003 */\n", "ATT_MOD(\"#{ct.get_global_name}_tecsgen.o\");"
             file.close
           end
@@ -238,7 +238,7 @@ class HRPPlugin < DomainPlugin
             else
               nsp = "_#{reg.get_global_name}"
             end
-            file = AppFile.open( "#{$gen}/tecsgen#{nsp}.cfg" )
+            file = AppFile.open("#{$gen}/tecsgen#{nsp}.cfg")
             file.printf "%-50s/* HRPPlugin 004 */\n", "ATT_MOD(\"#{ct.get_global_name}#{nsp}_tecsgen.o\");"
             file.close
           }
@@ -248,15 +248,15 @@ class HRPPlugin < DomainPlugin
 
           # セルタイプコードのメモリ保護
           # gen_celltype_names_domain2 相当の処理
-          if regions_hrp.include?( Region.get_root ) == true || regions_hrp.length > 1
+          if regions_hrp.include?(Region.get_root) == true || regions_hrp.length > 1
             # OutOfDomainにセルが存在するセルタイプの場合
             # または，複数のドメインにセルが存在するセルタイプの場合
             # セルタイプコードを共有するように登録する
-            file = AppFile.open( "#{$gen}/tecsgen.cfg" )
+            file = AppFile.open("#{$gen}/tecsgen.cfg")
           else
             # OutOfDomainでない単一のドメインにセルが存在するセルタイプの場合
             # セルタイプコードを専有するように登録する
-            file = AppFile.open( "#{$gen}/tecsgen_#{regions_hrp[0].get_global_name}.cfg" )
+            file = AppFile.open("#{$gen}/tecsgen_#{regions_hrp[0].get_global_name}.cfg")
           end
 
           file.printf "%-50s/* HRPPlugin 005 */\n", "ATT_MOD(\"#{ct.get_global_name}.o\");"
@@ -323,7 +323,7 @@ class HRPPlugin < DomainPlugin
         delim = "|"
         if cell_domain_root.get_domain_type.get_kind != :OutOfDomain &&
            dr.get_namespace_path != cell_domain_root.get_namespace_path then
-          cdl_error( "HRP9999 '$1': kernel object joined from other user domain. kernel object joined from multi-user-domain must be placed out of domain", cell.get_name )
+          cdl_error("HRP9999 '$1': kernel object joined from other user domain. kernel object joined from multi-user-domain must be placed out of domain", cell.get_name)
         end
       when :OutOfDomain
         if cell_domain_root.get_domain_type.get_kind == :OutOfDomain then

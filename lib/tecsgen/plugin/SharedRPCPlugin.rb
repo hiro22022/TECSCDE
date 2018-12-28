@@ -60,7 +60,7 @@ class SharedRPCPlugin < ThroughPlugin
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
-  def initialize( cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell )
+  def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
 
     # mikan プラグインオプション指定の不一致のチェック task_priority, 
 
@@ -79,7 +79,7 @@ class SharedRPCPlugin < ThroughPlugin
 
     @shared_channel_cell = @channelCellName
     if @shared_channel_cell == "" then
-      cdl_error( "SharedRPCPlugin: need channelCellName option" )
+      cdl_error("SharedRPCPlugin: need channelCellName option")
     end
 
     if @@shared_channel_list[ @shared_channel_cell ] == nil then
@@ -89,18 +89,18 @@ class SharedRPCPlugin < ThroughPlugin
       # 二番目以降
       @@shared_channel_list[ @shared_channel_cell ] << self
     end
-    @sub_channel_no = ( @@shared_channel_list[ @shared_channel_cell ].length ) -1
+    @sub_channel_no = (@@shared_channel_list[ @shared_channel_cell ].length) -1
 
     if @region != @@shared_channel_list[ @shared_channel_cell ][0].region then
       # 初出とリージョン不一致 (初出は、自分自身とチェックされる。無駄だが小さいので放置)
-      cdl_error( "SharedRPCPlugin: preferred region mismatch current: #{@region.get_name} previous: #{@@shared_channel_list[ @shared_channel_cell ][0].region.get_name}")
+      cdl_error("SharedRPCPlugin: preferred region mismatch current: #{@region.get_name} previous: #{@@shared_channel_list[ @shared_channel_cell ][0].region.get_name}")
     else
       dbgPrint "SahredRPCPlugin: Region: #{@region.get_name}, #{@@shared_channel_list[ @shared_channel_cell ][0].region.get_name}\n"
     end
 
     if @signature.need_PPAllocator? then
       if @PPAllocatorSize == nil then
-        cdl_error( "PPAllocatorSize must be speicified for oneway [in] array" )
+        cdl_error("PPAllocatorSize must be speicified for oneway [in] array")
       end
     end
 
@@ -111,7 +111,7 @@ class SharedRPCPlugin < ThroughPlugin
   #  
   # end
 
-  def gen_plugin_decl_code( file )
+  def gen_plugin_decl_code(file)
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[ @shared_channel_ct_name ] == nil then
@@ -137,7 +137,7 @@ class SharedRPCPlugin < ThroughPlugin
       alloc_call_port_join = ""
     end
 
-    f = CFile.open( @rpc_channel_celltype_file_name, "w" )
+    f = CFile.open(@rpc_channel_celltype_file_name, "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     f.print <<EOT
@@ -173,7 +173,7 @@ EOT
 
     f.close
 
-    f = CFile.open( "#{$gen}/#{@shared_channel_ct_name}.cdl", "w" )
+    f = CFile.open("#{$gen}/#{@shared_channel_ct_name}.cdl", "w")
     # 同じ内容を二度書く可能性あり (AppFile は不可)
 
     f.print <<EOT
@@ -222,9 +222,9 @@ EOT
   #===  through cell コードを生成
   #
   #
-  def gen_through_cell_code( file )
+  def gen_through_cell_code(file)
 
-    gen_plugin_decl_code( file )
+    gen_plugin_decl_code(file)
 
     file.print <<EOT
 import( "#{@rpc_channel_celltype_file_name}" );
@@ -243,7 +243,7 @@ EOT
     # セルを探す
     # path =["::",@next_cell.get_name]
     # cell = Namespace.find( path )
-    cell = Namespace.find( @next_cell.get_namespace_path )
+    cell = Namespace.find(@next_cell.get_namespace_path)
 
     # PPAllocator が必要か?
     if @signature.need_PPAllocator? then
@@ -306,16 +306,16 @@ EOT
   #=== 後ろのコードを生成
   # プラグインの後ろのコードを生成
   # file:: File: 
-  def self.gen_post_code( file )
+  def self.gen_post_code(file)
     file.print "/* '#{self.name}' post code */\n"
     @@shared_channel_list.each{ |chan_name,plugin_obj|
-      plugin_obj[0].gen_post_code( file, plugin_obj )
+      plugin_obj[0].gen_post_code(file, plugin_obj)
     }
   end
 
   #=== 後ろのコードを生成
   # plugin_obj[0] が代表して出力する（インスタンス変数にアクセスしたいため）
-  def gen_post_code( file, plugin_obj )
+  def gen_post_code(file, plugin_obj)
 
     chan_name = @shared_channel_cell
 
