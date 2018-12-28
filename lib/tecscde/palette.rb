@@ -1,4 +1,3 @@
-
 =begin
 
 TECSCDE - TECS Component Diagram Editor
