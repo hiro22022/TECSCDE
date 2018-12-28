@@ -340,7 +340,7 @@ EOT
 EOT
 
     if @next_cell_port_subscript
-      subscript = '[' + @next_cell_port_subscript.to_s + ']'
+      subscript = "[" + @next_cell_port_subscript.to_s + "]"
     else
       subscript = ""
     end

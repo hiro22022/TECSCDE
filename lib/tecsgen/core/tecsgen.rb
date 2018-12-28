@@ -92,7 +92,7 @@ class TECSGEN
   # '/' または '$' で始まる場合、絶対パスと判定する
   def self.is_absolute_path?(path)
     pa = path[0..0]; pa2 = path[0..1]
-    if pa == '/' || pa == '$' || pa2 =~ /[A-Za-z]:/
+    if pa == "/" || pa == "$" || pa2 =~ /[A-Za-z]:/
       res = true
     else
       res = false
@@ -171,7 +171,7 @@ class TECSGEN
       return @@objs.uniq
     end
     def self.get_vars  # Array を返す
-      if RUBY_VERSION >= '1.9'
+      if RUBY_VERSION >= "1.9"
         return (@@vars.keys + @@vars_default.keys).sort.uniq
       else
         # V1.8 では、Symbol の sort ができないので、一旦 String に置換する

@@ -41,19 +41,19 @@ class MrubyBridgePlugin < MultiPlugin
     # case when (つまりは ===) では、期待したように一致しない模様
     if superClass == SignaturePlugin
       dbgPrint "MrubyBridgePlugin: SignaturePlugin"
-      require_tecsgen_lib 'tecslib/plugin/MrubyBridgeSignaturePlugin.rb'
+      require_tecsgen_lib "tecslib/plugin/MrubyBridgeSignaturePlugin.rb"
       return MrubyBridgeSignaturePlugin
     elsif superClass == CelltypePlugin
       dbgPrint "MrubyBridgePlugin: CelltypePlugin"
-      require_tecsgen_lib 'tecslib/plugin/MrubyBridgeCelltypePlugin.rb'
+      require_tecsgen_lib "tecslib/plugin/MrubyBridgeCelltypePlugin.rb"
       return MrubyBridgeCelltypePlugin
     elsif superClass == CompositePlugin
       dbgPrint "MrubyBridgePlugin: CompositePlugin"
-      require_tecsgen_lib 'tecslib/plugin/MrubyBridgeCompositePlugin.rb'
+      require_tecsgen_lib "tecslib/plugin/MrubyBridgeCompositePlugin.rb"
       return MrubyBridgeCompositePlugin
     elsif superClass == CellPlugin
       dbgPrint "MrubyBridgePlugin: CellPlugin"
-      require_tecsgen_lib 'tecslib/plugin/MrubyBridgeCellPlugin.rb'
+      require_tecsgen_lib "tecslib/plugin/MrubyBridgeCellPlugin.rb"
       return MrubyBridgeCellPlugin
     # elsif superClass == ThroughPlugin
     #  return ThroughPlugin

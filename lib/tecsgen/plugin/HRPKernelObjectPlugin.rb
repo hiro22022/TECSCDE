@@ -266,7 +266,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                               # 結合元に無所属のセルがあると、TACP_SHARED が設定される. フロー解析してドメインを特定できるのが、あるべき仕様
                             end
                             if acp == "OMIT"
-                              acv[key] = acv_tmp.join('|')
+                              acv[key] = acv_tmp.join("|")
                             end 
                         end
                     }

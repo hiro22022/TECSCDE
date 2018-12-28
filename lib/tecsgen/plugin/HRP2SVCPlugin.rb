@@ -217,7 +217,7 @@ EOT
     nest = @end_region.gen_region_str_pre file
     nest_str = "  " * nest
     if @next_cell_port_subscript
-      subscript = '[' + @next_cell_port_subscript.to_s + ']'
+      subscript = "[" + @next_cell_port_subscript.to_s + "]"
     else
       subscript = ""
     end
@@ -246,7 +246,7 @@ EOT
     nest = @start_region.gen_region_str_pre file
     nest_str = "  " * nest
     if @next_cell_port_subscript
-      subscript = '[' + @next_cell_port_subscript.to_s + ']'
+      subscript = "[" + @next_cell_port_subscript.to_s + "]"
     else
       subscript = ""
     end

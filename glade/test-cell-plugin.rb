@@ -1,5 +1,5 @@
 # まずは決まり文句
-require 'gtk2'
+require "gtk2"
 
 builder = Gtk::Builder.new
 builder.add_from_file("tecscde-cell-plugin.glade") # 読み込むgladeファイルを指定

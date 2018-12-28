@@ -201,7 +201,7 @@ class TOOL_INFO
           next
         end
         val_type = val_types[i]
-        validate_types member, val_type, (path.to_s + '[' + index.to_s + '].')
+        validate_types member, val_type, (path.to_s + "[" + index.to_s + "].")
         index += 1
       }
     end

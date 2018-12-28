@@ -431,7 +431,7 @@ class NotifierPlugin < CelltypePlugin
   class HandlerAttribute
     def initialize(name, error_name = nil)
       @name = name
-      @error_name = error_name || (name + 'ForError')
+      @error_name = error_name || (name + "ForError")
     end
 
     def name_for_handler(handler)
@@ -993,8 +993,8 @@ class NotifierPlugin < CelltypePlugin
       ignoreErrors = ignoreErrors_attr.get_initializer.to_s
     end
     case ignoreErrors
-      when 'true' then ignoreErrors = true
-      when 'false' then ignoreErrors = false
+      when "true" then ignoreErrors = true
+      when "false" then ignoreErrors = false
       else
         cdl_warning2(cell.get_locale, "NTF1005 cell $1: unrecognized value '$2' specified for ignoreErrors",
           cell.get_name, ignoreErrors)
@@ -1134,10 +1134,10 @@ class NotifierPlugin < CelltypePlugin
 
       # {{_handler_params_}} はハンドラの指定に置換する。
       if name == :_handler_params_
-          args_joined = handler_flags.join(' | ')
+          args_joined = handler_flags.join(" | ")
           if handler_args.length > 0
             args_joined << ", "
-            args_joined << handler_args.join(', ')
+            args_joined << handler_args.join(", ")
           end
           next args_joined
       end

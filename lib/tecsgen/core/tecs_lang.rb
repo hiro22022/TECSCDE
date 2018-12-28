@@ -109,7 +109,7 @@ class TECS_LANG
   #=== codepage を取り出す
   # codepage は3〜5桁の整数として仮定
   def self.get_win_codepage
-    cmd_pipe = IO.popen('cmd /c chcp','r')
+    cmd_pipe = IO.popen("cmd /c chcp","r")
     cmd_pipe.read =~ /([0-9]{3,5})/
     cp = $1
     cmd_pipe.close
@@ -135,7 +135,7 @@ class TECS_LANG
   #   ・-k オプション (ファイルの文字コードのみ)
   def self.set_lang_var
 
-    if $IN_EXERB && (ENV['TERM'] == nil || ENV['TERM'] == "cygwin")
+    if $IN_EXERB && (ENV["TERM"] == nil || ENV["TERM"] == "cygwin")
       # exerb 版で端末 cygwin の時は codepage のみを見る
       cp = get_win_codepage
       lang = codepage_to_lang cp
@@ -143,23 +143,23 @@ class TECS_LANG
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
 
-    elsif ENV['LANG']
+    elsif ENV["LANG"]
       # 非 exerb 版では LANG 環境変数を見る
       # cygwin console では codepage に従って出力した方が平和なため
 
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['LANG'])
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV["LANG"])
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
-    if ENV['TECSGEN_LANG']
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['TECSGEN_LANG'])
+    if ENV["TECSGEN_LANG"]
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV["TECSGEN_LANG"])
       $LANG_CONSOLE = $LANG_FILE
       $CHARSET_CONSOLE = $CHARSET_FILE
     end
 
-    if ENV['TECSGEN_FILE_LANG']
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV['TECSGEN_FILE_LANG'])
+    if ENV["TECSGEN_FILE_LANG"]
+      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(ENV["TECSGEN_FILE_LANG"])
     end
 
     self.set_lang_by_option

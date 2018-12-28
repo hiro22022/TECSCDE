@@ -659,7 +659,7 @@ EOT
         end
 =end
       }
-      renderer.signal_connect('edited') { |w, path, new_text|
+      renderer.signal_connect("edited") { |w, path, new_text|
         # new_text can be wrong if 'text_column' is changed in each row
         # after selection is changed, before sending signal, many rows are redrawn
 

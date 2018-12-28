@@ -349,6 +349,6 @@ class HRPPlugin < DomainPlugin
       end
       delim = ", "
     }
-    return sac_str + '}'
+    return sac_str + "}"
   end
 end

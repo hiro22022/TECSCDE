@@ -196,7 +196,7 @@ EOT
     nest = @region.gen_region_str_pre file
     indent_str = "  " * nest
     if @next_cell_port_subscript
-      subscript = '[' + @next_cell_port_subscript.to_s + ']'
+      subscript = "[" + @next_cell_port_subscript.to_s + "]"
     else
       subscript = ""
     end

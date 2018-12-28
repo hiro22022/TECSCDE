@@ -36,7 +36,7 @@
 #   $Id: MrubyBridgeCompositePlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
 #++
 
-require_tecsgen_lib 'tecslib/plugin/lib/MrubyBridgeCelltypePluginModule.rb'
+require_tecsgen_lib "tecslib/plugin/lib/MrubyBridgeCelltypePluginModule.rb"
 
 #== MrubyBridgeCompositePlugin
 class MrubyBridgeCompositePlugin < CompositePlugin

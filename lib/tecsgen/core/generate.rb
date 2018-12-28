@@ -2651,16 +2651,16 @@ EOT
       next if inib_cb == :CB_DYNAMIC && (! p.is_dynamic? || p.get_array_size != nil)
       # bprint "cb_type #{inib_cb} #{p.get_name} dynamic=#{p.is_dynamic?}\n"
 
-      ptr = p.get_array_size ? '*' : ''
+      ptr = p.get_array_size ? "*" : ""
 
       if ! p.is_cell_unique?
-        const = p.is_dynamic?  ? '' : 'const'
+        const = p.is_dynamic?  ? "" : "const"
         if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && $ram_initializer
-          init = '_init_'
-          const2 = 'const'
+          init = "_init_"
+          const2 = "const"
         else
-          init = ''
-          const2 = 'const'
+          init = ""
+          const2 = "const"
         end
 
         if ! p.is_skelton_useless?
@@ -2768,9 +2768,9 @@ EOT
       f.printf(TECSMsg.get(:FEC_comment), "#_FEC_#")
 
       if @idx_is_id_act
-        amp = ''
+        amp = ""
       else
-        amp = '&'
+        amp = "&"
       end
       f.print <<EOT
 #define FOREACH_CELL(i,p_cb)   \\
@@ -2881,16 +2881,16 @@ EOT
               that = "(p_that)->"
             end
             if has_CB?
-              init = '_init->'
+              init = "_init->"
             else
-              init = ''
+              init = ""
             end
-            f.printf("\\\n%-80s\\\n", '     {')
-            f.printf("%-80s\\\n", '        int_t   j;')
+            f.printf("\\\n%-80s\\\n", "     {")
+            f.printf("%-80s\\\n", "        int_t   j;")
             f.printf("%-80s\\\n", "        for( j = 0; j < N_CP_#{p.get_name}#{p_that}; j++ ){")
             f.printf("%-80s\\\n", "            #{that}#{p.get_name}[j] = #{that}#{init}#{p.get_name}_init_[j];")
-            f.printf("%-80s\\\n", '        }')
-            f.printf("%-80s", '       }')
+            f.printf("%-80s\\\n", "        }")
+            f.printf("%-80s", "       }")
           end
           b_dyn_port = true
         end
@@ -3251,8 +3251,8 @@ EOT
           if b_array
 #          if am then
             # 左辺は配列
-            const = (port.is_dynamic? && ! $ram_initializer) ? '' : 'const '
-            init = (port.is_dynamic? && $ram_initializer) ? '_init_' : ''
+            const = (port.is_dynamic? && ! $ram_initializer) ? "" : "const "
+            init = (port.is_dynamic? && $ram_initializer) ? "_init_" : ""
 
             if ! port.is_skelton_useless?
               f.printf("struct %s * #{const}%s_%s[] = {\n",
@@ -4114,7 +4114,7 @@ EOT
         next if ! init[i]        # mikan この処置は適切？
         if f_get_str
           str += gen_cell_cb_init(f, cell, name_array, at, init[i], "#{identifier}[#{i}]", indent + 1, f_get_str)
-          str += ', '
+          str += ", "
         else
           gen_cell_cb_init(f, cell, name_array, at, init[i], "#{identifier}[#{i}]", indent + 1, f_get_str)
         end
@@ -4144,7 +4144,7 @@ EOT
 
         if f_get_str
           str += gen_cell_cb_init(f, cell, name_array, d.get_type, init[i], d.get_identifier, indent + 1, f_get_str)
-          str += ', '
+          str += ", "
         else
           gen_cell_cb_init(f, cell, name_array, d.get_type, init[i], d.get_identifier, indent + 1, f_get_str)
         end
@@ -4501,7 +4501,7 @@ EOT
       end
 
       if p.is_ref_desc?
-        subsc = p.get_array_size ? ' int_t subscript ' : ''
+        subsc = p.get_array_size ? " int_t subscript " : ""
         f.print " *   [ref_desc]\n"
         f.printf(" *      %-14s %s;\n",
                   "Descriptor( #{p.get_signature.get_global_name} )", 
@@ -4511,8 +4511,8 @@ EOT
                   "#{p.get_name}_ref_desc(#{subsc})      (same as above; abbreviated version)")
       end
       if p.is_dynamic?
-        subsc = p.get_array_size ? 'int_t subscript, ' : ''
-        subsc2 = p.get_array_size ? ' int_t subscript' : ''
+        subsc = p.get_array_size ? "int_t subscript, " : ""
+        subsc2 = p.get_array_size ? " int_t subscript" : ""
         if p.is_optional?
           f.print " *   [dynamic, optional]\n"
         else

@@ -217,14 +217,14 @@ EOT
   end
 
   def set_exclude_cell rhs
-    cells = rhs.split ','
+    cells = rhs.split ","
     cells.each{ |rhs_cell|
       rhs_cell.gsub!(/\s/, "")
       @exclude_cells << rhs_cell.to_sym
     }
   end
   def set_exclude_port rhs
-    ports = rhs.split ','
+    ports = rhs.split ","
     ct = @cell.get_celltype
     return if ct == nil    # error case
     ports.each{ |rhs_port|
@@ -240,11 +240,11 @@ EOT
 
   #=== プラグイン引数 exclude_port_func
   def set_exclude_port_func rhs
-    port_funcs = rhs.split ','
+    port_funcs = rhs.split ","
     ct = @celltype
     return if ct == nil    # error case
     port_funcs.each{ |rhs_port_func|
-      port_func = rhs_port_func.split('.')
+      port_func = rhs_port_func.split(".")
       if port_func.length != 2
         cdl_error("MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func)
       end

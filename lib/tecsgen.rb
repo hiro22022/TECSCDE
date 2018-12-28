@@ -65,13 +65,13 @@ $tecsgen_base_path = File.dirname(File.expand_path __FILE__)
 class Array
   #=== CDL の文字列を生成する
   def to_CDL_str
-    str = '{ '
-    delim = ''
+    str = "{ "
+    delim = ""
     self.each{ |v|
       str += delim + v.to_CDL_str
-      delim = ', '
+      delim = ", "
     }
-    str += ' }'
+    str += " }"
     return str
   end
 
@@ -103,7 +103,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
     #   exerb では $LOAD_PATH は ["."] のみ入っているようだ
     ($library_path+$LOAD_PATH).each{ |path|
       [ "", "tecslib/plugin/" ].each { |lp|
-        lib = File.expand_path(path) + '/' + lp + fname
+        lib = File.expand_path(path) + "/" + lp + fname
         
         if File.exist? lib  # ファイル存否と他のエラーを区別するため存在確認をする
           begin
@@ -265,15 +265,15 @@ class TECSGEN
   #-----  initialize_global_var -----#
   def self.initialize_global_var
 
-    require 'optparse'
+    require "optparse"
     # 2.0 require 'runit/assert.rb'
-    require 'kconv'
+    require "kconv"
     $b_no_kcode = RUBY_VERSION >= "1.9.0" ? true : false
     # Use Ruby 1.9 M17N code (use Ruby 1.8 code if false).
     if ! $b_no_kcode
-      require 'jcode'
+      require "jcode"
     end
-    require 'pp'
+    require "pp"
     # include RUNIT::Assert
 
     ### グローバル変数定義 ###
@@ -315,7 +315,7 @@ class TECSGEN
     $c_suffix  = "c"       # suffix for C progorams (for C++ source)
     $h_suffix  = "h"       # suffix for C progoram headers (for C++ source)
 
-    if ENV['TECSGEN_DEFAULT_RAM']
+    if ENV["TECSGEN_DEFAULT_RAM"]
       rom_ram_defalult = "ram"
     else
       rom_ram_defalult = "rom"
@@ -329,12 +329,12 @@ class TECSGEN
     if $cpp == nil
       $cpp       = "gcc -E -DTECSGEN"
     end
-    if ENV['TECS_CPP']
-      $cpp = ENV['TECS_CPP']
+    if ENV["TECS_CPP"]
+      $cpp = ENV["TECS_CPP"]
       $b_cpp_specified = true
     end
-    if ENV['TECSPATH']
-      $tecspath = ENV['TECSPATH']
+    if ENV["TECSPATH"]
+      $tecspath = ENV["TECSPATH"]
     else
       $tecspath = "#{$tecsgen_base_path}/tecs"
     end
@@ -360,10 +360,10 @@ class TECSGEN
     ###  tecsgen コマンドオプション解析  ###
     ARGV.options {|parser|
       parser.banner = "Usage: tecsgen [options] files"
-      parser.on('-D', '--define=def', 'define cpp symbol for import_C') { |define|
+      parser.on("-D", "--define=def", "define cpp symbol for import_C") { |define|
         $define << define
       }
-      parser.on('-G', '--generate-region=path', 'generate region') { |path|
+      parser.on("-G", "--generate-region=path", "generate region") { |path|
         if path =~ /^::/
           gen_path = path
         else
@@ -371,89 +371,89 @@ class TECSGEN
         end
         $region_list[gen_path] = true
       }
-      parser.on('-I', '--import-path=path', 'imoprt/import_C path') { |path|
+      parser.on("-I", "--import-path=path", "imoprt/import_C path") { |path|
         $import_path << path
         $import_path_opt << path
       }
-      parser.on('-L', '--library-path=path', 'path to dir where tecsgen.rb (obsolete, unnecessary to specify -L, those passes are gotten from tecsgen.rb') { |path|
+      parser.on("-L", "--library-path=path", "path to dir where tecsgen.rb (obsolete, unnecessary to specify -L, those passes are gotten from tecsgen.rb") { |path|
         $library_path << path
       }
-      parser.on('-R', '--RAM-initializer',   'generate RAM initializer. INITIALIZE_TECS() must be called before running any TECS code.'){
+      parser.on("-R", "--RAM-initializer",   "generate RAM initializer. INITIALIZE_TECS() must be called before running any TECS code."){
         $ram_initializer = true
       }
-      parser.on('-U', '--unoptimize', 'unoptimize') {
+      parser.on("-U", "--unoptimize", "unoptimize") {
         $unopt = true
       }
-      parser.on('--unoptimize-entry', 'unoptimize entry port') {
+      parser.on("--unoptimize-entry", "unoptimize entry port") {
         $unopt_entry = true
       }
-      parser.on('-c', '--cpp=cpp_cmd', 'C pre-processor command used import_C (default: gcc -E -DTECSGEN), you can also specify by environment variable TECS_CPP'){
+      parser.on("-c", "--cpp=cpp_cmd", "C pre-processor command used import_C (default: gcc -E -DTECSGEN), you can also specify by environment variable TECS_CPP"){
         |arg|
         $cpp = arg
         $b_cpp_specified = true
       }
-      parser.on('-d', '--dryrun',      'dryrun'){
+      parser.on("-d", "--dryrun",      "dryrun"){
         $dryrun = true
       }
-      parser.on('-f', '--force-overwrite', 'force overwrite all files') {
+      parser.on("-f", "--force-overwrite", "force overwrite all files") {
         $force_overwrite = true
       }
-      parser.on('-g', '--gen=dir',     'generate dir') { |dir|
+      parser.on("-g", "--gen=dir",     "generate dir") { |dir|
         $gen = $gen_base = dir
       }
-      parser.on('-i', '--idx_is_id',   'set idx_is_id to all celltypes') {
+      parser.on("-i", "--idx_is_id",   "set idx_is_id to all celltypes") {
         $idx_is_id = true
       }
       #  parser.on('-k', '--kcode=code',  'set kanji code: euc|sjis|none|utf8, none is default') { |code|
-      parser.on('-k', '--kcode=code',  "set kanji code: euc|sjis|none|utf8") { |code|
+      parser.on("-k", "--kcode=code",  "set kanji code: euc|sjis|none|utf8") { |code|
         $kcode = code
       }
       #  old_mode は V1.0.C.22 で廃止
       #  parser.on('-o', '--old-mode',    'old mode' ){
       #    $old_mode = true
       #  }
-      parser.on('-r', '--ram',     'RAM only'){
+      parser.on("-r", "--ram",     "RAM only"){
         $rom = false
       }
-      parser.on('-s', '--show-tree',   'show parsing tree'){
+      parser.on("-s", "--show-tree",   "show parsing tree"){
         $show_tree = true
       }
-      parser.on('-t', '--generator-debug', 'generator debug'){
+      parser.on("-t", "--generator-debug", "generator debug"){
         $debug = true
         $verbose = true
       }
-      parser.on('-u', '--unique-id', 'assign unique id for each cell'){
+      parser.on("-u", "--unique-id", "assign unique id for each cell"){
         $unique_id = true
       }
-      parser.on('-v', '--verbose',     'verbose mode'){
+      parser.on("-v", "--verbose",     "verbose mode"){
         $verbose = true
       }
-      parser.on('-y', '--yydebug',     'yydebug'){
+      parser.on("-y", "--yydebug",     "yydebug"){
         $yydebug = true
       }
-      parser.on('--no-banner', 'not display banner') {
+      parser.on("--no-banner", "not display banner") {
         $no_banner = true
       }
-      parser.on('--version', 'print version') {
+      parser.on("--version", "print version") {
         $print_version = true
       }
-      parser.on('--unit-test', 'unit verification (test tecsgen itself)') {
+      parser.on("--unit-test", "unit verification (test tecsgen itself)") {
         $unit_test = true
       }
-      parser.on('--generate-all-template', 'generate all celltypes\' templates') {
+      parser.on("--generate-all-template", "generate all celltypes' templates") {
         $generate_all_template = true
       }
-      parser.on('--generate-no-template',  'generate no template') {
+      parser.on("--generate-no-template",  "generate no template") {
         $generate_no_template = true
       }
-      parser.on('--no-default-import-path', 'no default import path'){
+      parser.on("--no-default-import-path", "no default import path"){
         $no_default_import_path = true
       }
-      parser.on('--c-suffix=c', 'C program suffix (default: c)'){
+      parser.on("--c-suffix=c", "C program suffix (default: c)"){
         | suffix |
         $c_suffix = suffix
       }
-      parser.on('--h-suffix=h', 'C program header suffix (default: h)'){
+      parser.on("--h-suffix=h", "C program header suffix (default: h)"){
         | suffix |
         $h_suffix = suffix
       }
@@ -483,7 +483,7 @@ class TECSGEN
     #  tecsgen バージョンファイルのロード
     # これを実行するまで tecsgen のバージョンを表示できない
     # このファイルを誤って読み込むと、異なるバージョン名を表示してしまう
-    require 'tecsgen/version'
+    require "tecsgen/version"
     if $tecscde_version
       STDERR << "tecscde version #{$tecscde_version} (tecsgen version #{$version})  #{$Copyright}\n"
     elsif ! $no_banner || $print_version
@@ -497,40 +497,40 @@ class TECSGEN
     end
 
     # 文字コード決定のため最初に読みこむ
-    require 'tecsgen/core/tecs_lang'
+    require "tecsgen/core/tecs_lang"
 
     unless $yydebug
-      require 'tecsgen/core/bnf.tab'
+      require "tecsgen/core/bnf.tab"
     else
-      require 'tecsgen/core/bnf-deb.tab'
+      require "tecsgen/core/bnf-deb.tab"
     end
 
     # syntaxobj.rb には Node が定義されているので、早い段階で require 
-    require 'tecsgen/core/syntaxobj'
-    require 'tecsgen/core/pluginModule'
-    require 'tecsgen/core/plugin'
-    require 'tecsgen/core/messages'
-    require 'tecsgen/core/types'
-    require 'tecsgen/core/value'
-    require 'tecsgen/core/componentobj'
-    require 'tecsgen/core/expression'
-    require 'tecsgen/core/optimize'
-    require 'tecsgen/core/tecsgen'
-    require 'tecsgen/core/generate'
-    require 'tecsgen/core/gen_xml'
-    require 'tecsgen/core/tool_info'
-    require 'tecsgen/core/tecsinfo'
-    require 'tecsgen/plugin/CelltypePlugin'
-    require 'tecsgen/plugin/CompositePlugin'
-    require 'tecsgen/plugin/CellPlugin'
-    require 'tecsgen/plugin/SignaturePlugin'
-    require 'tecsgen/plugin/ThroughPlugin'
-    require 'tecsgen/plugin/DomainPlugin'
-    require 'tecsgen/plugin/MultiPlugin'
+    require "tecsgen/core/syntaxobj"
+    require "tecsgen/core/pluginModule"
+    require "tecsgen/core/plugin"
+    require "tecsgen/core/messages"
+    require "tecsgen/core/types"
+    require "tecsgen/core/value"
+    require "tecsgen/core/componentobj"
+    require "tecsgen/core/expression"
+    require "tecsgen/core/optimize"
+    require "tecsgen/core/tecsgen"
+    require "tecsgen/core/generate"
+    require "tecsgen/core/gen_xml"
+    require "tecsgen/core/tool_info"
+    require "tecsgen/core/tecsinfo"
+    require "tecsgen/plugin/CelltypePlugin"
+    require "tecsgen/plugin/CompositePlugin"
+    require "tecsgen/plugin/CellPlugin"
+    require "tecsgen/plugin/SignaturePlugin"
+    require "tecsgen/plugin/ThroughPlugin"
+    require "tecsgen/plugin/DomainPlugin"
+    require "tecsgen/plugin/MultiPlugin"
 
     # C 言語パーサ
-    require 'tecsgen/core/C_parser.tab'
-    require 'tecsgen/core/ctypes'
+    require "tecsgen/core/C_parser.tab"
+    require "tecsgen/core/ctypes"
 
     if $unit_test
       exit 1
@@ -550,8 +550,8 @@ class TECSGEN
         dir = nil
         begin
           Dir.foreach($tecspath){ |f|
-            if f != "." && f != ".." && File.directory?($tecspath + '/' + f)
-              TECSGEN.add_import_path($tecspath + '/' + f)
+            if f != "." && f != ".." && File.directory?($tecspath + "/" + f)
+              TECSGEN.add_import_path($tecspath + "/" + f)
             end
           }
         rescue

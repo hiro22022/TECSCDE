@@ -1269,7 +1269,7 @@ EOT
   end
   #=== プラグイン引数 include
   def set_include rhs
-    funcs = rhs.split ','
+    funcs = rhs.split ","
     funcs.each{ |rhs_func|
       found = false
       rhs_func.gsub!(/\s/, "")
@@ -1287,7 +1287,7 @@ EOT
   end
   #=== プラグイン引数 exclude
   def set_exclude rhs
-    funcs = rhs.split ','
+    funcs = rhs.split ","
     funcs.each{ |rhs_func|
       rhs_func.gsub!(/\s/, "")
       func_head = @signature.get_function_head rhs_func.to_sym

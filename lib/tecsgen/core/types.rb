@@ -1010,9 +1010,9 @@ class StructType < Type
   end
   
   def get_member_types_symbol
-    mts = ''
+    mts = ""
     @members_decl.get_items.each { |member|
-      mts += member.get_type.get_type_str + member.get_type.get_type_str_post + ';'
+      mts += member.get_type.get_type_str + member.get_type.get_type_str_post + ";"
     }
     return mts.to_sym
   end

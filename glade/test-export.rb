@@ -3,7 +3,7 @@
 p __FILE__
 
 # まずは決まり文句
-require 'gtk2'
+require "gtk2"
 p 0
 
 builder = Gtk::Builder.new

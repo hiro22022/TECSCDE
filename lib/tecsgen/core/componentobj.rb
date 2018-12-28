@@ -1027,13 +1027,13 @@ class Celltype < NSBDNode # < Nestable
         # print( "[DYNAMIC] checking dynamic port: #{@global_name}.#{port.get_name}\n" )
         next if find_ref_desc_port signature
         next if find_descriptor_param signature, :DYNAMIC
-        cdl_warning('W9999 $1 cannot get information for dynamic port $2', @name, port.get_name)
+        cdl_warning("W9999 $1 cannot get information for dynamic port $2", @name, port.get_name)
       elsif port.is_ref_desc?
         dbgPrint("[DYNAMIC] checking ref_desc port: #{@global_name}.#{port.get_name}\n")
         # print( "[DYNAMIC] checking ref_desc port: #{@global_name}.#{port.get_name}\n" )
         next if find_dynamic_port signature
         next if find_descriptor_param signature, :REF_DESC
-        cdl_warning('W9999 $1 cannot put information from ref_desc port $2', @name, port.get_name)
+        cdl_warning("W9999 $1 cannot put information from ref_desc port $2", @name, port.get_name)
       elsif port.get_signature
         if port.get_signature.has_descriptor?
           port.get_signature.get_descriptor_list.each{ |signature, param|
@@ -7108,14 +7108,14 @@ class Region < Namespace
   # mikan namesppace 対応 (cell_name)
   def add_cell_port_through_plugin(cell_name, port_name, subscript, through_plugin_object)
     if subscript
-      subscript = '[' + subscript.to_s + ']'
+      subscript = "[" + subscript.to_s + "]"
     end
     @cell_port_throug_plugin_list["#{cell_name}.#{port_name}#{subscript}"] = through_plugin_object
   end
 
   def find_cell_port_through_plugin(cell_name, port_name, subscript)
     if subscript
-      subscript = '[' + subscript.to_s + ']'
+      subscript = "[" + subscript.to_s + "]"
     end
     return @cell_port_throug_plugin_list["#{cell_name}.#{port_name}#{subscript}"]
   end
