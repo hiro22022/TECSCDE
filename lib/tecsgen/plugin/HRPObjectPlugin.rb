@@ -91,6 +91,3 @@ class HRPObjectPlugin < HRPKernelObjectPlugin
     end
 
 end
-
-
-  

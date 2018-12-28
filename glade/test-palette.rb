@@ -25,4 +25,3 @@ end
 main_window.show_all
 
 Gtk.main
-

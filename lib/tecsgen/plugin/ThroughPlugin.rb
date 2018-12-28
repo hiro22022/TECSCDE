@@ -335,4 +335,3 @@ EOT
     puts "next: signature: #{@signature.get_namespace_path} call = #{@next_cell.get_name}.#{@next_cell_port_name}"
   end
 end
-

@@ -105,4 +105,3 @@ EOT
        file.puts "SAC_TSK(#{val[:id]}, { #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
     end
 end
-

@@ -858,4 +858,3 @@ EOT
     return str
   end
 end
-

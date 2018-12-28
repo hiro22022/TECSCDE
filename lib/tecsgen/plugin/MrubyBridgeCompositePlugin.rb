@@ -47,4 +47,3 @@ class MrubyBridgeCompositePlugin < CompositePlugin
     MrubyBridgeCelltypePluginModule.gen_post_code file
   end
 end
-

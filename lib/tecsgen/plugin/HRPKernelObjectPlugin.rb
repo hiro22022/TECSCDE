@@ -332,4 +332,3 @@ class HRPKernelObjectPlugin < CelltypePlugin
     end
 
 end
-

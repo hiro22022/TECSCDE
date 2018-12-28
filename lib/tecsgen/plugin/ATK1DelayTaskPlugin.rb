@@ -107,4 +107,3 @@ class ATK1DelayTaskPlugin < CelltypePlugin
   end
 
 end
-

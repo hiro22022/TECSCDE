@@ -150,4 +150,3 @@ class ATK1EventPlugin < CelltypePlugin
   end
 
 end
-

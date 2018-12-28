@@ -33,4 +33,3 @@ main_window.show_all
 
 p 4
 Gtk.main
-

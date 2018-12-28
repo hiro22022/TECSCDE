@@ -63,6 +63,3 @@ class HRP2SemaphorePlugin < HRP2KernelObjectPlugin
         @@ep
     end
 end
-
-
-  

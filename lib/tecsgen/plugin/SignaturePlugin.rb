@@ -75,4 +75,3 @@ class SignaturePlugin < Plugin
     raise "gen_ep_func_body must be overridden by sub class"
   end
 end
-

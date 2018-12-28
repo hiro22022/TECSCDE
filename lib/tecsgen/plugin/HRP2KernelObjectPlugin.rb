@@ -371,4 +371,3 @@ class HRP2KernelObjectPlugin < CelltypePlugin
     end
 
 end
-

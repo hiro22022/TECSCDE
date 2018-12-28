@@ -91,6 +91,3 @@ class HRP2ObjectPlugin < HRP2KernelObjectPlugin
     end
 =end
 end
-
-
-  

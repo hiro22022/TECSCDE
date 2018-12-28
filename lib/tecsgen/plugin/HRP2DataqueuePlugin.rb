@@ -64,6 +64,3 @@ class HRP2DataqueuePlugin < HRP2KernelObjectPlugin
         @@ep
     end
 end
-
-
-  

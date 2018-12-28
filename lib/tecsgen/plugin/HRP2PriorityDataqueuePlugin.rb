@@ -62,6 +62,3 @@ class HRP2PriorityDataqueuePlugin < HRP2KernelObjectPlugin
         @@ep
     end
 end
-
-
-  

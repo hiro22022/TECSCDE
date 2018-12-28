@@ -458,5 +458,3 @@ class Celltype
     end
   end
 end
-
-

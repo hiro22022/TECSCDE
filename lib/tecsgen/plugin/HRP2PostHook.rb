@@ -109,4 +109,3 @@ class HRP2PostHook
         end
     end
 end
-

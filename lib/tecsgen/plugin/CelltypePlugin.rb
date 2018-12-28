@@ -72,4 +72,3 @@ class CelltypePlugin < Plugin
     # file.print "/* '#{self.class.name}' post code */\n"
   end
 end
-

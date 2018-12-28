@@ -64,6 +64,3 @@ class HRP2FixedSizeMemoryPoolPlugin < HRP2KernelObjectPlugin
         @@ep
     end
 end
-
-
-  

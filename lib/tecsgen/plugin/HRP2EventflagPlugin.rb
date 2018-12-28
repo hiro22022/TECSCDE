@@ -64,6 +64,3 @@ class HRP2EventflagPlugin < HRP2KernelObjectPlugin
         @@ep
     end
 end
-
-
-  
