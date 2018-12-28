@@ -2281,7 +2281,7 @@ Racc_token_to_s_table = [
   "JSON_array",
   "JSON_array_list" ]
 
-Racc_debug_parser = false
+Racc_debug_parser = true
 
 ##### State transition tables end #####
 
