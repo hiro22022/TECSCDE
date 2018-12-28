@@ -466,7 +466,7 @@ EOT
         end
       }
     end
-	f.print "	rm -f $(CELLTYPE_COBJS) $(TECSGEN_COBJS) $(PLUGIN_COBJS) $(OTHER_OBJS) $(TARGET) #{timestamp}\n"
+    f.print "	rm -f $(CELLTYPE_COBJS) $(TECSGEN_COBJS) $(PLUGIN_COBJS) $(OTHER_OBJS) $(TARGET) #{timestamp}\n"
     if $generating_region == @@root_namespace then
       f.print "	rm -rf $(GEN_DIR)\n"
     end
@@ -477,7 +477,7 @@ EOT
       f.print "tecs : $(PRE_TECSGEN_TARGET) $(TIMESTAMP) $(POST_TECSGEN_TARGET)\n\n"
       f.print "$(TIMESTAMP) : $(TECS_IMPORTS)\n"
       f.print "	$(TECSGEN) #{TECSGEN.subst_tecspath( $arguments, true )}\n"
-      # f.print "	touch $(TIMESTAMP)\n\n"
+      # f.print "  touch $(TIMESTAMP)\n\n"
 
     else
       f.print "tecs:\n"
@@ -892,10 +892,10 @@ class Typedef
 #    print "Typedef.gen_gh\n"
 #    show_tree 1
 
-    f.printf( "typedef %-14s %s%s;\n",
-		"#{@declarator.get_type.get_type_str}",
-		"#{@declarator.get_name}",
-		"#{@declarator.get_type.get_type_str_post}")
+    f.printf("typedef %-14s %s%s;\n",
+      "#{@declarator.get_type.get_type_str}",
+      "#{@declarator.get_name}",
+      "#{@declarator.get_type.get_type_str_post}")
   end
 end
 
@@ -1110,7 +1110,7 @@ class Celltype
     gen_ph_ep_fun_prototype f
     end_extern_C f
     endif_macro_only f
-	#
+
     gen_ph_include_cb_type f
 
     if @n_entry_port_inline == 0 then
@@ -1127,7 +1127,7 @@ class Celltype
     gen_ph_get_cellcb f
     gen_ph_attr_access f          if @n_attribute_rw > 0 || @n_attribute_ro > 0 || @n_var > 0
     gen_ph_cp_fun_macro f         if @n_call_port > 0
-#    gen_ph_abstract_ep_des_type f
+    # gen_ph_abstract_ep_des_type f
 
     if @n_entry_port_inline == 0 then
       endif_cb_type_only f
@@ -1135,11 +1135,11 @@ class Celltype
 
     ifndef_macro_only f
     begin_extern_C f
-#    gen_ph_cell_cb_type f
-#    gen_ph_INIB_as_CB f
-#    gen_ph_extern_cell f          # セルタイプグルコード以外は参照しない
+    # gen_ph_cell_cb_type f
+    # gen_ph_INIB_as_CB f
+    # gen_ph_extern_cell f          # セルタイプグルコード以外は参照しない
     # gen_ph_typedef_idx f          # mikan 参照するものができていない
-#    gen_ph_ep_fun_prototype f
+    # gen_ph_ep_fun_prototype f
     gen_ph_ep_skel_prototype f
 
     #--- CB_TYPE_ONLY の場合、ref_desc, set_desc 関数は含めない (マクロ参照するため)
@@ -3420,7 +3420,7 @@ EOT
                 f.print "const "
               end
               f.printf( "#{a.get_type.get_referto.get_type_str} #{name_array[3]}_#{a.get_identifier}_INIT[%d]#{a.get_type.get_referto.get_type_str_post}", sz )
-								# name_array[3]: cell_CB_INIT
+              # name_array[3]: cell_CB_INIT
               if !( $ram_initializer && a.get_kind == :VAR ) then
                 # -R (ram initializer 使用) の場合 var は初期化コードを出力しない
                 if( init )then
@@ -3523,7 +3523,7 @@ EOT
         unless @singleton then
           print_indent( f, indent )
           f.print "/* cell: #{name_array[2]}:  #{name_array[1]} id=#{c.get_id} */\n"
-			    # name_array[2]: cell_CB_name
+          # name_array[2]: cell_CB_name
         end
 
         print_indent( f, indent )
@@ -4476,7 +4476,7 @@ EOT
           f.print( "#{delim} #{param.get_type.get_type_str}" )
           f.print( " #{param.get_name}#{param.get_type.get_type_str_post}" )
           delim = ","
-	}
+        }
         f.print( " );\n" )
 
 #        subsc = ""
@@ -4864,10 +4864,10 @@ EOT
 #  ・テンプレートコードをそのままビルドするのは紛らわしい
 # # Celltype: #{@name}
 # $(GEN_DIR)/#{@global_name}_tecsgen.o : $(GEN_DIR)/#{@global_name}_tecsgen.#{$c_suffix}
-# 	$(CC) -c $(CFLAGS) -o $@ $<
+#   $(CC) -c $(CFLAGS) -o $@ $<
 # 
 # $(GEN_DIR)/#{@global_name}_templ.o : $(GEN_DIR)/#{@global_name}_templ.#{$c_suffix}
-# 	$(CC) -c $(CFLAGS) -o $@ $<
+#   $(CC) -c $(CFLAGS) -o $@ $<
 # 
 
     f.close

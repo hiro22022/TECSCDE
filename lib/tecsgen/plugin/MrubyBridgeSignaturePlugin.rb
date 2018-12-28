@@ -573,8 +573,8 @@ EOT
     @@VM_celltypes.each{ |vm_name, instance_list|
       instance_list.each { |celltype_name, array|
         cell = array[0]
-	if cell.get_celltype then
-	  ct_name = cell.get_celltype.get_name
+  if cell.get_celltype then
+    ct_name = cell.get_celltype.get_name
         file.print <<EOT
   cell nMruby::#{ct_name}_Initializer #{vm_name}_#{ct_name}_Initializer{ };
 EOT
@@ -1252,8 +1252,8 @@ EOT
       nullable = ""
     end
 
-    # file.print "	CHECK_POINTER( #{tstr}, mrb_#{param.get_name}, #{sz_str} );\n"
-    # file.print "	#{param.get_name} = #{cast_str}((struct #{tstr}PointerBody*)(DATA_PTR(mrb_#{param.get_name})))->buf;\n"
+    # file.print "  CHECK_POINTER( #{tstr}, mrb_#{param.get_name}, #{sz_str} );\n"
+    # file.print "  #{param.get_name} = #{cast_str}((struct #{tstr}PointerBody*)(DATA_PTR(mrb_#{param.get_name})))->buf;\n"
     file.print "	#{param.get_name} = CheckAndGet#{tstr}Pointer#{modify}#{nullable}( mrb, mrb_#{param.get_name}, #{sz_str} );\n"
   end
 

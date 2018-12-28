@@ -24,7 +24,7 @@ end
 
 # 終了ボタンがクリックされたら終了
 # btn_quit.signal_connect("clicked") do
-# 	Gtk.main_quit
+#   Gtk.main_quit
 # end
 
 p 3

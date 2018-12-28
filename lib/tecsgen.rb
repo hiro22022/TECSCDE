@@ -269,7 +269,7 @@ class TECSGEN
     # 2.0 require 'runit/assert.rb'
     require 'kconv'
     $b_no_kcode = RUBY_VERSION >= "1.9.0" ? true : false
-	       # Use Ruby 1.9 M17N code (use Ruby 1.8 code if false).
+    # Use Ruby 1.9 M17N code (use Ruby 1.8 code if false).
     if ! $b_no_kcode then
       require 'jcode'
     end
@@ -304,7 +304,7 @@ class TECSGEN
     $ram_initializer = false # bool: generate ram initializer
     $region_list = {}      # string array : region path which is generated
     $generating_region = nil # Region:  Region to optimisze & generate code   # コマンドラインオプションではない
-		 #           Cell#is_generate? にて参照される
+                             #          Cell#is_generate? にて参照される
     $unit_test = false     # bool:   unit test verification
     $kcode     = nil       # nil | String: Kanji code type "euc"|"sjis"|"none"|"utf8"
     $force_overwrite = false # bool:  force overwrite all files if file contents not differ

@@ -2831,13 +2831,13 @@ class Cell < NSBDNode # < Nestable
               ### p "exprs : ", exprs
               remain = exprs
               inner_to_export = {}
-			  ### exprs に含まれる識別子を抜き出し、対応する export される名前を探す
+              ### exprs に含まれる識別子を抜き出し、対応する export される名前を探す
               while remain != "" && remain != nil
                 ### p "remain ", remain
                 remain =~ /([^\w]*)([_A-Za-z][\w\d]*)/   # 変数名文字列を取り出す 
-				if $2 == nil then
-						break
-				end
+                if $2 == nil then
+                  break
+                end
                 arg_name = $2.to_sym
                 remain = $'
                 ### p exprs, $1, $2, $'
@@ -3355,9 +3355,9 @@ class CompositeCelltype < NSBDNode # < Nestable
 
  ### join
   def self.new_join( export_name, internal_cell_name,
-			 internal_cell_elem_name, type )
+    internal_cell_elem_name, type )
     @@current_object.new_join( export_name, internal_cell_name,
-					 internal_cell_elem_name, type )
+           internal_cell_elem_name, type )
     
   end
 
@@ -3382,7 +3382,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   #   composite.eEnt => cell2.eEnt; (セル外)
   # の構文要素の出現に対して呼び出される
   def new_join( export_name, internal_cell_name,
-		 internal_cell_elem_name, type )
+    internal_cell_elem_name, type )
 
     dbgPrint "new_join: #{export_name} #{internal_cell_name} #{internal_cell_elem_name}\n"
 
@@ -3393,7 +3393,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     end
 
     celltype = cell.get_celltype
-    return if celltype == nil	# celltype == nil ならすでにエラー
+    return if celltype == nil  # celltype == nil ならすでにエラー
 
     # 内部セルのセルタイプから対応要素を探す
     # このメソッドは、構文上、呼び口、受け口、属性が記述できる箇所から呼出される
@@ -3454,7 +3454,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     end
 
     join = CompositeCelltypeJoin.new( export_name, internal_cell_name,
-				 internal_cell_elem_name, cell, obj2 )
+      internal_cell_elem_name, cell, obj2 )
     join.set_owner self   # CompositeCelltypeJoin
     cell.add_compositecelltypejoin join
 
@@ -3685,9 +3685,9 @@ class CompositeCelltype < NSBDNode # < Nestable
       ja = []
 
       # CompositeCelltype が export する呼び口、受け口、属性のリストについて
-      # @export_name_list.get_items.each{ |cj|	# cj: CompositeCelltypeJoin
+      # @export_name_list.get_items.each{ |cj|  # cj: CompositeCelltypeJoin
       # 新仕様では、@export_name_list に入っていない attr がありうる
-      (@port_list+@attr_list).each{ |cj|	# cj: CompositeCelltypeJoin
+      (@port_list+@attr_list).each{ |cj|  # cj: CompositeCelltypeJoin
 
         # debug
         dbgPrint "        cj : #{cj.get_name}\n"
@@ -5009,7 +5009,7 @@ class Namespace < NSBDNode
 
   def new_const_decl( decl )
     decl.set_owner self   # Decl (Namespace:const)
-    if ! decl.is_const? then			# const 修飾さていること
+    if ! decl.is_const? then      # const 修飾さていること
       if decl.is_type?( PtrType ) then
         cdl_error( "S1094 $1: pointer is not constant. check \'const\'" , decl.get_name )
       else
@@ -6090,7 +6090,7 @@ class Join < BDNode
     # subscript2: join2 の左辺添数
     subscript2 = join2.get_subscript
 
-    if @subscript == nil then		# not array : initialize duplicate
+    if @subscript == nil then    # not array : initialize duplicate
       # 非配列の場合、join が重複している
       cdl_error( "S1127 \'$1\' duplicate", @name )
       # print "add_array_member2: #{@owner.get_name}\n"
@@ -6411,8 +6411,7 @@ class CompositeCelltypeJoin < BDNode
 # @port_decl:: Port | Decl
 # @b_pseudo: bool : 
 
-  def initialize( export_name, internal_cell_name,
-		 internal_cell_elem_name, cell, port_decl )
+  def initialize(export_name, internal_cell_name, internal_cell_elem_name, cell, port_decl)
     super()
     @export_name = export_name
     @internal_cell_name = internal_cell_name

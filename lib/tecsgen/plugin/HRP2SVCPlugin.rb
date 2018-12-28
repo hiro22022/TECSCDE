@@ -368,8 +368,8 @@ EOT
 # #include "#{@ct_name_body}_tecsgen.h"
 # 
 # #ifndef E_OK
-# #define	E_OK	0		/* success */
-# #define	E_ID	(-18)	/* illegal ID */
+# #define  E_OK  0    /* success */
+# #define  E_ID  (-18)  /* illegal ID */
 # #endif
 # 
 # EOT

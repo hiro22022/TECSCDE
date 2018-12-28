@@ -5151,7 +5151,7 @@ class TECSIO
   def self.foreach(file) # ブロック引数 { |line| }
     pr = Proc.new   # このメソッドのブロック引数を pr に代入
     if $b_no_kcode then
-	  msg = "E".encode $Ruby19_File_Encode
+      msg = "E".encode $Ruby19_File_Encode
       if( $Ruby19_File_Encode == "Shift_JIS" )
 
         # Shift JIS は、いったん Windows-31J として読み込ませ、Shift_JIS に変換させる．
@@ -5166,7 +5166,7 @@ class TECSIO
       end
       # mode = "r"
     else
-	  msg = "E"
+      msg = "E"
       mode = "r"
     end
 

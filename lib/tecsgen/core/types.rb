@@ -304,7 +304,7 @@ class DefinedType < Type
     return @type.get_original_type
   end
 
-  def check	# 意味的誤りがあれば、文字列を返す
+  def check  # 意味的誤りがあれば、文字列を返す
     nil    # typedef の段階で意味チェックされている
   end
 
@@ -345,7 +345,7 @@ end
 
 class VoidType < Type
 
-  def check	# 意味的誤りがあれば、文字列を返す
+  def check  # 意味的誤りがあれば、文字列を返す
     nil
   end
 
@@ -370,7 +370,7 @@ end
 
 class BoolType < Type
 
-  def check	# 意味的誤りがあれば、文字列を返す
+  def check  # 意味的誤りがあれば、文字列を返す
     nil
   end
 
@@ -390,9 +390,9 @@ class BoolType < Type
 end
 
 class IntType < Type
-#  @bit_size::		-11: char, -1: char_t, -2: short, -3: int, -4: long, -5: long long
-#			8, 16, 32, 64, 128
-#  @sign::		:SIGNED, :UNSIGNED, nil
+#  @bit_size::    -11: char, -1: char_t, -2: short, -3: int, -4: long, -5: long long
+#      8, 16, 32, 64, 128
+#  @sign::    :SIGNED, :UNSIGNED, nil
 
   def initialize( bit_size )
     super()
@@ -420,7 +420,7 @@ class IntType < Type
     end
   end
 
-  def check	# 意味的誤りがあれば、文字列を返す
+  def check  # 意味的誤りがあれば、文字列を返す
     nil
   end
 
@@ -634,7 +634,7 @@ class FloatType < Type
     @bit_size = bit_size
   end
 
-  def check	# 意味的誤りがあれば、文字列を返す
+  def check  # 意味的誤りがあれば、文字列を返す
     nil
   end
 
@@ -704,10 +704,10 @@ class FloatType < Type
 end
 
 class EnumType < Type # mikan
-#  @bit_size::		-1: enum
-#			8, 16, 32, 64, 128
-#  @element::		[]
-#  @element_val::	[]
+#  @bit_size::    -1: enum
+#      8, 16, 32, 64, 128
+#  @element::    []
+#  @element_val::  []
 
   def initialize( bit_size )
     super()
@@ -798,7 +798,7 @@ class StructType < Type
     end
   end
 
-  def check	# 意味的誤りがあれば、文字列を返す
+  def check  # 意味的誤りがあれば、文字列を返す
     nil
   end
 
@@ -906,7 +906,7 @@ class StructType < Type
         @tag = @@no_tag_struct_list[ @member_types_symbol ]
       else
         @tag = :"TAG_#{@@no_struct_tag_num}_TECS_internal__"
-	    @@no_struct_tag_num += 1
+      @@no_struct_tag_num += 1
         @@no_tag_struct_list[ @member_types_symbol ] = @tag
         Namespace.new_structtype( self )
       end
@@ -1073,10 +1073,10 @@ class FuncType < Type
 
   end
 
-  def check	# 意味的誤りがあれば、文字列を返す
-    if @type.class == ArrayType then	# 配列を返す関数
+  def check  # 意味的誤りがあれば、文字列を返す
+    if @type.class == ArrayType then  # 配列を返す関数
       return "function returning array"
-    elsif @type.class == FuncType then	# 関数を返す関数
+    elsif @type.class == FuncType then  # 関数を返す関数
       return "function returning function"
     end
     return @type.check   # 関数の return する型のチェック
@@ -1255,10 +1255,10 @@ class ArrayType < Type
     # "[#{@subscript.to_s}]#{@type.get_type_str_post}"
   end
 
-  def check	# 意味的誤りがあれば、文字列を返す
-    if @type.class == FuncType then		# 関数の配列
+  def check  # 意味的誤りがあれば、文字列を返す
+    if @type.class == FuncType then    # 関数の配列
       return "array of function"
-    elsif @type.class == ArrayType then	# 添数なし配列の配列
+    elsif @type.class == ArrayType then  # 添数なし配列の配列
       unless @type.get_subscript then
         return "subscript not specified"
       end
@@ -1343,7 +1343,7 @@ class PtrType < Type
     unless @type then
       @type = type
     else
-      @type.set_type( type )	# 枝先の type を設定
+      @type.set_type( type )  # 枝先の type を設定
     end
   end
 
@@ -1365,7 +1365,7 @@ class PtrType < Type
     "#{parenthes}#{@type.get_type_str_post}"
   end
 
-  def check	# 意味的誤りがあれば、文字列を返す
+  def check  # 意味的誤りがあれば、文字列を返す
     return nil if @type == nil
     @type.check
   end

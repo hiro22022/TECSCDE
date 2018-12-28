@@ -217,7 +217,7 @@ class NamedList
 #  @names:: {} of items
 #  @items:: [] of items : item の CLASS は get_name メソッドを持つこと get_name の戻り値は Symbol でなくてはならない
 #                         NamedList を clone_for_composite する場合は、item にもメソッドが必要
-#  @type:: string	エラーメッセージ
+#  @type:: string  エラーメッセージ
 
   def initialize( item, type )
     @names = {}
@@ -731,13 +731,13 @@ class ParamDecl < BDNode
     @b_ref = false
     @b_nullable = false
 
-    if @declarator.is_function? then		# (1)
+    if @declarator.is_function? then    # (1)
       cdl_error( "S2006 \'$1\' function" , get_name )
       return
     end
 
     res = @declarator.check
-    if res then					# (2)
+    if res then          # (2)
       cdl_error( "S2007 \'$1\' $2" , get_name, res )
       return
     end
@@ -815,7 +815,7 @@ class ParamDecl < BDNode
     # p @declarator
 
     #----  set req_level, min_level & max_level  ----#
-    if !(@size||@count||@string) then	    # (4)
+    if !(@size||@count||@string) then      # (4)
       req_level = 1
     elsif (@size||@count)&&@string then
       req_level = 2
@@ -1055,10 +1055,10 @@ class ParamList < BDNode
         cdl_error( "S2027 '$1' parameter cannot be void type", i.get_name )
       end
 
-      size = i.get_size			# Expression
+      size = i.get_size      # Expression
       if size then
         val = size.eval_const( @param_list )
-        if val == nil then			# 定数式でないか？
+        if val == nil then      # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = size.get_type( @param_list )
           unless type.kind_of?( IntType ) then
@@ -1094,10 +1094,10 @@ class ParamList < BDNode
         end
       end
 
-      count = i.get_count			# Expression
+      count = i.get_count      # Expression
       if count then
         val = count.eval_const( @param_list )
-        if val == nil then			# 定数式でないか？
+        if val == nil then      # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = count.get_type( @param_list )
           unless type.kind_of?( IntType ) then
@@ -1114,10 +1114,10 @@ class ParamList < BDNode
         end
       end
 
-      string = i.get_string			# Expression
+      string = i.get_string      # Expression
       if string != -1 && string then
         val = string.eval_const( @param_list )
-        if val == nil then			# 定数式でないか？
+        if val == nil then      # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = string.get_type( @param_list )
           unless type.kind_of?( IntType ) then
