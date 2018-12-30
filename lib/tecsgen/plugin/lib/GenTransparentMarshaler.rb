@@ -110,7 +110,6 @@ module GenTransparentMarshaler
   end
 
   def gen_marshaler_celltype
-
     if @PPAllocatorSize
       alloc_call_port = "  call sPPAllocator cPPAllocator;\n"
     else
@@ -142,7 +141,6 @@ EOT
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
   # ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     # unmarshaler クラスか?
     if ct_name == @unmarshaler_celltype_name.to_sym
       gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
@@ -153,7 +151,6 @@ EOT
 
   #===  marshal コードの生成
   def gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     b_void = false
     b_ret_er = false
 
@@ -298,12 +295,10 @@ EOT
     else
       file.print("    return;\n")
     end
-
   end
 
   #===  unmarshal コードの生成
   def gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
 #    b_ret_er = true
     b_ret_er = false
 
@@ -394,7 +389,6 @@ error_reset:
 #{ppallocator_dealloc_str}
     return E_OK;
 EOT
-
   end
 
   # IN b_marshal, b_get
@@ -685,7 +679,6 @@ error_reset:
 EOT
 
     }
-
   end
 
 end

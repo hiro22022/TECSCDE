@@ -82,6 +82,5 @@ cell nTECS2C::t#{@signature.get_name} TECS2C_#{@signature.get_name}{};
 
 import( "Mruby2C_tsInitializerBridge.cdl" );
 EOT
-
   end
 end

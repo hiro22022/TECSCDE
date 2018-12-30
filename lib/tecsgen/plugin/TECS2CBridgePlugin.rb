@@ -95,7 +95,6 @@ EOT
   # func_global_name:: string
   # func_type::      class derived from Type
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     ret_type = func_type.get_type
     b_ret_void = ret_type.is_void?
 
@@ -138,12 +137,10 @@ EOT
     if ! b_ret_void
       file.print("  return retval;\n")
     end
-
   end
 
 
   def gen_postamble(file, b_singleton, ct_name, global_name)
-
     # generate header file here, NOT postamble
     file2 = CFile.open(@header_name, "w")
     file2.print <<EOT

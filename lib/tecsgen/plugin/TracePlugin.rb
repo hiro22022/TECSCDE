@@ -43,7 +43,6 @@ class TracePlugin < ThroughPlugin
   #=== TracePlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
   def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
-
     @maxArrayDisplay = 16
     @cellEntry_list  = []
     @probeName       = ""
@@ -78,7 +77,6 @@ class TracePlugin < ThroughPlugin
   #          重複して生成してはならない（すでに生成されている場合は出力しないこと）
   # file::        FILE       生成するファイル
   def gen_plugin_decl_code(file)
-
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name] == nil
       @@generated_celltype[@ct_name] = [ self ]
@@ -133,7 +131,6 @@ EOT
   end
 
   def gen_through_cell_code(file)
-
     gen_plugin_decl_code(file)
 
     if @b_generate != false
@@ -164,11 +161,9 @@ EOT
 #  cell_port_name_str = \"#{@next_cell.get_name}.#{@next_cell_port_name}\";
       @region.gen_region_str_post file
     end
-
   end
 
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     if ! func_type.get_type.is_void?
       file.print("\t#{func_type.get_type_str}\tretval;\n")
     end
@@ -230,7 +225,6 @@ EOT
       print_param("retval", func_type.get_type, file, 0, :RETURN, func_type.get_type.get_type_str, nil, nil)
       file.print("\treturn retval;\n")
     end
-
   end
 
   def print_params(params, file, nest, direction)

@@ -104,14 +104,11 @@ EOT
   # func_global_name:: string
   # func_type::      class derived from Type
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     # nothing to do
-
   end
 
 
   def gen_postamble(file, b_singleton, ct_name, global_name)
-
     header_file = open(@header_name, "w")
 
     header_comment =<<EOT

@@ -56,16 +56,13 @@ class ATK1EventPlugin < CelltypePlugin
 
   #===  意味解析実行後のコード生成
   def self.gen_post_code(file)
-
     @@instancies.each { |inst|
       inst.gen_oil_code file
     }
-
   end
 
   #===  OILファイル出力
   def gen_oil_code(file)
-
     file2 = CFile.open("#{$gen}/EVENT_tecsgen.oil", "w")
 
     whole_mask = 0
@@ -146,6 +143,5 @@ class ATK1EventPlugin < CelltypePlugin
     }
 
     file2.close
-
   end
 end

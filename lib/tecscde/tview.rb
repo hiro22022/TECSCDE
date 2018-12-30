@@ -265,7 +265,6 @@ module TECSCDE
 
     #=== create canvas
     def createCanvas
-
       @canvas = Canvas.new()
       resize_canvas
       dbgPrint("canvas width=#{@canvas_width}, height=#{@canvas_height}\n")
@@ -373,7 +372,6 @@ module TECSCDE
     end
 
     def clearCanvasPixmap
-
       @canvasGc.function = Gdk::GC::SET
       @canvasGc.fill = Gdk::GC::SOLID
       @canvasGc.foreground = Gdk::Color.new(255, 255, 255)
@@ -1168,7 +1166,6 @@ module TECSCDE
       # lightyellow: light yellow (pastel)
       @@cell_paint_color_index = 0
       @@cell_file_to_color = {}
-
     end
 
     def self.setup_colormap_1(name)

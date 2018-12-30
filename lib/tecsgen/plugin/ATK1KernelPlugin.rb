@@ -83,7 +83,6 @@ class ATK1KernelPlugin < CelltypePlugin
 #  end
 
   def gen_factory(file)
-
     file2 = CFile.open("#{$gen}/Kernel_tecsgen.oil", "w")
 
     # Kernel
@@ -265,11 +264,9 @@ EOT
     }
 
     file2.close
-
   end
 
   def self.gen_post_code(file)
-
   @@cell_list.each { |cell|
     join =  cell.get_join_list.get_item(:useResourceScheduler)
     if join
@@ -286,6 +283,5 @@ EOT
       end
     end
   }
-
   end
 end

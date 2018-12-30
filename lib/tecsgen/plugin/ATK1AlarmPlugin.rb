@@ -74,7 +74,6 @@ class ATK1AlarmPlugin < CelltypePlugin
 #  end
 
   def gen_factory(file)
-
   file2 = CFile.open("#{$gen}/ALARM_tecsgen.oil", "w")
 
     # ALARM
@@ -193,6 +192,5 @@ EOT
   }
 
   file.close
-
   end
 end

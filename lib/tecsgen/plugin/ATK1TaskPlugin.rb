@@ -81,7 +81,6 @@ class ATK1TaskPlugin < CelltypePlugin
 #  end
 
   def gen_factory(file)
-
   file2 = CFile.open("#{$gen}/TASK_tecsgen.oil", "w")
 
   extended_task_count = 1
@@ -217,6 +216,5 @@ EOT
   }
 
   file.close
-
   end
 end

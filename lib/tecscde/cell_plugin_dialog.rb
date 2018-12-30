@@ -90,7 +90,6 @@ module TECSCDE
       @button_cancel.signal_connect("clicked") { |me|
         @dialog.response Gtk::Dialog::RESPONSE_CANCEL
       }
-
     end
   end
 end

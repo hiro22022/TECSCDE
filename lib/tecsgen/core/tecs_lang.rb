@@ -134,7 +134,6 @@ class TECS_LANG
   #   ・TECSGEN_FILE_LANG 環境変数 (ファイルの文字コードのみ)
   #   ・-k オプション (ファイルの文字コードのみ)
   def self.set_lang_var
-
     if $IN_EXERB && (ENV["TERM"] == nil || ENV["TERM"] == "cygwin")
       # exerb 版で端末 cygwin の時は codepage のみを見る
       cp = get_win_codepage
@@ -198,7 +197,6 @@ class TECS_LANG
   #=== Kconv クラス用の変数を設定
   # 言語情報から Kconv に関する変数を設定
   def self.set_kconv_var
-
     # 文字コードの設定
     case $CHARSET_FILE           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
     when :eucJP
@@ -244,7 +242,6 @@ class TECS_LANG
   # コメントの読み飛ばしを誤る点が問題
   # ただし、SJIS の場合は、エスケープ文字の問題があるため、変更しない
   def self.set_kcode_binary
-
     # 2.0
     if $b_no_kcode
       return

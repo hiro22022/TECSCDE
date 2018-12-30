@@ -105,7 +105,6 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
       # 初出と end リージョン不一致  (初出は、自分自身とチェックされる。無駄だが小さいので放置)
       cdl_error("SharedRPCPlugin: end region mismatch current: #{@region.get_name} previous: #{prev_end.get_name}")
     end
-
   end
 
   # def set_through_info( start_region, end_region, through_type )
@@ -123,7 +122,6 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
   end
 
   def gen_plugin_decl_code(file)
-
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@shared_channel_server_ct_name] == nil
       @@generated_celltype[@shared_channel_server_ct_name] = [ self ]
@@ -199,14 +197,12 @@ composite #{@shared_channel_server_ct_name} {
 
 EOT
     f.close
-
   end
 
   #===  through cell コードを生成
   #
   #
   def gen_through_cell_code(file)
-
     gen_plugin_decl_code(file)
 
     file.print <<EOT
@@ -310,28 +306,24 @@ EOT
 #{ppallocator_join}#{indent_str}};
 EOT
     @end_region.gen_region_str_post file
-
   end
 
   #=== post コード(CDL) を生成
   # プラグインの後のコードを生成
   # file:: File:
   def self.gen_post_code(file)
-
     file.print "/* '#{self.name}' post code */\n"
 
     @@shared_channel_list.each{ |chan_name,plugin_obj_array|
       file.print "/* '#{chan_name}' shared channel */\n"
       plugin_obj_array[0].gen_post_code(file, plugin_obj_array)
     }
-
   end
 
   #=== post コード(CDL) を生成
   # 共有チャンネルを生成する
   # このメソッドは、チャンネルを共有する最初のプラグインオブジェクトのみ呼び出される
   def gen_post_code(file, plugin_obj_array)
-
     # 共有されている通信チャンネルの生成
     # 各プラグインインスタンスでは @shared_channel_ct_name として記憶している
     # region = @caller_cell.get_region
@@ -361,6 +353,5 @@ EOT
 #{indent_str}};
 EOT
     @end_region.gen_region_str_post file
-
   end
 end

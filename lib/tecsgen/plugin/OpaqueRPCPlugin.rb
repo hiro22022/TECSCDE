@@ -72,7 +72,6 @@ class OpaqueRPCPlugin < ThroughPlugin
   end
 
   def gen_plugin_decl_code(file)
-
     gen_marshaler_celltype
 
     # チャンネル composite セルタイプの生成
@@ -152,7 +151,6 @@ EOT
   #
   #
   def gen_through_cell_code(file)
-
     gen_plugin_decl_code(file)
 
     # セルを探す

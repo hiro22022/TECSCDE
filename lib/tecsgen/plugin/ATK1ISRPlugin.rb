@@ -74,7 +74,6 @@ class ATK1ISRPlugin < CelltypePlugin
 #  end
 
   def gen_factory(file)
-
   file2 = CFile.open("#{$gen}/ISR_tecsgen.oil", "w")
 
     # ISR
@@ -171,6 +170,5 @@ EOT
   }
 
   file.close
-
   end
 end

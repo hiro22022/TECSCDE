@@ -391,7 +391,6 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   #      typedef, signature, celltype, cell コードを生成
   # file::        FILE       生成するファイル
   def gen_cdl_file(file)
-
     # ブリッジセルタイプの生成
     if @@celltypes[@celltype_name] == nil
       @@celltypes[@celltype_name] = [ self ]
@@ -518,7 +517,6 @@ EOT
         @@VM_ptr_list[vm_name] = { ptr_celltype_name => tment }
       end
     }
-
   end
 
   #=== プラグインが CDL の POST コードを生成
@@ -623,7 +621,6 @@ EOT
       end
       file.print "  };"
     }
-
   end
 
   ####### 以下コード生成段階 ######
@@ -690,7 +687,6 @@ EOT
   end
 
   def gen_ep_func_body_ptr(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     t = @@ptr_list[ct_name]
     type = t[1]
     file.print <<EOT
@@ -858,7 +854,6 @@ EOT
 };
 
 EOT
-
   end
 
   def gen_preamble_ptr(file, b_singleton, ct_name, global_ct_name)
@@ -912,7 +907,6 @@ EOT
         raise "MrubyBridgeSignaturePlugin: MrubyBridgeSignaturePlugin: cannot handle type"
       end
     }
-
   end
 
   def gen_preamble_instance_proto(file, b_singleton, ct_name, global_ct_name)
@@ -977,7 +971,6 @@ EOT
   end
 
   def gen_preamble_bridge_func(file, b_singleton, ct_name, global_ct_name)
-
     @func_head_array.each{ |f|
       if ! f.is_function?
         next

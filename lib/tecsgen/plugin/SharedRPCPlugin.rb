@@ -60,7 +60,6 @@ class SharedRPCPlugin < ThroughPlugin
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
   def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
-
     # mikan プラグインオプション指定の不一致のチェック task_priority,
 
     super
@@ -102,7 +101,6 @@ class SharedRPCPlugin < ThroughPlugin
         cdl_error("PPAllocatorSize must be speicified for oneway [in] array")
       end
     end
-
   end
 
   # def set_through_info( start_region, end_region, through_type )
@@ -111,7 +109,6 @@ class SharedRPCPlugin < ThroughPlugin
   # end
 
   def gen_plugin_decl_code(file)
-
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@shared_channel_ct_name] == nil
       @@generated_celltype[@shared_channel_ct_name] = [ self ]
@@ -215,14 +212,12 @@ composite #{@shared_channel_ct_name} {
 };
 EOT
     f.close
-
   end
 
   #===  through cell コードを生成
   #
   #
   def gen_through_cell_code(file)
-
     gen_plugin_decl_code(file)
 
     file.print <<EOT
@@ -315,7 +310,6 @@ EOT
   #=== 後ろのコードを生成
   # plugin_obj[0] が代表して出力する（インスタンス変数にアクセスしたいため）
   def gen_post_code(file, plugin_obj)
-
     chan_name = @shared_channel_cell
 
     nest = @region.gen_region_str_pre file
@@ -331,6 +325,5 @@ EOT
     }
     file.printf "#{indent_str}    priority = #{@task_priority};\n#{indent_str}};\n"
     @region.gen_region_str_post file
-
   end
 end

@@ -46,7 +46,6 @@ module CType
   #
   # mikan C の文法を厳密にはチェックしていない  long struct 等もできてしまう
   def merge(another)
-
     # p "self: #{self.class} kind_of( IntType ): #{self.kind_of?( IntType )}  another: #{another.class}"
 
     # signed, unsigned が Symbol として来る事は無くなった
@@ -131,7 +130,6 @@ module CType
   #=== qualifier を設定する
   #     元の Type クラスでは矛盾チェックしない（TECSの本来の文法では重複指定できないため）
   def set_qualifier(qual)
-
     if @qualifier
       cdl_error("C1004 $1: qualifier redefined. previous one: $2", qual, @qualifier)
     end

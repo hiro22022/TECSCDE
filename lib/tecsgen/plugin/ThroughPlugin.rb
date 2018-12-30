@@ -149,7 +149,6 @@ class ThroughPlugin < Plugin
   #          重複して生成してはならない（すでに生成されている場合は出力しないこと）
   # file::        FILE       生成するファイル
   def gen_plugin_decl_code(file)
-
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name] == nil
       @@generated_celltype[@ct_name] = [ self ]
@@ -206,7 +205,6 @@ EOT
   #     through 指定により生じるセルコード(CDL)を生成する
   # file::        FILE       生成するファイル
   def gen_through_cell_code(file)
-
     nest = @region.gen_region_str_pre file
     nest_str = "  " * nest
 
@@ -216,7 +214,6 @@ EOT
 #{nest_str}};
 EOT
     @region.gen_region_str_post file
-
   end
 
   #=== 後ろのコードを生成
@@ -240,7 +237,6 @@ EOT
   # func_global_name:: string
   # func_type::      class derived from Type
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     ret_type = func_type.get_type
     b_ret_void = ret_type.is_void?
 

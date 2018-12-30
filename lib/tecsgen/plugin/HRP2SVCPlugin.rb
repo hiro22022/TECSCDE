@@ -101,7 +101,6 @@ class HRP2SVCPlugin < ThroughPlugin
   end
 
   def gen_plugin_decl_code(file)
-
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
     if @@generated_celltype[@ct_name_body] == nil
@@ -178,7 +177,6 @@ composite #{@ct_name} {
     composite.#{@entry_port_name} => #{@cell_name}.#{@entry_port_name};
 };
 =end
-
   end
 
   #===  through cell コードを生成

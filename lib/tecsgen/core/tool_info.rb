@@ -177,7 +177,6 @@ class TOOL_INFO
           end
         }
       end
-
     end
 
     def validate_array_member(array, val_types, path)

@@ -288,7 +288,6 @@ module TECSCDE
     #=== TECSModel#new_cell ***
     # namespace_path::String : namespace path string of celltype
     def new_cell(xm, ym, celltype_name, ct_namespace_path, tecsgen_cell = nil)
-
       ct_nsp = NamespacePath.analyze(ct_namespace_path)
       ct_nsp.append! celltype_name.to_sym
       ct = Namespace.find ct_nsp

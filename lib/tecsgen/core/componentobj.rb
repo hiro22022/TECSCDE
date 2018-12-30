@@ -251,7 +251,6 @@ class Signature < NSBDNode  # < Nestable
   #=== Signature# 正当なアロケータ シグニチャかテストする
   # alloc, dealloc 関数を持つかどうか、第一引き数がそれぞれ、整数、ポインタ、第二引き数が、ポインタへのポインタ、なし
   def is_allocator?
-
     # 一回だけチェックする
     if @b_checked_as_allocator_signature == true
       return true
@@ -478,7 +477,6 @@ module CelltypePluginModule
 
   #=== Celltype# セルタイププラグインをこのセルタイプに適用
   def apply_plugin(plugin_name, option)
-
     # plClass = load_plugin( plugin_name, CelltypePlugin )
     if kind_of? Celltype
       plugin_class = CelltypePlugin
@@ -1003,7 +1001,6 @@ class Celltype < NSBDNode # < Nestable
     end
 
     factory.check_arg(self)
-
   end
 
   @@dynamic_join_checked_list = {}
@@ -1160,7 +1157,6 @@ class Celltype < NSBDNode # < Nestable
   #     size_is を伴う var
   #     呼び口（ただし、最適化で不要となるものは除く）
   def has_INIB?
-
     result = $rom &&
              (@n_attribute_ro > 0 ||
               @n_var_size_is > 0 ||
@@ -1349,7 +1345,6 @@ class Celltype < NSBDNode # < Nestable
     puts "@n_entry_port_inline #{@n_entry_port_inline}"
 # @n_cell:: int >= 0  コード生成の頭で算出する．意味解析段階では参照不可
 # @id_base:: Integer : cell の ID の最小値(最大値は @id_base + @n_cell)
-
   end
 end
 
@@ -1490,7 +1485,6 @@ class Cell < NSBDNode # < Nestable
   end
 
   def set_name(name)
-
     @name = name
     @local_name = name
     if "#{Namespace.get_global_name}" != ""
@@ -1700,7 +1694,6 @@ class Cell < NSBDNode # < Nestable
      end
 #     p "region: generate? #{@region.is_generate?}"
     end
-
   end
 
   #=== Cell.新しい逆結合
@@ -1795,7 +1788,6 @@ class Cell < NSBDNode # < Nestable
   #  呼び口を外部結合する．
   #  このメソッドは、composite の中の cell でしか呼ばれない．
   def external_join(internal_cell_elem_name, export_name, b_composite)
-
     # cCall => composite.cCall; ではないか？
     if(b_composite == false)
       # cCall => cCall; のような場合
@@ -1939,7 +1931,6 @@ class Cell < NSBDNode # < Nestable
   end
 
   def get_allocator_list
-
     # 意味チェック(set_definition)されていない？
     # relay アロケータの場合、セルの意味チェックが行われていないと、@alloc_list が完成しない
     if @b_checked == false
@@ -2006,7 +1997,6 @@ class Cell < NSBDNode # < Nestable
   # region::      Region : 元のセルが属する region
   # このメソッドは CompositeCelltype の expand から呼出される
   def clone_for_composite(name, global_name, namespacePath, join_array, ct_name, region, plugin, locale)
-
     # debug
     dbgPrint "  CLONING Cell#clone_for_composite : cloning: #{@name} #{global_name}  b_defined=#{@b_defined} #{self}=>#{@my_clone} \n"
     dbgPrint "              my_name=#{@name} name=#{name} owner class=#{@owner.class.name}\n"
@@ -2034,7 +2024,6 @@ class Cell < NSBDNode # < Nestable
   # parent_ct_name:: string : 親セルのセルタイプ名（composite セルタイプ）
   #  このメソッドはすぐ上の clone_for_composite から呼出され、clone されたセルを整える
   def set_cloned(name, global_name, namespacePath, join_array, parent_ct_name, region, plugin, locale)
-
     # debug
     dbgPrint "cell.set_cloned : global_name: #{global_name}  name: #{name}  @name: #{@name}\n"
     dbgPrint "set_cloned:  entry_array_max_subscript.len=#{@entry_array_max_subscript.length}\n"
@@ -2089,7 +2078,6 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# clone された cell の join_list の右辺の変更
   #  呼び口の右辺の cell を他の clone された cell に置換え
   def change_rhs_port(cloned_cell_list)
-
     # debug
     dbgPrint "=====   Cell#change_rhs_port: name=#{@name}   =====\n"
 
@@ -2202,7 +2190,6 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# セルの受け口 port_name に対する実際のセル名、受け口名を '_' で連結
   #    namespace 名 + '_' + セル名 + '_' + 受け口名   （このセルが composite ならば展開後のセル名、受け口名）
   def get_real_global_port_name(port_name)
-
     # composite か？
     if @celltype.instance_of?(CompositeCelltype)
 
@@ -2234,7 +2221,6 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# PORT (celltype の定義) を得る
   def get_real_port(port_name)
-
     # composite か？
     if @celltype.instance_of?(CompositeCelltype)
 
@@ -2253,7 +2239,6 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# cell を得る
   #    composite でなければ自分自身を返す
   def get_real_cell(port_name)
-
     # composite か？
     if @celltype.instance_of?(CompositeCelltype)
 
@@ -2412,7 +2397,6 @@ class Cell < NSBDNode # < Nestable
   # STAGE: S
   # 呼び口側の結合を元に受け口側の結合を生成
   def create_relay_allocator_join
-
     # celltype がなければチェックしない（既にエラー）
     return if @celltype == nil
 
@@ -2606,7 +2590,6 @@ class Cell < NSBDNode # < Nestable
   #  ・ポインタ型が配列で初期化される場合のチェック
   #  ・未初期化の属性のチェック
   def check_join
-
     # celltype がなければチェックしない（既にエラー）
     return if @celltype == nil
     return if @b_defined == false
@@ -2907,7 +2890,6 @@ class Cell < NSBDNode # < Nestable
   # cell_or_t:: Celltype|Cell  : celltype の require の右辺で指定されたセルタイプまたはセル
   # port::  Port               : celltype の Port オブジェクト
   def set_require_join(cp_name, cell_or_ct, port)
-
     # set_require_join は2度呼び出される
     # 2度目は post コードを生成した後       #####  いったん見合わせ（重複エラーを見逃す）
     # if @require_joined_list[ cp_name ] then
@@ -3003,7 +2985,6 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# composite セルの展開
   # このセルが composite セルタイプ
   def expand
-
     # debug
     dbgPrint "=====    expanding   #{@name}     =====\n"
 
@@ -3335,7 +3316,6 @@ class CompositeCelltype < NSBDNode # < Nestable
  ### CompositeCelltype#new_cell_in_composite
   def self.new_cell_in_composite(cell)
     @@current_object.new_cell_in_composite(cell)
-
   end
 
   def new_cell_in_composite(cell)
@@ -3356,7 +3336,6 @@ class CompositeCelltype < NSBDNode # < Nestable
     internal_cell_elem_name, type)
     @@current_object.new_join(export_name, internal_cell_name,
            internal_cell_elem_name, type)
-
   end
 
  ### CompositeCelltype#new_cell
@@ -3661,7 +3640,6 @@ class CompositeCelltype < NSBDNode # < Nestable
   # [ { name => cell }, [ cell, ... ] ]
   #  戻り値 前は 名前⇒cloneされた内部セル、後ろは composite の出現順のリスト
   def expand(name, global_name, namespacePath, join_list, region, plugin, locale)
-
     # debug
     dbgPrint "expand composite: #{@name} name: #{name}  global_name: #{global_name}\njoin_list:\n"
     join_list.get_items.each{ |j|
@@ -4450,7 +4428,6 @@ end
     join = Join.new(@reverse_require_entry_port_name, -1, rhs, cell.get_locale)
     cell2.new_join(join)
     join.set_definition(ct.find(join.get_name))
-
   end
 
   #=== Port# signature のすべての関数のすべてのパラメータをたどる
@@ -4594,7 +4571,6 @@ class Namespace < NSBDNode
   end
 
   def initialize(name)
-
     super()
     @name = name
 
@@ -4721,7 +4697,6 @@ class Namespace < NSBDNode
   #  path [ "::", "ns1", "ns2" ]   absolute
   #  path [ "ns1", "ns2" ]         relative
   def self.find(in_path)
-
     if in_path.instance_of? Array
       # raise "Namespace.find: old fashion"
 
@@ -4793,7 +4768,6 @@ class Namespace < NSBDNode
   end
 
   def find_one(name)
-
     object = find(name)
     # これは出すぎ
     # dbgPrint "in '#{@name}' find '#{name}' object #{object ? object.class : "Not found"}\n"
@@ -5025,7 +4999,6 @@ class Namespace < NSBDNode
       @name_list.add_item(decl)
       @const_decl_list << decl
     end
-
   end
 
  ### region
@@ -5194,7 +5167,6 @@ class Join < BDNode
   # definition:: Decl (attribute,varの時) または Port (callの時) または nil (definition が見つからなかった時)
 
   def set_definition(definition)
-
     dbgPrint "set_definition: #{@owner.get_name}.#{@name} = #{definition.class}\n"
 
     # 二重チェックの防止
@@ -5392,7 +5364,6 @@ class Join < BDNode
       check_region(object)
 
     end  # end of cell (object) チェック
-
   end
 
   #=== Join# アロケータの結合を生成
@@ -5403,7 +5374,6 @@ class Join < BDNode
   # 受け口側は Cell の set_specifier_list で生成
   #  a[*] の内容は Cell の set_specifier_list を参照
   def create_allocator_join
-
     cell = get_rhs_cell2   # 右辺のセルを得る
     port = get_rhs_port2
 
@@ -5435,7 +5405,6 @@ class Join < BDNode
   # 実際の生成は check_and_gen_through で行う
   # mikan Cell#distance とRegion へたどり着くまでための処理に共通部分が多い
   def check_region(object)
-
     # debug
     dbgPrint "check_region #{@owner.get_name}.#{@name} => #{object.get_name}\n"
     # print "DOMAIN: check_region #{@owner.get_name}.#{@name} => #{object.get_name}\n"
@@ -5622,7 +5591,6 @@ class Join < BDNode
   # through 指定子を設定
   #  check_and_gen_through を呼出して、through 生成
   def set_specifier_list(specifier_list)
-
     specifier_list.each { |s|
       case s[0]
       when :THROUGH
@@ -5641,7 +5609,6 @@ class Join < BDNode
         @cp_through_list << [ plugin_name, cell_name, plugin_arg ]
       end
     }
-
   end
 
   #=== Join# through のチェックと生成
@@ -5649,7 +5616,6 @@ class Join < BDNode
   # set_specifier で呼び口の結合で指定された through が @cp_through 設定される
   # その後、このメソッドが呼ばれる
   def check_and_gen_through
-
     dbgPrint "check_and_gen_through #{@owner.get_name}.#{@name}\n"
 
     if ! @definition.instance_of? Port
@@ -5772,7 +5738,6 @@ class Join < BDNode
 
       i -= 1
     end
-
   end
 
   @@through_count = { }
@@ -5788,7 +5753,6 @@ class Join < BDNode
 
   #=== Join# through プラグインを呼び出して CDL 生成させるとともに、import する
   def gen_through_cell_code_and_parse(plugin_name, i, next_cell, next_port_name, next_port_subscript, plClass)
-
     through = @through_list[i]
     plugin_name           = through[0]
     generating_cell_name  = :"#{through[1]}_#{get_through_count through[1]}"
@@ -5960,7 +5924,6 @@ class Join < BDNode
   end
 
   def get_cell_global_name  # 受け口セル名（コンポジットなら展開した内側のセル）
-
     # debug
     dbgPrint "cell get_cell_global_name:  #{@cell_name}\n"
     # @cell.show_tree( 1 )
@@ -5970,14 +5933,12 @@ class Join < BDNode
     else
       return "NonDefinedCell?"
     end
-
   end
 
   #===  Join# 結合の右辺の受け口の名前
   #     namespace 名 + '_' + セル名 + '_' + 受け口名   （このセルが composite ならば展開後のセル名、受け口名）
   # subscript:: Integer  呼び口配列の時添数 または nil 呼び口配列でない時
   def get_port_global_name(subscript = nil)  # 受け口名（コンポジットなら展開した内側のセル）
-
     # debug
     dbgPrint "Cell get_port_global_name:  #{@cell_name}\n"
 
@@ -6000,7 +5961,6 @@ class Join < BDNode
       end
 
     end
-
   end
 
   def get_port_name
@@ -6081,7 +6041,6 @@ class Join < BDNode
   #     このメソッドは非配列の場合も呼出される（join 重複エラーの場合）
   # join2:: Join  呼び口配列要素の Join
   def add_array_member(join2)
-
     # subscript2: join2 の左辺添数
     subscript2 = join2.get_subscript
 
@@ -6208,7 +6167,6 @@ class Join < BDNode
         i += 1
       end
     end
-
   end
 
   #=== Join# composite セル用にクローン
@@ -6265,7 +6223,6 @@ class Join < BDNode
 
     @array_member  = am
     @array_member2 = am2
-
   end
 
   #=== Join# rhs を入れ換える
@@ -6412,7 +6369,6 @@ class CompositeCelltypeJoin < BDNode
     @internal_cell_elem_name = internal_cell_elem_name
     @cell = cell
     @port_decl = port_decl
-
   end
 
   #=== CompositeCelltypeJoin# CompositeCelltypeJoin の対象セルか？
@@ -6421,7 +6377,6 @@ class CompositeCelltypeJoin < BDNode
   #     CompositeCelltypeJoin と cell の名前が一致するかチェックする
   #     port_decl が指定された場合は、現状使われていない
   def match?(cell, port_decl = nil)
-
     # debug
     if port_decl
       dbgPrint("match?")
@@ -6887,7 +6842,6 @@ class Region < Namespace
 # p @in_through_list
 # p @out_through_list
 # p @to_through_list
-
   end
 
   def self.end_of_parse
@@ -6931,7 +6885,6 @@ class Region < Namespace
   end
 
   def set_region_family_line
-
     dbgPrint  "set_region_family_line: Region: #{@name}  \n"
     # root namespace (root region) の region type は :NODE
     if @name == "::"
@@ -6993,7 +6946,6 @@ class Region < Namespace
     # print "#{@name}: linkRoot: #{@link_root.get_name}  (this can be wrong if #{@name} is node or linkunit, and corret later\n"
     @family_line.reverse!
 =end
-
   end
 
   #== Region#ドメインを設定する
@@ -7124,7 +7076,6 @@ class Region < Namespace
   # mikan Cell#check_region とRegion へたどり着くまでための処理に共通性が高い
   # region#distance は require で用いられる
   def distance(to_region)
-
     r1 = self                   # 出発 region
     r2 = to_region              # 目的 region
     dist = 0
@@ -7477,7 +7428,6 @@ class Import_C < Node
 
     # 終期化　パーサスタックを戻す
     c_parser.finalize
-
   end
 
   def print_defines(file)
@@ -7850,7 +7800,6 @@ class NamespacePath < Node
   # このメソッドは、オプションなどで指定される文字列を分解して NamespacePath を生成するのに用いる
   # チェックはゆるい。不適切なパス指定は、不適切な NamespacePath が生成される
   def self.analyze(path_str, b_force_absolute = false)
-
     if path_str == "::"
       return self.new("::", true)
     end

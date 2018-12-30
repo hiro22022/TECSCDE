@@ -226,7 +226,6 @@ module GenOpaqueMarshaler
       res = optparse(opt, /\A\,/, ",")
       break if ! res
     end
-
   end
 
   #=== プラグイン引数 noServerChannelOpenerCode のチェック
@@ -276,7 +275,6 @@ module GenOpaqueMarshaler
 
   #=== marshaler のセルタイプ名を設定する
   def initialize_opaque_marshaler
-
     # オプション設定される変数のデフォルトを設定
     @taskPriority = 11
     @stackSize  = 4096
@@ -384,7 +382,6 @@ EOT
   #===  受け口関数の本体コードを生成（頭部と末尾は別途出力）
   # ct_name:: Symbol    (through プラグインで生成された) セルタイプ名 ．Symbol として送られてくる（らしい）
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     # unmarshaler クラスか?
     if ct_name == @unmarshaler_celltype_name.to_sym
       gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
@@ -395,7 +392,6 @@ EOT
 
   #===  marshal コードの生成
   def gen_ep_func_body_marshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     b_void = false
     b_ret_er = false
 
@@ -604,12 +600,10 @@ EOT
     else
       file.print("	return;\n")
     end
-
   end
 
   #===  unmarshal コードの生成
   def gen_ep_func_body_unmarshal(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-
     b_ret_er = true
 
     # func_id を得るコードを生成
@@ -693,7 +687,6 @@ error_reset:  /* OK cases also come here */
 		(void)cTDR_reset();
 	return ercd_;
 EOT
-
   end
 
   #=== PREAMBLE 部のコード生成

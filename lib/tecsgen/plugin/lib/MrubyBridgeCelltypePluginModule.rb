@@ -154,7 +154,6 @@ EOT
 # generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "" );
 # EOT
 #    }
-
   end
 
   #=== tCelltype_factory.h に挿入するコードを生成する

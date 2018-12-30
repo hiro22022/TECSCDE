@@ -122,7 +122,6 @@ end
 class Namespace
   @@domain_gen_factory_list = nil
   def generate
-
     begin
       # root namespace ならば makefile を出力する(全セルタイプに関わるものだけ)
       # 先に出力する
@@ -175,7 +174,6 @@ class Namespace
   end
 
   def generate_post
-
     if $generating_region.get_n_cells == 0
       return
     end
@@ -207,7 +205,6 @@ class Namespace
 
 ###
   def gen_global_header
-
     # global_tecs.h の生成
     f = AppFile.open("#{$gen}/global_tecsgen.#{$h_suffix}")
 
@@ -286,11 +283,9 @@ EOT
     }
 
     f.close
-
   end
 
   def gen_global_header_post
-
     # global_tecs.h を開く
     f = AppFile.open("#{$gen}/global_tecsgen.#{$h_suffix}")
 
@@ -302,7 +297,6 @@ EOT
     end
 
     f.close
-
   end
 
   #=== Makefile.tecsgen, Makefile.templ の出力
@@ -315,7 +309,6 @@ EOT
   end
 
   def gen_makefile_template
-
     return if $generate_no_template
 
     ### Makefile.templ の生成
@@ -749,7 +742,6 @@ EOT
     }
 
     f.close
-
   end
 
   #=== すべてのセルタイプの名前を出力
@@ -777,7 +769,6 @@ EOT
     @namespace_list.each { |ns|
       ns.gen_celltype_names(f, prepend, append, b_plugin, b_inline_only_or_proc)
     }
-
   end
 
   #=== すべてのセルタイプの名前を出力
@@ -888,7 +879,6 @@ end
 
 class Typedef
   def gen_gh(f)
-
 #    print "Typedef.gen_gh\n"
 #    show_tree 1
 
@@ -901,7 +891,6 @@ end
 
 class StructType < Type
   def gen_gh(f)
-
 #    print "StructType.gen_gh\n"
 #    show_tree 1
 
@@ -916,7 +905,6 @@ class StructType < Type
     }
 
     f.print "};\n"
-
   end
 end
 
@@ -986,11 +974,9 @@ EOT
       }
       f.print "\n"
     end
-
   end
 
   def gen_sh_func_tab(f)
-
     # シグニチャディスクリプタの出力
     f.printf TECSMsg.get(:SD_comment), "#_SD_#"
     f.print "struct tag_#{@global_name}_VDES {\n"
@@ -1058,7 +1044,6 @@ end
 
 class Celltype
   def generate
-
     if need_generate?    # セルのないセルタイプは生成しない
 
       generate_private_header
@@ -1078,7 +1063,6 @@ class Celltype
       # generate_makefile_template は Makefile に追記するものだから、呼び出さない
 
     end
-
   end
 
   def generate_post
@@ -1089,7 +1073,6 @@ class Celltype
   end
 
   def generate_private_header
-
     f = AppFile.open("#{$gen}/#{@global_name}_tecsgen.#{$h_suffix}")
 
     print_note f
@@ -1175,7 +1158,6 @@ class Celltype
   end
 
   def generate_private_header_post
-
     f = AppFile.open("#{$gen}/#{@global_name}_tecsgen.#{$h_suffix}")
 
     ifndef_macro_only f
@@ -1335,7 +1317,6 @@ class Celltype
     if f
       f.close
     end
-
   end
 
 #####  celltype header
@@ -1346,7 +1327,6 @@ class Celltype
   end
 
   def gen_ph_info(f)
-
     yn_idx_is_id = "no"
     yn_idx_is_id = "yes"  if @idx_is_id
     yn_idx_is_id_act = "no"
@@ -1396,7 +1376,6 @@ EOT
   end
 
   def gen_ph_include_cb_type(f)
-
     if ! @b_cp_optimized
       return
     end
@@ -1445,7 +1424,6 @@ EOT
 #        f.print "\n"
 #      end
 #    }
-
   end
 
 
@@ -1468,7 +1446,6 @@ EOT
     else
       f.print("#define #{@global_name}_VALID_IDX(IDX) (1)\n\n")
     end
-
   end
 
   def gen_ph_valid_idx_abbrev(f)
@@ -1477,14 +1454,12 @@ EOT
     # IDX 正当性チェックマクロ（短縮形）の出力
     f.printf(TECSMsg.get(:CVIA_comment), "#_CVIA_#")
     f.print("#define VALID_IDX(IDX)  #{@global_name}_VALID_IDX(IDX)\n\n")
-
   end
 
   #=== 呼び口配列の大きさを得るマクロの出力
   #
   # セルタイプヘッダへ呼び口の個数を出力
   def gen_ph_n_cp(f)
-
     b_comment = false
     @port.each { |p|
       next if p.get_port_type != :CALL
@@ -1526,7 +1501,6 @@ EOT
   #
   # セルタイプヘッダへ受け口の個数を出力
   def gen_ph_n_ep(f)
-
     b_comment = false
     @port.each { |p|
       next if p.get_port_type != :ENTRY
@@ -1856,7 +1830,6 @@ EOT
       end
     }
     f.print("\n")
-
   end
 
   #===  attribute/var アクセスマクロ（短縮形）コードの生成
@@ -1896,7 +1869,6 @@ EOT
       f.print("\n")
     }
     f.print("\n")
-
   end
 
   def gen_ph_cp_fun_macro(f)
@@ -2382,7 +2354,6 @@ EOT
       }
     }
     f.print("\n")
-
   end
 
   def gen_ph_typedef_idx(f)
@@ -2398,7 +2369,6 @@ EOT
         f.print("typedef int   #{@global_name}_IDX;\n")
       end
     end
-
   end
 
   def gen_ph_idx_type(f)
@@ -2414,7 +2384,6 @@ EOT
         f.print("int")
       end
     end
-
   end
 
   def gen_ph_ep_fun_prototype(f)
@@ -2521,7 +2490,6 @@ EOT
   end
 
   def gen_ph_cell_cb_type(f)
-
     if ($rom)
       # 定数部は ROM, 変数部は RAM
 
@@ -2745,13 +2713,11 @@ EOT
       f.print "#define tag_#{@global_name}_CB           tag_#{@global_name}_INIB\n"
       f.print "\n"
     end
-
   end
 
   #===  イテレータコード (FOREACH_CELL)の生成
   #      singleton では出力しない
   def gen_ph_foreach_cell(f)
-
     return if @singleton
 
     if has_CB? || has_INIB?
@@ -2793,7 +2759,6 @@ EOT
   #===  変数var初期化コード
   #
   def gen_ph_cb_initialize_macro(f)
-
     f.printf(TECSMsg.get(:CIM_comment), "#_CIM_#")
 
     @var.each { |v|
@@ -2917,7 +2882,6 @@ EOT
     # else
     #   セルが一つもなければ出力しない
     end
-
   end
 
 
@@ -2936,7 +2900,6 @@ EOT
 
 ##### celltype factory header
   def generate_factory_header
-
     f = AppFile.open("#{$gen}/#{@global_name}_factory.#{$h_suffix}")
     f.print("#ifndef #{@name}_FACTORY_H\n")
     f.print("#define #{@name}_FACTORY_H\n")
@@ -2944,7 +2907,6 @@ EOT
   end
 
   def generate_factory_header_post
-
     f = AppFile.open("#{$gen}/#{@global_name}_factory.#{$h_suffix}")
 
     plugin_obj = get_celltype_plugin
@@ -3105,7 +3067,6 @@ EOT
       f.print "};\n"
     }
     f.print "\n"
-
   end
 
   def gen_cell_ep_vdes(fs)
@@ -3369,7 +3330,6 @@ EOT
 
   # === CB/INIB の外で初期化される変数の出力
   def gen_cell_cb_out_init(fs)
-
     # セルがなければ、出力しない
     if @n_cell_gen == 0
       return
@@ -3492,7 +3452,6 @@ EOT
       }
       f.print "\n"
     end
-
   end
 
   def gen_cell_cb(fs)
@@ -3695,7 +3654,6 @@ EOT
   #   name_array[11] = cell_INIB_proto #INIB name for proto type
 
   def get_name_array(cell)
-
     if @singleton
       cell_CB_name = "#{@global_name}_SINGLE_CELL_CB"
       cell_CB_INIT = cell_CB_name
@@ -3972,7 +3930,6 @@ EOT
   # ただし現状では、ファイルへ出力することはない
   #
   def gen_cell_cb_init(f, cell, name_array, type, init, identifier, indent, f_get_str = false)
-
     cell_CB_name = name_array[2]
     cell_CB_INIT = name_array[3]
 
@@ -4314,7 +4271,6 @@ EOT
   end
 
   def generate_template_code
-
     return if is_all_entry_inline?
     return if @b_reuse && ! $generate_all_template
     if ! (@plugin && @plugin.gen_ep_func?)
@@ -4376,7 +4332,6 @@ EOT
   end
 
   def gen_template_attr_access(f)
-
     if @n_attribute_rw > 0 || @n_attribute_ro > 0 || @n_var > 0
       f.printf(TECSMsg.get(:CAAM_comment), "#_CAAM_#")
     end
@@ -4395,7 +4350,6 @@ EOT
 
       f.printf(" * %-16s %-16s %-16s\n", v.get_name, "#{v.get_type.get_type_str} #{v.get_type.get_type_str_post}", "VAR_#{v.get_name}")
     }
-
   end
 
   def gen_template_types(f)
@@ -4525,11 +4479,9 @@ EOT
         end
       end
     }
-
   end
 
   def gen_template_ep_fun(f, b_inline = false)
-
     if @n_entry_port >0
       f.printf(TECSMsg.get(:TEPF_comment), "#_TEPF_#")
     end
@@ -4707,7 +4659,6 @@ EOT
 ##### generate tecsgen.cfg
 
   def generate_celltype_factory_code
-
     @ct_factory_list.each { |fa|
       if fa.get_name == :write
 
@@ -4751,7 +4702,6 @@ EOT
   end
 
   def generate_cell_factory_code
-
     @ordered_cell_list.each{ |c|
 
       # cell のプロトタイプ宣言なら無視
@@ -4836,7 +4786,6 @@ EOT
         end
       }
     }
-
   end
 
   def generate_makefile
@@ -4845,7 +4794,6 @@ EOT
   end
 
   def generate_makefile_template
-
     return if $generate_no_template
 
     # Makefile.templ の生成（追記）
@@ -4868,11 +4816,9 @@ EOT
 #
 
     f.close
-
   end
 
   def generate_makefile_depend
-
     headers = [ "$(GEN_DIR)/#{@global_name}_tecsgen.#{$h_suffix}", "$(GEN_DIR)/#{@global_name}_factory.#{$h_suffix}", "$(GEN_DIR)/global_tecsgen.#{$h_suffix}" ]
 
     # inline 受け口を持つか？

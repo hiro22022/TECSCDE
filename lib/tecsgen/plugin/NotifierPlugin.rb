@@ -201,7 +201,6 @@ class NotifierPlugin < CelltypePlugin
         source_file.print "}\n\n"
 
         header_file.print "extern void #{fn_name}(intptr_t extinf);\n\n"
-
       end
 
       # 指定したJoinに対応するアダプタ関数ハンドルを取得する．

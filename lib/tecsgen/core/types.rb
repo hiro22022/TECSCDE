@@ -816,7 +816,6 @@ class StructType < Type
 
   # mikan Float 型の C_EXP 対応 (generate.rb にも変更必要)
   def check_init(locale, ident, initializer, kind, attribute = nil)
-
     st = Namespace.find_tag(@tag)
     if st == nil
       cdl_error2(locale, "T1023 struct $1: not defined", @tag)
@@ -1068,7 +1067,6 @@ class FuncType < Type
         raise "unkown direction"
       end
     }
-
   end
 
   def check  # 意味的誤りがあれば、文字列を返す

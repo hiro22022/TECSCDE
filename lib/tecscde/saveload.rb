@@ -110,7 +110,6 @@ module TECSCDE
 
     #=== TECSModel#add_cell_list_from_tecsgen
     def add_cell_list_from_tecsgen
-
       #----- set @file_editing -----#
       argv = TECSGEN.get_argv
       if argv.length > 0
@@ -454,7 +453,6 @@ module TECSCDE
           end
         end
       }
-
     end
 
 
@@ -857,7 +855,6 @@ EOT
         f.print("    }\n")
       }
       f.print("} //__location_information\n")
-
     end
 
     #=== TECSModel#get_edge_side_val

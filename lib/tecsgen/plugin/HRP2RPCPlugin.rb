@@ -101,7 +101,6 @@ class HRP2RPCPlugin < ThroughPlugin
 
   #=== plugin の宣言コード (celltype の定義) 生成
   def gen_plugin_decl_code(file)
-
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
@@ -202,7 +201,6 @@ EOT
   #
   #
   def gen_through_cell_code(file)
-
     gen_plugin_decl_code(file)
 
     # セルを探す

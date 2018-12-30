@@ -681,7 +681,6 @@ EOT
         end
       }
       @treeView.append_column(col)
-
     end
 
     #=== AttrTreeView#set_cell

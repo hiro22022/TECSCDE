@@ -97,7 +97,6 @@ class Celltype
 
   #=== 各セルに ID （整数値）を割付ける
   def set_cell_id
-
     if $verbose
       print("=== id for the cells of celltype #{get_namespace_path.to_s} ===\n")
     end
@@ -235,7 +234,6 @@ class Celltype
   end
 
   def optimize
-
     # port の参照するセルタイプの数、セルの数を求める
     if $verbose
       print "=== optimizing celltype #{get_namespace_path.to_s} ===\n"

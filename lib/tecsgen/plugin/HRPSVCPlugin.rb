@@ -127,7 +127,6 @@ class HRPSVCPlugin < ThroughPlugin
   end
 
   def gen_plugin_decl_code(file)
-
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name_body] == nil
         @@generated_celltype[@ct_name_body] = [ self ]
@@ -197,14 +196,12 @@ composite #{@ct_name} {
     composite.#{@entry_port_name} => #{@cell_name}.#{@entry_port_name};
 };
 =end
-
   end
 
   #===  through cell コードを生成
   #
   #
   def gen_through_cell_code(file)
-
     gen_plugin_decl_code(file)
 
     # セルを探す

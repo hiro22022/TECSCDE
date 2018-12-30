@@ -247,7 +247,6 @@ class Plugin < Node
   # ident:: string: 引数識別子
   # rhs:: string: 右辺文字列
   def check_plugin_arg(ident, rhs)
-
     dbgPrint "check_plugin_arg: #{ident} #{rhs.to_str}\n"
     proc = nil
     if @plugin_arg_check_proc_tab

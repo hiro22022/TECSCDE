@@ -347,7 +347,6 @@ class Expression < Node
 
   MAX_NEST_LEVEL = 64    # 簡易のループ検出（参照のネストを 64 まで許可する）
   def elements_eval_const(elements, name_list, name_list2 = nil, nest = nil)
-
     case elements[0]
     when :IDENTIFIER
       nsp = elements[1]
@@ -810,7 +809,6 @@ class Expression < Node
     else
       cdl_error("E1016 $1: elements_check_dir_for_param: sorry not supported", elements[0])
     end
-
   end
 
   # Express# get_allocator_rhs_elem

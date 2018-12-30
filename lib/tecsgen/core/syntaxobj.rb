@@ -147,7 +147,6 @@ class BDNode < Node
     @owner = nil
     @NamespacePath = nil
     @import = Import.get_current
-
   end
 
   #=== owner を設定する
@@ -228,7 +227,6 @@ class NamedList
   #=== 要素を加える
   # parse した時点で加えること(場所を記憶する)
   def add_item(item)
-
     if item
       assert_name item
       name = item.get_name
@@ -696,7 +694,6 @@ class Decl < BDNode
     end
     (indent+1).times { print "  " }
     puts "size_is: #{@size_is.to_s}, count_is: #{@count_is.to_s}, string: #{@string.to_s} referenced: #{@b_referenced} "
-
   end
 end
 
@@ -905,7 +902,6 @@ class ParamDecl < BDNode
 #    end
 
     # p self
-
   end
 
   def check_struct_tag(kind)

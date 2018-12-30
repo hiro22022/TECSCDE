@@ -52,7 +52,6 @@ module PluginModule
   # すでにロードされているものは、重複してロードしない
   # load 時の例外はこのメソッドの中でキャッチされて false が返される
   def load_plugin(plugin_name, superClass)
-
     dbgPrint "PluginModule: load_plugin: #{plugin_name}\n"
     begin
       unless @@loaded_plugin_list[plugin_name.to_sym]

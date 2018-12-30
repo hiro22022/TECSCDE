@@ -263,7 +263,6 @@ class TECSGEN
 
   #-----  initialize_global_var -----#
   def self.initialize_global_var
-
     require "optparse"
     # 2.0 require 'runit/assert.rb'
     require "kconv"
@@ -351,11 +350,9 @@ class TECSGEN
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const:
     set_kcode($KCODE_TECSGEN)  # このファイルの文字コードを設定
-
   end # initialize_global_var
 
   def self.analyze_option(additional_option_parser)
-
     ###  tecsgen コマンドオプション解析  ###
     ARGV.options {|parser|
       parser.banner = "Usage: tecsgen [options] files"
@@ -472,7 +469,6 @@ class TECSGEN
         exit 1
       }
     end
-
   end # analyze_option
 
   def self.load_modules
@@ -534,7 +530,6 @@ class TECSGEN
     if $unit_test
       exit 1
     end
-
   end # load_modules
 
   def self.setup
