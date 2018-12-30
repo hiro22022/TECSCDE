@@ -327,7 +327,7 @@ class Typedef < BDNode
 
   def self.new_decl_list(type_spec_qual_list, decl_list)
     decl_list.each { |decl|
-       Typedef.new(type_spec_qual_list, decl)
+      Typedef.new(type_spec_qual_list, decl)
     }
   end
 
@@ -616,7 +616,7 @@ class Decl < BDNode
     }
 
     if @size_is || @count_is || @string
-        @type.set_scs(@size_is, @count_is, @string, nil, false)
+      @type.set_scs(@size_is, @count_is, @string, nil, false)
     end
   end
 
@@ -786,7 +786,7 @@ class ParamDecl < BDNode
         # if ! @declarator.get_type.kind_of?( PtrType ) then
         #  cdl_error( "S2026 '$1' nullable specified for non-pointer type", @declarator.get_name )
         # else
-          @b_nullable = true
+        @b_nullable = true
         # end
       end
 
@@ -999,7 +999,7 @@ class ParamDecl < BDNode
       (indent+1).times { print "  " }
       puts "string:"
       if @string == -1
-       (indent+2).times { print "  " }
+        (indent+2).times { print "  " }
         puts "size is not specified"
       else
         @string.show_tree(indent + 2)

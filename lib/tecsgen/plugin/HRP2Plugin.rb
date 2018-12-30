@@ -73,16 +73,16 @@ class HRP2Plugin < DomainPlugin
     next_domain = next_region.get_domain_root.get_domain_type
     puts current_domain.get_option.to_s
     if !next_domain.nil?
-        puts next_domain.get_option.to_s
+      puts next_domain.get_option.to_s
     else
-        puts "next domain is nil!"
+      puts "next domain is nil!"
     end
 
     if HRP2KernelObjectPlugin.include_celltype?(join.get_cell.get_celltype)
         # 結合先がカーネルオブジェクトセル
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # 何もしないthrough
-        puts "***** #{join.get_cell.get_celltype.get_name} is kernel object"
+      puts "***** #{join.get_cell.get_celltype.get_name} is kernel object"
         return []
         # return [ :HRP2SVCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true" ]
     # elsif @end_region.is_root?
@@ -92,25 +92,25 @@ class HRP2Plugin < DomainPlugin
     #     # 結合先が無所属
     #     # 何もしないthrough
     #     # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
-        puts "***** nil"
+      puts "***** nil"
         return []
         # return [ :HRP2SVCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true" ]
     # elsif @start_region.get_param != :KERNEL_DOMAIN && @end_region.get_param == :KERNEL_DOMAIN
     elsif current_domain.get_option.to_s != "trusted" && next_domain.get_option.to_s == "trusted"
         # ユーザドメインからカーネルドメインへの結合
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
-        puts "***** svc"
+      puts "***** svc"
         return [ :HRP2SVCPlugin, "" ]
     elsif current_domain != next_domain
         # ユーザドメインから別のユーザドメインへの結合
         # @plugin_body = HRP2RPCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
-        puts "***** rpc"
+      puts "***** rpc"
         return [ :HRP2RPCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true" ]
     else
         # その他
         # 何もしないthrough
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
-        print "warning: at HRP2 Join Check"
+      print "warning: at HRP2 Join Check"
         return nil
     end
 

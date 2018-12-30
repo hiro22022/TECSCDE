@@ -341,13 +341,13 @@ EOT
 EOT
 
     if b_ret_er
-        file.print <<EOT
+      file.print <<EOT
     }else{
         return ERCD( E_RPC, E_ID );
     }
 EOT
     else
-        file.print <<EOT
+      file.print <<EOT
     }else{
         /* エラー処理コードをここに記述 */
     }
@@ -558,13 +558,13 @@ EOT
 =end
         file.print "#{name} = *((#{type.get_type_str} *)(&msg[#{@index}]));\n"
         if bit_size.nil?
-            raise "HRP2 RPC supports only specified bit_size"
+          raise "HRP2 RPC supports only specified bit_size"
         else
-            case bit_size
-            when 8, 16, 32, 64, 128
-            else
-                raise "HRP2 RPC supports only specified bit_size"
-            end
+          case bit_size
+          when 8, 16, 32, 64, 128
+          else
+            raise "HRP2 RPC supports only specified bit_size"
+          end
         end
         @index += bit_size / 8
       else
@@ -576,13 +576,13 @@ EOT
 =end
         file.print "*((#{type.get_type_str} *)(&msg[#{@index}])) = #{name};\n"
         if bit_size.nil?
-            raise "HRP2 RPC supports only specified bit_size"
+          raise "HRP2 RPC supports only specified bit_size"
         else
-            case bit_size
-            when 8, 16, 32, 64, 128
-            else
-                raise "HRP2 RPC supports only specified bit_size"
-            end
+          case bit_size
+          when 8, 16, 32, 64, 128
+          else
+            raise "HRP2 RPC supports only specified bit_size"
+          end
         end
         @index += bit_size / 8
       end

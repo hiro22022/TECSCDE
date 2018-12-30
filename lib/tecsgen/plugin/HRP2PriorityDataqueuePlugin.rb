@@ -39,26 +39,26 @@
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 class HRP2PriorityDataqueuePlugin < HRP2KernelObjectPlugin
-    @@ep = [:eSendPriorityDataqueue, :eReceivePriorityDataqueue, :eManagePriorityDataqueue, :eReferPriorityDataqueue ]
+  @@ep = [:eSendPriorityDataqueue, :eReceivePriorityDataqueue, :eManagePriorityDataqueue, :eReferPriorityDataqueue ]
     #=== HRP2PriorityDataqueuePlugin#print_cfg_cre
     # CRE_PDQの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # tab :: string:   インデント用のtab
-    def print_cfg_cre(file, cell, val, tab)
-        file.print tab
-        file.puts "CRE_PDQ(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:maxDataPriority]}, #{val[:pdqmb]}});"
-    end
+  def print_cfg_cre(file, cell, val, tab)
+    file.print tab
+      file.puts "CRE_PDQ(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:maxDataPriority]}, #{val[:pdqmb]}});"
+  end
     #=== HRP2PriorityDataqueuePlugin#print_cfg_sac
     # SAC_PDQの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # acv :: string:   アクセスベクタ
-    def print_cfg_sac(file, val, acv)
-        file.puts "SAC_PDQ(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
-    end
+  def print_cfg_sac(file, val, acv)
+    file.puts "SAC_PDQ(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
+  end
     # tPriorityDataqueueの受け口リスト
-    def get_entry_ports_name_list()
-        @@ep
-    end
+  def get_entry_ports_name_list()
+    @@ep
+  end
 end

@@ -41,36 +41,36 @@
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 #== celltype プラグインの共通の親クラス
 class HRP2AlarmHandlerPlugin < HRP2KernelObjectPlugin
-    @@ep = [:eStartAlarm, :eStopAlarm, :eManageAlarm, :eReferAlarm ]
+  @@ep = [:eStartAlarm, :eStopAlarm, :eManageAlarm, :eReferAlarm ]
     ##
     #
     # file : output file (ex.tecsgen.cfg)
     # cell :
     # val  :
     # tab  :
-    def print_cfg_cre(file, cell, val, tab)
-        val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
-        # $cbp$  #983
-        name_array = @celltype.get_name_array cell
-        cell_CBP = name_array[8]    # CBP
-        # CRE_XXXの生成
-        if (cell.get_region.get_region_type != :DOMAIN) || (cell.get_region.get_param != :KERNEL_DOMAIN)
-            # 無所属 or ユーザドメインに属する場合
-                raise "alarm handler #{val[:id]} must belong to kernel domain."
-        else
-            file.print <<EOT
+  def print_cfg_cre(file, cell, val, tab)
+    val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
+      # $cbp$  #983
+      name_array = @celltype.get_name_array cell
+      cell_CBP = name_array[8]    # CBP
+      # CRE_XXXの生成
+      if (cell.get_region.get_region_type != :DOMAIN) || (cell.get_region.get_param != :KERNEL_DOMAIN)
+          # 無所属 or ユーザドメインに属する場合
+        raise "alarm handler #{val[:id]} must belong to kernel domain."
+      else
+        file.print <<EOT
 #{tab}CRE_ALM(#{val[:id]}, { #{val[:attribute]}, #{cell_CBP}, tAlarmHandler_start });
 EOT
-        end
-    end
+      end
+  end
 
-    def print_cfg_sac(file, val, acv)
-       file.puts "SAC_ALM(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
-    end
+  def print_cfg_sac(file, val, acv)
+    file.puts "SAC_ALM(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
+  end
 
     # tAlarmの受け口リスト
-    def get_entry_ports_name_list()
-        @@ep
-    end
+  def get_entry_ports_name_list()
+    @@ep
+  end
 
 end

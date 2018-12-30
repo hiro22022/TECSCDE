@@ -41,26 +41,26 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
 class HRP2EventflagPlugin < HRP2KernelObjectPlugin
-    @@ep = [:eSetEventflag, :eWaitEventflag, :eManageEventflag, :eReferEventflag ]
+  @@ep = [:eSetEventflag, :eWaitEventflag, :eManageEventflag, :eReferEventflag ]
     #=== HRP2EventflagPlugin#print_cfg_cre
     # CRE_FLGの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # tab :: string:   インデント用のtab
-    def print_cfg_cre(file, cell, val, tab)
-        file.print tab
-        file.puts "CRE_FLG(#{val[:id]}, {#{val[:attribute]}, #{val[:flagPattern]}});"
-    end
+  def print_cfg_cre(file, cell, val, tab)
+    file.print tab
+      file.puts "CRE_FLG(#{val[:id]}, {#{val[:attribute]}, #{val[:flagPattern]}});"
+  end
     #=== HRP2EventflagPlugin#print_cfg_sac
     # SAC_FLGの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # acv :: string:   アクセスベクタ
-    def print_cfg_sac(file, val, acv)
-        file.puts "SAC_FLG(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
-    end
+  def print_cfg_sac(file, val, acv)
+    file.puts "SAC_FLG(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
+  end
     # tEventflagの受け口リスト
-    def get_entry_ports_name_list()
-        @@ep
-    end
+  def get_entry_ports_name_list()
+    @@ep
+  end
 end

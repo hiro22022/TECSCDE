@@ -40,53 +40,53 @@ require_tecsgen_lib "HRPKernelObjectPlugin.rb"
 
 
 class HRPObjectPlugin < HRPKernelObjectPlugin
-    @@api = {
-        "SEMAPHORE"=>["SEM", :id, :attribute, :initialCount, :maxCount],
-        "EVENTFLAG"=>["FLG", :id, :attribute, :flagPattern],
-        "DATAQUEUE"=>["DTQ", :id, :attribute, :dataCount, :dataqueueManagementBuffer],
-        "PRIORITY_DATAQUEUE"=>["PDQ", :id, :attribute, :dataCount, :maxDataPriority, :priorityDataqueueManagementBuffer],
-        "FIXED_SIZE_MEMORYPOOL"=>["MPF", :id, :attribute, :blockCount, :blockSize, :memoryPool, :memoryPoolManagementBuffer],
-        "KERNEL"=>["SYS"],
-        "MESSAGE_BUFFER"=>["MBF", :id, :attribute, :maxMessageSize, :bufferSize, :mbfmb],
-        "MUTEX"=>["MTX", :id, :attribute, :ceilingPriority]
-    }
+  @@api = {
+      "SEMAPHORE"=>["SEM", :id, :attribute, :initialCount, :maxCount],
+      "EVENTFLAG"=>["FLG", :id, :attribute, :flagPattern],
+      "DATAQUEUE"=>["DTQ", :id, :attribute, :dataCount, :dataqueueManagementBuffer],
+      "PRIORITY_DATAQUEUE"=>["PDQ", :id, :attribute, :dataCount, :maxDataPriority, :priorityDataqueueManagementBuffer],
+      "FIXED_SIZE_MEMORYPOOL"=>["MPF", :id, :attribute, :blockCount, :blockSize, :memoryPool, :memoryPoolManagementBuffer],
+      "KERNEL"=>["SYS"],
+      "MESSAGE_BUFFER"=>["MBF", :id, :attribute, :maxMessageSize, :bufferSize, :mbfmb],
+      "MUTEX"=>["MTX", :id, :attribute, :ceilingPriority]
+  }
 
     #=== HRPObjectPlugin#print_cfg_cre
     # CRE_XXXの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # tab :: string:   インデント用のtab
-    def print_cfg_cre(file, cell, val, tab)
-        if @@api.has_key?(@plugin_arg_str) == false
-            raise "#{@plugin_arg_str} is unknown"
-        elsif @plugin_arg_str != "KERNEL"
-            arg_list = []
-            params = @@api[@plugin_arg_str]
-            if @plugin_arg_str == "MUTEX" && ((val[:attribute] =~ /\bTA_CEILING\b/)==nil)
-              slice_end = -2   # :ceilingPriority を外す
-            else
-              slice_end = -1
-            end
-            # p @plugin_arg_str, slice_end, val[:attribute], (val[:attribute] =~ /\bTA_CEILING\b/)
-            params.slice(2..slice_end).each { |attr|
-                arg_list << "#{val[attr]}"
-            }
-            file.print tab
-            file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"
+  def print_cfg_cre(file, cell, val, tab)
+    if @@api.has_key?(@plugin_arg_str) == false
+      raise "#{@plugin_arg_str} is unknown"
+    elsif @plugin_arg_str != "KERNEL"
+      arg_list = []
+        params = @@api[@plugin_arg_str]
+        if @plugin_arg_str == "MUTEX" && ((val[:attribute] =~ /\bTA_CEILING\b/)==nil)
+          slice_end = -2   # :ceilingPriority を外す
+        else
+          slice_end = -1
         end
+        # p @plugin_arg_str, slice_end, val[:attribute], (val[:attribute] =~ /\bTA_CEILING\b/)
+        params.slice(2..slice_end).each { |attr|
+          arg_list << "#{val[attr]}"
+        }
+        file.print tab
+        file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"
     end
+  end
     #=== HRPObjectPlugin#print_cfg_sac
     # SAC_XXXの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # acv :: string:   アクセスベクタ
-    def print_cfg_sac(file, val, acv)
-        if @@api.has_key?(@plugin_arg_str) == false
-            raise "#{@plugin_arg_str} is unknown"
-        elsif @plugin_arg_str != "KERNEL"
-            file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
-        else
-            file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}({ #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
-        end
+  def print_cfg_sac(file, val, acv)
+    if @@api.has_key?(@plugin_arg_str) == false
+      raise "#{@plugin_arg_str} is unknown"
+    elsif @plugin_arg_str != "KERNEL"
+      file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
+    else
+      file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}({ #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
     end
+  end
 end

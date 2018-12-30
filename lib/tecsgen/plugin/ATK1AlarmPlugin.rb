@@ -74,7 +74,7 @@ class ATK1AlarmPlugin < CelltypePlugin
 #  end
 
   def gen_factory(file)
-  file2 = CFile.open("#{$gen}/ALARM_tecsgen.oil", "w")
+    file2 = CFile.open("#{$gen}/ALARM_tecsgen.oil", "w")
 
     # ALARM
     @celltype.get_cell_list.each { |cell|
@@ -139,7 +139,7 @@ class ATK1AlarmPlugin < CelltypePlugin
         file2.print "\t\tAUTOSTART = TRUE {\n"
         join2 = cell.get_join_list.get_item(:alarmTime)
         if join2
-        str = join2.get_rhs.to_s
+          str = join2.get_rhs.to_s
         file2.print "\t\t\tALARMTIME = #{str};\n"
         end
         join2 = cell.get_join_list.get_item(:cycleTime)

@@ -54,32 +54,32 @@ class SVCManage
     #  @@func_ids: 拡張サービスコールの関数名と拡張サービスコールIDを
     #  　　　対応づけるハッシュ
     #
-    @@id = 0
-    @@func_ids = {}
-    def initialize()
-        #
-      #  本クラスはインスタンスを持たない仮想的なクラスである
-        #
-        raise "class #{self.class.name} shall not have instances"
-    end
-    def self.get_func_id(func_name)
-        return @@func_ids[func_name]
-    end
-    def self.set_func_id(func_name)
-        @@func_ids[func_name] = self.assign_id
-        # puts @@func_ids[ func_name ]
-    end
-    def self.get_id
-        return @@id
-    end
-    def self.set_id(id)
-        @@id = id
-    end
-    def self.assign_id
-        assignedId = @@id
-        @@id += 1
-        return assignedId
-    end
+  @@id = 0
+  @@func_ids = {}
+  def initialize()
+      #
+    #  本クラスはインスタンスを持たない仮想的なクラスである
+      #
+    raise "class #{self.class.name} shall not have instances"
+  end
+  def self.get_func_id(func_name)
+    return @@func_ids[func_name]
+  end
+  def self.set_func_id(func_name)
+    @@func_ids[func_name] = self.assign_id
+      # puts @@func_ids[ func_name ]
+  end
+  def self.get_id
+    return @@id
+  end
+  def self.set_id(id)
+    @@id = id
+  end
+  def self.assign_id
+    assignedId = @@id
+      @@id += 1
+      return assignedId
+  end
 end
 
 #
@@ -129,7 +129,7 @@ class HRPSVCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name_body] == nil
-        @@generated_celltype[@ct_name_body] = [ self ]
+      @@generated_celltype[@ct_name_body] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
         file2.print <<EOT
 /* HRPSVC0001 */
@@ -149,7 +149,7 @@ EOT
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name] == nil
-        @@generated_celltype[@ct_name] = [ self ]
+      @@generated_celltype[@ct_name] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         file2.print <<EOT
 /* HRPSVC0002 */
@@ -295,18 +295,18 @@ EOT
         #   return retval;
         # }
 
-        if ! func_type.get_type.kind_of?(VoidType)
-            file.print("  #{func_type.get_type_str}  retval;\n")
-        end
+    if ! func_type.get_type.kind_of?(VoidType)
+      file.print("  #{func_type.get_type_str}  retval;\n")
+    end
 
         # p "celltype_name, sig_name, func_name, func_global_name"
         # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
         delim = ""
         if ! func_type.get_type.kind_of?(VoidType)
-            file.print("  retval = (#{func_type.get_type_str})")
+          file.print("  retval = (#{func_type.get_type_str})")
         else
-            file.print("  ")
+          file.print("  ")
         end
 
         # file.print( "#{@call_port_name}_#{func_name}(" )
@@ -323,14 +323,14 @@ EOT
         i = 0
         passed_param = {}
         params.each{ |param|
-            delim = ","
+          delim = ","
             file.printf("#{delim} (intptr_t)#{param.get_name}")
             passed_param[i] = param.get_name
             i += 1
         }
 
         while(i < NUM_SVC_ARG_MAX) do
-            delim = ","
+          delim = ","
             file.printf("#{delim} 0")
             passed_param[i] = "par#{i+1}"
             i += 1
@@ -339,7 +339,7 @@ EOT
         file.print(" );\n\n")
 
         if ! func_type.get_type.kind_of?(VoidType)
-            file.print("  return retval;\n")
+          file.print("  return retval;\n")
         end
 
         #
@@ -375,9 +375,9 @@ EOT
             end
 
             if func_type.get_type.kind_of?(VoidType)
-                retval_assign = ""
+              retval_assign = ""
             else
-                retval_assign = "retval = (ER_UINT)"
+              retval_assign = "retval = (ER_UINT)"
             end
 
             file2.print <<EOT
@@ -410,69 +410,69 @@ EOT
             #
             num = 0
             params.each{ |param|
-                if param.get_declarator.get_ptr_level > 0
-                    align_check_str = "!ALIGN_TYPE(#{passed_param[num]}, #{param.get_type.get_referto.get_type_str}) || "
+              if param.get_declarator.get_ptr_level > 0
+                align_check_str = "!ALIGN_TYPE(#{passed_param[num]}, #{param.get_type.get_referto.get_type_str}) || "
 
-                    if param.get_type.get_referto.kind_of?(IntType)
-                        case param.get_type.get_referto.get_bit_size
-                        when -11, -1, 8   # char, char_t, int8_t (無符号含む)
-                        #
-                        #  charデータの場合，ALIGN_TYPEは必ずTRUE
-                        #  となるので，エラーチェックを省略
-                        #  char型の@bit_sizeは-11
-                        #  tecsgen/tecslib/core/types.rbを参照
-                        #
-                          align_check_str = ""
-                        end
+                  if param.get_type.get_referto.kind_of?(IntType)
+                    case param.get_type.get_referto.get_bit_size
+                    when -11, -1, 8   # char, char_t, int8_t (無符号含む)
+                    #
+                    #  charデータの場合，ALIGN_TYPEは必ずTRUE
+                    #  となるので，エラーチェックを省略
+                    #  char型の@bit_sizeは-11
+                    #  tecsgen/tecslib/core/types.rbを参照
+                    #
+                      align_check_str = ""
                     end
-                    if param.get_direction == :IN
-                        #
-                        #  入力([in])のポインタパラメータは，呼出し元タスクに
-                        #  TPM_READ(読出し可能)のアクセス権が必要
-                        #
-                        # 二重ポインタが不可のため、size_is と string が同時に設定されることはない
-                        prb_func = "prb_mem"
-                        if param.get_size
-                          size_str = param.get_size.to_s
-                        elsif param.get_string == -1
-                          size_str = "SIZE_MAX"
-                          prb_func = "prb_str"
-                        elsif param.get_string
-                          size_str = param.get_string.to_s
-                          prb_func = "prb_str"
-                        else
-                          size_str = "1"
-                        end
-                        check_code.concat <<EOT
+                  end
+                  if param.get_direction == :IN
+                      #
+                      #  入力([in])のポインタパラメータは，呼出し元タスクに
+                      #  TPM_READ(読出し可能)のアクセス権が必要
+                      #
+                      # 二重ポインタが不可のため、size_is と string が同時に設定されることはない
+                    prb_func = "prb_mem"
+                      if param.get_size
+                        size_str = param.get_size.to_s
+                      elsif param.get_string == -1
+                        size_str = "SIZE_MAX"
+                        prb_func = "prb_str"
+                      elsif param.get_string
+                        size_str = param.get_string.to_s
+                        prb_func = "prb_str"
+                      else
+                        size_str = "1"
+                      end
+                      check_code.concat <<EOT
         /* HRPSVC0007 */
         if (#{align_check_str}#{prb_func}((void *)#{passed_param[num]}, sizeof(#{param.get_type.get_referto.get_type_str}) * (#{size_str}), TSK_SELF, TPM_READ) != E_OK) {
             return E_MACV;
         }
 EOT
 
-                    elsif param.get_direction == :OUT || param.get_direction == :INOUT
-                        #
-                        #  出力([out])のポインタパラメータは，呼出し元タスクに
-                        #  TPM_WRITE(書込み可能)のアクセス権が必要
-                        #
-                        prb_func = "prb_mem"
-                        if param.get_size
-                          size_str = param.get_size.to_s
-                        elsif param.get_string          # 引数なしの string はない
-                          size_str = param.get_string.to_s
-                          # prb_func = "prb_str"             # out, inout の場合、必ず領域を確保する. prb_mem を用いる
-                        else
-                          size_str = "1"
-                        end
-                        check_code.concat <<EOT
+                  elsif param.get_direction == :OUT || param.get_direction == :INOUT
+                      #
+                      #  出力([out])のポインタパラメータは，呼出し元タスクに
+                      #  TPM_WRITE(書込み可能)のアクセス権が必要
+                      #
+                    prb_func = "prb_mem"
+                      if param.get_size
+                        size_str = param.get_size.to_s
+                      elsif param.get_string          # 引数なしの string はない
+                        size_str = param.get_string.to_s
+                        # prb_func = "prb_str"             # out, inout の場合、必ず領域を確保する. prb_mem を用いる
+                      else
+                        size_str = "1"
+                      end
+                      check_code.concat <<EOT
         /* HRPSVC0008 */
         if (#{align_check_str}#{prb_func}((void *)#{passed_param[num]}, sizeof(#{param.get_type.get_referto.get_type_str}) * (#{size_str}), TSK_SELF, TPM_WRITE) != E_OK) {
             return E_MACV;
         }
 EOT
 
-                    end
-                end
+                  end
+              end
                 num += 1
             }
 
@@ -481,7 +481,7 @@ EOT
             #  すべてのユーザドメインからの呼出しに対し，E_OACVを返す
             #
             if user_cannot_callable
-                check_code = "\t\treturn E_OACV;"
+              check_code = "\t\treturn E_OACV;"
             end
 
             if check_code != ""
@@ -489,7 +489,7 @@ EOT
                 #  呼出し元がカーネルドメインの場合，アクセス権のチェック
                 #  処理をスキップさせる
                 #
-                file2.print <<eot
+              file2.print <<eot
     if (cdmid != TDOM_KERNEL) {
 #{check_code}
     }
@@ -504,7 +504,7 @@ eot
             delim = ""
             num = 0
             params.each{ |param|
-                file2.print "#{delim}"
+              file2.print "#{delim}"
                 delim = ", "
                 file2.print "(#{param.get_type.get_type_str})"
                 file2.print passed_param[num]
@@ -552,15 +552,15 @@ EOT
   end
 
   def get_callee_cell
-      return @callee_cell
+    return @callee_cell
   end
 
   def get_caller_cell
-      return @caller_cell
+    return @caller_cell
   end
 
   def get_callee_ep_name
-      return @join.get_port_name
+    return @join.get_port_name
   end
 
   private
@@ -577,7 +577,7 @@ EOT
       #
       #  エラーチェック処理
       #
-      check_code = ""
+    check_code = ""
       user_cannot_callable = false
       all_domain_callable = false
       caller_unrestricted = false
@@ -592,42 +592,42 @@ EOT
       #
       callable_domains = []
       @@generated_celltype[@ct_name_body].each { |svcplugin|
-          if svcplugin.get_caller_cell.get_region.get_domain_root.get_domain_type.get_option == "OutOfDomain"
-              if svcplugin.get_caller_cell.get_celltype.is_active?
-                  #
-                  #  無所属かつactiveなセルは、TECSから存在が認識されていないのを
-                  #  含む任意のドメインから呼び出される可能性も存在する
-                  #
-                  caller_unrestricted = true
-              else
-                  #
-                  #  無所属から接続されている場合は，すべてのセルの
-                  #  restrictをチェック
-                  #
-                  Cell.get_cell_list2.each { |cell|
-                      if cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
-                          callable_domains << cell.get_region.get_domain_root
-                      end
-                  }
-              end
-          elsif svcplugin.get_caller_cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
+        if svcplugin.get_caller_cell.get_region.get_domain_root.get_domain_type.get_option == "OutOfDomain"
+          if svcplugin.get_caller_cell.get_celltype.is_active?
               #
-              #  特定のドメインから接続されている場合は，呼出し元セルの
-              #  restrictをチェック
+              #  無所属かつactiveなセルは、TECSから存在が認識されていないのを
+              #  含む任意のドメインから呼び出される可能性も存在する
               #
-              callable_domains << svcplugin.get_caller_cell.get_region.get_domain_root
+            caller_unrestricted = true
           else
               #
-              #  無所属から結合されておらず，特定の呼出し元ドメインにアクセス権
-              #  がない場合，callable_domainsは空となる
+              #  無所属から接続されている場合は，すべてのセルの
+              #  restrictをチェック
               #
-              # pp "#{svcplugin.get_caller_cell.get_name} cannot call #{svcplugin.get_callee_cell.get_name}_#{svcplugin.get_callee_ep_name}_#{func_name}"
+            Cell.get_cell_list2.each { |cell|
+              if cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
+                callable_domains << cell.get_region.get_domain_root
+              end
+            }
           end
+        elsif svcplugin.get_caller_cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
+            #
+            #  特定のドメインから接続されている場合は，呼出し元セルの
+            #  restrictをチェック
+            #
+          callable_domains << svcplugin.get_caller_cell.get_region.get_domain_root
+        else
+            #
+            #  無所属から結合されておらず，特定の呼出し元ドメインにアクセス権
+            #  がない場合，callable_domainsは空となる
+            #
+            # pp "#{svcplugin.get_caller_cell.get_name} cannot call #{svcplugin.get_callee_cell.get_name}_#{svcplugin.get_callee_ep_name}_#{func_name}"
+        end
       }
 
       if caller_unrestricted
           # pp "caller_unrestricted: #{@ct_name_body}"
-          return {"check_code"=>"", "user_cannot_callable"=>false}
+        return {"check_code"=>"", "user_cannot_callable"=>false}
       end
 
       #
@@ -639,8 +639,8 @@ EOT
       #  カーネルドメインに対するドメインチェックは実施しない
       #
       callable_domains = callable_domains.select { |domain|
-          ((domain.get_domain_type.get_option != "OutOfDomain") && \
-           (domain.get_domain_type.get_option != "kernel"))
+        ((domain.get_domain_type.get_option != "OutOfDomain") && \
+         (domain.get_domain_type.get_option != "kernel"))
       }
       # pp "callable_domains"
       # pp callable_domains.map{|domain| domain.get_name }
@@ -649,14 +649,14 @@ EOT
       #  実施しない
       #
       all_domain_regions = DomainType.get_domain_regions[:HRP].select { |reg|
-          ((reg.get_domain_type.get_option != "OutOfDomain") && \
-           (reg.get_domain_type.get_option != "kernel"))
+        ((reg.get_domain_type.get_option != "OutOfDomain") && \
+         (reg.get_domain_type.get_option != "kernel"))
 
       }
       # pp "all domains"
       # pp all_domain_regions.map {|reg| reg.get_name}
       if all_domain_regions.all? {|reg| callable_domains.include?(reg)}
-          all_domain_callable = true
+        all_domain_callable = true
       end
 
       #
@@ -667,13 +667,13 @@ EOT
           #  ユーザドメインから呼出し不可能な場合は
           #  個別のエラーチェックはせず，問答無用でE_OACVを返す
           #
-          user_cannot_callable = true
+        user_cannot_callable = true
       elsif callable_domains.length == 1
           #
           #  呼出し可能なユーザドメインが単一の場合は
           #  cdmid != <domain名> の形式でチェックする
           #
-          check_code += "\t/* HRPSVC0012.1 */\n"
+        check_code += "\t/* HRPSVC0012.1 */\n"
           check_code += "\tif (cdmid != #{callable_domains[0].get_name}) {\n"
       elsif callable_domains.length > 1 && !all_domain_callable
           #
@@ -681,7 +681,7 @@ EOT
           #  TACP(cdmid) & (TACP(<domain名>) | ...) != 0U
           #  の形式でチェックする
           #
-          check_code += "\t/* HRPSVC0012.2 */\n"
+        check_code += "\t/* HRPSVC0012.2 */\n"
           check_code += "\tif (TACP(cdmid) & ("
           check_code += (callable_domains.map { |domain| "TACP(#{domain.get_name})"}).join("|")
           check_code += ") != 0U) {\n"
@@ -691,7 +691,7 @@ EOT
           #  呼出し可能なユーザドメインのチェックがある場合は
           #  エラーコードを返すためのコードを出力する
           #
-          check_code += <<EOS
+        check_code += <<EOS
             /* HRPSVC0013 */
             return E_OACV;
         }

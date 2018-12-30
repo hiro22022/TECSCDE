@@ -2406,7 +2406,7 @@ EOT
 
         f.print(" #{@global_name}_#{p.get_name}_#{fun.get_name}(")
         if @singleton
-           delim = ""
+          delim = ""
         else
           f.print("#{@global_name}_IDX idx")
           delim = ","
@@ -4076,7 +4076,7 @@ EOT
       }
 
       if f_get_str
-         str += "}"
+        str += "}"
       else
         f.print "    " * indent
         f.print("},\n")
@@ -4892,7 +4892,7 @@ EOT
             count_str = nil
           end
         else
-            count_str = nil
+          count_str = nil
         end
         gen_dealloc_code_for_type(f, md.get_type, dealloc_func_name, pre2, name2, post2, level, b_reset, count_str)
       }

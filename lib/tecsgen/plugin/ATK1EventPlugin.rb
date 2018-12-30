@@ -39,7 +39,7 @@
 #== ATK1 Event celltype プラグインクラス
 class ATK1EventPlugin < CelltypePlugin
 # @@instancies:: []     :セル実体群
-@@instancies = []
+  @@instancies = []
 
   #===  初期化
   #      全てのセルの実体を意味解析後に参照する必要があるために
@@ -71,7 +71,7 @@ class ATK1EventPlugin < CelltypePlugin
     @celltype.get_cell_list.each { |cell|
 
 #      if cell.is_generate?
-        join = cell.get_join_list.get_item(:mask)
+      join = cell.get_join_list.get_item(:mask)
 
         # AUTO type search and change to zero
         if join
@@ -103,13 +103,13 @@ class ATK1EventPlugin < CelltypePlugin
 
 #      if cell.is_generate?
         # bit place to mask pattern
-        file2.print "\tEVENT #{cell.get_name} {\n"
+      file2.print "\tEVENT #{cell.get_name} {\n"
         join = cell.get_join_list.get_item(:mask)
         if join
           mask_bit = join.get_rhs.to_s.to_i
           if mask_bit == 32
             while 1
-    p("mask_count, current_mask")
+              p("mask_count, current_mask")
     p mask_count
               current_mask = (1 << mask_count)
     p current_mask

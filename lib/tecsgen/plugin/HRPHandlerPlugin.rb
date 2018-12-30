@@ -42,12 +42,12 @@ require_tecsgen_lib "HRPKernelObjectPlugin.rb"
 class HRPHandlerPlugin < HRPKernelObjectPlugin
     ##
     # oyama: add to avoid Ruby exception in code generation phase.
-    def new_cell(cell)
-        domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
-        if (domainOption == "OutOfDomain") || (domainOption != "kernel")
-          cdl_error("HRP9999 HRP handler '$1' must belong to kernel domain", cell.get_name)
-        end
-    end
+  def new_cell(cell)
+    domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
+      if (domainOption == "OutOfDomain") || (domainOption != "kernel")
+        cdl_error("HRP9999 HRP handler '$1' must belong to kernel domain", cell.get_name)
+      end
+  end
 
     ##
     #
@@ -55,71 +55,71 @@ class HRPHandlerPlugin < HRPKernelObjectPlugin
     # cell :
     # val  :
     # tab  :
-    def print_cfg_cre(file, cell, val, tab)
-        if !val[:id].nil?
-            val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
-        end
-        # $cbp$の代わり
-        index = cell.get_id - @celltype.get_id_base
-        # cell_CB_name = "#{@celltype.get_global_name}_CB_tab[#{index}]"
-        name_array = cell.get_celltype.get_name_array cell
-        cell_CBP = name_array[8]
-        # CRE_XXXの生成
-        domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
-        if (domainOption == "OutOfDomain") || (domainOption != "kernel")
-            # 無所属 or ユーザドメインに属する場合
-                raise "#{@plugin_arg_str.to_s.downcase} handler #{val[:id]} must belong to kernel domain."
-        elsif @plugin_arg_str == "CONFIG_INT"
-            file.print <<EOT
+  def print_cfg_cre(file, cell, val, tab)
+    if !val[:id].nil?
+      val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
+    end
+      # $cbp$の代わり
+      index = cell.get_id - @celltype.get_id_base
+      # cell_CB_name = "#{@celltype.get_global_name}_CB_tab[#{index}]"
+      name_array = cell.get_celltype.get_name_array cell
+      cell_CBP = name_array[8]
+      # CRE_XXXの生成
+      domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
+      if (domainOption == "OutOfDomain") || (domainOption != "kernel")
+          # 無所属 or ユーザドメインに属する場合
+        raise "#{@plugin_arg_str.to_s.downcase} handler #{val[:id]} must belong to kernel domain."
+      elsif @plugin_arg_str == "CONFIG_INT"
+        file.print <<EOT
 #{tab}CFG_INT( #{val[:interruptNumber]}, { #{val[:attribute]}, #{val[:interruptPriority]} });
 EOT
-        elsif @plugin_arg_str == "ISR"
-            file.print <<EOT
+      elsif @plugin_arg_str == "ISR"
+        file.print <<EOT
 #{tab}CRE_ISR(#{val[:id]}, { #{val[:attribute]}, #{cell_CBP}, #{val[:interruptNumber]}, tISR_start, #{val[:isrPriority]} });
 EOT
-        elsif @plugin_arg_str == "DEF_INH"
-            name_array = @celltype.get_name_array cell
-            start = @celltype.subst_name("$id$_start", name_array)
-            file.print <<EOT
+      elsif @plugin_arg_str == "DEF_INH"
+        name_array = @celltype.get_name_array cell
+          start = @celltype.subst_name("$id$_start", name_array)
+          file.print <<EOT
 #{tab}DEF_INH(#{val[:interruptHandlerNumber]}, { #{val[:attribute]}, #{start} });
 EOT
-        elsif @plugin_arg_str == "DEF_EXC"
-            name_array = @celltype.get_name_array cell
-            start = @celltype.subst_name("$id$_start", name_array)
-            file.print <<EOT
+      elsif @plugin_arg_str == "DEF_EXC"
+        name_array = @celltype.get_name_array cell
+          start = @celltype.subst_name("$id$_start", name_array)
+          file.print <<EOT
 #{tab}DEF_EXC(#{val[:cpuExceptionHandlerNumber]}, { #{val[:attribute]}, #{start} });
 EOT
-        elsif @plugin_arg_str == "INIT_ROUTINE"
-            file.print <<EOT
+      elsif @plugin_arg_str == "INIT_ROUTINE"
+        file.print <<EOT
 #{tab}ATT_INI({ #{val[:attribute]}, #{cell_CBP}, tInitializeRoutine_start });
 EOT
-        elsif @plugin_arg_str == "TERM_ROUTINE"
-            file.print <<EOT
+      elsif @plugin_arg_str == "TERM_ROUTINE"
+        file.print <<EOT
 #{tab}ATT_TER({ #{val[:attribute]}, #{cell_CBP}, tTerminateRoutine_start });
 EOT
-        else
-            raise "#{@plugin_arg_str} is unknown option"
-        end
-    end
+      else
+        raise "#{@plugin_arg_str} is unknown option"
+      end
+  end
 
-    def print_cfg_sac(file, val, acv)
-        if @plugin_arg_str == "CONFIG_INT"
-            # nothing to do
-        elsif @plugin_arg_str == "ISR"
-            # kernel.cdl の tISR で accessPattern1 ～ accessPattern4 が定義されているときの名残。
-            # accessPattern1 が定義されていない場合、こここへは来ない．復活したときに備えて残しておく．
-            # file.puts "SAC_#{@plugin_arg_str}(#{val[:id]}, { #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
-            puts "*** Unsupported *** SAC_#{@plugin_arg_str}(#{val[:id]}, { #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });\n"
-        elsif @plugin_arg_str == "DEF_INH"
-            # nothing to do
-        elsif @plugin_arg_str == "DEF_EXC"
-            # nothing to do
-        elsif @plugin_arg_str == "INIT_ROUTINE"
-            # nothing to do
-        elsif @plugin_arg_str == "TERM_ROUTINE"
-            # nothing to do
-        else
-            raise "#{@plugin_arg_str} is unknown option"
-        end
+  def print_cfg_sac(file, val, acv)
+    if @plugin_arg_str == "CONFIG_INT"
+        # nothing to do
+    elsif @plugin_arg_str == "ISR"
+        # kernel.cdl の tISR で accessPattern1 ～ accessPattern4 が定義されているときの名残。
+        # accessPattern1 が定義されていない場合、こここへは来ない．復活したときに備えて残しておく．
+        # file.puts "SAC_#{@plugin_arg_str}(#{val[:id]}, { #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });"
+      puts "*** Unsupported *** SAC_#{@plugin_arg_str}(#{val[:id]}, { #{acv[:accessPattern1]}, #{acv[:accessPattern2]}, #{acv[:accessPattern3]}, #{acv[:accessPattern4]} });\n"
+    elsif @plugin_arg_str == "DEF_INH"
+        # nothing to do
+    elsif @plugin_arg_str == "DEF_EXC"
+        # nothing to do
+    elsif @plugin_arg_str == "INIT_ROUTINE"
+        # nothing to do
+    elsif @plugin_arg_str == "TERM_ROUTINE"
+        # nothing to do
+    else
+      raise "#{@plugin_arg_str} is unknown option"
     end
+  end
 end

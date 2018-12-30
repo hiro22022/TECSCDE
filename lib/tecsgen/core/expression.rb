@@ -666,9 +666,9 @@ class Expression < Node
       # return nil if( rhs == nil || mhs == nil || lhs == nil )
       return nil if ! evaluable?(rhs, mhs, lhs)
       if lhs.cast(BoolType.new).val
-          return mhs
+        return mhs
       else
-          return rhs
+        return rhs
       end
     end
     return nil
@@ -1011,10 +1011,10 @@ class C_EXP < Node
   # C_EXP の引き数文字列を返す
   # 本来 C_EXP は eval_const する対象ではないが、便宜上 eval_const で対応
   def eval_const(name_list, name_list2 = nil)
-     return self
+    return self
   end
   def eval_const2(name_list, name_list2 = nil, nest = nil)
-     return self
+    return self
   end
 
   def to_s

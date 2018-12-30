@@ -40,26 +40,26 @@
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 class HRP2SemaphorePlugin < HRP2KernelObjectPlugin
-    @@ep = [:eSignalSemaphore, :eWaitSemaphore, :eManageSemaphore, :eReferSemaphore ]
+  @@ep = [:eSignalSemaphore, :eWaitSemaphore, :eManageSemaphore, :eReferSemaphore ]
     #=== HRP2SemaphorePlugin#print_cfg_cre
     # CRE_SEMの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # tab :: string:   インデント用のtab
-    def print_cfg_cre(file, cell, val, tab)
-        file.print tab
-        file.puts "CRE_SEM(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:max]}});"
-    end
+  def print_cfg_cre(file, cell, val, tab)
+    file.print tab
+      file.puts "CRE_SEM(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:max]}});"
+  end
     #=== HRP2SemaphorePlugin#print_cfg_sac
     # SAC_SEMの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # acv :: string:   アクセスベクタ
-    def print_cfg_sac(file, val, acv)
-        file.puts "SAC_SEM(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
-    end
+  def print_cfg_sac(file, val, acv)
+    file.puts "SAC_SEM(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
+  end
     # tSemaphoreの受け口リスト
-    def get_entry_ports_name_list()
-        @@ep
-    end
+  def get_entry_ports_name_list()
+    @@ep
+  end
 end

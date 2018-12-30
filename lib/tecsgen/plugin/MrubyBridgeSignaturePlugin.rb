@@ -605,7 +605,7 @@ EOT
       instance_list.each { |celltype_name, array|
 #        array.each{ |cell|
 #          ct_name = cell.get_celltype.get_name
-          ct_name = celltype_name
+        ct_name = celltype_name
           file.print "    cInitialize[] = #{vm_name}_#{ct_name}_Initializer.eInitialize;\n"
 #        }
       }
@@ -898,7 +898,7 @@ EOT
           tType = "Int#{bit_size}"
           ttype = "int#{bit_size}"
         else
-            raise "MrubyBridgeSignaturePlugin: MrubyBridgeSignaturePlugin: cannot handle bit_size #{bit_size}"
+          raise "MrubyBridgeSignaturePlugin: MrubyBridgeSignaturePlugin: cannot handle bit_size #{bit_size}"
         end
         file.print "MEMBER_GET_SET_INT( #{tag}, #{d.get_name}, #{tType}, #{ttype} )\n"
       when FloatType, CFloatType

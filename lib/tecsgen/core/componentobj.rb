@@ -1689,9 +1689,9 @@ class Cell < NSBDNode # < Nestable
     #   dbgPrint "Cell#new_join: \"owner not fund\".#{@name}\n"
     # end
     if ! @in_composite
-     if join.get_cell
-       dbgPrint "new_join: #{@name} #{@region.get_name} => #{join.get_cell.get_name} #{join.get_cell.get_region.get_path_string}\n"
-     end
+      if join.get_cell
+        dbgPrint "new_join: #{@name} #{@region.get_name} => #{join.get_cell.get_name} #{join.get_cell.get_region.get_path_string}\n"
+      end
 #     p "region: generate? #{@region.is_generate?}"
     end
   end
@@ -1917,15 +1917,15 @@ class Cell < NSBDNode # < Nestable
           add_restrict re[0], re[1], re[2]
         }
       else
-          cdl_error("S1039 \'$1\': unknown specifier for cell", s[0])
+        cdl_error("S1039 \'$1\': unknown specifier for cell", s[0])
       end
     }
     if @b_prototype
       if b_generate
-         cdl_error("S9999 '$1': generate and prototype specified simultaneously", @name)
+        cdl_error("S9999 '$1': generate and prototype specified simultaneously", @name)
       end
       if @b_defined
-         cdl_error("S9999 '$1': prototype specified after definition", @name)
+        cdl_error("S9999 '$1': prototype specified after definition", @name)
       end
     end
   end
@@ -2835,7 +2835,7 @@ class Cell < NSBDNode # < Nestable
                   next
                 end
                 if cj2.get_port_decl.instance_of? Decl
-                   decl2 = cj2.get_port_decl
+                  decl2 = cj2.get_port_decl
                    # 内部の名前と外部の名前の対応関係を記憶
                    inner_to_export[arg_name] = decl2.get_name
                 # else cj2 は Port (既にエラー)
@@ -2859,7 +2859,7 @@ class Cell < NSBDNode # < Nestable
       end
 
       if b_init == false
-          cdl_error("S1052 attribute \'$1\' not initialized in cell \'$2\'", a.get_name, @name)
+        cdl_error("S1052 attribute \'$1\' not initialized in cell \'$2\'", a.get_name, @name)
       end
 
     }
@@ -3449,7 +3449,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 #        end
 #      }
 #      if found == false then
-        @attr_list << join
+      @attr_list << join
 #      end
     else
       # call/entry port
@@ -3462,7 +3462,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 #        end
 #      }
 #      if found == false then
-        @port_list << join
+      @port_list << join
 #      end
     end
 
@@ -4095,7 +4095,7 @@ end
   end
 
   def set_VMT_useless                     # VMT 関数テーブルを使用しない
-   @b_VMT_useless = true
+    @b_VMT_useless = true
   end
 
   def set_skelton_useless                 # スケルトン関数不要   (true の時、受け口関数を呼出す)
@@ -5129,12 +5129,12 @@ class Join < BDNode
     @name = name
     if subscript.instance_of?(Expression)
        # mikan 配列添数が整数であることを未チェック
-       @subscript = subscript.eval_const(nil)
+      @subscript = subscript.eval_const(nil)
        if @subscript == nil
          cdl_error("S1099 array subscript not constant")
        end
     else
-       @subscript = subscript
+      @subscript = subscript
     end
 
     @rhs = rhs
@@ -7225,7 +7225,7 @@ module Importable
     $base_dir.each_key{ |bd|
       $import_path.each{ |path|
 #        if path =~ /\A\// || path =~ /\A[a-zA-Z]:/
-          pt = "#{path}/#{file}"
+        pt = "#{path}/#{file}"
 #        else
 #          pt = "#{bd}/#{path}/#{file}"
 #        end
@@ -7433,7 +7433,7 @@ class Import_C < Node
   def print_defines(file)
     if ! $b_no_gcc_extension_support
 
-    file.print <<EOT
+      file.print <<EOT
 
 #ifndef TECS_NO_GCC_EXTENSION_SUPPORT
 

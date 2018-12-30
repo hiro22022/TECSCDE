@@ -217,7 +217,7 @@ class IntegerVal < BaseVal
     self
   end
   def not # !
-      BoolVal.new(self.to_b)
+    BoolVal.new(self.to_b)
   end
 
   def *(val)
@@ -390,7 +390,7 @@ class BoolVal < BaseVal
   end
 
   def not # ! val
-      BoolVal.new(! @val)
+    BoolVal.new(! @val)
   end
   def eq(val) # == val
     if val.kind_of? BoolVal

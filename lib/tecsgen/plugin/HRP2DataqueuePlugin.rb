@@ -41,26 +41,26 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
 class HRP2DataqueuePlugin < HRP2KernelObjectPlugin
-    @@ep = [:eSendDataqueue, :eReceiveDataqueue, :eManageDataqueue, :eReferDataqueue ]
+  @@ep = [:eSendDataqueue, :eReceiveDataqueue, :eManageDataqueue, :eReferDataqueue ]
     #=== HRP2DataqueuePlugin#print_cfg_cre
     # CRE_DTQの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # tab :: string:   インデント用のtab
-    def print_cfg_cre(file, cell, val, tab)
-        file.print tab
-        file.puts "CRE_DTQ(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:dtqmb]}});"
-    end
+  def print_cfg_cre(file, cell, val, tab)
+    file.print tab
+      file.puts "CRE_DTQ(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:dtqmb]}});"
+  end
     #=== HRP2DataqueuePlugin#print_cfg_sac
     # SAC_DTQの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # acv :: string:   アクセスベクタ
-    def print_cfg_sac(file, val, acv)
-        file.puts "SAC_DTQ(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
-    end
+  def print_cfg_sac(file, val, acv)
+    file.puts "SAC_DTQ(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
+  end
     # tDataqueueの受け口リスト
-    def get_entry_ports_name_list()
-        @@ep
-    end
+  def get_entry_ports_name_list()
+    @@ep
+  end
 end

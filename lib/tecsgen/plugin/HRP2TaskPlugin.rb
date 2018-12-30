@@ -42,7 +42,7 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 class HRP2TaskPlugin < HRP2KernelObjectPlugin
     # @@ep = [:eActivateTask, :eControlTask, :eManageTask, :eReferTask ]
     # ATT_MODを生成済みかどうか
-    @@generate_memory_module = false
+  @@generate_memory_module = false
 
     ##
     #
@@ -50,60 +50,60 @@ class HRP2TaskPlugin < HRP2KernelObjectPlugin
     # cell :
     # val  :
     # tab  :
-    def print_cfg_cre(file, cell, val, tab)
-        # val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_global_name.to_s}" )
-        # val[:id] = @celltype.subst_name( val[:id], @celltype.get_name_array( cell ) )
-        # $cbp$の代わり
-        index = cell.get_id - @celltype.get_id_base
-        # cell_CB_name = "#{@celltype.get_global_name}_pCB_tab[#{index}]"
-        cell_CB_name = "#{index}"
-        # CRE_XXX/DEF_XXXの生成
-        dbgPrint "assign task plugin\n"
-        domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
-        # if cell.get_region.get_region_type == :DOMAIN
+  def print_cfg_cre(file, cell, val, tab)
+      # val[:id] = val[:id].gsub( /(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_global_name.to_s}" )
+      # val[:id] = @celltype.subst_name( val[:id], @celltype.get_name_array( cell ) )
+      # $cbp$の代わり
+    index = cell.get_id - @celltype.get_id_base
+      # cell_CB_name = "#{@celltype.get_global_name}_pCB_tab[#{index}]"
+      cell_CB_name = "#{index}"
+      # CRE_XXX/DEF_XXXの生成
+      dbgPrint "assign task plugin\n"
+      domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
+      # if cell.get_region.get_region_type == :DOMAIN
 # cell.show_tree 1
-        if domainOption != "OutOfDomain"
-            # 保護ドメインに属する場合
-            if domainOption == "trusted"
-                # カーネルドメイン
-                if val[:userStackSize] != "OMIT"
-                    raise "system task cannot have user stack."
-                end
+      if domainOption != "OutOfDomain"
+          # 保護ドメインに属する場合
+        if domainOption == "trusted"
+            # カーネルドメイン
+          if val[:userStackSize] != "OMIT"
+            raise "system task cannot have user stack."
+          end
 p "CRE_TSK 0 user=#{val[:userStackSize]} system=#{val[:systemStackSize]}"
-                file.print <<EOT
+            file.print <<EOT
 #{tab}CRE_TSK(#{val[:id]}, { #{val[:taskAttribute]}, #{cell_CB_name}, tTask_start_task, #{val[:priority]}, #{val[:systemStackSize]}, NULL });
 EOT
-            else
-                # ユーザドメイン
-                if val[:userStackSize] == "OMIT"
-                    raise "user task must have user stack."
-                end
+        else
+            # ユーザドメイン
+          if val[:userStackSize] == "OMIT"
+            raise "user task must have user stack."
+          end
 p "CRE_TSK 1"
-                if val[:systemStackSize] == "OMIT"
-                    file.print <<EOT
+            if val[:systemStackSize] == "OMIT"
+              file.print <<EOT
 #{tab}CRE_TSK(#{val[:id]}, { #{val[:taskAttribute]}, #{cell_CB_name}, tTask_start_task, #{val[:priority]}, #{val[:userStackSize]}, NULL });
 EOT
-                else
-p "CRE_TSK 2"
-                    file.print <<EOT
+            else
+              p "CRE_TSK 2"
+                file.print <<EOT
 #{tab}CRE_TSK(#{val[:id]}, { #{val[:taskAttribute]}, #{cell_CB_name}, tTask_start_task, #{val[:priority]}, #{val[:userStackSize]}, NULL, #{val[:systemStackSize]}, NULL });
 EOT
-                end
             end
-        else
-            # 無所属の場合
-            raise "task #{val[:id]} must belong to a domain."
         end
+      else
+          # 無所属の場合
+        raise "task #{val[:id]} must belong to a domain."
+      end
 
-        # 例外用のを生成
-        file.print <<EOT
+      # 例外用のを生成
+      file.print <<EOT
 #{tab}DEF_TEX(#{val[:id]}, { #{val[:exceptionAttribute]}, tTask_start_exception });
 EOT
-    end
+  end
 
-    def print_cfg_sac(file, val, acv)
-       file.puts "SAC_TSK(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
-    end
+  def print_cfg_sac(file, val, acv)
+    file.puts "SAC_TSK(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
+  end
 
 =begin
     #tTaskの受け口リスト
@@ -116,85 +116,85 @@ EOT
     #  gen_factory実行時には，すべてのセルタイププラグインを生成済みのはずなので，
     #  カーネルAPIコードのメモリ保護を省略できる．
     #
-    def gen_factory(file)
-        super
-        if @@generate_memory_module == false
-            check_celltype_list = []
+  def gen_factory(file)
+    super
+      if @@generate_memory_module == false
+        check_celltype_list = []
 
-            Cell.get_cell_list2.each { |cell|
-                # すべてのセルを走査してセルタイプをチェック
-                ct = cell.get_celltype
-                if ct.class == Celltype && check_celltype_list.include?(ct) == false
-                    # チェック済みセルタイプに登録
-                    check_celltype_list << ct
+          Cell.get_cell_list2.each { |cell|
+              # すべてのセルを走査してセルタイプをチェック
+            ct = cell.get_celltype
+              if ct.class == Celltype && check_celltype_list.include?(ct) == false
+                  # チェック済みセルタイプに登録
+                check_celltype_list << ct
 
-                    # 未チェックのセルタイプだった場合
-                    # puts "check for ATT_MOD : #{ct.classget_global_name}"
-                    puts "check for ATT_MOD : #{ct.get_global_name}"
+                  # 未チェックのセルタイプだった場合
+                  # puts "check for ATT_MOD : #{ct.classget_global_name}"
+                  puts "check for ATT_MOD : #{ct.get_global_name}"
 
-                    # カーネルAPIのコード，データはメモリ保護しない
-                    next if HRP2KernelObjectPlugin.include_celltype?(ct)
+                  # カーネルAPIのコード，データはメモリ保護しない
+                  next if HRP2KernelObjectPlugin.include_celltype?(ct)
 
-                    # 必要のないセルタイプのコード，データはメモリ保護しない
-                    next if ! ct.need_generate?
+                  # 必要のないセルタイプのコード，データはメモリ保護しない
+                  next if ! ct.need_generate?
 
-                    # HRP2のドメインリージョンを取得
-                    regions = ct.get_domain_roots
-                    regions_hrp2 = regions[:HRP2]
-                    dbgPrint "HRP2 domain in #{ct.get_name}: "
-                    regions_hrp2.each { |reg|
-                        dbgPrint reg.get_name
-                    }
-                    puts ""
+                  # HRP2のドメインリージョンを取得
+                  regions = ct.get_domain_roots
+                  regions_hrp2 = regions[:HRP2]
+                  dbgPrint "HRP2 domain in #{ct.get_name}: "
+                  regions_hrp2.each { |reg|
+                    dbgPrint reg.get_name
+                  }
+                  puts ""
 
-                    # セル管理ブロックとスケルトンのメモリ保護
-                    # gen_celltype_names_domain 相当の処理
-                    if regions_hrp2.include?(Region.get_root) == false && regions_hrp2.length > 1
-                        # ドメインが複数で，OutOfDomainにセルが存在しないセルタイプの場合
-                        # 共有のセル管理ブロックとスケルトンコードを登録する
-                        file = AppFile.open("#{$gen}/tecsgen.cfg")
-                        file.print "ATT_MOD(\"#{ct.get_global_name}_tecsgen.o\");\n"
-                        file.close
-                    end
+                  # セル管理ブロックとスケルトンのメモリ保護
+                  # gen_celltype_names_domain 相当の処理
+                  if regions_hrp2.include?(Region.get_root) == false && regions_hrp2.length > 1
+                      # ドメインが複数で，OutOfDomainにセルが存在しないセルタイプの場合
+                      # 共有のセル管理ブロックとスケルトンコードを登録する
+                    file = AppFile.open("#{$gen}/tecsgen.cfg")
+                      file.print "ATT_MOD(\"#{ct.get_global_name}_tecsgen.o\");\n"
+                      file.close
+                  end
 
-                    regions_hrp2.each { |reg|
-                        if reg.is_root?
-                            nsp = ""
-                        else
-                            nsp = "_#{reg.get_namespace_path.get_global_name}"
-                        end
-                        file = AppFile.open("#{$gen}/tecsgen#{nsp}.cfg")
-                        file.print "ATT_MOD(\"#{ct.get_global_name}#{nsp}_tecsgen.o\");\n"
-                        file.close
-                    }
-
-                    # セルタイプコードがない場合はスキップ
-                    next if ct.is_all_entry_inline? && ! ct.is_active?
-
-                    # セルタイプコードのメモリ保護
-                    # gen_celltype_names_domain2 相当の処理
-                    if regions_hrp2.include?(Region.get_root) == true || regions_hrp2.length > 1
-                        # OutOfDomainにセルが存在するセルタイプの場合
-                        # または，複数のドメインにセルが存在するセルタイプの場合
-                        # セルタイプコードを共有するように登録する
-                        file = AppFile.open("#{$gen}/tecsgen.cfg")
+                  regions_hrp2.each { |reg|
+                    if reg.is_root?
+                      nsp = ""
                     else
-                        # OutOfDomainでない単一のドメインにセルが存在するセルタイプの場合
-                        # セルタイプコードを専有するように登録する
-                        file = AppFile.open("#{$gen}/tecsgen_#{regions_hrp2[0].get_namespace_path.get_global_name}.cfg")
+                      nsp = "_#{reg.get_namespace_path.get_global_name}"
                     end
+                      file = AppFile.open("#{$gen}/tecsgen#{nsp}.cfg")
+                      file.print "ATT_MOD(\"#{ct.get_global_name}#{nsp}_tecsgen.o\");\n"
+                      file.close
+                  }
 
-                    file.print "ATT_MOD(\"#{ct.get_global_name}.o\");\n"
-                    file.close
-                else
-                    # 何もしない
-                end
-            }
+                  # セルタイプコードがない場合はスキップ
+                  next if ct.is_all_entry_inline? && ! ct.is_active?
 
-            @@generate_memory_module = true
-        else
-            # 何もしない
-        end
-    end
+                  # セルタイプコードのメモリ保護
+                  # gen_celltype_names_domain2 相当の処理
+                  if regions_hrp2.include?(Region.get_root) == true || regions_hrp2.length > 1
+                      # OutOfDomainにセルが存在するセルタイプの場合
+                      # または，複数のドメインにセルが存在するセルタイプの場合
+                      # セルタイプコードを共有するように登録する
+                    file = AppFile.open("#{$gen}/tecsgen.cfg")
+                  else
+                      # OutOfDomainでない単一のドメインにセルが存在するセルタイプの場合
+                      # セルタイプコードを専有するように登録する
+                    file = AppFile.open("#{$gen}/tecsgen_#{regions_hrp2[0].get_namespace_path.get_global_name}.cfg")
+                  end
+
+                  file.print "ATT_MOD(\"#{ct.get_global_name}.o\");\n"
+                  file.close
+              else
+                  # 何もしない
+              end
+          }
+
+          @@generate_memory_module = true
+      else
+          # 何もしない
+      end
+  end
 
 end

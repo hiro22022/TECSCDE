@@ -74,7 +74,7 @@ class ATK1ResourcePlugin < CelltypePlugin
 #  end
 
   def gen_factory(file)
-  file2 = CFile.open("#{$gen}/RESOURCE_tecsgen.oil", "w")
+    file2 = CFile.open("#{$gen}/RESOURCE_tecsgen.oil", "w")
   file3 = CFile.open("#{$gen}/#{@celltype.get_name}_factory.#{$h_suffix}", "w")
 
   # RESOURCE

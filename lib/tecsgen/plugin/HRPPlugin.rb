@@ -92,7 +92,7 @@ class HRPPlugin < DomainPlugin
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # 何もしないthrough
         # puts "***** #{join.get_cell.get_celltype.get_name} is kernel object"
-        return []
+      return []
         # return [ :HRP2SVCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true" ]
     # elsif @end_region.is_root?
     # elsif next_region.get_option == OutOfDomain
@@ -102,25 +102,25 @@ class HRPPlugin < DomainPlugin
     #     # 何もしないthrough
     #     # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # puts "***** nil"
-        return []
+      return []
     # elsif @start_region.get_param != :KERNEL_DOMAIN && @end_region.get_param == :KERNEL_DOMAIN
     elsif current_domain.get_option.to_s != "kernel" && next_domain.get_option.to_s == "kernel"
         # ユーザドメインからカーネルドメインへの結合
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # puts "***** svc"
-        return [ :HRPSVCPlugin, "" ]
+      return [ :HRPSVCPlugin, "" ]
     elsif current_domain != next_domain
         # 別のユーザドメインへの結合
         # @plugin_body = HRP2RPCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # puts "***** rpc"
         # return [ :HRPRPCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true" ]
         # puts "HRPPlugin:RPC:PPAllocatorSize=256"
-        return [ :HRPRPCPlugin, "noClientSemaphore=false,PPAllocatorSize=256" ]
+      return [ :HRPRPCPlugin, "noClientSemaphore=false,PPAllocatorSize=256" ]
     else
         # その他
         # 何もしないthrough
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
-        dbgPrint "warning: at HRP Join Check"
+      dbgPrint "warning: at HRP Join Check"
         return nil
     end
 

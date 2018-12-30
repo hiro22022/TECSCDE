@@ -64,7 +64,7 @@ class ATK1KernelPlugin < CelltypePlugin
 #    elsif ! a.get_rhs.instance_of? Array
 #      Generator.error( "resource: initializer must be in format of '{val1, val2 ...}'")
 #    end
-  @@cell_list << cell
+    @@cell_list << cell
   end
 
   #===  受け口関数の本体(C言語)を生成する
@@ -267,21 +267,21 @@ EOT
   end
 
   def self.gen_post_code(file)
-  @@cell_list.each { |cell|
-    join =  cell.get_join_list.get_item(:useResourceScheduler)
-    if join
-      flag = join.get_rhs.to_s
-      if flag == "TRUE"
-        file.print <<EOT
+    @@cell_list.each { |cell|
+      join =  cell.get_join_list.get_item(:useResourceScheduler)
+      if join
+        flag = join.get_rhs.to_s
+        if flag == "TRUE"
+          file.print <<EOT
 cell tResource RES_SCHEDULER {
 	property = "STANDARD";
 };
 EOT
-      else
-        file.print <<EOT
+        else
+          file.print <<EOT
 EOT
+        end
       end
-    end
-  }
+    }
   end
 end

@@ -54,7 +54,7 @@ module HasType
   #=== HasType# @type をクローンする
   def clone_type
 #    if @b_cloned == false then
-      @type = @type.clone
+    @type = @type.clone
       @b_cloned = true
 #    end
   end

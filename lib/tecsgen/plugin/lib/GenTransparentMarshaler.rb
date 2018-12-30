@@ -315,13 +315,13 @@ EOT
 EOT
 
     if b_ret_er
-        file.print <<EOT
+      file.print <<EOT
     }else{
         return ERCD( E_RPC, E_ID );
     }
 EOT
     else
-        file.print <<EOT
+      file.print <<EOT
     }else{
         /* エラー処理コードをここに記述 */
     }

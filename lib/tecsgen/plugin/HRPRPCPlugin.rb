@@ -70,9 +70,9 @@ class HRPRPCPlugin < ThroughPlugin
     @rpc_channel_celltype_file_name = "#{$gen}/#{@rpc_channel_celltype_name}.cdl"
 
     if @signature.get_context == "non-task"
-        cdl_error("HRP9999 RPC cannot be applied to non-task context signature '$1'", @signature.get_name)
+      cdl_error("HRP9999 RPC cannot be applied to non-task context signature '$1'", @signature.get_name)
     elsif @signature.get_context == "any"
-        cdl_info("HRP9999 RPC is applied to any context signature '$1'", @signature.get_name)
+      cdl_info("HRP9999 RPC is applied to any context signature '$1'", @signature.get_name)
     end
 
     if @signature.need_PPAllocator?(true)

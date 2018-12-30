@@ -820,17 +820,17 @@ EOT
     end
 
     def change_cell_name(name)
-     if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
-       @hilite_objs[0].change_name name.to_sym
-       @hilite_objs[0].get_model.set_undo_point
-     end
+      if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
+        @hilite_objs[0].change_name name.to_sym
+        @hilite_objs[0].get_model.set_undo_point
+      end
     end
 
     def cell_plugin_dialog
-     if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
-       dialog = CellPluginDialog.new @hilite_objs[0]
-       dialog.run
-     end
+      if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
+        dialog = CellPluginDialog.new @hilite_objs[0]
+        dialog.run
+      end
     end
 
     def update_attrTreeView

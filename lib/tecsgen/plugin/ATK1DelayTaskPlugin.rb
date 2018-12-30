@@ -92,7 +92,7 @@ class ATK1DelayTaskPlugin < CelltypePlugin
         if join
           str = join.get_rhs.to_s
           if str =~ /&(.*)/
-              str = $1
+            str = $1
           end
 
           file2.print "DeclareEvent( #{str} );\n"

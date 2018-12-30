@@ -41,71 +41,71 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 class HRP2PostHook
     # @celltype:: Celltype
-    def initialize(celltype)
-        puts "new post hook #{celltype.get_name}"
-        @celltype = celltype
-    end
+  def initialize(celltype)
+    puts "new post hook #{celltype.get_name}"
+      @celltype = celltype
+  end
 
-    def generate
-        # カーネルオブジェクトのセルタイプはメモリ保護しない
+  def generate
+      # カーネルオブジェクトのセルタイプはメモリ保護しない
 #=begin
-        # TODO: テストのために無効化
-        if HRP2KernelObjectPlugin.include_celltype?(@celltype)
-            puts "nothing is generated for kernel object component"
-            return
-        end
+      # TODO: テストのために無効化
+    if HRP2KernelObjectPlugin.include_celltype?(@celltype)
+      puts "nothing is generated for kernel object component"
+        return
+    end
 #=end
 
-        rlist = @celltype.get_region_list
-        if @celltype.is_singleton?
-            # singletonの場合
-            puts "<singleton>"
+      rlist = @celltype.get_region_list
+      if @celltype.is_singleton?
+          # singletonの場合
+        puts "<singleton>"
 
-            if rlist.length == 0
-                file = AppFile.open("#{$gen}/tecsgen.cfg")
-            else
-                file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param.to_s}.cfg")
-            end
-            # セル管理ブロックとスケルトンのメモリ保護
-            file.print "ATT_MOD(\"#{@celltype.get_global_name}_tecsgen.o\");\n"
-            if !@celltype.is_all_entry_inline?
-                # セルタイプコードのメモリ保護
-                file.print "ATT_MOD(\"#{@celltype.get_global_name}.o\");\n"
-            end
+          if rlist.length == 0
+            file = AppFile.open("#{$gen}/tecsgen.cfg")
+          else
+            file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param.to_s}.cfg")
+          end
+          # セル管理ブロックとスケルトンのメモリ保護
+          file.print "ATT_MOD(\"#{@celltype.get_global_name}_tecsgen.o\");\n"
+          if !@celltype.is_all_entry_inline?
+              # セルタイプコードのメモリ保護
+            file.print "ATT_MOD(\"#{@celltype.get_global_name}.o\");\n"
+          end
 
-            file.close
+          file.close
 
-        else
-            # singletonでない場合
-            puts "<non-singleton>"
+      else
+          # singletonでない場合
+        puts "<non-singleton>"
 
-            # スケルトンとセルタイプコードの保護
-            if (rlist.length == 1) &&
-                (@celltype.get_n_cell_gen == @celltype.get_n_cell_gen_r(rlist[0]))
-                # 所属する保護ドメインが1つの場合
-                puts "<private celltype>"
-                file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param.to_s}.cfg")
-            else
-                # 無所属 or 所属する保護ドメインが複数の場合
-                puts "<shared celltype>"
-                file = AppFile.open("#{$gen}/tecsgen.cfg")
-            end
+          # スケルトンとセルタイプコードの保護
+          if (rlist.length == 1) &&
+              (@celltype.get_n_cell_gen == @celltype.get_n_cell_gen_r(rlist[0]))
+              # 所属する保護ドメインが1つの場合
+            puts "<private celltype>"
+              file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param.to_s}.cfg")
+          else
+              # 無所属 or 所属する保護ドメインが複数の場合
+            puts "<shared celltype>"
+              file = AppFile.open("#{$gen}/tecsgen.cfg")
+          end
 
-            # スケルトンのメモリ保護
-            file.print "ATT_MOD(\"#{@celltype.get_global_name}_tecsgen.o\");\n"
-            if !@celltype.is_all_entry_inline?
-                # セルタイプコードのメモリ保護
-                file.print "ATT_MOD(\"#{@celltype.get_global_name}.o\");\n"
-            end
-            file.close
+          # スケルトンのメモリ保護
+          file.print "ATT_MOD(\"#{@celltype.get_global_name}_tecsgen.o\");\n"
+          if !@celltype.is_all_entry_inline?
+              # セルタイプコードのメモリ保護
+            file.print "ATT_MOD(\"#{@celltype.get_global_name}.o\");\n"
+          end
+          file.close
 
-            # セル管理ブロックの保護
-            rlist.each { |reg|
-                file = AppFile.open("#{$gen}/tecsgen_#{reg.get_param.to_s}.cfg")
-                file.print "ATT_MOD(\"#{@celltype.get_global_name}_#{reg.get_name.to_s}_tecsgen.o\");\n"
-                file.close
-            }
+          # セル管理ブロックの保護
+          rlist.each { |reg|
+            file = AppFile.open("#{$gen}/tecsgen_#{reg.get_param.to_s}.cfg")
+              file.print "ATT_MOD(\"#{@celltype.get_global_name}_#{reg.get_name.to_s}_tecsgen.o\");\n"
+              file.close
+          }
 
-        end
-    end
+      end
+  end
 end

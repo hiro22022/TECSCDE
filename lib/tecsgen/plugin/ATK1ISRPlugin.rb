@@ -74,7 +74,7 @@ class ATK1ISRPlugin < CelltypePlugin
 #  end
 
   def gen_factory(file)
-  file2 = CFile.open("#{$gen}/ISR_tecsgen.oil", "w")
+    file2 = CFile.open("#{$gen}/ISR_tecsgen.oil", "w")
 
     # ISR
     @celltype.get_cell_list.each { |cell|

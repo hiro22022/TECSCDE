@@ -59,13 +59,13 @@ class HRPKernelObjectManager
     :tMessageBuffer, \
   ]
 
-    def initialize()
-        #
-        #  本クラスはインスタンスを持たない仮想的なクラスである
-        #
-        raise "class #{self.class.name} shall not have instances"
-    end
-    def self.include_celltype?(str)
-        return @@kernel_objs.include?(str)
-    end
+  def initialize()
+      #
+      #  本クラスはインスタンスを持たない仮想的なクラスである
+      #
+    raise "class #{self.class.name} shall not have instances"
+  end
+  def self.include_celltype?(str)
+    return @@kernel_objs.include?(str)
+  end
 end

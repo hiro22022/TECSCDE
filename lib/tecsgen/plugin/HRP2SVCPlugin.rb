@@ -47,28 +47,28 @@
 class SVCManage
     # TODO: デフォルトの拡張サービスコール分を予約しておく
     # デフォルトの拡張サービスコール（syslogなど）もコンポーネント化するまで
-    @@id = 20
-    @@func_ids = {}
-    def self.get_func_id(func_name)
-        return @@func_ids[func_name]
-    end
-    def self.set_func_id(func_name)
-        @@func_ids[func_name] = self.assign_id
-        puts @@func_ids[func_name]
-    end
-    def self.include_func_id?(func_name)
-        return @@func_ids.has_key?(func_name)
-    end
-    def self.get_id
-        return @@id
-    end
-    def self.set_id(id)
-        @@id = id
-    end
-    def self.assign_id
-        @@id += 1
-        return @@id
-    end
+  @@id = 20
+  @@func_ids = {}
+  def self.get_func_id(func_name)
+    return @@func_ids[func_name]
+  end
+  def self.set_func_id(func_name)
+    @@func_ids[func_name] = self.assign_id
+      puts @@func_ids[func_name]
+  end
+  def self.include_func_id?(func_name)
+    return @@func_ids.has_key?(func_name)
+  end
+  def self.get_id
+    return @@id
+  end
+  def self.set_id(id)
+    @@id = id
+  end
+  def self.assign_id
+    @@id += 1
+      return @@id
+  end
 end
 
 #
@@ -103,28 +103,28 @@ class HRP2SVCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
-    if @@generated_celltype[@ct_name_body] == nil
+      if @@generated_celltype[@ct_name_body] == nil
         @@generated_celltype[@ct_name_body] = [ self ]
-        file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
-        file2.print <<EOT
+          file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
+          file2.print <<EOT
 [active]
 celltype #{@ct_name_body} {
     call #{@signature.get_name} #{@call_port_name};
 };
 EOT
-        file2.close
-    else
-      @@generated_celltype[@ct_name_body] << self
-    end
+          file2.close
+      else
+        @@generated_celltype[@ct_name_body] << self
+      end
     file.print "import( \"#{$gen}/#{@ct_name_body}.cdl\" );\n"
     end
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name] == nil
-        @@generated_celltype[@ct_name] = [ self ]
+      @@generated_celltype[@ct_name] = [ self ]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
-        file2.print <<EOT
+          file2.print <<EOT
 celltype #{@ct_name} {
     entry #{@signature.get_name} #{@entry_port_name};
 };
@@ -132,7 +132,7 @@ EOT
         else
             # TODO inlineにした方が効率がよいが，tecsgenの生成したヘッダファイルの
             # 読込順のためにエラーとなる
-        file2.print <<EOT
+          file2.print <<EOT
 celltype #{@ct_name} {
     //[inline] entry #{@signature.get_name} #{@entry_port_name};
     entry #{@signature.get_name} #{@entry_port_name};
@@ -195,7 +195,7 @@ composite #{@ct_name} {
 
     ##### クライアント側のセルの生成 #####
     # file.print "[domain(HRP2, \"trusted\")]"
-    nest = @start_region.gen_region_str_pre file
+      nest = @start_region.gen_region_str_pre file
     nest_str = "  " * nest
 
     # クライアント側チャンネルの生成
@@ -240,7 +240,7 @@ EOT
     else
 
     ##### クライアント側のセルの生成 #####
-    nest = @start_region.gen_region_str_pre file
+      nest = @start_region.gen_region_str_pre file
     nest_str = "  " * nest
     if @next_cell_port_subscript
       subscript = "[" + @next_cell_port_subscript.to_s + "]"
@@ -277,17 +277,17 @@ EOT
   # func_global_name:: string
   # func_type::      class derived from Type
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-      puts "generate ep_func for #{ct_name}"
+    puts "generate ep_func for #{ct_name}"
 
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
         # 拡張サービスコール呼出し
-        if ! func_type.get_type.kind_of?(VoidType)
-            file.print("  #{func_type.get_type_str}  retval;\n")
-        end
+      if ! func_type.get_type.kind_of?(VoidType)
+        file.print("  #{func_type.get_type_str}  retval;\n")
+      end
 
         if ! b_singleton
 
-            file.print <<EOT
+          file.print <<EOT
   #{ct_name}_CB    *p_cellcb;
   if( VALID_IDX( idx ) ){
     p_cellcb = #{global_ct_name}_GET_CELLCB(idx);
@@ -303,16 +303,16 @@ EOT
 
         delim = ""
         if ! func_type.get_type.kind_of?(VoidType)
-            file.print("  retval = (#{func_type.get_type_str})")
+          file.print("  retval = (#{func_type.get_type_str})")
         else
-            file.print("  ")
+          file.print("  ")
         end
 
         # file.print( "#{@call_port_name}_#{func_name}(" )
         # svcid = SVCManage.assign_id
         new_func = false
         if SVCManage.include_func_id?("#{@ct_name_body}_#{func_name}") == false
-            new_func = true
+          new_func = true
             SVCManage.set_func_id("#{@ct_name_body}_#{func_name}")
         end
         svcid = SVCManage.get_func_id("#{@ct_name_body}_#{func_name}")
@@ -326,13 +326,13 @@ EOT
 
         i = 0
         params.each{ |param|
-            delim = ","
+          delim = ","
             file.printf("#{delim} #{param.get_name}")
             i += 1
         }
 
         while(i < 5) do
-            delim = ","
+          delim = ","
             file.printf("#{delim} 0")
             i += 1
         end
@@ -340,12 +340,12 @@ EOT
         file.print(" );\n")
 
         if ! func_type.get_type.kind_of?(VoidType)
-            file.print("  return retval;\n")
+          file.print("  return retval;\n")
         end
 
         # 拡張サービスコール本体
         if new_func
-            file2 = AppFile.open("#{$gen}/#{@ct_name_body}.c")
+          file2 = AppFile.open("#{$gen}/#{@ct_name_body}.c")
 
 #             if @@generated_celltype_header[ @ct_name_body ].nil?
 #                 @@generated_celltype_header[ @ct_name_body ] = true
@@ -373,10 +373,10 @@ EOT
 #             end
 
             if func_type.get_type.kind_of?(VoidType)
-                retval_assign = ""
+              retval_assign = ""
                 retval_return = ""
             else
-                retval_assign = "retval = (ER_UINT)"
+              retval_assign = "retval = (ER_UINT)"
                 retval_return = "retval"
             end
 
@@ -401,23 +401,23 @@ EOT
 
             num = 1
             params.each{ |param|
-                if param.get_declarator.get_ptr_level > 0
-                    if param.get_direction == :IN
-                        file2.print <<EOT
+              if param.get_declarator.get_ptr_level > 0
+                if param.get_direction == :IN
+                  file2.print <<EOT
     if(prb_mem((void *)par#{num.to_s}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_READ) != E_OK){
         return E_MACV;
     }
 EOT
 
-                    elsif param.get_direction == :OUT
-                        file2.print <<EOT
+                elsif param.get_direction == :OUT
+                  file2.print <<EOT
     if(prb_mem((void *)par#{num.to_s}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_WRITE) != E_OK){
         return E_MACV;
     }
 EOT
 
-                    end
                 end
+              end
                 num += 1
             }
 
@@ -426,7 +426,7 @@ EOT
             delim = ""
             num = 1
             params.each{ |param|
-                file2.print "#{delim}"
+              file2.print "#{delim}"
                 delim = ", "
                 file2.print "(#{param.get_type.get_type_str})"
                 file2.print "par" + num.to_s
@@ -437,7 +437,7 @@ EOT
             file2.print ");\n"
 
             if !func_type.get_type.kind_of?(VoidType)
-                file2.print "\n    return #{retval_return};\n"
+              file2.print "\n    return #{retval_return};\n"
             end
             file2.print "}\n\n"
 
@@ -462,7 +462,7 @@ EOT
         end
     else
         # カーネルドメインのセルは特別なことは何もせず，普通に呼び出す
-        super
+      super
     end
   end
 end

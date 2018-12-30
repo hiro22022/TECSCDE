@@ -626,10 +626,10 @@ module TECSCDE
         y_inc_b = y + h - (@y + @height)
 
         @cports.each{ |name, cport|
-            cport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
+          cport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         }
         @eports.each{ |name, eport|
-            eport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
+          eport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         }
 
         w_min, h_min = get_min_wh
@@ -761,11 +761,11 @@ module TECSCDE
 
       #=== TmCell#get_right_angle_edges_position
       def get_right_angle_edges_position(edge_side)
-       if TECSModel.is_vertical?(edge_side)
+        if TECSModel.is_vertical?(edge_side)
           [@y, @y+@height]
-       else
+        else
           [@x, @x+@width]
-        end
+         end
       end
 
       #=== TmCell#inc_n_cport

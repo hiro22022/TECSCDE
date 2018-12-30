@@ -41,26 +41,26 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
 class HRP2FixedSizeMemoryPoolPlugin < HRP2KernelObjectPlugin
-    @@ep = [:eSendFixedSizeMemoryPool, :eReceiveFixedSizeMemoryPool, :eManageFixedSizeMemoryPool, :eReferFixedSizeMemoryPool ]
+  @@ep = [:eSendFixedSizeMemoryPool, :eReceiveFixedSizeMemoryPool, :eManageFixedSizeMemoryPool, :eReferFixedSizeMemoryPool ]
     #=== HRP2FixedSizeMemoryPoolPlugin#print_cfg_cre
     # CRE_MPFの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # tab :: string:   インデント用のtab
-    def print_cfg_cre(file, cell, val, tab)
-        file.print tab
-        file.puts "CRE_MPF(#{val[:id]}, {#{val[:attribute]}, #{val[:blockCount]}, #{val[:blockSize]}, #{val[:mpf]}, #{val[:mpfmb]}});"
-    end
+  def print_cfg_cre(file, cell, val, tab)
+    file.print tab
+      file.puts "CRE_MPF(#{val[:id]}, {#{val[:attribute]}, #{val[:blockCount]}, #{val[:blockSize]}, #{val[:mpf]}, #{val[:mpfmb]}});"
+  end
     #=== HRP2FixedSizeMemoryPoolPlugin#print_cfg_sac
     # SAC_MPFの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # acv :: string:   アクセスベクタ
-    def print_cfg_sac(file, val, acv)
-        file.puts "SAC_MPF(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
-    end
+  def print_cfg_sac(file, val, acv)
+    file.puts "SAC_MPF(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
+  end
     # tFixedSizeMemoryPoolの受け口リスト
-    def get_entry_ports_name_list()
-        @@ep
-    end
+  def get_entry_ports_name_list()
+    @@ep
+  end
 end

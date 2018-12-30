@@ -42,47 +42,47 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 class HRP2ObjectPlugin < HRP2KernelObjectPlugin
     # @@ep = [:eSignalSemaphore, :eWaitSemaphore, :eManageSemaphore, :eReferSemaphore ]
-    @@api = {
-        "SEMAPHORE"=>["SEM", :id, :attribute, :count, :max],
-        "EVENTFLAG"=>["FLG", :id, :attribute, :flagPattern],
-        "DATAQUEUE"=>["DTQ", :id, :attribute, :count, :dtqmb],
-        "PRIORITY_DATAQUEUE"=>["PDQ", :id, :attribute, :count, :maxDataPriority, :pdqmb],
-        "FIXED_SIZE_MEMORYPOOL"=>["MPF", :id, :attribute, :blockCount, :blockSize, :mpf, :mpfmb],
-        "KERNEL"=>["SYS"],
-        "MESSAGE_BUFFER"=>["MBF", :id, :attribute, :maxSize, :bufferSize, :mbfmb],
-    }
+  @@api = {
+      "SEMAPHORE"=>["SEM", :id, :attribute, :count, :max],
+      "EVENTFLAG"=>["FLG", :id, :attribute, :flagPattern],
+      "DATAQUEUE"=>["DTQ", :id, :attribute, :count, :dtqmb],
+      "PRIORITY_DATAQUEUE"=>["PDQ", :id, :attribute, :count, :maxDataPriority, :pdqmb],
+      "FIXED_SIZE_MEMORYPOOL"=>["MPF", :id, :attribute, :blockCount, :blockSize, :mpf, :mpfmb],
+      "KERNEL"=>["SYS"],
+      "MESSAGE_BUFFER"=>["MBF", :id, :attribute, :maxSize, :bufferSize, :mbfmb],
+  }
 
     #=== HRP2SemaphorePlugin#print_cfg_cre
     # CRE_SEMの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # tab :: string:   インデント用のtab
-    def print_cfg_cre(file, cell, val, tab)
-        if @@api.has_key?(@plugin_arg_str) == false
-            raise "#{@plugin_arg_str} is unknown"
-        elsif @plugin_arg_str != "KERNEL"
-            arg_list = []
-            @@api[@plugin_arg_str].slice(2..-1).each { |attr|
-                arg_list << "#{val[attr]}"
-            }
-            file.print tab
-            file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"
-        end
+  def print_cfg_cre(file, cell, val, tab)
+    if @@api.has_key?(@plugin_arg_str) == false
+      raise "#{@plugin_arg_str} is unknown"
+    elsif @plugin_arg_str != "KERNEL"
+      arg_list = []
+        @@api[@plugin_arg_str].slice(2..-1).each { |attr|
+          arg_list << "#{val[attr]}"
+        }
+        file.print tab
+        file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"
     end
+  end
     #=== HRP2SemaphorePlugin#print_cfg_sac
     # SAC_SEMの出力
     # file:: FILE:     出力先ファイル
     # val :: string:   カーネルオブジェクトの属性の解析結果
     # acv :: string:   アクセスベクタ
-    def print_cfg_sac(file, val, acv)
-        if @@api.has_key?(@plugin_arg_str) == false
-            raise "#{@plugin_arg_str} is unknown"
-        elsif @plugin_arg_str != "KERNEL"
-            file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3] }});"
-        else
-            file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}({ #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
-        end
+  def print_cfg_sac(file, val, acv)
+    if @@api.has_key?(@plugin_arg_str) == false
+      raise "#{@plugin_arg_str} is unknown"
+    elsif @plugin_arg_str != "KERNEL"
+      file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3] }});"
+    else
+      file.puts "SAC_#{@@api[@plugin_arg_str].at(0)}({ #{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]} });"
     end
+  end
 
 =begin
     #tSemaphoreの受け口リスト
