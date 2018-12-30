@@ -143,7 +143,7 @@ module PluginModule
   # tmp_plugin_post_code.cdl への出力
   def self.gen_plugin_post_code(file)
     dbgPrint "PluginModule #{@@loaded_plugin_list}\n"
-    @@loaded_plugin_list.each{ |plugin_name,count|
+    @@loaded_plugin_list.each{ |plugin_name, count|
       if count == :MultiPlugin
         next
       end

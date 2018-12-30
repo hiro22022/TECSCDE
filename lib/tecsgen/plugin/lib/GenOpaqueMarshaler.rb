@@ -42,23 +42,23 @@ module GenOpaqueMarshaler
 
   # プラグイン引数名と Proc
   RPCPluginArgProc = {
-    "clientChannelCelltype" => Proc.new { |obj,rhs| obj.set_clientChannelCelltype rhs },
-    "serverChannelCelltype" => Proc.new { |obj,rhs| obj.set_serverChannelCelltype rhs },
-    "clientChannelCell" => Proc.new { |obj,rhs| obj.set_clientChannelCell rhs },
-    "serverChannelCell" => Proc.new { |obj,rhs| obj.set_serverChannelCell rhs },
-    "clientChannelInitializer" => Proc.new { |obj,rhs| obj.set_clientChannelInitializer rhs },
-    "serverChannelInitializer" => Proc.new { |obj,rhs| obj.set_serverChannelInitializer rhs },
-    "clientSemaphoreCelltype" => Proc.new { |obj,rhs| obj.set_clientSemaphoreCelltype rhs },
-    "clientSemaphoreInitializer" => Proc.new { |obj,rhs| obj.set_clientSemaphoreInitializer rhs },
-    "clientErrorHandler" => Proc.new { |obj,rhs| obj.set_clientErrorHandler rhs },
-    "serverErrorHandler" => Proc.new { |obj,rhs| obj.set_serverErrorHandler rhs },
-    "TDRCelltype"     => Proc.new { |obj,rhs| obj.set_TDRCelltype rhs },
-    "PPAllocatorSize" => Proc.new { |obj,rhs| obj.set_PPAllocatorSize rhs },
-    "substituteAllocator"  => Proc.new { |obj,rhs| obj.set_substituteAllocator rhs },
-    "noServerChannelOpenerCode"  => Proc.new { |obj,rhs| obj.set_noServerChannelOpenerCode rhs },
-    "taskCelltype"    => Proc.new { |obj,rhs| obj.set_taskCelltype rhs },
-    "taskPriority"    => Proc.new { |obj,rhs| obj.set_taskPriority rhs },
-    "stackSize"      => Proc.new { |obj,rhs| obj.set_stackSize rhs },
+    "clientChannelCelltype" => Proc.new { |obj, rhs| obj.set_clientChannelCelltype rhs },
+    "serverChannelCelltype" => Proc.new { |obj, rhs| obj.set_serverChannelCelltype rhs },
+    "clientChannelCell" => Proc.new { |obj, rhs| obj.set_clientChannelCell rhs },
+    "serverChannelCell" => Proc.new { |obj, rhs| obj.set_serverChannelCell rhs },
+    "clientChannelInitializer" => Proc.new { |obj, rhs| obj.set_clientChannelInitializer rhs },
+    "serverChannelInitializer" => Proc.new { |obj, rhs| obj.set_serverChannelInitializer rhs },
+    "clientSemaphoreCelltype" => Proc.new { |obj, rhs| obj.set_clientSemaphoreCelltype rhs },
+    "clientSemaphoreInitializer" => Proc.new { |obj, rhs| obj.set_clientSemaphoreInitializer rhs },
+    "clientErrorHandler" => Proc.new { |obj, rhs| obj.set_clientErrorHandler rhs },
+    "serverErrorHandler" => Proc.new { |obj, rhs| obj.set_serverErrorHandler rhs },
+    "TDRCelltype"     => Proc.new { |obj, rhs| obj.set_TDRCelltype rhs },
+    "PPAllocatorSize" => Proc.new { |obj, rhs| obj.set_PPAllocatorSize rhs },
+    "substituteAllocator"  => Proc.new { |obj, rhs| obj.set_substituteAllocator rhs },
+    "noServerChannelOpenerCode"  => Proc.new { |obj, rhs| obj.set_noServerChannelOpenerCode rhs },
+    "taskCelltype"    => Proc.new { |obj, rhs| obj.set_taskCelltype rhs },
+    "taskPriority"    => Proc.new { |obj, rhs| obj.set_taskPriority rhs },
+    "stackSize"      => Proc.new { |obj, rhs| obj.set_stackSize rhs },
   }
 
   ##### プラグイン引数チェック関数
@@ -165,7 +165,7 @@ module GenOpaqueMarshaler
     # str::String : 破壊される（マッチした残りになる）。str.empty? で空になったことをチェックできる
     # regexp::Regexp : 期待するトークンにマッチする正規表現。 "\A" 出始める
     # expected::String: 期待するトークン、regexp が出現しなかった場合にエラーメッセージとして表示
-    def optparse (str,regexp,expected)
+    def optparse (str, regexp, expected)
       str.strip!
       token = nil
       res = str.sub!(regexp){ |matched|  token = matched;  "" }

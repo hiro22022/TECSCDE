@@ -45,11 +45,11 @@ module GenTransparentMarshaler
 
   # プラグイン引数名と Proc
   RPCPluginArgProc = {
-    "taskPriority"    => Proc.new { |obj,rhs| obj.set_taskPriority rhs },
-    "channelCelltype" => Proc.new { |obj,rhs| obj.set_channelCelltype rhs },
-    "TDRCelltype"     => Proc.new { |obj,rhs| obj.set_TDRCelltype rhs },
-    "channelCell"     => Proc.new { |obj,rhs| obj.set_channelCellName rhs },
-    "PPAllocatorSize" => Proc.new { |obj,rhs| obj.set_PPAllocatorSize rhs },
+    "taskPriority"    => Proc.new { |obj, rhs| obj.set_taskPriority rhs },
+    "channelCelltype" => Proc.new { |obj, rhs| obj.set_channelCelltype rhs },
+    "TDRCelltype"     => Proc.new { |obj, rhs| obj.set_TDRCelltype rhs },
+    "channelCell"     => Proc.new { |obj, rhs| obj.set_channelCellName rhs },
+    "PPAllocatorSize" => Proc.new { |obj, rhs| obj.set_PPAllocatorSize rhs },
   }
 
   #=== プラグイン引数 taskPriority のチェック

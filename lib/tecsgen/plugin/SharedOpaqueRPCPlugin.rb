@@ -61,7 +61,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
 
   # SharedOpaqueRPCPlugin 専用のオプション
   SharedOpaqueRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
-  SharedOpaqueRPCPluginArgProc["sharedChannelName"] = Proc.new { |obj,rhs| obj.set_sharedChannelName rhs }
+  SharedOpaqueRPCPluginArgProc["sharedChannelName"] = Proc.new { |obj, rhs| obj.set_sharedChannelName rhs }
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
@@ -314,7 +314,7 @@ EOT
   def self.gen_post_code(file)
     file.print "/* '#{self.name}' post code */\n"
 
-    @@shared_channel_list.each{ |chan_name,plugin_obj_array|
+    @@shared_channel_list.each{ |chan_name, plugin_obj_array|
       file.print "/* '#{chan_name}' shared channel */\n"
       plugin_obj_array[0].gen_post_code(file, plugin_obj_array)
     }

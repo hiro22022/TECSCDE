@@ -1540,7 +1540,7 @@ class Cell < NSBDNode # < Nestable
         nsp = NamespacePath.new(@name, false)
         rhs = Expression.new([:OP_DOT, [:IDENTIFIER, nsp], Token.new(ext_alloc_ent.to_s.to_sym, nil, nil, nil) ])  # 1 構文解析段階なので locale 不要
 
-        @alloc_list << [:NORMAL_ALLOC,port_name,nil,fd_name,par_name,rhs]
+        @alloc_list << [:NORMAL_ALLOC, port_name, nil, fd_name, par_name, rhs]
 # print "add alloc_list: #{port_name}.#{fd_name}.#{par_name}=#{rhs.to_s}\n"
       }
     end
@@ -1850,7 +1850,7 @@ class Cell < NSBDNode # < Nestable
     # composite の内部セルを参照されたことにする
     # 今のところ問題ないが、未参照であるべきものまで参照されたことになる
     if @cell_list
-      @cell_list.each{ |cn,cell|
+      @cell_list.each{ |cn, cell|
         cell.set_f_ref
       }
     end
@@ -2165,7 +2165,7 @@ class Cell < NSBDNode # < Nestable
 
       # debug
       dbgPrint "get_real_global_name: cell name: #{@name} #{@local_name} #{@global_name} #{port_name}\n"
-      @cell_list.each{ |n,c|
+      @cell_list.each{ |n, c|
         dbgPrint "   name: #{n}\n"
         dbgPrint " get_name: #{c.get_name} local_name: #{c.get_local_name}\n"  if c
         dbgPrint "\n\n"
@@ -2195,7 +2195,7 @@ class Cell < NSBDNode # < Nestable
 
       # debug
       dbgPrint "get_real_global_port_name: cell name: #{@name} #{@local_name} #{@global_name} #{port_name}\n"
-      @cell_list.each{ |n,c|
+      @cell_list.each{ |n, c|
         dbgPrint "   name: #{n}\n"
         dbgPrint " get_name: #{c.get_name} local_name: #{c.get_local_name}\n"  if c
         dbgPrint "\n"
@@ -2410,7 +2410,7 @@ class Cell < NSBDNode # < Nestable
           cdl_error("S1040 array not supported for relay allocator")
           next
         end
-        ail.each{ |name,ai2|
+        ail.each{ |name, ai2|
           # ai2 = [ :INTERNAL_ALLOC|:RELAY_ALLOC, func_name, param_name, rhs_cp_name, rhs_func_name, rhs_param_name ]
           if ai2[0] == :RELAY_ALLOC
             dbgPrint "create_relay_allocator_join: #{@name}, #{name}\n"
@@ -2875,7 +2875,7 @@ class Cell < NSBDNode # < Nestable
 
     # p "check reverse require   #{@name}"
     # 逆require 指定された受け口に複数の結合がないかチェック
-    @referenced_port_list.each{ |port,count|
+    @referenced_port_list.each{ |port, count|
       # p port.class, count
       # p port.get_name, port.get_port_type, port.get_signature.get_name
       if port.is_reverse_required? && count > 1
@@ -3007,7 +3007,7 @@ class Cell < NSBDNode # < Nestable
     dbgPrint "set_max_entry_port_inner_cell name=#{@name} entry_array_max_subscript.len=#{@entry_array_max_subscript.length}\n"
 
     # プロトタイプ宣言で設定されていたものを反映する
-    @entry_array_max_subscript.each{ |port,name|
+    @entry_array_max_subscript.each{ |port, name|
       dbgPrint "set_entry_inner_port_max_subscript( #{port}, #{name} )\n"
       set_entry_inner_port_max_subscript(port, name)
     }
@@ -3108,7 +3108,7 @@ class Cell < NSBDNode # < Nestable
     if @cell_list   # ここで @cell_list が nil なのは Bug
       (indent+1).times { print "  " }
       puts "cloned cell list:"
-      @cell_list.each { |n,c|
+      @cell_list.each { |n, c|
         (indent+2).times { print "  " }
         puts "inner cell : #{n} = #{c.get_name}"
       }
@@ -3134,7 +3134,7 @@ class Cell < NSBDNode # < Nestable
         puts "#{cp_name}#{subscript} = #{a[4+1]}"
       }
     end
-    @referenced_port_list.each{ |port,count|
+    @referenced_port_list.each{ |port, count|
       (indent+1).times { print "  " }
       puts("#{port.get_name} : #{count} times referenced")
     }
@@ -3245,7 +3245,7 @@ class CompositeCelltype < NSBDNode # < Nestable
           next
         end
 
-        p.get_allocator_instance.each{ |name,ai|
+        p.get_allocator_instance.each{ |name, ai|
           if ai[0] == :RELAY_ALLOC
             self.new_join(:"#{p.get_name}_#{ai[4]}_#{ai[5]}", p.get_cell_name, :"#{p.get_cell_elem_name}_#{ai[4]}_#{ai[5]}", :CALL)
           end
@@ -3715,7 +3715,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     }
 
-    clone_cell_list.each { |nm,c|
+    clone_cell_list.each { |nm, c|
       dbgPrint "  cloned: #{nm} = #{c.get_global_name}\n"
       # join の owner を clone されたセルに変更する V1.1.0.25
       c.get_join_list.get_items.each{ |j|
@@ -4485,7 +4485,7 @@ end
     if @allocator_instance
       (indent+1).times { print "  " }
       puts "allocator instance:"
-      @allocator_instance.each { |b,a|
+      @allocator_instance.each { |b, a|
         (indent+2).times { print "  " }
         puts "#{a[0]} #{a[1]} #{b} "
         # a[3].show_tree( indent+3 )
@@ -5545,7 +5545,7 @@ class Join < BDNode
         in_through_list.each { |il|
           if il[0]    # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote il[1]
-            through = [ il[0], :Join_in_through_, plugin_arg, f2[i-1], f2[i],:IN_THROUGH, region_count ]
+            through = [ il[0], :Join_in_through_, plugin_arg, f2[i-1], f2[i], :IN_THROUGH, region_count ]
             @region_through_list << through
           end
         }
@@ -6057,7 +6057,7 @@ class Join < BDNode
         cdl_error("S1128 \'$1\' inconsistent array definition", @name)
       elsif !@array_member[subscript2].nil?
         # 同じ添数が既に定義済み
-        cdl_error("S1129 \'$1\' redefinition of subscript $2",@name, subscript2)
+        cdl_error("S1129 \'$1\' redefinition of subscript $2", @name, subscript2)
       else
         # 添数の位置に要素を追加
         @array_member[subscript2] = join2.get_rhs

@@ -109,7 +109,7 @@ class TECS_LANG
   #=== codepage を取り出す
   # codepage は3〜5桁の整数として仮定
   def self.get_win_codepage
-    cmd_pipe = IO.popen("cmd /c chcp","r")
+    cmd_pipe = IO.popen("cmd /c chcp", "r")
     cmd_pipe.read =~ /([0-9]{3,5})/
     cp = $1
     cmd_pipe.close

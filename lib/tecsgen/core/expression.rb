@@ -159,69 +159,69 @@ class Expression < Node
     when :INTEGER_CONSTANT, :FLOATING_CONSTANT, :OCTAL_CONSTANT, :HEX_CONSTANT, :CHARACTER_LITERAL, :STRING_LITERAL_LIST, :BOOL_CONSTANT
       return  elements[1].to_s
     when :PARENTHESES
-      return "(#{elements_to_s(elements[1],name_list,pre,post)})"
+      return "(#{elements_to_s(elements[1], name_list, pre, post)})"
     when :OP_SUBSC
-      return "#{elements_to_s(elements[1],name_list,pre,post)}[#{elements[2].to_s}]"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}[#{elements[2].to_s}]"
     when :OP_DOT
-      return "#{elements_to_s(elements[1],name_list,pre,post)}.#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}.#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_REF
-      return "#{elements_to_s(elements[1],name_list,pre,post)}->#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}->#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_SIZEOF_EXPR
-      return "sizeof(#{elements_to_s(elements[1],name_list,pre,post)})"
+      return "sizeof(#{elements_to_s(elements[1], name_list, pre, post)})"
     when :OP_SIZEOF_TYPE
       return "sizeof(#{elements[1]}) mikan"
     when :OP_U_AMP
-      return "&#{elements_to_s(elements[1],name_list,pre,post)}"
+      return "&#{elements_to_s(elements[1], name_list, pre, post)}"
     when :OP_U_ASTER
-      return "*#{elements_to_s(elements[1],name_list,pre,post)}"
+      return "*#{elements_to_s(elements[1], name_list, pre, post)}"
     when :OP_U_PLUS
-      return "+#{elements_to_s(elements[1],name_list,pre,post)}"
+      return "+#{elements_to_s(elements[1], name_list, pre, post)}"
     when :OP_U_MINUS
-      return "-#{elements_to_s(elements[1],name_list,pre,post)}"
+      return "-#{elements_to_s(elements[1], name_list, pre, post)}"
     when :OP_U_TILDE
-      return "~#{elements_to_s(elements[1],name_list,pre,post)}"
+      return "~#{elements_to_s(elements[1], name_list, pre, post)}"
     when :OP_U_EXCLAM
-      return "!#{elements_to_s(elements[1],name_list,pre,post)}"
+      return "!#{elements_to_s(elements[1], name_list, pre, post)}"
     when :CAST
-      return "(#{elements[1].get_type_str})#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "(#{elements[1].get_type_str})#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_MULT
-      return "#{elements_to_s(elements[1],name_list,pre,post)}*#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}*#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_DIV
-      return "#{elements_to_s(elements[1],name_list,pre,post)}/#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}/#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_REMAIN
-      return "#{elements_to_s(elements[1],name_list,pre,post)}%#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}%#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_ADD
-      return "#{elements_to_s(elements[1],name_list,pre,post)}+#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}+#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_SUB
-      return "#{elements_to_s(elements[1],name_list,pre,post)}-#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}-#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_LSFT
-      return "#{elements_to_s(elements[1],name_list,pre,post)}<<#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}<<#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_RSFT
-      return "#{elements_to_s(elements[1],name_list,pre,post)}>>#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}>>#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_LT
-      return "#{elements_to_s(elements[1],name_list,pre,post)}<#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}<#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_GT
-      return "#{elements_to_s(elements[1],name_list,pre,post)}>#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}>#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_LE
-      return "#{elements_to_s(elements[1],name_list,pre,post)}<=#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}<=#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_GE
-      return "#{elements_to_s(elements[1],name_list,pre,post)}>=#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}>=#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_EQ
-      return "#{elements_to_s(elements[1],name_list,pre,post)}==#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}==#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_NE
-      return "#{elements_to_s(elements[1],name_list,pre,post)}!=#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}!=#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_AND
-      return "#{elements_to_s(elements[1],name_list,pre,post)}&#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}&#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_EOR
-      return "#{elements_to_s(elements[1],name_list,pre,post)}^#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}^#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_OR
-      return "#{elements_to_s(elements[1],name_list,pre,post)}|#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}|#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_LAND
-      return "#{elements_to_s(elements[1],name_list,pre,post)}&&#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}&&#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_LOR
-      return "#{elements_to_s(elements[1],name_list,pre,post)}||#{elements_to_s(elements[2],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}||#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_CEX
-      return "#{elements_to_s(elements[1],name_list,pre,post)}?#{elements_to_s(elements[2],name_list,pre,post)}:#{elements_to_s(elements[3],name_list,pre,post)}"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}?#{elements_to_s(elements[2], name_list, pre, post)}:#{elements_to_s(elements[3], name_list, pre, post)}"
     else
       raise "Unknown expression element: #{elemets[0]}. try -t and please report"
     end
@@ -249,7 +249,7 @@ class Expression < Node
       if nsp.is_name_only?
         count = 0
         # p "search: #{nsp.get_name}"
-        name_list.get_items.each{ |nm,val|
+        name_list.get_items.each{ |nm, val|
           # p "    : #{nm.get_name} #{nsp.get_name.class} #{nm.get_name.class}"
           if nsp.get_name == nm.get_name
             return " $#{count}"

@@ -43,9 +43,9 @@ class C2TECSBridgePlugin < SignaturePlugin
 
   # プラグイン引数名と Proc
   C2TECSBridgePluginArgProc = {
-    "prefix" => Proc.new { |obj,rhs| obj.set_prefix rhs },
-    "suffix" => Proc.new { |obj,rhs| obj.set_suffix rhs },
-    "header_name" => Proc.new { |obj,rhs| obj.set_header_name rhs },
+    "prefix" => Proc.new { |obj, rhs| obj.set_prefix rhs },
+    "suffix" => Proc.new { |obj, rhs| obj.set_suffix rhs },
+    "header_name" => Proc.new { |obj, rhs| obj.set_header_name rhs },
   }
 
 

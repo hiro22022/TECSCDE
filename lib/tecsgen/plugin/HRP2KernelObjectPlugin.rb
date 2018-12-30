@@ -247,7 +247,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
                   # p @@region_list
               end
                 file3 = AppFile.open("#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg")
-                print_cfg_cre(file3, cell, val,"")
+                print_cfg_cre(file3, cell, val, "")
                 file3.close
             else
                 # 無所属の場合

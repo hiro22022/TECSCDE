@@ -49,7 +49,7 @@ class OpaqueRPCPlugin < ThroughPlugin
 
   # OpaqueRPCPlugin 専用のオプション
   OpaqueRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
-  OpaqueRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj,rhs| obj.set_noClientSemaphore rhs }
+  OpaqueRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj, rhs| obj.set_noClientSemaphore rhs }
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照

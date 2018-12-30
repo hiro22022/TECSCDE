@@ -122,7 +122,7 @@ module TECSCDE
         @control.on_cell_name_entry_active entry
         false
       }
-      @entry_cell_name.signal_connect("focus-out-event"){|entry,event|
+      @entry_cell_name.signal_connect("focus-out-event"){|entry, event|
         @control.on_cell_name_entry_focus_out entry
         false
       }
@@ -132,7 +132,7 @@ module TECSCDE
         @control.on_cell_region_entry_active entry
         false
       }
-      @entry_cell_region.signal_connect("focus-out-event"){|entry,event|
+      @entry_cell_region.signal_connect("focus-out-event"){|entry, event|
         @control.on_cell_region_entry_focus_out entry
         false
       }

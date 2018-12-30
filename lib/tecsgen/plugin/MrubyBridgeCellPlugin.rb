@@ -40,10 +40,10 @@
 class MrubyBridgeCellPlugin < CellPlugin
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = {
-      "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },
-      "exclude_port" => Proc.new { |obj,rhs| obj.set_exclude_port rhs },
-      "exclude_port_func" => Proc.new { |obj,rhs| obj.set_exclude_port_func rhs },
-      "auto_exclude" => Proc.new { |obj,rhs| obj.set_auto_exclude rhs },
+      "ignoreUnsigned" => Proc.new { |obj, rhs| obj.set_ignoreUnsigned rhs },
+      "exclude_port" => Proc.new { |obj, rhs| obj.set_exclude_port rhs },
+      "exclude_port_func" => Proc.new { |obj, rhs| obj.set_exclude_port_func rhs },
+      "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
   }
   @@b_gen_post_code_by_dependent = false  # true if gen_post_code is called by MrubyBridgeCelltypePlugin
   @@cell_list = {}      # gen_cdl_file'ed list to avoid duplicate generation

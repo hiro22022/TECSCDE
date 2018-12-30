@@ -89,7 +89,7 @@ class TracePlugin < ThroughPlugin
 
     send_receive = []
     if !@signature.nil?
-      @signature.each_param{ |fd,param|
+      @signature.each_param{ |fd, param|
         dir =param.get_direction
         case dir
         when :SEND, :RECEIVE
@@ -424,12 +424,12 @@ EOT
 
   # プラグイン引数名と Proc
   TracePluginArgProc = {
-    "maxArrayDisplay"    => Proc.new { |obj,rhs| obj.set_maxArrayDisplay rhs },
-    "cellEntry"          => Proc.new { |obj,rhs| obj.set_cellEntry rhs },
-    "probeName"          => Proc.new { |obj,rhs| obj.set_probeName rhs },
-    "displayTime"        => Proc.new { |obj,rhs| obj.set_displayTime rhs },
-    "kernelCelltype"     => Proc.new { |obj,rhs| obj.set_kernelCelltype rhs },
-    "syslogCelltype"     => Proc.new { |obj,rhs| obj.set_syslogCelltype rhs },
+    "maxArrayDisplay"    => Proc.new { |obj, rhs| obj.set_maxArrayDisplay rhs },
+    "cellEntry"          => Proc.new { |obj, rhs| obj.set_cellEntry rhs },
+    "probeName"          => Proc.new { |obj, rhs| obj.set_probeName rhs },
+    "displayTime"        => Proc.new { |obj, rhs| obj.set_displayTime rhs },
+    "kernelCelltype"     => Proc.new { |obj, rhs| obj.set_kernelCelltype rhs },
+    "syslogCelltype"     => Proc.new { |obj, rhs| obj.set_syslogCelltype rhs },
   }
 
   def set_maxArrayDisplay(rhs)

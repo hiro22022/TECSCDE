@@ -161,7 +161,7 @@ class ThroughPlugin < Plugin
 
     send_receive = []
     if !@signature.nil?
-      @signature.each_param{ |fd,param|
+      @signature.each_param{ |fd, param|
         dir =param.get_direction
         case dir
         when :SEND, :RECEIVE

@@ -66,10 +66,10 @@
 class MrubyBridgeSignaturePlugin < SignaturePlugin
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = {
-      "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },
-      "include" => Proc.new { |obj,rhs| obj.set_include rhs },
-      "exclude" => Proc.new { |obj,rhs| obj.set_exclude rhs },
-      "auto_exclude" => Proc.new { |obj,rhs| obj.set_auto_exclude rhs },
+      "ignoreUnsigned" => Proc.new { |obj, rhs| obj.set_ignoreUnsigned rhs },
+      "include" => Proc.new { |obj, rhs| obj.set_include rhs },
+      "exclude" => Proc.new { |obj, rhs| obj.set_exclude rhs },
+      "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
   }
 
   @@b_no_banner = false         #
@@ -112,7 +112,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     :"signed long"     => [:long,      "Long",     :Int,   :INT   ],
 
     :float32_t         => [:float32_t, "Float32",  :Float, :FLOAT ],
-    :double64_t        => [:double64_t,"Double64", :Float, :FLOAT ],
+    :double64_t        => [:double64_t, "Double64", :Float, :FLOAT ],
 
     :float             => [:float,     "Float32",  :Float, :FLOAT ],
     :double            => [:double,    "Double64", :Float, :FLOAT ]
@@ -580,14 +580,14 @@ EOT
     }
 
     file.print "  // MBP602\n"
-    @@ptr_list.each{ |name,tment|
+    @@ptr_list.each{ |name, tment|
       file.print <<EOT
   cell nMruby::#{name} C#{name} { };
 EOT
     }
 
     file.print "  // MBP603\n"
-    @@struct_list.each{ |name,sttype|
+    @@struct_list.each{ |name, sttype|
       file.print <<EOT
   cell nMruby::#{name} C#{name} { };
 EOT

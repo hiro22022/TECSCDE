@@ -41,12 +41,12 @@ module MrubyBridgeCelltypePluginModule
 
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = {
-      "ignoreUnsigned" => Proc.new { |obj,rhs| obj.set_ignoreUnsigned rhs },
-      "include_inner_cell" => Proc.new { |obj,rhs| obj.set_include_inner_cell rhs },
-      "exclude_cell" => Proc.new { |obj,rhs| obj.set_exclude_cell rhs },
-      "exclude_port" => Proc.new { |obj,rhs| obj.set_exclude_port rhs },
-      "exclude_port_func" => Proc.new { |obj,rhs| obj.set_exclude_port_func rhs },
-      "auto_exclude" => Proc.new { |obj,rhs| obj.set_auto_exclude rhs },
+      "ignoreUnsigned" => Proc.new { |obj, rhs| obj.set_ignoreUnsigned rhs },
+      "include_inner_cell" => Proc.new { |obj, rhs| obj.set_include_inner_cell rhs },
+      "exclude_cell" => Proc.new { |obj, rhs| obj.set_exclude_cell rhs },
+      "exclude_port" => Proc.new { |obj, rhs| obj.set_exclude_port rhs },
+      "exclude_port_func" => Proc.new { |obj, rhs| obj.set_exclude_port_func rhs },
+      "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
   }
 
   require_tecsgen_lib("MrubyBridgeCellPlugin.rb")

@@ -344,7 +344,7 @@ module TECSCDE
             port.set_position edge, offset
           }
         else
-          @cell_hash.each{|a,b| p a }
+          @cell_hash.each{|a, b| p a }
           p "not apply location: #{name}"
           next
         end

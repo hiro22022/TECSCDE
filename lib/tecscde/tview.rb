@@ -206,7 +206,7 @@ module TECSCDE
         Gtk.main_quit
       }
       # KEY-PRESS event action
-      @mainWindow.signal_connect("key-press-event"){|win,event|
+      @mainWindow.signal_connect("key-press-event"){|win, event|
         if @entryWin.visible?
           # while cell name editing, send forward to Entry window
           event.set_window @entryWin.window
@@ -215,13 +215,13 @@ module TECSCDE
           @control.key_pressed(event.keyval & 0xff, event.state)
         end
       }
-      @mainWindow.signal_connect("focus-in-event"){|win,event|
+      @mainWindow.signal_connect("focus-in-event"){|win, event|
         # p "event:#{event.class} in"
       }
-      @mainWindow.signal_connect("focus-out-event"){|win,event|
+      @mainWindow.signal_connect("focus-out-event"){|win, event|
         # p "event:#{event.class} out"
       }
-      @mainWindow.signal_connect("grab-broken-event"){|win,event|
+      @mainWindow.signal_connect("grab-broken-event"){|win, event|
         # p "event:#{event.class}"
       }
       @mainWindow.signal_connect("grab-focus"){|win|
@@ -536,7 +536,7 @@ module TECSCDE
       end
 
       #----- draw port name -----#
-      (cell.get_cports.merge cell.get_eports).each{ |name,port|
+      (cell.get_cports.merge cell.get_eports).each{ |name, port|
         if ! port.is_array?
           set_port_color port, cell
           draw_port_name(port)
@@ -583,9 +583,9 @@ module TECSCDE
       when TECSModel::EDGE_BOTTOM
         points = [[xe-triangle_1_2, ye], [xe+triangle_1_2, ye], [xe, ye-triangle_hi]]
       when TECSModel::EDGE_LEFT
-        points = [[xe, ye-triangle_1_2], [xe, ye+triangle_1_2], [xe+triangle_hi,ye]]
+        points = [[xe, ye-triangle_1_2], [xe, ye+triangle_1_2], [xe+triangle_hi, ye]]
       when TECSModel::EDGE_RIGHT
-        points = [[xe, ye-triangle_1_2], [xe, ye+triangle_1_2], [xe-triangle_hi,ye]]
+        points = [[xe, ye-triangle_1_2], [xe, ye+triangle_1_2], [xe-triangle_hi, ye]]
       end
 #      fill = true
 #      @drawTarget.draw_polygon( @canvasGc, fill, points )

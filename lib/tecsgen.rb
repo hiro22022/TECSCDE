@@ -125,7 +125,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
       # exerb 対応 "." をサーチパスの最初に加える
       #   "tecslib/" は RPCPlugin.rb, TracePlugin.rb のために用意してある
       #   RPCPlugin.rb, TracePlugin.rb が tecslib 下でなければ不要になるが、このようにしておく
-      ["","tecslib/plugin/"].each{ |lp|
+      ["", "tecslib/plugin/"].each{ |lp|
         path = lp + fname
         begin
           require path

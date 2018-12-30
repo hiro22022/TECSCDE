@@ -302,7 +302,7 @@ EOT
   # file:: File:
   def self.gen_post_code(file)
     file.print "/* '#{self.name}' post code */\n"
-    @@shared_channel_list.each{ |chan_name,plugin_obj|
+    @@shared_channel_list.each{ |chan_name, plugin_obj|
       plugin_obj[0].gen_post_code(file, plugin_obj)
     }
   end

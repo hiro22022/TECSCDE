@@ -547,7 +547,7 @@ EOT
     }
     f.print("\n")
     f.print("TECS_IMPORT_HEADERS =")
-    Import_C.get_header_list.each{ |header,path|
+    Import_C.get_header_list.each{ |header, path|
       if TECSGEN.is_absolute_path? path
         path = TECSGEN.subst_tecspath path
       end
@@ -962,7 +962,7 @@ EOT
     dl = get_descriptor_list
     if dl.length > 0
       f.printf TECSMsg.get(:SDI_comment), "#_SDI_#"
-      dl.each{ |dt,param|
+      dl.each{ |dt, param|
         f.print <<EOT
 /* pre-typedef incomplete-type to avoid error in case of mutual or cyclic reference */
 #ifndef Descriptor_of_#{dt.get_global_name}_Defined
@@ -1279,7 +1279,7 @@ class Celltype
     gen_cell_ep_des_type f
 
     # すべての _tecsgen.c に出力
-    fs.each{ |r,f2|
+    fs.each{ |r, f2|
       if f == f2
         next
       end
@@ -1308,7 +1308,7 @@ class Celltype
       gen_cell_cb_initialize_code f
     end
 
-    fs.each{ |r,f2|
+    fs.each{ |r, f2|
       f2.close
       if f == f2
         f = nil
@@ -3071,7 +3071,7 @@ EOT
 
   def gen_cell_ep_vdes(fs)
     if @n_cell_gen  >0
-      fs.each{ |r,f| f.printf(TECSMsg.get(:CPEPD_comment), "#_CPEPD_#") }
+      fs.each{ |r, f| f.printf(TECSMsg.get(:CPEPD_comment), "#_CPEPD_#") }
     end
 
     # このセルタイプのすべてのセルについて
@@ -4004,7 +4004,7 @@ EOT
       if init.instance_of?(C_EXP)
         init_str = subst_name(init.get_c_exp_string, name_array)
       else
-        init_str = init.eval_const2(cell.get_join_list,@name_list)
+        init_str = init.eval_const2(cell.get_join_list, @name_list)
       end
 
       if f_get_str
@@ -4023,7 +4023,7 @@ EOT
       if init.instance_of?(C_EXP)
         init_str = subst_name(init.get_c_exp_string, name_array)
       else
-        init_str = init.eval_const2(cell.get_join_list,@name_list)
+        init_str = init.eval_const2(cell.get_join_list, @name_list)
       end
 
       if f_get_str
@@ -4035,22 +4035,22 @@ EOT
     elsif type.kind_of?(FloatType)
       # mikan C_EXP for FloatType
       if f_get_str
-        return "#{init.eval_const2(cell.get_join_list,@name_list)}"
+        return "#{init.eval_const2(cell.get_join_list, @name_list)}"
       else
         f.print "    " * indent
-        f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list,@name_list)},", identifier)
+        f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list, @name_list)},", identifier)
       end
     elsif type.kind_of?(EnumType)
       # mikan C_EXP for EnumType
       if f_get_str
-        return "#{init.eval_const2(cell.get_join_list,@name_list)}"
+        return "#{init.eval_const2(cell.get_join_list, @name_list)}"
       else
         f.print "    " * indent
-        f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list,@name_list)},", identifier)
+        f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list, @name_list)},", identifier)
       end
     elsif type.kind_of?(ArrayType)
       if type.get_subscript
-        len = type.get_subscript.eval_const(cell.get_join_list,@name_list)
+        len = type.get_subscript.eval_const(cell.get_join_list, @name_list)
       else
         len = init.length
       end
@@ -4132,13 +4132,13 @@ EOT
 
       else
         if f_get_str
-          return "#{init.eval_const2(cell.get_join_list,@name_list)}"
+          return "#{init.eval_const2(cell.get_join_list, @name_list)}"
         else
           f.print "    " * indent
 # p init.eval_const2(cell.get_join_list,@name_list).class
 # p init.eval_const2(cell.get_join_list,@name_list)
 # p identifier
-          f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list,@name_list)},", identifier)
+          f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list, @name_list)},", identifier)
 
         end
       end
@@ -5067,7 +5067,7 @@ class AppFile
       return
     end
 
-    @@file_name_list.each{ |name,boo|
+    @@file_name_list.each{ |name, boo|
       b_identical = false
       if File.readable? name
         old_lines = File.readlines name

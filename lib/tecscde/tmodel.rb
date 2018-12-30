@@ -1473,13 +1473,13 @@ EOT
         x, y, w, h = get_cell.get_geometry
         case @edge_side
         when EDGE_TOP
-          [x+@offs,y]
+          [x+@offs, y]
         when EDGE_BOTTOM
-          [x+@offs,y+h]
+          [x+@offs, y+h]
         when EDGE_LEFT
-          [x,y+@offs]
+          [x, y+@offs]
         when EDGE_RIGHT
-          [x+w,y+@offs]
+          [x+w, y+@offs]
         end
       end
 

@@ -45,7 +45,7 @@
 class RepeatCellPlugin < CellPlugin
   @@plugin_list = []
   RepeatCellPluginArgProc = {
-    "count" => Proc.new { |obj,rhs| obj.set_count rhs }
+    "count" => Proc.new { |obj, rhs| obj.set_count rhs }
   }
 
   def initialize(cell, option)

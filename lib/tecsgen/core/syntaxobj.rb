@@ -267,7 +267,7 @@ class NamedList
   def get_item(name)
     if ! name.kind_of? Symbol
       print "get_item: '#{name}', items are below\n"
-      @names.each{ |nm,item|
+      @names.each{ |nm, item|
         p nm
       }
       raise "get_item: #{name}: not Symbol"

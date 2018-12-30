@@ -39,7 +39,7 @@
 
 class RepeatJoinPlugin < CellPlugin
   RepeatJoinPluginArgProc = {
-    "count" => Proc.new { |obj,rhs| obj.set_count rhs }
+    "count" => Proc.new { |obj, rhs| obj.set_count rhs }
   }
 
   def initialize(cell, option)
