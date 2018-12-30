@@ -135,7 +135,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   def initialize(signature, option)
     super
 
-    if ! @@b_no_banner
+    if !@@b_no_banner
       STDERR << "MrubyBridgePlugin: version 1.3.0 (Suitable for mruby ver 1.3.0 & ver 1.2.0). \n"
       @@b_no_banner = true
     end
@@ -523,7 +523,7 @@ EOT
   # tmp_plugin_post_code.cdl への出力
   def self.gen_post_code(file)
     dbgPrint "#{self.name}: gen_post_code\n"
-    if ! @@b_gen_post_code_by_dependent
+    if !@@b_gen_post_code_by_dependent
       gen_post_code_body file
     end
   end
@@ -656,7 +656,7 @@ EOT
 EOT
 
     @func_head_array.each{ |f|
-      if ! f.is_function?
+      if !f.is_function?
         next
       end
       if f.get_name != :initialize
@@ -916,7 +916,7 @@ mrb_value  MrubyBridge_#{@celltype_name}_initialize( mrb_state *mrb, mrb_value s
 EOT
 
     @func_head_array.each{ |f|
-      if ! f.is_function?
+      if !f.is_function?
         next
       end
       if f.get_name != :initialize
@@ -972,7 +972,7 @@ EOT
 
   def gen_preamble_bridge_func(file, b_singleton, ct_name, global_ct_name)
     @func_head_array.each{ |f|
-      if ! f.is_function?
+      if !f.is_function?
         next
       end
       if f.get_name != :initialize
@@ -997,7 +997,7 @@ MrubyBridge_#{ct_name}_#{func_name}( mrb_state *mrb, mrb_value self )
 EOT
 
       file.print "	/* variables for return & parameter (MBP110) */\n"
-      if ! b_void
+      if !b_void
         file.print "	", ret_type.get_type_str, "\tret_val", ret_type.get_type_str_post, ";\n"
       end
       arg_str = ""
@@ -1142,7 +1142,7 @@ EOT
       end
 
       file.print "	/* calling target (MBP120) */\n"
-      if ! b_void
+      if !b_void
         file.print "	ret_val = "
       else
         file.print "	"

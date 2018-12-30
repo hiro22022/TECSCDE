@@ -136,7 +136,7 @@ EOT
                   next if HRP2KernelObjectPlugin.include_celltype?(ct)
 
                   # 必要のないセルタイプのコード，データはメモリ保護しない
-                  next if ! ct.need_generate?
+                  next if !ct.need_generate?
 
                   # HRP2のドメインリージョンを取得
                   regions = ct.get_domain_roots
@@ -169,7 +169,7 @@ EOT
                   }
 
                   # セルタイプコードがない場合はスキップ
-                  next if ct.is_all_entry_inline? && ! ct.is_active?
+                  next if ct.is_all_entry_inline? && !ct.is_active?
 
                   # セルタイプコードのメモリ保護
                   # gen_celltype_names_domain2 相当の処理

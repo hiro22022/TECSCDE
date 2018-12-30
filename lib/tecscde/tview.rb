@@ -466,7 +466,7 @@ module TECSCDE
       @cairo_context_target.fill
 
       #----- setup color -----#
-      if ! cell.is_editable?
+      if !cell.is_editable?
 #        @canvasGc.set_foreground @@colors[ Color_uneditable ]
         @cairo_context_target.set_source_color @@colors[Color_uneditable]
       else
@@ -492,7 +492,7 @@ module TECSCDE
 
       #----- draw entry ports triangle -----#
       cell.get_eports.each{ |name, eport|
-        if ! eport.is_array?
+        if !eport.is_array?
           draw_entry_port_triangle(eport)
         else
           if cell.is_editable? && eport.is_unsubscripted_array?
@@ -514,7 +514,7 @@ module TECSCDE
       cell_name = cell.get_name
       ct_name = cell.get_celltype.get_name
       label = cell_name.to_s + "\n" + ct_name.to_s
-      if ! cell.complete?
+      if !cell.complete?
         # @canvasGc.set_foreground @@colors[ Color_incomplete ]
         @cairo_context_target.set_source_color @@colors[Color_incomplete]
       end
@@ -537,7 +537,7 @@ module TECSCDE
 
       #----- draw port name -----#
       (cell.get_cports.merge cell.get_eports).each{ |name, port|
-        if ! port.is_array?
+        if !port.is_array?
           set_port_color port, cell
           draw_port_name(port)
         else
@@ -561,7 +561,7 @@ module TECSCDE
           color_name = Color_uneditable
         end
       else
-        if port.kind_of?(TECSModel::TmCPort) && ! port.is_optional?
+        if port.kind_of?(TECSModel::TmCPort) && !port.is_optional?
           color_name = Color_incomplete
         else
           color_name = Color_unjoin
@@ -652,7 +652,7 @@ module TECSCDE
       # @cairo_context_target.set_line_width(2)
 
       #----- if uneditable change color ------#
-      if ! cell.is_editable?
+      if !cell.is_editable?
         @canvasGc.set_foreground(@@colors[Color_uneditable])
         # @cairo_context_target.set_source_color( @@colors[ Color_uneditable ] )
       end
@@ -719,7 +719,7 @@ module TECSCDE
       ym = mm2dot(y) + 0.5
 
       #----- setup color -----#
-      if ! join.is_editable?
+      if !join.is_editable?
         # @canvasGc.set_foreground @@colors[ Color_uneditable ]
         @cairo_context_target.set_source_color(@@colors[Color_uneditable])
       end

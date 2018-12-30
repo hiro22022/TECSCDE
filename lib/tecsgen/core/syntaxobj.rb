@@ -265,7 +265,7 @@ class NamedList
   end
 
   def get_item(name)
-    if ! name.kind_of? Symbol
+    if !name.kind_of? Symbol
       print "get_item: '#{name}', items are below\n"
       @names.each{ |nm, item|
         p nm
@@ -310,7 +310,7 @@ class NamedList
   end
 
   def assert_name(item)
-    if ! item.get_name.kind_of? Symbol
+    if !item.get_name.kind_of? Symbol
       raise "Not symbol for NamedList item"
     end
   end
@@ -750,10 +750,10 @@ class ParamDecl < BDNode
         case i[0]
         when :SEND, :RECEIVE
           @allocator = Namespace.find(i[1])   # 1
-          if ! @allocator.instance_of?(Signature)
+          if !@allocator.instance_of?(Signature)
             cdl_error("S2009 $1: not found or not signature", i[1])
             next
-          elsif ! @allocator.is_allocator?
+          elsif !@allocator.is_allocator?
             # cdl_error( "S2010 $1: not allocator signature" , i[1] )
           end
         end
@@ -882,7 +882,7 @@ class ParamDecl < BDNode
 
       # const 修飾が適切かチェック
       if @direction == :IN
-        if ! t2.is_const?
+        if !t2.is_const?
           cdl_error("S2015 '$1' must be const for \'in\' parameter $2", get_name, type.class)
         end
       else
@@ -967,7 +967,7 @@ class ParamDecl < BDNode
   # Transparent PC で oneway かどうかは、ここでは判断しないので別途判断が必要
   # Opaque RPC の場合 size_is, count_is, string のいずれかが指定されている場合、PPAllocator が必要
   def need_PPAllocator?(b_opaque = false)
-    if ! b_opaque
+    if !b_opaque
 #      if @direction == :IN && ( @size || @count || @string ) then
       if @direction == :IN && @declarator.get_type.get_original_type.kind_of?(PtrType)
         return true

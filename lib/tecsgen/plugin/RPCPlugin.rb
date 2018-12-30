@@ -260,7 +260,7 @@ EOT
     @semaphoreCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: semaphoreCelltype '#{rhs}' not celltype or not defined")
     end
   end

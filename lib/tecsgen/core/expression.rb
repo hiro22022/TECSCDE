@@ -387,14 +387,14 @@ class Expression < Node
       elsif object.instance_of?(Join)
         # Join の場合： cell の中の attribute, var, call のどれかが見つかった
         # Decl (attribute, var) でない？
-        if ! object.get_definition.instance_of?(Decl)
+        if !object.get_definition.instance_of?(Decl)
           cdl_error("E1002 $1: not constant (port)", nsp.get_path_str)
           return nil
         end
         return object.get_rhs.eval_const2(name_list, name_list2, nest)
-      elsif ! object.instance_of?(Decl)
+      elsif !object.instance_of?(Decl)
         # Decl でない場合： 定数でもない
-        if (! object.instance_of?(ParamDecl))
+        if (!object.instance_of?(ParamDecl))
                                                       # mikan paramdecl は無視する
                                                       # ParamList から呼ばれたとき
           cdl_error("E1003 $1: not constant", nsp.get_path_str)
@@ -506,11 +506,11 @@ class Expression < Node
     when :OP_U_ASTER
       # cdl_error( "E1010 cannot evaluate \'*\' operator"  )
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
-      return nil if ! evaluable?(val)
+      return nil if !evaluable?(val)
       return val
     when :OP_U_PLUS
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
-      return nil if ! evaluable?(val)
+      return nil if !evaluable?(val)
       if val.respond_to?("+@")
         return + val
       else
@@ -519,7 +519,7 @@ class Expression < Node
       end
     when :OP_U_MINUS
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
-      return nil if ! evaluable?(val)
+      return nil if !evaluable?(val)
       if val.respond_to?("-@")
         return - val
       else
@@ -527,7 +527,7 @@ class Expression < Node
       end
     when :OP_U_TILDE
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
-      return nil if ! evaluable?(val)
+      return nil if !evaluable?(val)
 # p "val.respond_to?( \"-@\" )=#{val.respond_to?( "-@" )} #{val.class}"
 # p "val.respond_to?( \"~@\" )=#{val.respond_to?( "~@" )}"
 # 2.0      if val.respond_to?( "~@" ) then  # Ruby 1.9, 2.0 preview 版では例外が発生してしまう
@@ -538,7 +538,7 @@ class Expression < Node
       end
     when :OP_U_EXCLAM
       val = elements_eval_const(elements[1], name_list, name_list2, nest)
-      return nil if ! evaluable?(val)
+      return nil if !evaluable?(val)
       val = val.cast(BoolType.new)
       if val.respond_to?("not")
         return val.not
@@ -549,122 +549,122 @@ class Expression < Node
     when :CAST
       val = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if val == nil
-      return nil if ! evaluable?(val)
+      return nil if !evaluable?(val)
       return val.cast(elements[1])
     when :OP_MULT
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs * rhs
     when :OP_DIV
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs / rhs
     when :OP_REMAIN
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs % rhs
     when :OP_ADD
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs + rhs
     when :OP_SUB
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs - rhs
     when :OP_LSFT
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs << rhs
     when :OP_RSFT
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs >> rhs
     when :OP_LT
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs < rhs
     when :OP_GT
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs > rhs
     when :OP_LE
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs <= rhs
     when :OP_GE
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs >= rhs
     when :OP_EQ
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs.eq(rhs)
     when :OP_NE
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs.neq(rhs)
     when :OP_AND
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs & rhs
     when :OP_EOR
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs ^ rhs
     when :OP_OR
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs | rhs
     when :OP_LAND
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs.lAND(rhs)
     when :OP_LOR
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       # return nil if( rhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, lhs)
+      return nil if !evaluable?(rhs, lhs)
       return lhs.lOR(rhs)
     when :OP_CEX
       lhs = elements_eval_const(elements[1], name_list, name_list2, nest)
       mhs = elements_eval_const(elements[2], name_list, name_list2, nest)
       rhs = elements_eval_const(elements[3], name_list, name_list2, nest)
       # return nil if( rhs == nil || mhs == nil || lhs == nil )
-      return nil if ! evaluable?(rhs, mhs, lhs)
+      return nil if !evaluable?(rhs, mhs, lhs)
       if lhs.cast(BoolType.new).val
         return mhs
       else
@@ -841,8 +841,8 @@ class Expression < Node
       end
     when :RELAY_ALLOC
       if(ele[0] != :OP_DOT ||
-          ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || ! ele[1][1][1].is_name_only? ||
-          ! ele[1][2].instance_of?(Token) || ! ele[2].instance_of?(Token))   # 1
+          ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || !ele[1][1][1].is_name_only? ||
+          !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token))   # 1
         cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s)   # S1086
       end
       func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
@@ -910,7 +910,7 @@ class Expression < Node
   # port_name:: Symbol
   # analyze_cell_join_expression と対になっている
   def self.create_cell_join_expression(nsp, subscript, port_name, locale = nil)
-    if ! port_name.instance_of?(Symbol)
+    if !port_name.instance_of?(Symbol)
       raise "port_name: not Symbol"
     end
 
@@ -949,7 +949,7 @@ class Expression < Node
   #=== Expression#
   # nsp:: NamespacePath :  参照するもの識別子
   def self.create_single_identifier(nsp, locale)
-    if ! nsp.instance_of?(NamespacePath)
+    if !nsp.instance_of?(NamespacePath)
       raise "create_single_identifier: not NamespacePath: #{nsp.to_s}"
     end
     Expression.new([ :IDENTIFIER, nsp ])
@@ -960,7 +960,7 @@ class Expression < Node
   # すべてが BaseVal の子クラス（値）であれば、評価可能と判断する
   def evaluable?(*v)
     v.each{ |val|
-      if ! val.kind_of?(BaseVal)
+      if !val.kind_of?(BaseVal)
         return false
       end
     }

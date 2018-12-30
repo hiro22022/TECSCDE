@@ -224,7 +224,7 @@ class Region
 EOT
     @cell_list.each{ |cell|
         # print "cell class="+cell.get_celltype.class.name+", " + cell.get_celltype.get_name.to_s + " 1\n"
-      if ! cell.exclude_info?
+      if !cell.exclude_info?
         # print "cell class="+cell.get_celltype.class.name+", " + cell.get_celltype.get_name.to_s + " 2\n"
         f.print "#{indent}    cCellInfo[] = #{cell.get_global_name}CellInfo.eCellInfo;\n"
       end
@@ -236,7 +236,7 @@ EOT
     }
     f.print "#{indent}};\n"
     @cell_list.each{ |cell|
-      if ! cell.exclude_info?
+      if !cell.exclude_info?
         cell.print_info f, indent
       end
     }
@@ -294,7 +294,7 @@ EOT
         inib = "0"
         inib_proto = ""
       end
-      if ! cell.exclude_info_factory?
+      if !cell.exclude_info_factory?
         f.print <<EOT
 #{cb_proto}#define  #{cell.get_global_name}__CBP   #{cb}
 #{inib_proto}#define  #{cell.get_global_name}__INIBP #{inib}
@@ -406,7 +406,7 @@ EOT
         else
           inib_cb = "CB"
         end
-        if ! decl.is_omit?
+        if !decl.is_omit?
           offset = "(uint32_t)(intptr_t)&(((#{@global_name}_#{inib_cb}*)0)->#{decl.get_name})"
           place = inib_cb
         else
@@ -491,7 +491,7 @@ EOT
         else
           place = "CALL_PLACE_CB_DES"
         end
-      elsif ! has_INIB?
+      elsif !has_INIB?
         if port.is_VMT_useless?
           place = "CALL_PLACE_CB_IDX"
         else
@@ -507,7 +507,7 @@ EOT
       if (port.is_VMT_useless? && port.is_cell_unique?) || port.is_omit? || @n_cell_gen == 0
         offset = "0xffffffff"
       else
-        if port.is_dynamic? || ! has_INIB?
+        if port.is_dynamic? || !has_INIB?
           cb_inib = "CB"
         else
           cb_inib = "INIB"
@@ -614,7 +614,7 @@ EOT
       elsif size == "[]"
         size = @entry_array_max_subscript[port]
       end
-      if ! port.is_omit?
+      if !port.is_omit?
         red = "C_EXP( \"&#{@global_name}_#{port.get_name}_des\" )"
       else
         red = "(void *)0"
@@ -650,7 +650,7 @@ EOT
     if @celltype == nil ||
        is_of_composite? ||
        @celltype.get_global_name == :nTECSInfo_tTECSInfoSub ||
-       ! @celltype.need_generate?
+       !@celltype.need_generate?
       # print ": true celltype_is_of_composite=#{is_of_composite?} celltype_name=#{@celltype.get_global_name} celltype.need_generate=#{@celltype.need_generate?}\n"
       return true
     else

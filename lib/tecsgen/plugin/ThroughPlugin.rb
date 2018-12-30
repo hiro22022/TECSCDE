@@ -240,11 +240,11 @@ EOT
     ret_type = func_type.get_type
     b_ret_void = ret_type.is_void?
 
-    if ! b_ret_void
+    if !b_ret_void
       file.print("  #{ret_type.get_type_str}  retval;\n")
     end
 
-    if ! b_singleton
+    if !b_singleton
 
       file.print <<EOT
   #{ct_name}_CB    *p_cellcb;
@@ -261,7 +261,7 @@ EOT
     # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
     delim = ""
-    if ! b_ret_void
+    if !b_ret_void
       file.print("  retval = ")
     end
 
@@ -279,7 +279,7 @@ EOT
 
     file.print(" );\n")
 
-    if ! b_ret_void
+    if !b_ret_void
       file.print("  return retval;\n")
     end
   end

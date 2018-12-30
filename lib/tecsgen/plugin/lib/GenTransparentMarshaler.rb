@@ -64,7 +64,7 @@ module GenTransparentMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@channelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: channeclCelltype '#{rhs}' not celltype or not found")
     end
   end
@@ -76,7 +76,7 @@ module GenTransparentMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@TDRCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found")
     end
   end
@@ -158,7 +158,7 @@ EOT
     type = func_type.get_type.get_original_type
 
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
-    if ! type.is_void?
+    if !type.is_void?
       if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
         file.print("    #{func_type.get_type.get_type_str}  retval_ = E_OK;\n")
         b_ret_er = true
@@ -180,7 +180,7 @@ EOT
     file.print("    int16_t  func_id_ = #{func_id};    /* id of #{func_name}: #{func_id} */\n")
 
     # シングルトンでないか？
-    if ! b_singleton
+    if !b_singleton
 
       # singleton でなければ p_cellcb 取得コードを出力
       file.print <<EOT
@@ -234,13 +234,13 @@ EOT
     file.print "    /* 入力引数送出 */\n"
     print_params(params, file, 1, b_marshal, b_get, true, func_type.is_oneway?)
     print_params(params, file, 1, b_marshal, b_get, false, func_type.is_oneway?)
-    if ! b_void && ! func_type.is_oneway?
+    if !b_void && !func_type.is_oneway?
       ret_ptr_type = PtrType.new(func_type.get_type)
       print_param_nc("retval_", ret_ptr_type, file, 1, :RETURN, "&", nil, b_get)
     end
 
     file.print "    /* EOPの送出（パケットの掃きだし） */\n"
-    if ! func_type.is_oneway?
+    if !func_type.is_oneway?
       b_continue = "true"
     else
       b_continue = "false"
@@ -248,7 +248,7 @@ EOT
     file.print "    if( (ercd_=cTDR_sendEOP(#{b_continue})) != E_OK )\n"
     file.print "        goto error_reset;\n\n"
 
-    if ! func_type.is_oneway?
+    if !func_type.is_oneway?
       file.print <<EOT
     if( (ercd_=cEventflag_wait( 0x01, TWF_ANDW, &flgptn )) != E_OK ){
       ercd_ = ERCD(E_RPC,ercd_);
@@ -399,7 +399,7 @@ EOT
   def print_params(params, file, nest, b_marshal, b_get, b_referenced, b_oneway = false)
     params.each{ |param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
-      if ! (b_referenced == param.is_referenced?)
+      if !(b_referenced == param.is_referenced?)
         next
       end
 
@@ -529,7 +529,7 @@ EOT
         end
       }
       members_decl.get_items.each { |m|
-        if ! m.is_referenced?
+        if !m.is_referenced?
           print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)
         end
       }
@@ -612,7 +612,7 @@ EOT
       }
 
       # 戻り値を受け取る変数の定義
-      if ! b_void
+      if !b_void
         if f.is_oneway?
           retval_ptr = ""   # oneway の場合、受け取るが捨てられる
         else
@@ -627,7 +627,7 @@ EOT
       b_marshal  = false
       print_params(param_list, file, 1, b_marshal, b_get, true, f.is_oneway?)
       print_params(param_list, file, 1, b_marshal, b_get, false, f.is_oneway?)
-      if ! b_void && ! f.is_oneway?
+      if !b_void && !f.is_oneway?
         ret_ptr_type = PtrType.new(f_type.get_type)
         print_param_nc("retval_", ret_ptr_type, file, 2, :RETURN, nil, nil, b_get)
       end
@@ -635,7 +635,7 @@ EOT
       # パケットの受信完了
       # mikan 本当は、対象関数を呼出す後に実施したい．呼出しパケットの使用終わりを宣言する目的として
       file.print "        /* パケット終わりをチェック */\n"
-      if ! f.is_oneway?
+      if !f.is_oneway?
         b_continue = "true"
       else
         b_continue = "false"
@@ -662,7 +662,7 @@ EOT
       # 戻り値、出力引数の受取コードの生成
 
       # oneway の場合出力、戻り値が無く、受取を待たない（非同期な呼出し）
-      if ! f.is_oneway?
+      if !f.is_oneway?
         file.print <<EOT
     /* 関数処理の終了を通知 */
     if( ( ercd_ = cEventflag_set( 0x01 ) ) != E_OK ){

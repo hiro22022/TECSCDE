@@ -159,7 +159,7 @@ EOT
       header_file.print(" );\n")
 
       # call function in call port
-      if ! ret_type.is_void?
+      if !ret_type.is_void?
         file.print("  #{ret_type.get_type_str}  retval;\n")
         file.print("  retval = ")
       else
@@ -175,7 +175,7 @@ EOT
       }
       file.print(" );\n")
 
-      if ! ret_type.is_void?
+      if !ret_type.is_void?
         file.print("  return retval;\n")
       end
       file.print("}\n\n")
@@ -201,7 +201,7 @@ EOT
   #===  set_header_name - header_name プラグインオプション
   def set_header_name(rhs)
     @header_name = "#{$gen}/" + rhs.to_s
-    if ! (@header_name =~ /\.h\Z/)
+    if !(@header_name =~ /\.h\Z/)
       @header_name += ".h"
     end
   end

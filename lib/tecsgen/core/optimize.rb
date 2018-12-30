@@ -281,7 +281,7 @@ class Celltype
       # セルの参照するセルを集める（ポートも一緒に集める）
       @cell_list.each{ |cell|
 
-        if ! cell.is_generate?
+        if !cell.is_generate?
           next
         end
 
@@ -355,7 +355,7 @@ class Celltype
 
           # 呼び口は optional で初期化されていない、または受け口は配列ではないか？
           if port_ports[0] == nil || port_ports[0].get_array_size == nil
-            if ! @singleton
+            if !@singleton
               port.set_skelton_useless                    # スケルトン関数不要最適化
               port.set_VMT_useless                        # VMT 不要最適化 (スケルトン関数 or 受け口関数を呼出す)
 
@@ -396,7 +396,7 @@ class Celltype
       # セルの参照するセルを集める（ポートも一緒に集める）
       @cell_list.each{ |cell|
 
-        if ! cell.is_generate?
+        if !cell.is_generate?
           next
         end
 

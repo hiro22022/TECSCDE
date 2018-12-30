@@ -239,7 +239,7 @@ module TECSCDE
       # p "OBJECT CLASS #{object.class}"
       if object.instance_of?(::Port)
         if object.get_port_type == :CALL
-          if ! object.is_require?
+          if !object.is_require?
             lhs_cell = cell_list[cell]
             cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
             if cport == nil
@@ -321,7 +321,7 @@ module TECSCDE
               next
             end
             if subscript
-              if ! port.is_array?
+              if !port.is_array?
                 p "port '#{port_name}' : 'subscript' specified but not array"
                 next
               end
@@ -412,7 +412,7 @@ module TECSCDE
             # p "2"
             b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0].to_sym
-            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar)
+            if (b_vertical  && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
 
@@ -540,7 +540,7 @@ module TECSCDE
     # output cell definition
     def save_cells(f)
       @cell_list.each{ |cell|                           # mikan region
-        if ! cell.is_editable?
+        if !cell.is_editable?
           next
         end
 
@@ -759,7 +759,7 @@ EOT
             # p "2"
             b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0]
-            if (b_vertical  && bar_type == :HBar) || (! b_vertical && bar_type == :VBar)
+            if (b_vertical  && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
               # bar_list: [ [:HBar, pos]

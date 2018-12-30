@@ -364,7 +364,7 @@ class TECSGEN
         else
           $gen = $gen_base + "/" + region.get_global_name.to_s
           begin
-            if ! File.directory?($gen)
+            if !File.directory?($gen)
               Dir.mkdir($gen)
             end
           rescue
@@ -385,7 +385,7 @@ class TECSGEN
         @root_namespace.set_cell_id_and_domain      # セルの ID とドメイン情報を設定（linkunit 毎に0からつける）
 
         # エラーが発生していたら、最適化は実施しない
-        if ! $unopt
+        if !$unopt
           dbgPrint("## Optimizing: Link Region=#{@root_namespace.get_name}\n")
           @root_namespace.optimize
         end

@@ -75,7 +75,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@serverChannelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: serverChannelCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -87,7 +87,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@clientChannelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: clientChanneclCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -131,7 +131,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@taskCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: taskCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -153,7 +153,7 @@ module GenOpaqueMarshaler
     # obj = Namespace.find( path )
     nsp = NamespacePath.analyze(@TDRCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: TDRCelltype '#{rhs}' not celltype or not found")
     end
   end
@@ -169,7 +169,7 @@ module GenOpaqueMarshaler
       str.strip!
       token = nil
       res = str.sub!(regexp){ |matched|  token = matched;  "" }
-      if ! token
+      if !token
         cdl_error("syntax error in substituteAllocator option near '#{str}', expected '#{expected}'")
       end
       return token
@@ -181,25 +181,25 @@ module GenOpaqueMarshaler
     # "Alloc.eAlloc=>CAlloc.eAlloc" の形式になっていることをチェック
     while true
       lhs_alloc_cell = optparse(opt, ident_rexpr, "allocator cell name")
-      break if ! lhs_alloc_cell
+      break if !lhs_alloc_cell
 
       res = optparse(opt, /\A\./, ".")
-      break if ! res
+      break if !res
 
       lhs_alloc_ent = optparse(opt, ident_rexpr, "allocator cell entry name")
-      break if ! lhs_alloc_ent
+      break if !lhs_alloc_ent
 
       res = optparse(opt, /\A\=\>/, "=>")
-      break if ! res
+      break if !res
 
       rhs_alloc_cell = optparse(opt, ident_rexpr, "allocator cell name")
-      break if ! rhs_alloc_cell
+      break if !rhs_alloc_cell
 
       res = optparse(opt, /\A\./, ".")
-      break if ! res
+      break if !res
 
       rhs_alloc_ent = optparse(opt, ident_rexpr, "allocator cell entry name")
-      break if ! rhs_alloc_ent
+      break if !rhs_alloc_ent
 
 #  ここでは、右辺のチェックはできない。右辺のセルは前方参照となる
 #      path = [ "::", rhs_alloc_cell.to_sym ]   # mikan namespace
@@ -224,7 +224,7 @@ module GenOpaqueMarshaler
       break if opt.empty?
 
       res = optparse(opt, /\A\,/, ",")
-      break if ! res
+      break if !res
     end
   end
 
@@ -245,7 +245,7 @@ module GenOpaqueMarshaler
     @semaphoreCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@semaphoreCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("RPCPlugin: clientSemaphoreCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -304,7 +304,7 @@ module GenOpaqueMarshaler
     # signature で対応できないものをチェック
     @signature.each_param{ |func_decl, param_decl|
       if param_decl.get_direction == :OUT
-        if param_decl.get_count && ! param_decl.get_size
+        if param_decl.get_count && !param_decl.get_size
           cdl_error("#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: size_is must be specified for out parameter of Opaque RPC")
         end
         if param_decl.get_string == -1
@@ -399,7 +399,7 @@ EOT
     type = func_type.get_type.get_original_type
 
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
-    if ! type.is_void?
+    if !type.is_void?
       file.print("\t#{func_type.get_type.get_type_str}\t\tretval_;\n")
       if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
         b_ret_er = true
@@ -417,7 +417,7 @@ EOT
     file.print("\tint16_t\tfunc_id_ = #{func_id};	/* (id of '#{func_name}') = #{fid}*/\n")
 
     # シングルトンでないか？
-    if ! b_singleton
+    if !b_singleton
 
       # singleton でなければ p_cellcb 取得コードを出力
       file.print <<EOT
@@ -488,7 +488,7 @@ EOT
     end
     print_out_nullable(params, file, 1, b_marshal);
 
-    if ! func_type.is_oneway?
+    if !func_type.is_oneway?
       b_continue = "true"
     else
       b_continue = "false"
@@ -507,7 +507,7 @@ EOT
       file.print "\n"
     end
 
-    if ! func_type.is_oneway?
+    if !func_type.is_oneway?
 
       file.print "	/* パケットの始まりをチェック */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_RECV_SOP );\n"
@@ -783,7 +783,7 @@ EOT
         end
       }
 
-      if ! b_void
+      if !b_void
         file.printf("	%-12s retval_%s%s;\n", f_type.get_type.get_type_str, f_type.get_type.get_type_str_post, init_retval)
       end
 
@@ -800,7 +800,7 @@ EOT
       # パケットの受信完了
       file.print "	/* パケット終わりをチェック */\n"
       file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_RECV_EOP );\n"
-      if ! f_type.is_oneway?
+      if !f_type.is_oneway?
         b_continue = "true"
       else
         b_continue = "false"
@@ -835,7 +835,7 @@ EOT
       # 戻り値、出力引数の受取コードの生成
 
       # oneway の場合出力、戻り値が無く、受取を待たない（非同期な呼出し）
-      if ! f.is_oneway?
+      if !f.is_oneway?
 
         file.print "\n	/* SOPの送出 */\n"
         file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_SEND_SOP );\n"
@@ -844,7 +844,7 @@ EOT
         file.print "		goto error_reset;\n"
 
         b_get = false     # unmarshaler は put
-        if(! b_void)
+        if(!b_void)
           file.print "	/* 戻り値の送出 */\n"
           print_param("retval_", f_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
         end
@@ -922,7 +922,7 @@ EOT
   def print_params(params, file, nest, b_marshal, b_get, b_referenced, port_name, func_name)
     params.each{ |param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
-      if ! (b_referenced == param.is_referenced?)
+      if !(b_referenced == param.is_referenced?)
         next
       end
 
@@ -1078,7 +1078,7 @@ EOT
     indent = "\t" * nest
     params.each{ |param|
       next if param.get_direction != :OUT
-      next if ! param.is_nullable?
+      next if !param.is_nullable?
       if b_marshal
         file.print "#{indent}if( (ercd_=cTDR_putInt8( (int8_t)(#{param.get_name} == NULL) )) != E_OK )\n"
         file.print "#{indent}\tgoto error_reset;\n"

@@ -208,7 +208,7 @@ end
 
 #=== $KCODE を設定
 def set_kcode(kcode)
-  if ! $b_no_kcode
+  if !$b_no_kcode
     $KCODE = kcode
   end
 end
@@ -268,7 +268,7 @@ class TECSGEN
     require "kconv"
     $b_no_kcode = RUBY_VERSION >= "1.9.0" ? true : false
     # Use Ruby 1.9 M17N code (use Ruby 1.8 code if false).
-    if ! $b_no_kcode
+    if !$b_no_kcode
       require "jcode"
     end
     require "pp"
@@ -463,7 +463,7 @@ class TECSGEN
       parser.parse!
     }
 
-    if ARGV.empty? && ! $print_version && ! $unit_test
+    if ARGV.empty? && !$print_version && !$unit_test
       ARGV.options{|parser|
         puts parser.help
         exit 1
@@ -481,7 +481,7 @@ class TECSGEN
     require "tecsgen/version"
     if $tecscde_version
       STDERR << "tecscde version #{$tecscde_version} (tecsgen version #{$version})  #{$Copyright}\n"
-    elsif ! $no_banner || $print_version
+    elsif !$no_banner || $print_version
       STDERR << "tecsgen  version #{$version}  #{$Copyright}\n"
     end
     if $verbose
@@ -570,7 +570,7 @@ class TECSGEN
 
     # gen ディレクトリの作成
     begin
-      if ! File.directory?($gen_base)
+      if !File.directory?($gen_base)
         Dir.mkdir($gen_base)
       end
     rescue

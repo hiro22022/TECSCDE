@@ -350,7 +350,7 @@ end
 
 # Copy from original tecgen.rb
 def set_kcode(kcode)
-  if ! $b_no_kcode
+  if !$b_no_kcode
     $KCODE = kcode
   end
 end

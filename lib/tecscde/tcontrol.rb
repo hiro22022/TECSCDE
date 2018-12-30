@@ -124,7 +124,7 @@ Structure of Palette Window
     end
     def on_export
       fname = @model.get_file_editing.sub(/\.[Cc][Dd][Ee]\Z/, ".pdf")
-      if ! (fname =~ /\.pdf\Z/)
+      if !(fname =~ /\.pdf\Z/)
         fname += ".pdf"
       end
       flush_print "export to #{fname}\n"
@@ -159,7 +159,7 @@ Structure of Palette Window
     end
     def on_cell_name_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
-      if ! @b_cell_renaming
+      if !@b_cell_renaming
         @hilite_objs.change_cell_name entry.text
         update
       end
@@ -239,7 +239,7 @@ Structure of Palette Window
             @hilite_objs.add(object)
           elsif state.control_mask?
             @hilite_objs.add_del(object)
-          elsif ! @hilite_objs.include? object
+          elsif !@hilite_objs.include? object
             @hilite_objs.reset(object)
           end
           @view.draw_hilite_objects @hilite_objs

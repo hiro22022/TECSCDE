@@ -82,24 +82,24 @@ class TOOL_INFO
     if validator.validate || $b_force_apply_tool_info
       info = TOOL_INFO.get_tool_info(:tecsgen)
       (info[:base_dir]).each{ |bd|
-        if ! $base_dir.include? bd
+        if !$base_dir.include? bd
           $base_dir[bd] = true
         end
       }
 
       info[:import_path].each{ |path|
-        if ! $import_path.include?(path)
+        if !$import_path.include?(path)
           $import_path << path
         end
       }
 
       info[:define_macro].each{ |define|
-        if ! $define.include?(define)
+        if !$define.include?(define)
           $define << define
         end
       }
       if info[:cpp]
-        if ! $b_cpp_specified
+        if !$b_cpp_specified
           $cpp = info[:cpp]
           $b_cpp_specified = true
         end
@@ -180,7 +180,7 @@ class TOOL_INFO
     end
 
     def validate_array_member(array, val_types, path)
-      if ! array.kind_of? Array
+      if !array.kind_of? Array
         error("#{path2}: array required as value\n")
         return
       end

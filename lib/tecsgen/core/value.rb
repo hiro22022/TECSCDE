@@ -390,7 +390,7 @@ class BoolVal < BaseVal
   end
 
   def not # ! val
-    BoolVal.new(! @val)
+    BoolVal.new(!@val)
   end
   def eq(val) # == val
     if val.kind_of? BoolVal

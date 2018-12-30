@@ -170,7 +170,7 @@ class HRPPlugin < DomainPlugin
       file = AppFile.open("#{$gen}/tecsgen.cfg")
       file.print "/* HRPPlugin 002 */\n"
       regions.each{ |region|
-        if ! region.is_root?
+        if !region.is_root?
           nsp = "#{region.get_global_name}"
           file2 = AppFile.open("#{$gen}/tecsgen_#{nsp}.cfg")
           file2.close
@@ -211,7 +211,7 @@ class HRPPlugin < DomainPlugin
           # next if HRPKernelObjectManager.include_celltype?( ct.get_name )
 
           # 必要のないセルタイプのコード，データはメモリ保護しない
-          next if ! ct.need_generate?
+          next if !ct.need_generate?
 
           # HRPのドメインリージョンを取得
           regions = ct.get_domain_roots
@@ -244,7 +244,7 @@ class HRPPlugin < DomainPlugin
           }
 
           # セルタイプコードがない場合はスキップ
-          next if ct.is_all_entry_inline? && ! ct.is_active?
+          next if ct.is_all_entry_inline? && !ct.is_active?
 
           # セルタイプコードのメモリ保護
           # gen_celltype_names_domain2 相当の処理

@@ -268,7 +268,7 @@ EOT
     end
 
     @name_list.get_items.each{ |attr|
-      if ! attr.instance_of? Decl
+      if !attr.instance_of? Decl
         next
       end
       file.print <<EOT
@@ -286,7 +286,7 @@ EOT
 EOT
     }
     @name_list.get_items.each{ |port|
-      if ! port.instance_of? Port
+      if !port.instance_of? Port
         next
       end
       port_type = port.get_port_type == :CALL ? "call" : "entry"

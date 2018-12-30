@@ -120,7 +120,7 @@ module TECSCDE
       end
 
       def add(tm_object)
-        if ! @set.has_key?(tm_object)
+        if !@set.has_key?(tm_object)
           # flush_print "add_change_set #{tm_object.class} number=#{@number}\n"
           @set[tm_object] = tm_object.clone_for_undo
         end
@@ -352,14 +352,14 @@ module TECSCDE
     def rename_cell(cell, new_name)
       modified {
 
-        if ! new_name.kind_of? Symbol
+        if !new_name.kind_of? Symbol
           raise "cell name not Symbol"
         end
         if cell.get_name == new_name
           return true
         end
 
-        if ! (new_name =~ IDENTIFIER_RE)
+        if !(new_name =~ IDENTIFIER_RE)
           TECSCDE.message_box("'#{new_name}' has unsuitable character for identifier", nil)
           return false
         end
@@ -602,7 +602,7 @@ module TECSCDE
             end
             # end
           else
-            if ! port_def.is_require?
+            if !port_def.is_require?
               if port_def.get_array_size == nil
                 @cports[port_def.get_name] = TmCPort.new(self, port_def)
               else
@@ -644,7 +644,7 @@ module TECSCDE
 
       #=== TmCell#delete ***
       def delete
-        if ! is_editable?
+        if !is_editable?
           return
         end
         modified {
@@ -894,7 +894,7 @@ module TECSCDE
         end
 
         if cport_subscript == nil
-          if ! cp.is_array?
+          if !cp.is_array?
             return cp
           else
             TECSCDE.error("TM9999 cell #{@name}.#{cport_name} is call port array")
@@ -918,7 +918,7 @@ module TECSCDE
         end
 
         if eport_subscript == nil
-          if ! ep.is_array?
+          if !ep.is_array?
             return ep
           else
             TECSCDE.error("TM9999 cell #{@name}.#{eport_name} is entry port array")
@@ -962,7 +962,7 @@ module TECSCDE
           end
         }
         @cports.each{ |name, cport|
-          if (! cport.complete?) && (! cport.is_optional?)
+          if (!cport.complete?) && (!cport.is_optional?)
             return false
           end
         }
@@ -1259,7 +1259,7 @@ EOT
 
       def complete?
         @ports.each{ |port|
-          if ! port.complete?
+          if !port.complete?
             return false
           end
         }
@@ -1325,7 +1325,7 @@ EOT
       #=== TmCPortArray#complete?
       def complete?
         @ports.each{ |port|
-          if ! port.complete?
+          if !port.complete?
             return false
           end
         }
@@ -1521,7 +1521,7 @@ EOT
       #=== TmPort#delete_hilited
       # delete_hilited if this port is a member of unsubscripted array.
       def delete_hilited
-        if ! @owner.is_editable?
+        if !@owner.is_editable?
           return
         end
         if @owner.kind_of? TmPortArray
@@ -1930,7 +1930,7 @@ EOT
 
       #=== TmJoin#delete ***
       def delete
-        if ! is_editable?
+        if !is_editable?
           return
         end
         modified {

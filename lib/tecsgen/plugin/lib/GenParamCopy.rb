@@ -158,7 +158,7 @@ EOT
 
           # size_is に max 指定がある場合、length が max を超えているかチェックするコードを生成
               # alloc_cp == nil のとき dir は INOUT, OUT のはず (条件が冗長)。試験が終わっているので、次回見直し時に外す
-          if b_get && !type.get_max.nil? && ! ((dir == :INOUT || dir == :OUT) && alloc_cp == nil)
+          if b_get && !type.get_max.nil? && !((dir == :INOUT || dir == :OUT) && alloc_cp == nil)
             file.print "#{indent}	if( length__#{nest} > #{type.get_max.to_s} ){\t/* GenParamCopy max check 1 */\n"
             file.print "#{indent}		ercd_ = E_PAR;\n"
             file.print "#{indent}		goto error_reset;\n"
@@ -175,7 +175,7 @@ EOT
             cdl_error("R9999 $1: string specifier cannot be specified to '$2' in current implementation",
                        name, type.get_type.get_type_str + type.get_type.get_type_str_post)
           end
-          if ! b_get
+          if !b_get
             if  string.instance_of? Expression
               len = string.to_str(name_list, outer, outer2)
               file.print "#{indent}	length__#{nest} = STRNLEN#{b_size}(#{outer}#{name}#{outer2},(#{len}-1))+1;\t/* GenParamCopy 6 */\n"
@@ -252,7 +252,7 @@ EOT
         end
       }
       members_decl.get_items.each { |m|
-        if ! m.is_referenced?
+        if !m.is_referenced?
           print_param0(m.get_name, m.get_type, file, nest, dir, "#{outer}#{name}#{outer2}.", nil, b_marshal, b_get, alloc_cp, alloc_cp_extra, members_decl)
         end
       }
@@ -294,7 +294,7 @@ EOT
       else # dir = :IN, :INOUT, :SEND, :RECEIVE
         if b_get
           file.print "#{indent}{\n"
-          if ! (dir == :INOUT && b_marshal == true)
+          if !(dir == :INOUT && b_marshal == true)
             file.print <<EOT
 #{indent}	int8_t  b_null_;
 #{indent}	if((ercd_=cTDR_getInt8( &b_null_ )) != E_OK )\t/* GenParamCopy Null 20 */
@@ -313,7 +313,7 @@ EOT
 #{indent}	int8_t  b_null_ = (int8_t)(#{outer}#{name}#{outer2} == NULL);\t/* GenParamCopy Null 31 */
 EOT
 
-          if ! (dir == :INOUT && b_marshal == false)
+          if !(dir == :INOUT && b_marshal == false)
             # dir = :INOUT, b_marshal = false, b_get = false の場合
             file.print <<EOT
 #{indent}	if((ercd_=cTDR_putInt8( b_null_ )) != E_OK )\t/* GenParamCopy Null 32 */
@@ -342,7 +342,7 @@ EOT
         nest -= 2
         indent = "	" * nest
         if b_get
-          if ! (dir == :INOUT && b_marshal == true)
+          if !(dir == :INOUT && b_marshal == true)
             file.print <<EOT
 
 #{indent}	} else { /* null  GenParamCopy Null 51 */

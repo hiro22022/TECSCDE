@@ -448,7 +448,7 @@ class IntType < Type
       return
     end
 
-    if ! val.kind_of? IntegerVal
+    if !val.kind_of? IntegerVal
       cdl_error2(locale, "T1012 $1: $2: not integer", ident, val)
       return
     end
@@ -657,7 +657,7 @@ class FloatType < Type
     elsif val == nil
       cdl_error2(locale, "T1019 $1: initializer is not constant", ident)
       return
-    elsif ! val.kind_of?(IntegerVal) && ! val.kind_of?(FloatVal)
+    elsif !val.kind_of?(IntegerVal) && !val.kind_of?(FloatVal)
       cdl_error2(locale, "T1037 $1: not number", ident)
       return
     end
@@ -826,7 +826,7 @@ class StructType < Type
     if initializer.instance_of?(Expression)
       t = initializer.get_type(attribute)
       # print "Check init #{t.class} #{t.get_name}\n"
-      if ! t.kind_of?(StructType)
+      if !t.kind_of?(StructType)
         if t
           str = t.get_type_str
         else
@@ -867,7 +867,7 @@ class StructType < Type
         val = size.eval_const(@members_decl)
         if val == nil
           type = size.get_type(@members_decl)
-          if ! type.kind_of?(IntType)
+          if !type.kind_of?(IntType)
             cdl_error("T1025 size_is argument is not integer type")
           end
         end
@@ -877,7 +877,7 @@ class StructType < Type
         val = count.eval_const(@members_decl)
         if val == nil
           type = count.get_type(@members_decl)
-          if ! type.kind_of?(IntType)
+          if !type.kind_of?(IntType)
             cdl_error("T1026 count_is argument is not integer type")
           end
         end
@@ -889,7 +889,7 @@ class StructType < Type
         val = string.eval_const(@members_decl)
         if val == nil
           type = string.get_type(@members_decl)
-          if ! type.kind_of?(IntType)
+          if !type.kind_of?(IntType)
             cdl_error("T1027 string argument is not integer type")
           end
         end
@@ -1599,7 +1599,7 @@ class DescriptorType < Type
   def check_signature
     # p "Desc #{@signature_nsp.to_s}"
     obj = Namespace.find @signature_nsp
-    if ! obj.kind_of? Signature
+    if !obj.kind_of? Signature
       cdl_error("T9999 '$1': not signature or not found", @signature_nsp.to_s)
     else
       if obj.has_descriptor?

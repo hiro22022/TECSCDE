@@ -164,13 +164,13 @@ EOT
   end
 
   def gen_ep_func_body(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
-    if ! func_type.get_type.is_void?
+    if !func_type.get_type.is_void?
       file.print("\t#{func_type.get_type_str}\tretval;\n")
     end
 
     file.print("\tSYSUTM\tutime;\n")
 
-    if ! b_singleton
+    if !b_singleton
 
       file.print <<EOT
 \t#{ct_name}_CB *p_cellcb;
@@ -195,7 +195,7 @@ EOT
     print_params(params, file, 0, :IN)
 
     delim = ""
-    if ! func_type.get_type.is_void?
+    if !func_type.get_type.is_void?
       file.print("\tretval = ")
     else
       file.print("\t")
@@ -221,7 +221,7 @@ EOT
 
     print_params(params, file, 0, :OUT)
 
-    if(! func_type.get_type.is_void?)
+    if(!func_type.get_type.is_void?)
       print_param("retval", func_type.get_type, file, 0, :RETURN, func_type.get_type.get_type_str, nil, nil)
       file.print("\treturn retval;\n")
     end
@@ -467,7 +467,7 @@ EOT
     @kernelCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@kernelCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("TracePlugin: kernelCelltype '#{rhs}' not celltype or not defined")
     end
   end
@@ -477,7 +477,7 @@ EOT
     @syslogCelltype = rhs.to_sym
     nsp = NamespacePath.analyze(@syslogCelltype.to_s)
     obj = Namespace.find(nsp)
-    if ! obj.instance_of?(Celltype) && ! obj.instance_of?(CompositeCelltype)
+    if !obj.instance_of?(Celltype) && !obj.instance_of?(CompositeCelltype)
       cdl_error("TracePlugin: syslogCelltype '#{rhs}' not celltype or not defined")
     end
   end
