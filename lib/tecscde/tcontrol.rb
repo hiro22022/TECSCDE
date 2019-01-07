@@ -320,13 +320,13 @@ EOT
       case @sub_mode
       when :SM_MOVING_CELL_BAR
         # p "move hilite obj"
-        @hilite_objs.each{ |cell_bar|
+        @hilite_objs.each{|cell_bar|
           cell_bar.move(x_inc2, y_inc2)
         }
         @view.refresh_canvas
         @view.draw_hilite_objects @hilite_objs
       when :SM_MOVING_CPORT, :SM_MOVING_EPORT
-        @hilite_objs.each{ |port|
+        @hilite_objs.each{|port|
           port.move(x_inc2, y_inc2)
         }
         update
@@ -385,7 +385,7 @@ EOT
 
       case keyval
       when 0xff     # delete key
-        @hilite_objs.each{ |object|
+        @hilite_objs.each{|object|
           if object.kind_of? TECSModel::TmJoinBar
             object.get_join.delete
           elsif object.kind_of? TECSModel::TmCell
@@ -396,7 +396,7 @@ EOT
         }
         @hilite_objs.reset
       when 0x63     # Insert
-        @hilite_objs.each{ |object|
+        @hilite_objs.each{|object|
           if object.kind_of? TECSModel::TmPort
             object.insert(state.shift_mask? ? :before : :after)
           end
@@ -412,7 +412,7 @@ EOT
         when 0x54     # down arrow
           x_inc = 0.0; y_inc = TECSModel.get_alignment
         end
-        @hilite_objs.each{ |obj|
+        @hilite_objs.each{|obj|
           obj.move(x_inc, y_inc)
         }
       when 0x50     # home
@@ -431,7 +431,7 @@ EOT
     #=== find_near object
     # RETURN::TmCell, TmPort, TmJoin
     def find_near(xm, ym)
-      @model.get_cell_list.each{ |cell|
+      @model.get_cell_list.each{|cell|
         port = cell.get_near_port(xm, ym)
         if !port.nil?
           # p "found port"
@@ -447,7 +447,7 @@ EOT
       # find nearest bar
       min_dist = 999999999
       min_bar = nil
-      @model.get_join_list.each{ |join|
+      @model.get_join_list.each{|join|
         bar, dist = join.get_near_bar(xm, ym)
         if dist < min_dist
           min_dist = dist
@@ -466,7 +466,7 @@ EOT
     def add_celltype_list
       ctl = @model.get_celltype_list
       if ctl
-        ctl.each{ |ct|
+        ctl.each{|ct|
           @celltypeTreeView.add ct
         }
       end
@@ -594,7 +594,7 @@ EOT
 
       # ATTRIBUTE column
       col = Gtk::TreeViewColumn.new("attribute", renderer, :text => COL_NAME)
-      col.set_cell_data_func(renderer) { |col, renderer, model, iter|
+      col.set_cell_data_func(renderer) {|col, renderer, model, iter|
         if iter[COL_VALUE] == nil || iter[COL_VALUE] == ""
           renderer.foreground = "red"
         elsif @cell.is_editable?
@@ -607,7 +607,7 @@ EOT
 
       # TYPE column
       col = Gtk::TreeViewColumn.new("type", renderer, :text => COL_TYPE)
-      col.set_cell_data_func(renderer) { |col, renderer, model, iter|
+      col.set_cell_data_func(renderer) {|col, renderer, model, iter|
         if @cell.is_editable?
           renderer.foreground = "black"
         else
@@ -621,7 +621,7 @@ EOT
       renderer.text_column = 0
       renderer.model = combo_list
       col = Gtk::TreeViewColumn.new("value", renderer, :text => COL_VALUE)
-      col.set_cell_data_func(renderer) { |col, renderer, model, iter|
+      col.set_cell_data_func(renderer) {|col, renderer, model, iter|
         # p "iter[0]=#{iter[0]}"
         if @cell.get_attr_list[iter[COL_NAME].to_sym] == nil
           renderer.foreground = "orange"
@@ -668,7 +668,7 @@ EOT
         end
 =end
       }
-      renderer.signal_connect("edited") { |w, path, new_text|
+      renderer.signal_connect("edited") {|w, path, new_text|
         # new_text can be wrong if 'text_column' is changed in each row
         # after selection is changed, before sending signal, many rows are redrawn
 
@@ -706,7 +706,7 @@ EOT
       ct = @cell.get_celltype
       if ct
         #----- register attributes and initializer to tree view model -----#
-        ct.get_attribute_list.each{ |attr|
+        ct.get_attribute_list.each{|attr|
           iter = @treeView.model.append
           name = attr.get_name.to_s
           if attr.get_initializer
@@ -726,7 +726,7 @@ EOT
           #----- choice list model -----#
           if attr.get_choice_list
             @choice_list[name] = Gtk::ListStore.new(String)
-            attr.get_choice_list.each{ |choice|
+            attr.get_choice_list.each{|choice|
               iter = @choice_list[name].append
               iter[0] = CDLString.remove_dquote(choice.val)
             }
@@ -810,7 +810,7 @@ EOT
 
     def each # proc
       proc = Proc.new
-      @hilite_objs.each{ |obj|
+      @hilite_objs.each{|obj|
         proc.call obj
       }
     end
@@ -847,7 +847,7 @@ EOT
     def update_attrTreeView
       cell = nil
       n_cell = 0
-      each{ |obj|
+      each{|obj|
         if obj.kind_of? TECSModel::TmCell
           cell = obj
           n_cell += 1

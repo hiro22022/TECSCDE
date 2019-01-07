@@ -100,7 +100,7 @@ class HRP2PostHook
           file.close
 
           # セル管理ブロックの保護
-          rlist.each { |reg|
+          rlist.each {|reg|
             file = AppFile.open("#{$gen}/tecsgen_#{reg.get_param.to_s}.cfg")
               file.print "ATT_MOD(\"#{@celltype.get_global_name}_#{reg.get_name.to_s}_tecsgen.o\");\n"
               file.close

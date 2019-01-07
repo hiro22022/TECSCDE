@@ -39,7 +39,7 @@
 
 class RepeatJoinPlugin < CellPlugin
   RepeatJoinPluginArgProc = {
-    "count" => Proc.new { |obj, rhs| obj.set_count rhs }
+    "count" => Proc.new {|obj, rhs| obj.set_count rhs }
   }
 
   def initialize(cell, option)
@@ -49,7 +49,7 @@ class RepeatJoinPlugin < CellPlugin
     @plugin_arg_check_proc_tab = RepeatJoinPluginArgProc
     parse_plugin_arg
 
-    @cell.get_join_list.get_items.each{ |j|
+    @cell.get_join_list.get_items.each{|j|
       # print "Join: #{j.get_name} = #{j.get_rhs.to_s}\n"
 
       # Join の右辺を解析

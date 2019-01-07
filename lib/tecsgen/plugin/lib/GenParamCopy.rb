@@ -246,12 +246,12 @@ EOT
       end
     when StructType
       members_decl =type.get_members_decl
-      members_decl.get_items.each { |m|
+      members_decl.get_items.each {|m|
         if m.is_referenced?
           print_param0(m.get_name, m.get_type, file, nest, dir, "#{outer}#{name}#{outer2}.", nil, b_marshal, b_get, alloc_cp, alloc_cp_extra, members_decl)
         end
       }
-      members_decl.get_items.each { |m|
+      members_decl.get_items.each {|m|
         if !m.is_referenced?
           print_param0(m.get_name, m.get_type, file, nest, dir, "#{outer}#{name}#{outer2}.", nil, b_marshal, b_get, alloc_cp, alloc_cp_extra, members_decl)
         end

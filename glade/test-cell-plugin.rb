@@ -12,7 +12,7 @@ main_window = builder["dialog_cell_plugin"]
 # @btn_quit = builder["quit"]
 label_cell_name = builder["label_cell_name"]
 
-builder.objects.each{ |obj|
+builder.objects.each{|obj|
   p obj
 }
 

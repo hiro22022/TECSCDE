@@ -68,7 +68,7 @@ class HRPObjectPlugin < HRPKernelObjectPlugin
           slice_end = -1
         end
         # p @plugin_arg_str, slice_end, val[:attribute], (val[:attribute] =~ /\bTA_CEILING\b/)
-        params.slice(2..slice_end).each { |attr|
+        params.slice(2..slice_end).each {|attr|
           arg_list << "#{val[attr]}"
         }
         file.print tab

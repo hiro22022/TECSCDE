@@ -51,36 +51,36 @@ class Namespace
   #===  各セルに ID （整数値）を割付ける
   def set_cell_id_and_domain
     # celltype の各セルに ID を割付ける
-    @celltype_list.each { |t|
+    @celltype_list.each {|t|
       t.set_cell_id_and_domain
     }
 
     # サブネームスペースの各セルに ID を割付ける
-    @namespace_list.each { |n|
+    @namespace_list.each {|n|
       n.set_cell_id_and_domain
     }
   end
 
   def optimize
     # celltype の最適化
-    @celltype_list.each { |t|
+    @celltype_list.each {|t|
       t.optimize
     }
 
     # サブネームスペースの最適化
-    @namespace_list.each { |n|
+    @namespace_list.each {|n|
       n.optimize
     }
   end
 
   def reset_optimize
     # celltype の最適化
-    @celltype_list.each { |t|
+    @celltype_list.each {|t|
       t.reset_optimize
     }
 
     # サブネームスペースの最適化
-    @namespace_list.each { |n|
+    @namespace_list.each {|n|
       n.reset_optimize
     }
   end
@@ -111,7 +111,7 @@ class Celltype
     no_id_specified_cells = []
 
     # プロトタイプを除いた数を求める
-    @cell_list.each{ |c|
+    @cell_list.each{|c|
       if c.is_generate?
         # c.set_id( @id_base + @n_cell_gen )
         id = c.get_specified_id
@@ -129,7 +129,7 @@ class Celltype
 
     @ordered_cell_list = [] # id = 1 が添数 0 に格納される
     # ID 指定されているセルに id 番号を与える
-    id_specified_cells.each{ |c|
+    id_specified_cells.each{|c|
       id = c.get_specified_id
       if id > 0
         if id >= @n_cell_gen
@@ -157,7 +157,7 @@ class Celltype
 
     # ID 指定されていないセルに id 番号を与える
     i = 0
-    no_id_specified_cells.each{ |c|
+    no_id_specified_cells.each{|c|
       while(!@ordered_cell_list[i].nil?)
         i += 1
       end
@@ -174,7 +174,7 @@ class Celltype
 
   def set_domain
     domain_cells = {}
-    @cell_list.each{ |c|
+    @cell_list.each{|c|
       if c.is_generate?
         dr = c.get_region.get_domain_root
         if dr.get_domain_type
@@ -195,20 +195,20 @@ class Celltype
       end
     }
 
-    @domain_roots.each{ |dn, drs|
+    @domain_roots.each{|dn, drs|
       drs.uniq!
       if $verbose && dn
         print "[domain] celltype=#{@name} domainType=#{dn} domainRootRegions={"
         delim = ""
-        drs.each{ |r|
+        drs.each{|r|
           print delim, r.get_name
           delim = ", "
         }
         print "}\n"
-        drs.each{ |r|
+        drs.each{|r|
           print "[domain] celltype=#{@name} domainRootRegion=#{r.get_name} domainType=#{dn} domainKind=#{r.get_domain_root.get_domain_type.get_kind} domainCells={"
           delim = ""
-          domain_cells[r].each{ |c|
+          domain_cells[r].each{|c|
             print delim, c.get_name
             delim = ", "
           }
@@ -221,7 +221,7 @@ class Celltype
       raise "ambigous DomainType"
     end
 
-    @domain_roots.each{ |dn, regions|
+    @domain_roots.each{|dn, regions|
       # domain_type は一つのノードに一つしかないので、一つの要素を無条件で取り出す
       if regions.length > 1
         cdl_info("I9999 celltype '$1' has cells in multi-domain.\n", @name)
@@ -247,7 +247,7 @@ class Celltype
 
   #=== Celltype#呼び口最適化
   def optimize_call
-    @port.each{ |port|
+    @port.each{|port|
       next if port.get_port_type != :CALL
       if port.is_omit?
         # 呼び口最適化実施
@@ -279,7 +279,7 @@ class Celltype
       port_ports = []    # 呼び先のポート
 
       # セルの参照するセルを集める（ポートも一緒に集める）
-      @cell_list.each{ |cell|
+      @cell_list.each{|cell|
 
         if !cell.is_generate?
           next
@@ -291,7 +291,7 @@ class Celltype
         if j
           if j.get_array_member2
             # 呼び口配列の場合、全部の結合先を集める
-            j.get_array_member2.each { |j2|
+            j.get_array_member2.each {|j2|
               if j2
                 port_cells << j2.get_rhs_cell
                 port_ports << j2.get_rhs_port # 右辺のポート
@@ -386,7 +386,7 @@ class Celltype
   # optimize_entry は、呼び口最適化の結果を使用している
   def optimize_entry
     # 受け口最適化の設定
-    @port.each{ |port|
+    @port.each{|port|
       next if port.get_port_type != :CALL
 
       # 呼び口側の最適化状態
@@ -394,7 +394,7 @@ class Celltype
       b_skelton_useless = port.is_skelton_useless?
 
       # セルの参照するセルを集める（ポートも一緒に集める）
-      @cell_list.each{ |cell|
+      @cell_list.each{|cell|
 
         if !cell.is_generate?
           next
@@ -406,7 +406,7 @@ class Celltype
         if j # optional で結合されていない場合 nil
           if j.get_array_member2
             # 呼び口配列
-            j.get_array_member2.each { |j2|
+            j.get_array_member2.each {|j2|
               if j2
                 port2 = j2.get_rhs_port # 右辺のポート
                 # 受け口側の最適化可能性を設定
@@ -433,7 +433,7 @@ class Celltype
     @b_cp_optimized = false  # 呼び口最適化
     @n_call_port_omitted_in_CB = 0 # 呼び口最適化により不生成となったポートの数
     @n_cell_gen = 0 # 生成セル個数
-    @port.each{ |p|
+    @port.each{|p|
       p.reset_optimize
     }
     @included_header = {}

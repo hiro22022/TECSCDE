@@ -43,9 +43,9 @@ class C2TECSBridgePlugin < SignaturePlugin
 
   # プラグイン引数名と Proc
   C2TECSBridgePluginArgProc = {
-    "prefix" => Proc.new { |obj, rhs| obj.set_prefix rhs },
-    "suffix" => Proc.new { |obj, rhs| obj.set_suffix rhs },
-    "header_name" => Proc.new { |obj, rhs| obj.set_header_name rhs },
+    "prefix" => Proc.new {|obj, rhs| obj.set_prefix rhs },
+    "suffix" => Proc.new {|obj, rhs| obj.set_suffix rhs },
+    "header_name" => Proc.new {|obj, rhs| obj.set_header_name rhs },
   }
 
 
@@ -134,7 +134,7 @@ EOT
 EOT
 
     # generate C functions calling function of call port
-    @signature.get_function_head_array.each { |func_head|
+    @signature.get_function_head_array.each {|func_head|
       func_name = func_head.get_name
       ret_type  = func_head.get_return_type
       params    = func_head.get_paramlist.get_items
@@ -149,7 +149,7 @@ EOT
       header_file.print("#{@prefix}#{func_name}#{@suffix}(")
 
       delim = ""
-      params.each{ |param|
+      params.each{|param|
         file.printf("#{delim} #{param.get_type.get_type_str} #{param.get_name}#{param.get_type.get_type_str_post}")
         header_file.printf("#{delim} #{param.get_type.get_type_str} #{param.get_name}#{param.get_type.get_type_str_post}")
         delim = ","
@@ -168,7 +168,7 @@ EOT
       file.print("cCall_#{func_name}(")
 
       delim = ""
-      params.each{ |param|
+      params.each{|param|
         file.printf("#{delim} #{param.get_name}")
         delim = ","
       }

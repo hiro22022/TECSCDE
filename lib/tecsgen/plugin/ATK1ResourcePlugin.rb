@@ -78,7 +78,7 @@ class ATK1ResourcePlugin < CelltypePlugin
   file3 = CFile.open("#{$gen}/#{@celltype.get_name}_factory.#{$h_suffix}", "w")
 
   # RESOURCE
-  @celltype.get_cell_list.each { |cell|
+  @celltype.get_cell_list.each {|cell|
 
     if cell.is_generate?
 

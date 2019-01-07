@@ -330,7 +330,7 @@ EOT
         #    end
 
         i = 0
-        params.each{ |param|
+        params.each{|param|
           delim = ","
             file.printf("#{delim} #{param.get_name}")
             i += 1
@@ -405,7 +405,7 @@ ER_UINT
 EOT
 
             num = 1
-            params.each{ |param|
+            params.each{|param|
               if param.get_declarator.get_ptr_level > 0
                 if param.get_direction == :IN
                   file2.print <<EOT
@@ -430,7 +430,7 @@ EOT
 
             delim = ""
             num = 1
-            params.each{ |param|
+            params.each{|param|
               file2.print "#{delim}"
                 delim = ", "
                 file2.print "(#{param.get_type.get_type_str})"

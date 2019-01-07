@@ -161,7 +161,7 @@ class ThroughPlugin < Plugin
 
     send_receive = []
     if !@signature.nil?
-      @signature.each_param{ |fd, param|
+      @signature.each_param{|fd, param|
         dir =param.get_direction
         case dir
         when :SEND, :RECEIVE
@@ -177,7 +177,7 @@ EOT
     if send_receive.length > 0
       file2.print "  [ allocator(\n"
       delim = ""
-      send_receive.each { |a|
+      send_receive.each {|a|
         file2.print "#{delim}\t#{a[1].get_name}.#{a[2].get_name}<=#{@call_port_name}.#{a[1].get_name}.#{a[2].get_name}"
         delim = ",\n"
       }
@@ -272,7 +272,7 @@ EOT
 #      delim = ","
 #    end
 
-    params.each{ |param|
+    params.each{|param|
       file.printf("#{delim} #{param.get_name}")
       delim = ","
     }

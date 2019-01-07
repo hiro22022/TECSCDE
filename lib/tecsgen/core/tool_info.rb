@@ -81,19 +81,19 @@ class TOOL_INFO
     validator = TOOL_INFO::VALIDATOR.new(:tecsgen, @@TECSGEN_schema)
     if validator.validate || $b_force_apply_tool_info
       info = TOOL_INFO.get_tool_info(:tecsgen)
-      (info[:base_dir]).each{ |bd|
+      (info[:base_dir]).each{|bd|
         if !$base_dir.include? bd
           $base_dir[bd] = true
         end
       }
 
-      info[:import_path].each{ |path|
+      info[:import_path].each{|path|
         if !$import_path.include?(path)
           $import_path << path
         end
       }
 
-      info[:define_macro].each{ |define|
+      info[:define_macro].each{|define|
         if !$define.include?(define)
           $define << define
         end
@@ -105,7 +105,7 @@ class TOOL_INFO
         end
       end
 
-      info[:direct_import] && info[:direct_import].each{ |import|
+      info[:direct_import] && info[:direct_import].each{|import|
         Import.new(import, false, false)
       }
     end
@@ -144,7 +144,7 @@ class TOOL_INFO
       obj_type = @schema[require_type]
       dbgPrint "validate_object: #{path}  object=#{obj_type[:type]}  required=#{object[:type]}\n"
 
-      obj_type.each{ |name, val_type|
+      obj_type.each{|name, val_type|
         val = object[name]
         path2 = path.to_s + "." + name.to_s
         if val == nil
@@ -162,7 +162,7 @@ class TOOL_INFO
       if optional
         dbgPrint "#{require_type.to_s} has optional\n"
 
-        optional.each{ |name, val_type|
+        optional.each{|name, val_type|
           val = object[name]
           path2 = path.to_s + "." + name.to_s
           if val == nil
@@ -185,7 +185,7 @@ class TOOL_INFO
         return
       end
       index=0
-      array.each{ |member|
+      array.each{|member|
         type = get_object_type member
         i = val_types.find_index type
         if i == nil

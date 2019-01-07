@@ -45,11 +45,11 @@ module GenTransparentMarshaler
 
   # プラグイン引数名と Proc
   RPCPluginArgProc = {
-    "taskPriority"    => Proc.new { |obj, rhs| obj.set_taskPriority rhs },
-    "channelCelltype" => Proc.new { |obj, rhs| obj.set_channelCelltype rhs },
-    "TDRCelltype"     => Proc.new { |obj, rhs| obj.set_TDRCelltype rhs },
-    "channelCell"     => Proc.new { |obj, rhs| obj.set_channelCellName rhs },
-    "PPAllocatorSize" => Proc.new { |obj, rhs| obj.set_PPAllocatorSize rhs },
+    "taskPriority"    => Proc.new {|obj, rhs| obj.set_taskPriority rhs },
+    "channelCelltype" => Proc.new {|obj, rhs| obj.set_channelCelltype rhs },
+    "TDRCelltype"     => Proc.new {|obj, rhs| obj.set_TDRCelltype rhs },
+    "channelCell"     => Proc.new {|obj, rhs| obj.set_channelCellName rhs },
+    "PPAllocatorSize" => Proc.new {|obj, rhs| obj.set_PPAllocatorSize rhs },
   }
 
   #=== プラグイン引数 taskPriority のチェック
@@ -349,7 +349,7 @@ EOT
     signature = @signature
 
     # through の signature に含まれる すべての関数について
-    signature.get_function_head_array.each { |f|
+    signature.get_function_head_array.each {|f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
       id = signature.get_id_from_func_name(f_name)
@@ -397,7 +397,7 @@ EOT
   #  b_marshal = false && b_get == true    :  アンマーシャラで入力引数受取
   #  b_marshal = false && b_get == get     :  アンマーシャラで出力引数送出
   def print_params(params, file, nest, b_marshal, b_get, b_referenced, b_oneway = false)
-    params.each{ |param|
+    params.each{|param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
       if !(b_referenced == param.is_referenced?)
         next
@@ -523,12 +523,12 @@ EOT
 
     when StructType
       members_decl =type.get_members_decl
-      members_decl.get_items.each { |m|
+      members_decl.get_items.each {|m|
         if m.is_referenced?
           print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)
         end
       }
-      members_decl.get_items.each { |m|
+      members_decl.get_items.each {|m|
         if !m.is_referenced?
           print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)
         end
@@ -549,7 +549,7 @@ EOT
 
     file.print "/* アンマーシャラ関数のプロトタイプ宣言 */\n"
     # signature に含まれる すべての関数について
-    @signature.get_function_head_array.each { |f|
+    @signature.get_function_head_array.each {|f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
       id = @signature.get_id_from_func_name(f_name)
@@ -566,7 +566,7 @@ EOT
     end
 
     file.print "\n/*** アンマーシャラ関数 ***/\n\n"
-    @signature.get_function_head_array.each { |f|
+    @signature.get_function_head_array.each {|f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
       id = @signature.get_id_from_func_name(f_name)
@@ -593,7 +593,7 @@ EOT
       # 引数を受取る変数の定義
       param_list = f.get_declarator.get_type.get_paramlist.get_items
            # FuncHead->  Decl->    FuncType->ParamList
-      param_list.each{ |par|
+      param_list.each{|par|
         name = par.get_name
         type = par.get_type
         if type.kind_of? ArrayType
@@ -651,7 +651,7 @@ EOT
       end
 
       delim = " "
-      param_list.each{ |par|
+      param_list.each{|par|
         file.print delim
         delim = ", "
         file.print "#{par.get_name}"

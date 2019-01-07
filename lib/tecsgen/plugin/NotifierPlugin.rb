@@ -42,8 +42,8 @@
 #++
 
 NotifierPluginArgProc = {
-  "factory" => Proc.new { |obj, rhs| obj.set_factory(rhs) },
-  "output_file" => Proc.new { |obj, rhs| obj.set_factory_output_file(rhs) }
+  "factory" => Proc.new {|obj, rhs| obj.set_factory(rhs) },
+  "output_file" => Proc.new {|obj, rhs| obj.set_factory_output_file(rhs) }
 }
 
 class NotifierPlugin < CelltypePlugin
@@ -225,8 +225,8 @@ class NotifierPlugin < CelltypePlugin
 
         header_file.print "/*\n * #{@global_name}\n"
 
-        cells = @props.group_by { |prop| prop.cell }
-        subscripts = @props.group_by { |prop| prop.subscript }
+        cells = @props.group_by {|prop| prop.cell }
+        subscripts = @props.group_by {|prop| prop.subscript }
         no_cellidx = false
         if !(ct.has_INIB? || ct.has_CB?)
           # CB, INIB最適化により，CB, INIBが両方不要になったケース．
@@ -258,7 +258,7 @@ class NotifierPlugin < CelltypePlugin
 
         if generalize_by_cell_idx
           # CELLIDXについて一般化
-          subscripts.each { |subscript, props|
+          subscripts.each {|subscript, props|
             if subscript
               fn_name = "#{@global_name}_adap_#{subscript}"
             else
@@ -269,7 +269,7 @@ class NotifierPlugin < CelltypePlugin
             generate_inner context, fn_name,
               :generic, subscript, ct
 
-            props.each { |prop|
+            props.each {|prop|
               handle = adapter_handle_for_entry_property(prop)
 
               # セルのCELLIDXを得る
@@ -284,7 +284,7 @@ class NotifierPlugin < CelltypePlugin
           }
         else
           # 添字について一般化
-          cells.each { |cell, props|
+          cells.each {|cell, props|
             if no_cellidx
               # CB/INIB なし
               fn_name = "#{@global_name}_adap"
@@ -295,7 +295,7 @@ class NotifierPlugin < CelltypePlugin
             generate_inner context, fn_name,
               cell, :generic
 
-            props.each { |prop|
+            props.each {|prop|
               handle = adapter_handle_for_entry_property(prop)
 
               header_file.print "\#define #{handle[0]} &#{fn_name}\n"
@@ -379,9 +379,9 @@ class NotifierPlugin < CelltypePlugin
         aux_header_file.print "#define TOPPERS_CB_TYPE_ONLY\n"
         aux_header_file.print "#define #{cb_type_only_guard}\n"
       aux_header_file.print "#endif\n"
-      @entry_ports.values.map { |ep|
+      @entry_ports.values.map {|ep|
         ep.port.get_celltype
-      }.uniq.each { |ct|
+      }.uniq.each {|ct|
         hname = "#{ct.get_global_name}_tecsgen.#{$h_suffix}"
         aux_header_file.print "\#include \"#{hname}\"\n"
       }
@@ -393,7 +393,7 @@ class NotifierPlugin < CelltypePlugin
       aux_header_file.print "\#endif\n"
       aux_header_file.close
 
-      @entry_ports.each { |port, entry_port|
+      @entry_ports.each {|port, entry_port|
         entry_port.generate self
       }
 
@@ -493,7 +493,7 @@ class NotifierPlugin < CelltypePlugin
 
       join_list = cell.get_join_list
 
-      ATTRS.each { |known_attr|
+      ATTRS.each {|known_attr|
         attr_name = known_attr.name_for_handler(handler)
         join = join_list.get_item(attr_name.to_sym)
 
@@ -976,7 +976,7 @@ class NotifierPlugin < CelltypePlugin
     # そうするとセルタイプ側の問題であるのにもかかわらず、セルごとに
     # エラーが表示されてしまう。
     # {{attribute_name}} -> attribute_value
-    @factory.scan(/\{\{([a-zA-Z0-9_]*?)\}\}/) { |match|
+    @factory.scan(/\{\{([a-zA-Z0-9_]*?)\}\}/) {|match|
     name = $1.to_sym
 
       # {{_handler_params_}} はハンドラに関する指定。プラグイン内で値が生成される
@@ -989,7 +989,7 @@ class NotifierPlugin < CelltypePlugin
     end
   }
 
-      @celltype.get_cell_list.each { |cell|
+      @celltype.get_cell_list.each {|cell|
         gen_factory_for_cell kernelCfg, cell
       }
 
@@ -1032,7 +1032,7 @@ class NotifierPlugin < CelltypePlugin
   post_text = "\n"
   indent    = ""
 
-    [EVENT_HANDLER, ERROR_HANDLER].each { |handler|
+    [EVENT_HANDLER, ERROR_HANDLER].each {|handler|
       # 呼び口の結合を取得
       call_join = cell.get_join_list.get_item(handler.call_port_name.to_sym)
       domain_root = cell.get_region.get_domain_root
@@ -1048,7 +1048,7 @@ class NotifierPlugin < CelltypePlugin
       end
 
       # ハンドラタイプを判別する
-      matches = HANDLER_TYPES.select { |handler_type|
+      matches = HANDLER_TYPES.select {|handler_type|
         handler_type.validate_join(handler, cell, call_join)
       }
 
@@ -1065,7 +1065,7 @@ class NotifierPlugin < CelltypePlugin
     if domain_root.get_domain_type
       if domain_root.get_domain_type.get_name == :HRP
         option = domain_root.get_domain_type.get_option
-        matches.each{ |match|
+        matches.each{|match|
           # p "match:#{match}"
           case match
           when ActivateTaskHandlerType,       WakeUpTaskHandlerType,
@@ -1143,7 +1143,7 @@ class NotifierPlugin < CelltypePlugin
 
   # $id$等の置換
   name_array = cell.get_celltype.get_name_array(cell)
-  handler_args.collect! { |e|
+  handler_args.collect! {|e|
     if e == "$cbp$"
       cell.get_celltype.subst_name(e, name_array)
     else
@@ -1154,7 +1154,7 @@ class NotifierPlugin < CelltypePlugin
     # tecsgen.cfgの記述を生成する。
     # factoryに対し、パラメータ置換を行う。
     # {{attribute_name}} -> attribute_value
-    text = @factory.gsub(/\{\{([a-zA-Z0-9_]*?)\}\}/) { |match|
+    text = @factory.gsub(/\{\{([a-zA-Z0-9_]*?)\}\}/) {|match|
       name = $1.to_sym
     subst_attr = cell.get_celltype.find(name)
 

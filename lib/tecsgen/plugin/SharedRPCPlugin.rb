@@ -302,7 +302,7 @@ EOT
   # file:: File:
   def self.gen_post_code(file)
     file.print "/* '#{self.name}' post code */\n"
-    @@shared_channel_list.each{ |chan_name, plugin_obj|
+    @@shared_channel_list.each{|chan_name, plugin_obj|
       plugin_obj[0].gen_post_code(file, plugin_obj)
     }
   end
@@ -318,7 +318,7 @@ EOT
     # 共有されている通信チャンネルの生成
     # 各プラグインインスタンスでは @shared_channel_ct_name として記憶している
     file.print "#{indent_str}cell tSharedRPCPlugin_#{@channelCelltype} #{chan_name} {\n"
-    plugin_obj.each{ |po|
+    plugin_obj.each{|po|
       file.print <<EOT
 #{indent_str}    cUnmarshalAndCallFunction[] = #{@cell_name}.eUnmarshalAndCallFunction;
 EOT

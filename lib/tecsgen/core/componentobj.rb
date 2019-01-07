@@ -138,7 +138,7 @@ class Signature < NSBDNode # < Nestable
 
     # id を割付ける
     id = 1
-    function_head_list.get_items.each{ |f|
+    function_head_list.get_items.each{|f|
       @func_name_to_id[f.get_name] = id
       f.set_owner self
       id += 1
@@ -165,7 +165,7 @@ class Signature < NSBDNode # < Nestable
   def set_specifier_list(spec_list)
     return if spec_list == nil # 空ならば何もしない
 
-    spec_list.each { |s|
+    spec_list.each {|s|
       case s[0] # statement_specifier
       when :CALLBACK
         @b_callback = true
@@ -238,10 +238,10 @@ class Signature < NSBDNode # < Nestable
     return if fha == nil                                # nil なら文法エラーで有効値が設定されなかった
 
     pr = Proc.new   # このメソッドのブロック引数を pr に代入
-    fha.each{ |fh|  # fh: FuncHead                      # 関数配列中の各関数頭部
+    fha.each{|fh|  # fh: FuncHead                      # 関数配列中の各関数頭部
       fd = fh.get_declarator # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function? # fd が関数でなければ、すでにエラー
-        fd.get_type.get_paramlist.get_items.each{ |par| # すべてのパラメータについて
+        fd.get_type.get_paramlist.get_items.each{|par| # すべてのパラメータについて
           pr.call(fd, par)
         }
       end
@@ -263,7 +263,7 @@ class Signature < NSBDNode # < Nestable
     end
 
     found_alloc = false; found_dealloc = false
-    fha.each{ |fh| # fh: FuncHead                      # 関数配列中の各関数頭部
+    fha.each{|fh| # fh: FuncHead                      # 関数配列中の各関数頭部
       fd = fh.get_declarator # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function? # fd が関数でなければ、すでにエラー
         func_name = fd.get_name.to_sym
@@ -363,7 +363,7 @@ end
 
   @@set_descriptor_list = {}
   def self.set_descriptor_list
-    Namespace.get_root.travers_all_signature{ |sig|
+    Namespace.get_root.travers_all_signature{|sig|
       if @@set_descriptor_list[sig] == nil
         @@set_descriptor_list[sig] = true
         sig.set_descriptor_list
@@ -380,12 +380,12 @@ end
       @descriptor_list = desc_list
       return desc_list
     end
-    fha.each{ |fh|
+    fha.each{|fh|
       fd = fh.get_declarator # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function? # fd が関数でなければ、すでにエラー
         params = fd.get_type.get_paramlist.get_items
         if params
-          params.each{ |param|
+          params.each{|param|
             t = param.get_type.get_original_type
             while(t.kind_of? PtrType)
               t = t.get_referto
@@ -444,7 +444,7 @@ end
   # Transparent RPC の場合 oneway かつ in の配列(size_is, count_is, string のいずれかで修飾）がある
   def need_PPAllocator?(b_opaque = false)
     fha = get_function_head_array # 呼び口または受け口のシグニチャの関数配列
-    fha.each{ |fh|
+    fha.each{|fh|
       fd = fh.get_declarator
       if fd.get_type.need_PPAllocator?(b_opaque)
         # p "#{fd.get_name} need_PPAllocator: true"
@@ -503,7 +503,7 @@ module CelltypePluginModule
     end
 
     # 既に存在するセルに new_cell を適用
-    @cell_list.each{ |cell|
+    @cell_list.each{|cell|
       apply_plugin_cell plugin_object, cell
     }
 
@@ -520,7 +520,7 @@ module CelltypePluginModule
   end
 
   def celltype_plugin_new_cell(cell)
-    @generate_list.each{ |generate|
+    @generate_list.each{|generate|
       celltype_plugin = generate[2]
       begin
         celltype_plugin.new_cell cell
@@ -692,7 +692,7 @@ class Celltype < NSBDNode # < Nestable
     generate_allocator_port
 
     # リレーアロケータ、内部アロケータの設定
-    @port.each { |p|
+    @port.each {|p|
       p.set_allocator_instance
     }
 
@@ -750,7 +750,7 @@ class Celltype < NSBDNode # < Nestable
   # attribute:: [Decl]
   def new_attribute(attribute)
     @attribute += attribute
-    attribute.each { |a|
+    attribute.each {|a|
       a.set_owner self
       @name_list.add_item(a)
       if(a.is_omit?)
@@ -773,7 +773,7 @@ class Celltype < NSBDNode # < Nestable
   # このメソッドは celltype のパースが完了した時点で呼出される．
   def check_attribute
     # attribute の size_is 指定が妥当かチェック
-    (@attribute+@var).each{ |a|
+    (@attribute+@var).each{|a|
       if a.get_size_is
         if !a.get_type.kind_of?(PtrType)
           # size_is がポインタ型以外に指定された
@@ -815,9 +815,9 @@ class Celltype < NSBDNode # < Nestable
   #=== Celltype# アロケータ呼び口を生成
   #    send, receive 引数のアロケータを呼出すための呼び口を生成
   def generate_allocator_port
-    @port.each { |port|
+    @port.each {|port|
       # ポートのすべてのパラメータを辿る
-      port.each_param { |port, fd, par|
+      port.each_param {|port, fd, par|
         case par.get_direction # 引数の方向指定子 (in, out, inout, send, receive )
         when :SEND, :RECEIVE
           if par.get_allocator
@@ -855,7 +855,7 @@ class Celltype < NSBDNode # < Nestable
   # var:: [Decl]
   def new_var(var)
     @var += var
-    var.each { |i| # i: Decl
+    var.each {|i| # i: Decl
       i.set_owner self
       if i.is_omit?
         @n_var_omit += 1
@@ -884,7 +884,7 @@ class Celltype < NSBDNode # < Nestable
   def set_specifier_list(spec_list)
     return if spec_list == nil
 
-    spec_list.each { |s|
+    spec_list.each {|s|
       case s[0]
       when :SINGLETON
         @singleton = true
@@ -952,7 +952,7 @@ class Celltype < NSBDNode # < Nestable
     require_call_port_prefix = :_require_call_port
     if cp_name == nil
       # 関数名重複チェック
-      @require.each{ |req|
+      @require.each{|req|
         unless req[0].to_s =~ /^#{require_call_port_prefix}/
           next # 名前ありの require は関数名重複チェックしない
         end
@@ -962,9 +962,9 @@ class Celltype < NSBDNode # < Nestable
           cdl_error("S1021 $1 : require cannot have same signature with \'$2\'", obj2.get_name, port.get_name)
           next
         end
-        port.get_signature.get_function_head_array.each{ |f|
+        port.get_signature.get_function_head_array.each{|f|
           # mikan ここは、namedList からの検索にならないの？（効率が悪い）
-          obj2.get_signature.get_function_head_array.each{ |f2|
+          obj2.get_signature.get_function_head_array.each{|f2|
             if(f.get_name == f2.get_name)
               cdl_error("S1022 $1.$2 : \'$3\' conflict function name in $4.$5", obj.get_name, obj2.get_name, f.get_name, req[1].get_name, req[2].get_name)
             end
@@ -1005,7 +1005,7 @@ class Celltype < NSBDNode # < Nestable
 
   @@dynamic_join_checked_list = {}
   def self.check_dynamic_join
-    Namespace.get_root.travers_all_celltype{ |ct|
+    Namespace.get_root.travers_all_celltype{|ct|
       if @@dynamic_join_checked_list[ct] == nil
         @@dynamic_join_checked_list[ct] = true
         ct.check_dynamic_join
@@ -1015,7 +1015,7 @@ class Celltype < NSBDNode # < Nestable
 
   #=== Celltype#dynamic の適合性チェック
   def check_dynamic_join
-    @port.each{ |port|
+    @port.each{|port|
       signature = port.get_signature
       next if signature == nil # すでにエラー
       if port.is_dynamic?
@@ -1032,7 +1032,7 @@ class Celltype < NSBDNode # < Nestable
         cdl_warning("W9999 $1 cannot put information from ref_desc port $2", @name, port.get_name)
       elsif port.get_signature
         if port.get_signature.has_descriptor?
-          port.get_signature.get_descriptor_list.each{ |signature, param|
+          port.get_signature.get_descriptor_list.each{|signature, param|
             dbgPrint("[DYNAMIC] checking Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n")
             # print( "[DYNAMIC] checking Descriptor parameter: #{@global_name}.#{port.get_name} ... #{param.get_name}\n" )
             if port.get_port_type == :CALL
@@ -1061,7 +1061,7 @@ class Celltype < NSBDNode # < Nestable
 
   def find_dynamic_port(signature)
     dbgPrint "[DYNAMIC] find_dynamic_port signature=#{signature.get_name}"
-    @port.each{ |port|
+    @port.each{|port|
       dbgPrint "[DYNAMIC] port=#{port.get_name} signature=#{port.get_signature.get_name} dynamic=#{port.is_dynamic?}"
       return port if port.is_dynamic? && port.get_signature == signature
     }
@@ -1073,7 +1073,7 @@ class Celltype < NSBDNode # < Nestable
       return nil
     end
     dbgPrint "[DYNAMIC] find_ref_desc_port signature=#{signature.get_name}"
-    @port.each{ |port|
+    @port.each{|port|
       dbgPrint "[DYNAMIC] port=#{port.get_name} signature=#{port.get_signature.get_name} ref_desc=#{port.is_ref_desc?}"
       return port if port.is_ref_desc? && port.get_signature == signature
     }
@@ -1084,8 +1084,8 @@ class Celltype < NSBDNode # < Nestable
   # dyn_ref::Symbol: :DYNAMIC=ディスクリプタを得る手段となる引数を探す．:REF_DESC=渡す手段となる引数を探す
   def find_descriptor_param(signature, dyn_ref)
     param_list = []
-    @port.each{ |port|
-      port.each_param{ |port, func, param|
+    @port.each{|port|
+      port.each_param{|port, func, param|
         type = param.get_type
         while type.kind_of? PtrType
           type = type.get_type
@@ -1133,7 +1133,7 @@ class Celltype < NSBDNode # < Nestable
     # Celltype では Cell の set_owner しない
     # シングルトンで、プロトタイプ宣言でない場合、コード生成対象リージョンの場合
     if @singleton
-      @cell_list.each{ |c|
+      @cell_list.each{|c|
         if c.get_region.get_link_root == cell.get_region.get_link_root
           cdl_error("S1024 $1: multiple cell for singleton celltype", @name)
         end
@@ -1194,7 +1194,7 @@ class Celltype < NSBDNode # < Nestable
 
   #=== Celltype# 逆require の結合を生成する
   def create_reverse_require_join(cell)
-    @port.each{ |p|
+    @port.each{|p|
       p.create_reverse_require_join cell
     }
   end
@@ -1207,7 +1207,7 @@ class Celltype < NSBDNode # < Nestable
     cell = nil
     dist = 999999999 # mikan 制限値（これは十分すぎるほどデカイが）
     # require: celltype で指定
-    @cell_list.each{ |c|
+    @cell_list.each{|c|
       # 到達可能で最も近いセルを探す（複数の singleton があるかもしれない）
       d = region.distance(c.get_region)
       # debug
@@ -1283,11 +1283,11 @@ class Celltype < NSBDNode # < Nestable
   # セルタイプの require 呼び口について、結合を行う
   # セルが生成されないかチェックを行う
   def set_require_join
-    @require.each{ |req|
+    @require.each{|req|
       cp_name = req[0]
       cell_or_ct = req[1]
       port = req[2]
-      @cell_list.each{ |c|
+      @cell_list.each{|c|
         c.set_require_join(cp_name, cell_or_ct, port)
       }
     }
@@ -1317,19 +1317,19 @@ class Celltype < NSBDNode # < Nestable
     puts "namespace_path: #{@NamespacePath}"
     (indent+1).times { print "  " }
     puts "port:"
-    @port.each { |i| i.show_tree(indent + 2) }
+    @port.each {|i| i.show_tree(indent + 2) }
     (indent+1).times { print "  " }
     puts "attribute:"
-    @attribute.each { |i| i.show_tree(indent + 2) }
+    @attribute.each {|i| i.show_tree(indent + 2) }
     (indent+1).times { print "  " }
     puts "var:"
-    @var.each { |i| i.show_tree(indent + 2) }
+    @var.each {|i| i.show_tree(indent + 2) }
 #    (indent+1).times { print "  " }
 #    puts "require:"   mikan
 #    @require.each { |i| i.show_tree( indent + 2 ) }
     (indent+1).times { print "  " }
     puts "factory:"
-    @factory_list.each { |i| i.show_tree(indent + 2) }
+    @factory_list.each {|i| i.show_tree(indent + 2) }
     (indent+1).times { print "  " }
     puts "@n_attribute_ro #{@n_attribute_ro}"
     (indent+1).times { print "  " }
@@ -1538,7 +1538,7 @@ class Cell < NSBDNode # < Nestable
 
     # 内部アロケータを @alloc_list に追加
     if @celltype.instance_of? CompositeCelltype
-      @celltype.get_internal_allocator_list.each{ |cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
+      @celltype.get_internal_allocator_list.each{|cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
         nsp = NamespacePath.new(@name, false)
         rhs = Expression.new([:OP_DOT, [:IDENTIFIER, nsp], Token.new(ext_alloc_ent.to_s.to_sym, nil, nil, nil) ]) # 1 構文解析段階なので locale 不要
 
@@ -1737,7 +1737,7 @@ class Cell < NSBDNode # < Nestable
 
     if @reverse_join_list
 #      @reverse_join_list.get_items.each{ |rj|
-      @reverse_join_list.each{ |rj|
+      @reverse_join_list.each{|rj|
         # 逆結合の情報を得る
         ep_name = rj.get_name
         ep_subscript, cp_cell_nsp, cp_name, cp_subscript = rj.get_rhs_cell_and_port
@@ -1852,7 +1852,7 @@ class Cell < NSBDNode # < Nestable
     # composite の内部セルを参照されたことにする
     # 今のところ問題ないが、未参照であるべきものまで参照されたことになる
     if @cell_list
-      @cell_list.each{ |cn, cell|
+      @cell_list.each{|cn, cell|
         cell.set_f_ref
       }
     end
@@ -1875,10 +1875,10 @@ class Cell < NSBDNode # < Nestable
     dbgPrint("set_spec_list: #{@name}\n")
     b_generate = false # generate が指定された
 
-    spec_list.each{ |s|
+    spec_list.each{|s|
       case s[0]             # statement_specifier
       when :ALLOCATOR       # [allocator(ePort.func.param=allocCell.eA,ePort.func2.param=allocCell.eA)]
-        s[1].each { |a|     # alloc_list : allocator の内部の ',' で区切られた部分の配列
+        s[1].each {|a|     # alloc_list : allocator の内部の ',' で区切られた部分の配列
           cp_name = :"#{a[0+1]}_#{a[2+1]}_#{a[3+1]}" # アロケータ呼び口の名前：'=' の左辺を '.' に変えて '_' で連結
           # p "#{a[0]} #{a[0+1]} #{a[2+1]} #{a[3+1]} #{cp_name}"
           if a[1+1]
@@ -1915,7 +1915,7 @@ class Cell < NSBDNode # < Nestable
       when :PROTOTYPE     # [prototype]
         @b_prototype = true
       when :RESTRICT      # [restrict]
-        s[1].each{ |re|
+        s[1].each{|re|
           add_restrict re[0], re[1], re[2]
         }
       else
@@ -2058,7 +2058,7 @@ class Cell < NSBDNode # < Nestable
 
     # このセルのグローバル名を与える
     # C_EXP の$id$ 置換はこのセルの名前になる
-    join_array.each { |j|
+    join_array.each {|j|
       @join_list.change_item j
     }
   end
@@ -2083,7 +2083,7 @@ class Cell < NSBDNode # < Nestable
     # debug
     dbgPrint "=====   Cell#change_rhs_port: name=#{@name}   =====\n"
 
-    @join_list.get_items.each { |j|
+    @join_list.get_items.each {|j|
       j.change_rhs_port(cloned_cell_list, @celltype)
     }
   end
@@ -2167,7 +2167,7 @@ class Cell < NSBDNode # < Nestable
 
       # debug
       dbgPrint "get_real_global_name: cell name: #{@name} #{@local_name} #{@global_name} #{port_name}\n"
-      @cell_list.each{ |n, c|
+      @cell_list.each{|n, c|
         dbgPrint "   name: #{n}\n"
         dbgPrint " get_name: #{c.get_name} local_name: #{c.get_local_name}\n" if c
         dbgPrint "\n\n"
@@ -2197,7 +2197,7 @@ class Cell < NSBDNode # < Nestable
 
       # debug
       dbgPrint "get_real_global_port_name: cell name: #{@name} #{@local_name} #{@global_name} #{port_name}\n"
-      @cell_list.each{ |n, c|
+      @cell_list.each{|n, c|
         dbgPrint "   name: #{n}\n"
         dbgPrint " get_name: #{c.get_name} local_name: #{c.get_local_name}\n" if c
         dbgPrint "\n"
@@ -2343,7 +2343,7 @@ class Cell < NSBDNode # < Nestable
 
   def get_cell_list2
     list = []
-    @cell_list2.each{ |cell|
+    @cell_list2.each{|cell|
       list << cell
       list += cell.get_cell_list2
     }
@@ -2403,7 +2403,7 @@ class Cell < NSBDNode # < Nestable
     return if @celltype == nil
 
     # relay allocator を生成
-    @celltype.get_port_list.each { |p|
+    @celltype.get_port_list.each {|p|
       ail = p.get_allocator_instance
       if ail
         dbgPrint "create_relay_allocator_join: #{@name}, #{p.get_name}\n"
@@ -2412,7 +2412,7 @@ class Cell < NSBDNode # < Nestable
           cdl_error("S1040 array not supported for relay allocator")
           next
         end
-        ail.each{ |name, ai2|
+        ail.each{|name, ai2|
           # ai2 = [ :INTERNAL_ALLOC|:RELAY_ALLOC, func_name, param_name, rhs_cp_name, rhs_func_name, rhs_param_name ]
           if ai2[0] == :RELAY_ALLOC
             dbgPrint "create_relay_allocator_join: #{@name}, #{name}\n"
@@ -2424,7 +2424,7 @@ class Cell < NSBDNode # < Nestable
 
               # composite 内で外部に結合されているか
               if @in_composite
-                @compositecelltypejoin_list.get_items.each { |cj|
+                @compositecelltypejoin_list.get_items.each {|cj|
                   dbgPrint("create relay_allocator in_composite\n")
                   dbgPrint("    #{cj.get_cell_name} #{@name} #{cj.get_cell_elem_name} #{ai2[3]}_#{ai2[4]}_#{ai2[5]}\n")
                   if cj.get_cell_name == @name &&
@@ -2449,7 +2449,7 @@ class Cell < NSBDNode # < Nestable
             #  mikan エクスポート側と、こちら側で、リレー先が一致するかチェックが必要
             if @compositecelltypejoin_list
               # export されているか調べる
-              @compositecelltypejoin_list.get_items.each{ |cj|
+              @compositecelltypejoin_list.get_items.each{|cj|
                 # 属性名と composite の export する名前は一致するか
                 if p.get_name == cj.get_cell_elem_name
                   print "export : #{p.get_name}\n"
@@ -2463,7 +2463,7 @@ class Cell < NSBDNode # < Nestable
             # mikan 配列
             am = nil
             if am
-              am.each{ |ja2|
+              am.each{|ja2|
                 rhs = ja2.get_rhs
                 subscript = ja2.get_subscript
                 if b_export == false
@@ -2506,7 +2506,7 @@ class Cell < NSBDNode # < Nestable
   #=== Cell# @@cell_list2 を作る
   # @@cell_list2 は、出現順に composite 内を含むセルのリスト
   def self.make_cell_list2
-    @@cell_list.each{ |c|
+    @@cell_list.each{|c|
       @@cell_list2 << c
       @@cell_list2 += c.get_cell_list2
     }
@@ -2527,7 +2527,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# reverse_join を生成する
   def self.create_reverse_join
-    @@cell_list.each{ |c|
+    @@cell_list.each{|c|
       ct = c.get_celltype
       # if c.is_generate? then
       if ct
@@ -2539,7 +2539,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# reverse_require_join を生成する
   def self.create_reverse_require_join
-    @@cell_list2.each{ |c|
+    @@cell_list2.each{|c|
       ct = c.get_celltype
       # if c.is_generate? then
         if ct
@@ -2554,11 +2554,11 @@ class Cell < NSBDNode # < Nestable
   # self は呼び元のセル
   # 呼び先セルの受け口の参照カウントをアップする
   def set_port_reference_count
-    @join_list.get_items.each { |j|
+    @join_list.get_items.each {|j|
       if j.get_definition.instance_of? Port
         am = j.get_array_member2
         if am # 呼び口配列
-          am.each { |j2|
+          am.each {|j2|
             next if j2 == nil # optional で一部が欠落しているケース
             cell = j2.get_rhs_cell2
             next if cell == nil # 右辺が見つからなかった．既にエラー
@@ -2604,7 +2604,7 @@ class Cell < NSBDNode # < Nestable
     # end
 
     # 未結合の呼び口のチェック
-    @celltype.get_port_list.each { |p|
+    @celltype.get_port_list.each {|p|
 
       # 呼び口でなければ、チェックしない
       next if p.get_port_type != :CALL
@@ -2623,7 +2623,7 @@ class Cell < NSBDNode # < Nestable
         if @in_composite
           # composite celltype の export するものすべてから探す
           # （export するものの右辺値から探すために get_item ではダメ）
-          @compositecelltypejoin_list.get_items.each{ |cj|
+          @compositecelltypejoin_list.get_items.each{|cj|
             # 呼び口名と composite の export する名前は一致するか
             if p.get_name == cj.get_cell_elem_name
               found = true
@@ -2702,7 +2702,7 @@ class Cell < NSBDNode # < Nestable
 
         # 生成されないリージョンへの結合かチェック
         if !@in_composite
-          am.each { |join|
+          am.each {|join|
             if join
               join.check_region2
             end
@@ -2720,7 +2720,7 @@ class Cell < NSBDNode # < Nestable
     }
 
     # ポインタ型が配列で初期化される場合のチェック
-    (@celltype.get_attribute_list+@celltype.get_var_list).each { |a|
+    (@celltype.get_attribute_list+@celltype.get_var_list).each {|a|
       if a.get_size_is
 
         if a.instance_of? CompositeCelltypeJoin
@@ -2779,7 +2779,7 @@ class Cell < NSBDNode # < Nestable
     }
 
     # 未初期化の属性をチェック
-    @celltype.get_attribute_list.each { |a|
+    @celltype.get_attribute_list.each {|a|
       b_init = false
       # self.show_tree 1
       if a.get_initializer # セルタイプで初期化されている
@@ -2791,7 +2791,7 @@ class Cell < NSBDNode # < Nestable
       elsif @in_composite && @compositecelltypejoin_list
         # 属性が export されているか調べる。export されていれば未初期化とはしない
         # mikan リニアサーチ
-        @compositecelltypejoin_list.get_items.each{ |cj|
+        @compositecelltypejoin_list.get_items.each{|cj|
           # 属性名と composite の export する名前は一致するか
           if a.get_name.to_sym == cj.get_cell_elem_name.to_sym
             b_init = true # 属性は export されているので、とりあえず未初期化とはしない
@@ -2827,7 +2827,7 @@ class Cell < NSBDNode # < Nestable
                 ### p exprs, $1, $2, $'
                 # size_is に含まれる変数は、composite で export されているか
                 cj2 = nil
-                @compositecelltypejoin_list.get_items.each{ |cj2t|
+                @compositecelltypejoin_list.get_items.each{|cj2t|
                   if cj2t.get_cell_elem_name == arg_name
                     cj2 = cj2t
                   end
@@ -2844,7 +2844,7 @@ class Cell < NSBDNode # < Nestable
                 end
               end
               # 内部の名前を外部の名前で置換
-              inner_to_export.each{ |arg_name, exp_name|
+              inner_to_export.each{|arg_name, exp_name|
                 ### p "changing #{arg_name}=>#{exp_name}"
                 # exprs.gsub!( Regexp.new("#{arg_name}[^0-9A-Za-z_]"), exp_name.to_s )
                 exprs.gsub!(Regexp.new("#{arg_name}(\\W)"), exp_name.to_s+"\\1")  # 文字列末尾にないケース
@@ -2877,7 +2877,7 @@ class Cell < NSBDNode # < Nestable
 
     # p "check reverse require   #{@name}"
     # 逆require 指定された受け口に複数の結合がないかチェック
-    @referenced_port_list.each{ |port, count|
+    @referenced_port_list.each{|port, count|
       # p port.class, count
       # p port.get_name, port.get_port_type, port.get_signature.get_name
       if port.is_reverse_required? && count > 1
@@ -2951,11 +2951,11 @@ class Cell < NSBDNode # < Nestable
       # compoiste セルのクローンされたものは、set_definition 不要
       # 元の join は既に definition されている
       # 元のセルにおいて、代入チェックされているので、二重にチェック(through適用)されてしまう
-      @join_list.get_items.each{ |join|
+      @join_list.get_items.each{|join|
         dbgPrint " set_definition_join: checking #{@name}.#{join.get_name}\n"
         if join.get_array_member
           port = @celltype.find(join.get_name)
-          join.get_array_member2.each { |am|
+          join.get_array_member2.each {|am|
             if am == nil # 未結合の場合、エラーチェックは check_join
               if port && !port.is_optional?
                 # テスト用にエラーメッセージ出力
@@ -3009,7 +3009,7 @@ class Cell < NSBDNode # < Nestable
     dbgPrint "set_max_entry_port_inner_cell name=#{@name} entry_array_max_subscript.len=#{@entry_array_max_subscript.length}\n"
 
     # プロトタイプ宣言で設定されていたものを反映する
-    @entry_array_max_subscript.each{ |port, name|
+    @entry_array_max_subscript.each{|port, name|
       dbgPrint "set_entry_inner_port_max_subscript( #{port}, #{name} )\n"
       set_entry_inner_port_max_subscript(port, name)
     }
@@ -3019,7 +3019,7 @@ class Cell < NSBDNode # < Nestable
   def add_restrict(entry_name, func_name, region_name_list)
     if @restrict_list[entry_name]
       if @restrict_list[entry_name][func_name]
-        @restrict_list[entry_name][func_name].each{ |rn|
+        @restrict_list[entry_name][func_name].each{|rn|
           if region_name_list.include? rn
             # p func_name
             name = func_name ? entry_name : entry_name+"."+func_name
@@ -3039,9 +3039,9 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell#check_restrict_list
   def check_restrict_list
-    @restrict_list.each{ |entry_name, func_hash|
-      func_hash.each{ |func_name, region_list|
-        region_list.each{ |rn|
+    @restrict_list.each{|entry_name, func_hash|
+      func_hash.each{|func_name, region_list|
+        region_list.each{|rn|
           obj = Namespace.find [ rn ]
           if (obj.kind_of? Region)
             if obj.get_domain_root != @region.get_domain_root
@@ -3103,27 +3103,27 @@ class Cell < NSBDNode # < Nestable
       puts "celltype: #{@celltype.get_name}"
     end
     @join_list.show_tree(indent + 1)
-    @entry_array_max_subscript.each{ |port, num|
+    @entry_array_max_subscript.each{|port, num|
       (indent+1).times { print "  " }
       puts "entry array #{port.get_name}: max subscript=#{num}"
     }
     if @cell_list # ここで @cell_list が nil なのは Bug
       (indent+1).times { print "  " }
       puts "cloned cell list:"
-      @cell_list.each { |n, c|
+      @cell_list.each {|n, c|
         (indent+2).times { print "  " }
         puts "inner cell : #{n} = #{c.get_name}"
       }
     end
     if @compositecelltypejoin_list
-      @compositecelltypejoin_list.get_items.each{ |cj|
+      @compositecelltypejoin_list.get_items.each{|cj|
         cj.show_tree(indent+1)
       }
     end
     if @alloc_list.length > 0
       (indent+1).times { print "  " }
       puts "allocator list: "
-      @alloc_list.each { |a|
+      @alloc_list.each {|a|
         cp_name = :"#{a[0+1]}_#{a[2+1]}_#{a[3+1]}"
         if a[1+1]
           # subscript = "[#{a[1+1].eval_const nil}]"
@@ -3136,7 +3136,7 @@ class Cell < NSBDNode # < Nestable
         puts "#{cp_name}#{subscript} = #{a[4+1]}"
       }
     end
-    @referenced_port_list.each{ |port, count|
+    @referenced_port_list.each{|port, count|
       (indent+1).times { print "  " }
       puts("#{port.get_name} : #{count} times referenced")
     }
@@ -3234,20 +3234,20 @@ class CompositeCelltype < NSBDNode # < Nestable
     end
 
     # @allocator_instance を設定する
-    @name_list.get_items.each{ |n|
+    @name_list.get_items.each{|n|
       if n.instance_of? Port
         n.set_allocator_instance
       end
     }
 
     # リレーアロケータの entry 側
-    @port_list.each{ |p|
+    @port_list.each{|p|
       if p.get_port_type == :ENTRY
         if p.get_allocator_instance == nil
           next
         end
 
-        p.get_allocator_instance.each{ |name, ai|
+        p.get_allocator_instance.each{|name, ai|
           if ai[0] == :RELAY_ALLOC
             self.new_join(:"#{p.get_name}_#{ai[4]}_#{ai[5]}", p.get_cell_name, :"#{p.get_cell_elem_name}_#{ai[4]}_#{ai[5]}", :CALL)
           end
@@ -3257,7 +3257,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     # mikan relay が正しく抜けているかチェックされていない
 
     # callback 結合
-    @cell_list_in_composite.get_items.each{ |c|
+    @cell_list_in_composite.get_items.each{|c|
       ct = c.get_celltype
       if ct
         c.create_reverse_join
@@ -3265,31 +3265,31 @@ class CompositeCelltype < NSBDNode # < Nestable
     }
 
     # 意味解析
-    @cell_list_in_composite.get_items.each{ |c|
+    @cell_list_in_composite.get_items.each{|c|
       c.set_definition_join
     }
 
     # cell の未結合の呼び口がないかチェック
-    @cell_list_in_composite.get_items.each{ |c|
+    @cell_list_in_composite.get_items.each{|c|
       c.check_join
       c.check_reverse_require
     }
 
     # 呼び口の結合について、export と内部結合の両方がないかチェック
     # リレーアロケータ、内部アロケータの設定
-    @port_list.each{ |p|
+    @port_list.each{|p|
       p.check_dup_init
     }
 
     # すべてのエクスポート定義に対応した呼び口、受け口、属性が存在するかチェック
-    @name_list.get_items.each{ |n|
+    @name_list.get_items.each{|n|
       if(@export_name_list.get_item(n.get_name) == nil)
         cdl_error("S1056 $1 : cannot export, nothing designated", n.get_name)
       end
     }
 
     # 内部アロケータを設定する
-    @internal_allocator_list.each{ |cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
+    @internal_allocator_list.each{|cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
       res = ext_alloc_ent.get_allocator_rhs_elements(:INTERNAL_ALLOC)
       ep_name = res[0]
       cj = @export_name_list.get_item(ep_name)
@@ -3297,7 +3297,7 @@ class CompositeCelltype < NSBDNode # < Nestable
       internal_alloc_ep_name_from_port_def = cj.get_cell_elem_name
 
       # puts "internal_allocator #{cell.get_name} #{cp_internal_name} #{port_name}.#{fd_name}.#{par_name}"
-      cell.get_allocator_list.each{ |a|
+      cell.get_allocator_list.each{|a|
         # puts "allocator_list of #{cell.get_name} #{a[0]} #{a[1]}.#{a[2]}.#{a[3]}.#{a[4]} #{a[5].to_s}"
         if cp_internal_name == :"#{a[1]}_#{a[3]}_#{a[4]}"
           dbgPrint "internal_allocator {cp_internal_name} #{a[1]}_#{a[3]}_#{a[4]}\n"
@@ -3479,7 +3479,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     # export するポートに含まれる send/receive パラメータのアロケータ(allocator)呼び口をセルと結合
     if obj2.instance_of? Port
-      obj2.each_param{ |port, fd, par|
+      obj2.each_param{|port, fd, par|
         case par.get_direction # 引数の方向指定子 (in, out, inout, send, receive )
         when :SEND, :RECEIVE
           cp_name = :"#{port.get_name}_#{fd.get_name}_#{par.get_name}" # アロケータ呼び口の名前
@@ -3490,7 +3490,7 @@ class CompositeCelltype < NSBDNode # < Nestable
           # この時点では get_allocator_instance では得られないため tmp を得る
           if port.get_allocator_instance_tmp
             found = false
-            port.get_allocator_instance_tmp.each { |s|
+            port.get_allocator_instance_tmp.each {|s|
               if s[1] == fd.get_name && s[2] == par.get_name
                 found = true
 
@@ -3535,7 +3535,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     # export するポートに含まれる send/receive パラメータのアロケータ呼び口の export を生成してポートに追加
     # この時点では内部アロケータかどうか判断できないので、とりあえず生成しておく
-    port.each_param { |port, fd, par|
+    port.each_param {|port, fd, par|
       case par.get_direction # 引数の方向指定子 (in, out, inout, send, receive )
       when :SEND, :RECEIVE
         #### リレーアロケータ or 内部アロケータ指定がなされている場合、アロケータ呼び口を追加しない
@@ -3543,7 +3543,7 @@ class CompositeCelltype < NSBDNode # < Nestable
         # この時点では get_allocator_instance では得られないため tmp を得る
         if port.get_allocator_instance_tmp
           found = false
-          port.get_allocator_instance_tmp.each { |s|
+          port.get_allocator_instance_tmp.each {|s|
             if s[0] == :INTERNAL_ALLOC && s[1] == fd.get_name && s[2] == par.get_name
               found = true
               break
@@ -3579,7 +3579,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   #=== CompositeCelltype# new_attribute for CompositeCelltype
   # attribute:: [Decl]
   def new_attribute(attribute)
-    attribute.each { |a|
+    attribute.each {|a|
       a.set_owner self # Decl (CompositeCelltype)
       # V1.1.0.10 composite の attr の size_is は可となった
       # if a.get_size_is then
@@ -3594,7 +3594,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
   #=== CompositeCelltype# 逆require の結合を生成する
   def create_reverse_require_join(cell)
-    @name_list.get_items.each{ |n|
+    @name_list.get_items.each{|n|
       if n.instance_of? Port
         n.create_reverse_require_join cell
       end
@@ -3644,7 +3644,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   def expand(name, global_name, namespacePath, join_list, region, plugin, locale)
     # debug
     dbgPrint "expand composite: #{@name} name: #{name}  global_name: #{global_name}\njoin_list:\n"
-    join_list.get_items.each{ |j|
+    join_list.get_items.each{|j|
       dbgPrint "   #{j.get_name} #{j}\n"
     }
 
@@ -3654,7 +3654,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     clone_cell_list3 = {}
 
     #  composite 内部のすべての cell について
-    @cell_list_in_composite.get_items.each { |c|
+    @cell_list_in_composite.get_items.each {|c|
 
       # debug
       dbgPrint "expand : cell #{c.get_name}\n"
@@ -3665,7 +3665,7 @@ class CompositeCelltype < NSBDNode # < Nestable
       # CompositeCelltype が export する呼び口、受け口、属性のリストについて
       # @export_name_list.get_items.each{ |cj|  # cj: CompositeCelltypeJoin
       # 新仕様では、@export_name_list に入っていない attr がありうる
-      (@port_list+@attr_list).each{ |cj| # cj: CompositeCelltypeJoin
+      (@port_list+@attr_list).each{|cj| # cj: CompositeCelltypeJoin
 
         # debug
         dbgPrint "        cj : #{cj.get_name}\n"
@@ -3717,16 +3717,16 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     }
 
-    clone_cell_list.each { |nm, c|
+    clone_cell_list.each {|nm, c|
       dbgPrint "  cloned: #{nm} = #{c.get_global_name}\n"
       # join の owner を clone されたセルに変更する V1.1.0.25
-      c.get_join_list.get_items.each{ |j|
+      c.get_join_list.get_items.each{|j|
         j.set_cloned(clone_cell_list["#{c.get_local_name}"])
       }
       dbgPrint "change_rhs_port: inner cell #{c.get_name}\n"
       c.change_rhs_port clone_cell_list3
     }
-    clone_cell_list2.each { |c|
+    clone_cell_list2.each {|c|
       c.expand_inner
     }
     return [ clone_cell_list, clone_cell_list2 ]
@@ -3736,7 +3736,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   def set_specifier_list(spec_list)
     return if spec_list == nil
 
-    spec_list.each { |s|
+    spec_list.each {|s|
       case s[0]
       when :SINGLETON
         @b_singleton = true
@@ -3811,7 +3811,7 @@ class CompositeCelltype < NSBDNode # < Nestable
   # （内部のセルが active または factory を持っている）
   def is_inactive?
     if @b_active == false
-      @cell_list_in_composite.get_items.each{ |c|
+      @cell_list_in_composite.get_items.each{|c|
         if c.get_celltype && c.get_celltype.is_inactive? == false
           # c.get_celltype == nil の場合はセルタイプ未定義ですでにエラー
           return false
@@ -3842,7 +3842,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     if @internal_allocator_list.length > 0
       (indent+1).times { print "  " }
       puts "internal_allocator_list:"
-      @internal_allocator_list.each{  |a|
+      @internal_allocator_list.each{|a|
         (indent+1).times { print "  " }
         puts "  #{a[0].get_name} #{a[1]} #{a[2]} #{a[3]} #{a[4]}"
       }
@@ -4111,7 +4111,7 @@ end
   #=== Port# 呼び口/受け口の指定子の設定
   # inline, allocator の指定
   def set_specifier(spec_list)
-    spec_list.each { |s|
+    spec_list.each {|s|
       case s[0]
       when :INLINE
         if @port_type == :CALL
@@ -4183,7 +4183,7 @@ end
     end
 
     @allocator_instance = {}
-    @allocator_instance_tmp.each { |ai|
+    @allocator_instance_tmp.each {|ai|
       direction = nil
       alloc_type = ai[0]
       # ai = [ :INTERNAL_ALLOC|:RELAY_ALLOC, func_name, param_name, rhs ]
@@ -4443,10 +4443,10 @@ end
 
     pr = Proc.new   # このメソッドのブロック引数を pr に代入
     port = self
-    fha.each{ |fh|  # fh: FuncHead                      # 関数配列中の各関数頭部
+    fha.each{|fh|  # fh: FuncHead                      # 関数配列中の各関数頭部
       fd = fh.get_declarator # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function? # fd が関数でなければ、すでにエラー
-        fd.get_type.get_paramlist.get_items.each{ |par| # すべてのパラメータについて
+        fd.get_type.get_paramlist.get_items.each{|par| # すべてのパラメータについて
           pr.call(port, fd, par)
         }
       end
@@ -4487,7 +4487,7 @@ end
     if @allocator_instance
       (indent+1).times { print "  " }
       puts "allocator instance:"
-      @allocator_instance.each { |b, a|
+      @allocator_instance.each {|b, a|
         (indent+2).times { print "  " }
         puts "#{a[0]} #{a[1]} #{b} "
         # a[3].show_tree( indent+3 )
@@ -4665,7 +4665,7 @@ class Namespace < NSBDNode
     end
 
     count = 0
-    @cell_list.each{ |c|
+    @cell_list.each{|c|
       # 定義かプロトタイプ宣言だけかは、new_cell の段階で判断できないため、カウントしなおす
       if c.get_f_def == true
         # print "get_n_cells: cell: #{c.get_name}\n"
@@ -4673,7 +4673,7 @@ class Namespace < NSBDNode
       end
     }
 
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       if ns.instance_of? Namespace
         count += ns.get_n_cells
       else
@@ -4869,7 +4869,7 @@ class Namespace < NSBDNode
   # プロトタイプ宣言だけで定義されていないケースをエラーとする
   # 受動の未結合セルについて警告する
   def check_ref_but_undef
-    @cell_list.each { |c|
+    @cell_list.each {|c|
       if !c.get_f_def # Namespace の @cell_list にはプロトタイプが含まれるケースあり
         if c.get_f_ref
           cdl_error("S1093 $1 : undefined cell", c.get_namespace_path.get_path_str)
@@ -4885,17 +4885,17 @@ class Namespace < NSBDNode
         end
       end
     }
-    @namespace_list.each { |n|
+    @namespace_list.each {|n|
       n.check_ref_but_undef
     }
   end
 
   #=== Namespace# セルの受け口の参照カウントを設定する
   def set_port_reference_count
-    @cell_list.each { |c|
+    @cell_list.each {|c|
       c.set_port_reference_count
     }
-    @namespace_list.each { |n|
+    @namespace_list.each {|n|
       n.set_port_reference_count
     }
   end
@@ -5017,11 +5017,11 @@ class Namespace < NSBDNode
   #=== Namespace# すべてのセルの require ポートを設定
   # STAGE: S
   def set_require_join
-    @celltype_list.each{ |ct|
+    @celltype_list.each{|ct|
       ct.set_require_join
     }
     # すべての namespace について require ポートをセット
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.set_require_join
     }
   end
@@ -5030,11 +5030,11 @@ class Namespace < NSBDNode
   # セルタイプに属するすべてのセルに対して実施
   def set_definition_join
     # celltype のコードを生成
-    @cell_list.each { |c|
+    @cell_list.each {|c|
       dbgPrint "set_definition_join #{c.get_name}\n"
       c.set_definition_join
     }
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.set_definition_join
     }
   end
@@ -5043,22 +5043,22 @@ class Namespace < NSBDNode
   # セルタイプに属するすべてのセルに対して実施
   def set_max_entry_port_inner_cell
     # celltype のコードを生成
-    @cell_list.each { |c|
+    @cell_list.each {|c|
       c.set_max_entry_port_inner_cell
     }
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.set_max_entry_port_inner_cell
     }
   end
 
   #=== Namespace# セルの結合をチェックする
   def check_join
-    @cell_list.each { |c|
+    @cell_list.each {|c|
       dbgPrint "check_join #{c.get_name}\n"
       c.check_join
       c.check_reverse_require
     }
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.check_join
     }
   end
@@ -5382,7 +5382,7 @@ class Join < BDNode
 
       dbgPrint "create_allocator_join: #{@owner.get_name}.#{@name}=>#{cell ? cell.get_name : "nil"}\n"
 
-      cell.get_allocator_list.each { |a|
+      cell.get_allocator_list.each {|a|
 
         if(a[0+1] == port && a[1+1] == @rhs_subscript)
           # 名前の一致するものの結合を生成する
@@ -5475,7 +5475,7 @@ class Join < BDNode
           cdl_error("S1118 $1: going out from region \'$2\' not permitted", @name, f1[i].get_name)
         end
 
-        out_through_list.each { |ol|
+        out_through_list.each {|ol|
           if ol[0] # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote ol[1]
             through = [ ol[0], :Join_out_through_, plugin_arg, f1[i], f1[i-1], :OUT_THROUGH, region_count]
@@ -5494,7 +5494,7 @@ class Join < BDNode
         dbgPrint "going from #{f1[sibling_level].get_name} to #{f2[sibling_level].get_name}\n"
         found = 0
         region_count = f1[i].next_to_through_count(f2[sibling_level].get_name) # to_through の region カウント
-        f1[sibling_level].get_to_through_list.each { |t|
+        f1[sibling_level].get_to_through_list.each {|t|
           if t[0][0] == f2[sibling_level].get_name # region 名が一致するか ?
             if t[1] # plugin_name が指定されていなければ登録しない
               plugin_arg = CDLString.remove_dquote t[2]
@@ -5543,7 +5543,7 @@ class Join < BDNode
         elsif in_through_list.length == 0
           cdl_error("S1120 $1: going in to region \'$2\' not permitted", @name, f2[i].get_name)
         end
-        in_through_list.each { |il|
+        in_through_list.each {|il|
           if il[0] # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote il[1]
             through = [ il[0], :Join_in_through_, plugin_arg, f2[i-1], f2[i], :IN_THROUGH, region_count ]
@@ -5591,7 +5591,7 @@ class Join < BDNode
   # through 指定子を設定
   #  check_and_gen_through を呼出して、through 生成
   def set_specifier_list(specifier_list)
-    specifier_list.each { |s|
+    specifier_list.each {|s|
       case s[0]
       when :THROUGH
         # set plugin_name
@@ -6120,7 +6120,7 @@ class Join < BDNode
       print "============\n"
       print "CHANGE_RHS change_rhs name: #{@owner.get_name}.#{@name}  rhs cell_name: #{@cell_name} #{@cell} #{self}\n"
 
-      clone_cell_list.each{ |cell, ce|
+      clone_cell_list.each{|cell, ce|
         # dbgPrint "=== change_rhs:  #{cell.get_name}=#{cell} : #{ce.get_name}\n"
         print "   CHANGE_RHS  change_rhs:  #{cell.get_name}=#{cell} : #{ce.get_name}\n"
       }
@@ -6241,7 +6241,7 @@ class Join < BDNode
     dbgPrint "Join#set_cloned: #{@name}  prev owner: #{@owner.get_name} new owner: #{owner.get_name}\n"
     @owner = owner
     if @array_member2
-      @array_member2.each{ |join|
+      @array_member2.each{|join|
         dbgPrint "Joinarray#set_cloned: #{@name}  prev owner: #{join.get_owner.get_name} new owner: #{owner.get_name}\n"
         join.set_owner owner
       }
@@ -6262,9 +6262,9 @@ class Join < BDNode
     (indent+1).times { print "  " }
     puts "rhs: "
     if @rhs.instance_of?(Array)
-      @rhs.each{ |i|
+      @rhs.each{|i|
         if i.instance_of?(Array)
-          i.each{ |j|
+          i.each{|j|
             j.show_tree(indent + 3)
           }
         elsif i.instance_of? Symbol
@@ -6295,7 +6295,7 @@ class Join < BDNode
     end
     if @through_list
       i = 0
-      @through_list.each { |t|
+      @through_list.each {|t|
         (indent+2).times { print "  " }
         puts "through: plugin name :  '#{t[0]}' arg : '#{t[2]}'"
         if @through_generated_list[i]
@@ -6308,7 +6308,7 @@ class Join < BDNode
       (indent+1).times { print "  " }
       puts "array member:"
       i = 0
-      @array_member2.each { |j|
+      @array_member2.each {|j|
         if j
           (indent+2).times { print "  " }
           puts "[#{i}]: #{j.get_name}  id: #{j} owner=#{j.get_owner.get_name}"
@@ -6583,7 +6583,7 @@ class Factory < BDNode
       return
     end
 
-    @arg_list.each{ |elements|
+    @arg_list.each{|elements|
 
       case elements[0]
       when :IDENTIFIER # 1
@@ -6631,7 +6631,7 @@ class Factory < BDNode
     if @arg_list
       (indent+1).times { print "  " }
       puts "argument(s):"
-      @arg_list.each { |l|
+      @arg_list.each {|l|
         (indent+2).times { print "  " }
         print "\"#{l}\"\n"
       }
@@ -7005,7 +7005,7 @@ class Region < Namespace
   def get_path_string
     pstring = ""
     delim = ""
-    @family_line.each{ |p|
+    @family_line.each{|p|
       pstring = "#{pstring}#{delim}#{p.get_name}"
       delim = "."
     }
@@ -7142,7 +7142,7 @@ class Region < Namespace
         end
         if !domain_ok
           found = 0
-          f1[sibling_level].get_to_through_list.each { |t|
+          f1[sibling_level].get_to_through_list.each {|t|
             if t[0][0] == f2[sibling_level].get_name # region 名が一致するか ?
               found = 1
             end
@@ -7205,7 +7205,7 @@ module Importable
   # return::String | Nil: path to file or nil if not found
   # find file in
   def find_file(file)
-    $import_path.each{ |path|
+    $import_path.each{|path|
       if path == "."
         pt = file
       else
@@ -7224,8 +7224,8 @@ module Importable
       end
     }
 
-    $base_dir.each_key{ |bd|
-      $import_path.each{ |path|
+    $base_dir.each_key{|bd|
+      $import_path.each{|path|
 #        if path =~ /\A\// || path =~ /\A[a-zA-Z]:/
         pt = "#{path}/#{file}"
 #        else
@@ -7254,7 +7254,7 @@ module Importable
 
   def get_base_dir
     return @last_base_dir
-    $base_dir.each{ |bd, flag|
+    $base_dir.each{|bd, flag|
       if flag == true
         return bd
       end
@@ -7295,7 +7295,7 @@ class Import_C < Node
     end
 
     # コマンドライン指定された DEFINE
-    $define.each{ |define|
+    $define.each{|define|
       if $IN_EXERB
         q = ""
       else
@@ -7344,7 +7344,7 @@ class Import_C < Node
     else
       base = ""
     end
-    $import_path.each{ |path|
+    $import_path.each{|path|
       include_opt = "#{include_opt} -I #{base}#{path}"
     }
 
@@ -7406,7 +7406,7 @@ class Import_C < Node
       begin
         tmp_file = nil
         tmp_file = File.open(tmp_header, "w:ASCII-8BIT")
-        cpp.each { |line|
+        cpp.each {|line|
           line = line.gsub(/^#(.*)$/, '/* \1 */')
           tmp_file.puts(line)
         }
@@ -7736,7 +7736,7 @@ class NamespacePath < Node
     else
       path = ""
     end
-    @path.each{ |n|
+    @path.each{|n|
       if first
         path = "#{path}#{n}"
         first = false
@@ -7788,7 +7788,7 @@ class NamespacePath < Node
       global_name = @namespace.get_global_name
     end
 
-    @path.each{ |n|
+    @path.each{|n|
       if global_name != ""
         global_name = "#{global_name}_#{n}"
       else
@@ -7829,7 +7829,7 @@ class NamespacePath < Node
     end
     pa.shift
 
-    pa.each{ |a|
+    pa.each{|a|
       if a
         nsp.append! a.to_sym
       else

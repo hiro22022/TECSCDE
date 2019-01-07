@@ -249,7 +249,7 @@ class Expression < Node
       if nsp.is_name_only?
         count = 0
         # p "search: #{nsp.get_name}"
-        name_list.get_items.each{ |nm, val|
+        name_list.get_items.each{|nm, val|
           # p "    : #{nm.get_name} #{nsp.get_name.class} #{nm.get_name.class}"
           if nsp.get_name == nm.get_name
             return " $#{count}"
@@ -445,7 +445,7 @@ class Expression < Node
       end
       if len == 1
         sum = 0
-        str.each_byte { |b| sum = sum * 256 + b }
+        str.each_byte {|b| sum = sum * 256 + b }
         return IntegerVal.new(sum, elements[1].val)
       else
 # 2.0        if str[0] == 92 then
@@ -864,7 +864,7 @@ class Expression < Node
   # このメソッドは、Array のディープコピーを行う
   def clone_elements(elements)
     elements = elements.clone
-    elements.map!{ |ele|
+    elements.map!{|ele|
       if ele.instance_of? Array
         clone_elements ele
       else
@@ -959,7 +959,7 @@ class Expression < Node
   # *v:: 可変個引数（任意の型）
   # すべてが BaseVal の子クラス（値）であれば、評価可能と判断する
   def evaluable?(*v)
-    v.each{ |val|
+    v.each{|val|
       if !val.kind_of?(BaseVal)
         return false
       end

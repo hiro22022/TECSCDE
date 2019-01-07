@@ -169,7 +169,7 @@ class HRPPlugin < DomainPlugin
       regions = DomainType.get_domain_regions[:HRP]
       file = AppFile.open("#{$gen}/tecsgen.cfg")
       file.print "/* HRPPlugin 002 */\n"
-      regions.each{ |region|
+      regions.each{|region|
         if !region.is_root?
           nsp = "#{region.get_global_name}"
           file2 = AppFile.open("#{$gen}/tecsgen_#{nsp}.cfg")
@@ -196,7 +196,7 @@ class HRPPlugin < DomainPlugin
       #
       #  ATT_MODの生成
       #
-      Cell.get_cell_list2.each { |cell|
+      Cell.get_cell_list2.each {|cell|
         # すべてのセルを走査してセルタイプをチェック
         ct = cell.get_celltype
         if ct.class == Celltype && check_celltype_list.include?(ct) == false
@@ -217,7 +217,7 @@ class HRPPlugin < DomainPlugin
           regions = ct.get_domain_roots
           regions_hrp = regions[:HRP]
           dbgPrint "HRP domain in #{ct.get_name}: "
-          regions_hrp.each { |reg|
+          regions_hrp.each {|reg|
             dbgPrint reg.get_name
           }
           # puts ""
@@ -232,7 +232,7 @@ class HRPPlugin < DomainPlugin
             file.close
           end
 
-          regions_hrp.each { |reg|
+          regions_hrp.each {|reg|
             if reg.is_root?
               nsp = ""
             else
@@ -298,7 +298,7 @@ class HRPPlugin < DomainPlugin
     dbgPrint "--------- get_inter_domain #{rhs_cell.get_namespace_path} -----\n"
     domain_roots = []
     set = get_inter_domain_join_set rhs_cell
-    set.each{ |join|
+    set.each{|join|
       dbgPrint "--------- get_inter_domain:#{join.get_owner.get_namespace_path} => #{join.get_cell.get_namespace_path}-----\n"
       # if join.get_owner.get_region.get_domain_root.get_domain_type.get_option == "user" then
         domain_roots << join.get_owner.get_region.get_domain_root
@@ -315,7 +315,7 @@ class HRPPlugin < DomainPlugin
     if cell_domain_root.get_domain_type.get_kind != :OutOfDomain
       domain_roots << cell.get_region.get_domain_root # 結合先のドメインも含める
     end
-    domain_roots.each{ |dr|
+    domain_roots.each{|dr|
       case dr.get_domain_type.get_kind
       when :kernel
         acv += "#{delim}TACP_KERNEL"
@@ -342,7 +342,7 @@ class HRPPlugin < DomainPlugin
     end
     sac_str = "{"
     delim = ""
-    [:accessPattern1, :accessPattern2, :accessPattern3, :accessPattern4].each{ |acp|
+    [:accessPattern1, :accessPattern2, :accessPattern3, :accessPattern4].each{|acp|
       init = (cell.get_attr_initializer acp).to_s
       if init != "OMIT"
         sac_str += delim + init

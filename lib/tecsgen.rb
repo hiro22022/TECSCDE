@@ -67,7 +67,7 @@ class Array
   def to_CDL_str
     str = "{ "
     delim = ""
-    self.each{ |v|
+    self.each{|v|
       str += delim + v.to_CDL_str
       delim = ", "
     }
@@ -78,7 +78,7 @@ class Array
   def show_tree(indent)
     indent.times{ print "  " }
     print("Array\n")
-    self.each{ |m|
+    self.each{|m|
       m.show_tree(indent+1)
     }
   end
@@ -101,8 +101,8 @@ def require_tecsgen_lib(fname, b_fatal = true)
 
     # -L 、 $RUBYLIB で指定されたパスおよびシステムのパスからサーチ
     #   exerb では $LOAD_PATH は ["."] のみ入っているようだ
-    ($library_path+$LOAD_PATH).each{ |path|
-      [ "", "tecslib/plugin/" ].each { |lp|
+    ($library_path+$LOAD_PATH).each{|path|
+      [ "", "tecslib/plugin/" ].each {|lp|
         lib = File.expand_path(path) + "/" + lp + fname
 
         if File.exist? lib # ファイル存否と他のエラーを区別するため存在確認をする
@@ -125,7 +125,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
       # exerb 対応 "." をサーチパスの最初に加える
       #   "tecslib/" は RPCPlugin.rb, TracePlugin.rb のために用意してある
       #   RPCPlugin.rb, TracePlugin.rb が tecslib 下でなければ不要になるが、このようにしておく
-      ["", "tecslib/plugin/"].each{ |lp|
+      ["", "tecslib/plugin/"].each{|lp|
         path = lp + fname
         begin
           require path
@@ -278,7 +278,7 @@ class TECSGEN
 
     # コマンドライン引数　 (Makefile.templ へ出力)
     $arguments = ""
-    ARGV.each { |a| $arguments += " " + a }
+    ARGV.each {|a| $arguments += " " + a }
 
     $unopt = false # bool:   disable optimizing both call and entry port
     $unopt_entry= false    # bool:   disable optimizing entry port
@@ -356,10 +356,10 @@ class TECSGEN
     ###  tecsgen コマンドオプション解析  ###
     ARGV.options {|parser|
       parser.banner = "Usage: tecsgen [options] files"
-      parser.on("-D", "--define=def", "define cpp symbol for import_C") { |define|
+      parser.on("-D", "--define=def", "define cpp symbol for import_C") {|define|
         $define << define
       }
-      parser.on("-G", "--generate-region=path", "generate region") { |path|
+      parser.on("-G", "--generate-region=path", "generate region") {|path|
         if path =~ /^::/
           gen_path = path
         else
@@ -367,11 +367,11 @@ class TECSGEN
         end
         $region_list[gen_path] = true
       }
-      parser.on("-I", "--import-path=path", "imoprt/import_C path") { |path|
+      parser.on("-I", "--import-path=path", "imoprt/import_C path") {|path|
         $import_path << path
         $import_path_opt << path
       }
-      parser.on("-L", "--library-path=path", "path to dir where tecsgen.rb (obsolete, unnecessary to specify -L, those passes are gotten from tecsgen.rb") { |path|
+      parser.on("-L", "--library-path=path", "path to dir where tecsgen.rb (obsolete, unnecessary to specify -L, those passes are gotten from tecsgen.rb") {|path|
         $library_path << path
       }
       parser.on("-R", "--RAM-initializer", "generate RAM initializer. INITIALIZE_TECS() must be called before running any TECS code."){
@@ -383,8 +383,7 @@ class TECSGEN
       parser.on("--unoptimize-entry", "unoptimize entry port") {
         $unopt_entry = true
       }
-      parser.on("-c", "--cpp=cpp_cmd", "C pre-processor command used import_C (default: gcc -E -DTECSGEN), you can also specify by environment variable TECS_CPP"){
-        |arg|
+      parser.on("-c", "--cpp=cpp_cmd", "C pre-processor command used import_C (default: gcc -E -DTECSGEN), you can also specify by environment variable TECS_CPP"){|arg|
         $cpp = arg
         $b_cpp_specified = true
       }
@@ -394,14 +393,14 @@ class TECSGEN
       parser.on("-f", "--force-overwrite", "force overwrite all files") {
         $force_overwrite = true
       }
-      parser.on("-g", "--gen=dir", "generate dir") { |dir|
+      parser.on("-g", "--gen=dir", "generate dir") {|dir|
         $gen = $gen_base = dir
       }
       parser.on("-i", "--idx_is_id", "set idx_is_id to all celltypes") {
         $idx_is_id = true
       }
       #  parser.on('-k', '--kcode=code',  'set kanji code: euc|sjis|none|utf8, none is default') { |code|
-      parser.on("-k", "--kcode=code", "set kanji code: euc|sjis|none|utf8") { |code|
+      parser.on("-k", "--kcode=code", "set kanji code: euc|sjis|none|utf8") {|code|
         $kcode = code
       }
       #  old_mode は V1.0.C.22 で廃止
@@ -445,12 +444,10 @@ class TECSGEN
       parser.on("--no-default-import-path", "no default import path"){
         $no_default_import_path = true
       }
-      parser.on("--c-suffix=c", "C program suffix (default: c)"){
-        | suffix |
+      parser.on("--c-suffix=c", "C program suffix (default: c)"){| suffix |
         $c_suffix = suffix
       }
-      parser.on("--h-suffix=h", "C program header suffix (default: h)"){
-        | suffix |
+      parser.on("--h-suffix=h", "C program header suffix (default: h)"){| suffix |
         $h_suffix = suffix
       }
       #  parser.on(  '--include_path_opt_format',  'cpp include path option format, default: "-I %s"' ){
@@ -543,7 +540,7 @@ class TECSGEN
         TECSGEN.add_import_path $tecspath
         dir = nil
         begin
-          Dir.foreach($tecspath){ |f|
+          Dir.foreach($tecspath){|f|
             if f != "." && f != ".." && File.directory?($tecspath + "/" + f)
               TECSGEN.add_import_path($tecspath + "/" + f)
             end

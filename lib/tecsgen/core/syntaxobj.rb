@@ -267,7 +267,7 @@ class NamedList
   def get_item(name)
     if !name.kind_of? Symbol
       print "get_item: '#{name}', items are below\n"
-      @names.each{ |nm, item|
+      @names.each{|nm, item|
         p nm
       }
       raise "get_item: #{name}: not Symbol"
@@ -298,7 +298,7 @@ class NamedList
   def set_cloned(ct_name, cell_name, locale)
     items = []
     names = {}
-    @items.each { |i|
+    @items.each {|i|
       dbgPrint "NamedList clone #{ct_name}, #{cell_name}, #{i.get_name}\n"
 
       cl = i.clone_for_composite(ct_name, cell_name, locale)
@@ -316,7 +316,7 @@ class NamedList
   end
 
   def show_tree(indent)
-    @items.each { |i|
+    @items.each {|i|
       i.show_tree(indent)
     }
   end
@@ -326,7 +326,7 @@ class Typedef < BDNode
 # @declarator:: Decl
 
   def self.new_decl_list(type_spec_qual_list, decl_list)
-    decl_list.each { |decl|
+    decl_list.each {|decl|
       Typedef.new(type_spec_qual_list, decl)
     }
   end
@@ -596,7 +596,7 @@ class Decl < BDNode
   end
 
   def set_specifier_list(spec_list)
-    spec_list.each{ |spec|
+    spec_list.each{|spec|
       case spec[0]
       when :RW
         @rw = true
@@ -734,7 +734,7 @@ class ParamDecl < BDNode
       return
     end
 
-    @param_specifier.each { |i|
+    @param_specifier.each {|i|
       case i[0] # (3)
       when :IN, :OUT, :INOUT, :SEND, :RECEIVE
         if @direction == nil
@@ -1019,7 +1019,7 @@ class ParamList < BDNode
   def initialize(paramdecl)
     super()
     @param_list = NamedList.new(paramdecl, "parameter")
-    @param_list.get_items.each { |paramdecl|
+    @param_list.get_items.each {|paramdecl|
       paramdecl.set_owner self # ParamDecl
     }
   end
@@ -1038,7 +1038,7 @@ class ParamList < BDNode
   #=== size_is, count_is, string の引数の式をチェック
   # 変数は前方参照可能なため、関数頭部の構文解釈が終わった後にチェックする
   def check_param
-    @param_list.get_items.each { |i|
+    @param_list.get_items.each {|i|
       next if i == nil # i == nil : エラー時
 
       if i.get_type.class == VoidType
@@ -1128,7 +1128,7 @@ class ParamList < BDNode
   end
 
   def check_struct_tag(kind)
-    @param_list.get_items.each{ |p|
+    @param_list.get_items.each{|p|
       p.check_struct_tag kind
     }
   end
@@ -1136,7 +1136,7 @@ class ParamList < BDNode
   #=== Push Pop Allocator が必要か？
   # Transparent RPC の場合 (oneway かつ) in の配列(size_is, count_is, string のいずれかで修飾）がある
   def need_PPAllocator?(b_opaque = false)
-    @param_list.get_items.each { |i|
+    @param_list.get_items.each {|i|
       if i.need_PPAllocator?(b_opaque)
         return true
       end
@@ -1153,7 +1153,7 @@ class ParamList < BDNode
   def to_str(b_name)
     str = "("
     delim = ""
-    @param_list.get_items.each{ |paramdecl|
+    @param_list.get_items.each{|paramdecl|
       decl = paramdecl.get_declarator
       str += delim + decl.get_type
       if b_name
@@ -1226,7 +1226,7 @@ class CDLInitializer
       return array.clone
     end
 
-    new_array = array.map{ |m|
+    new_array = array.map{|m|
       clone_for_composite(m, ct_name, cell_name, locale)
     }
     return new_array

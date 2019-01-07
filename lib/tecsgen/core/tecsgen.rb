@@ -57,7 +57,7 @@ class TECSGEN
       new_tecspath = cygpath($tecspath, $tecspath)
       pattern = /\A#{$tecspath}/
       paths = []
-      $import_path.each{ |path|
+      $import_path.each{|path|
         # cygpath は '..' を簡約してしまうので、new_tecspath で置換する
         # paths << cygpath( path, path )
         paths << path.sub(pattern, new_tecspath)
@@ -241,7 +241,7 @@ class TECSGEN
 
     ####  構文解析 (post コードを除く) ####
     # すべての cdl を import する
-    argv.each{ |f|
+    argv.each{|f|
       dbgPrint("## Import: #{f}\n")
       Import.new(f, false, false)
     }
@@ -339,7 +339,7 @@ class TECSGEN
 
   def optimize_and_generate
     #### Region link root ごとにオプティマイズおよび生成 ####
-    Region.get_link_roots.each { |region|
+    Region.get_link_roots.each {|region|
 
       n_cells = region.get_n_cells
 
@@ -437,7 +437,7 @@ class TECSGEN
     ##
     # Namespace.gen_XML  @root_namespace
 
-    $region_list.each{ |region_path_str, val|
+    $region_list.each{|region_path_str, val|
       if val == true
         Generator.warning("W9999 $1: not link root, -G ignored", region_path_str)
       end
@@ -462,7 +462,7 @@ class TECSGEN
       exit 1
     end
 
-    open("#{$gen_base}/tecsgen.timestamp", "w"){|io|}
+    open("#{$gen_base}/tecsgen.timestamp", "w"){|io| }
   end # finalize
 
   def self.post_coded?

@@ -45,7 +45,7 @@
 class RepeatCellPlugin < CellPlugin
   @@plugin_list = []
   RepeatCellPluginArgProc = {
-    "count" => Proc.new { |obj, rhs| obj.set_count rhs }
+    "count" => Proc.new {|obj, rhs| obj.set_count rhs }
   }
 
   def initialize(cell, option)
@@ -96,7 +96,7 @@ class RepeatCellPlugin < CellPlugin
       file.print "#{indent_str}cell #{@cell.get_celltype.get_name} #{cname}{\n"
 
       # Join の CDL 文字列生成
-      @cell.get_join_list.get_items.each{ |j|
+      @cell.get_join_list.get_items.each{|j|
 
         # Join の右辺の解析
         res = j.get_rhs.analyze_cell_join_expression

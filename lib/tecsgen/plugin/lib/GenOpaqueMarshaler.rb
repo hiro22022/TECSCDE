@@ -42,23 +42,23 @@ module GenOpaqueMarshaler
 
   # プラグイン引数名と Proc
   RPCPluginArgProc = {
-    "clientChannelCelltype" => Proc.new { |obj, rhs| obj.set_clientChannelCelltype rhs },
-    "serverChannelCelltype" => Proc.new { |obj, rhs| obj.set_serverChannelCelltype rhs },
-    "clientChannelCell" => Proc.new { |obj, rhs| obj.set_clientChannelCell rhs },
-    "serverChannelCell" => Proc.new { |obj, rhs| obj.set_serverChannelCell rhs },
-    "clientChannelInitializer" => Proc.new { |obj, rhs| obj.set_clientChannelInitializer rhs },
-    "serverChannelInitializer" => Proc.new { |obj, rhs| obj.set_serverChannelInitializer rhs },
-    "clientSemaphoreCelltype" => Proc.new { |obj, rhs| obj.set_clientSemaphoreCelltype rhs },
-    "clientSemaphoreInitializer" => Proc.new { |obj, rhs| obj.set_clientSemaphoreInitializer rhs },
-    "clientErrorHandler" => Proc.new { |obj, rhs| obj.set_clientErrorHandler rhs },
-    "serverErrorHandler" => Proc.new { |obj, rhs| obj.set_serverErrorHandler rhs },
-    "TDRCelltype"     => Proc.new { |obj, rhs| obj.set_TDRCelltype rhs },
-    "PPAllocatorSize" => Proc.new { |obj, rhs| obj.set_PPAllocatorSize rhs },
-    "substituteAllocator"  => Proc.new { |obj, rhs| obj.set_substituteAllocator rhs },
-    "noServerChannelOpenerCode"  => Proc.new { |obj, rhs| obj.set_noServerChannelOpenerCode rhs },
-    "taskCelltype"    => Proc.new { |obj, rhs| obj.set_taskCelltype rhs },
-    "taskPriority"    => Proc.new { |obj, rhs| obj.set_taskPriority rhs },
-    "stackSize"      => Proc.new { |obj, rhs| obj.set_stackSize rhs },
+    "clientChannelCelltype" => Proc.new {|obj, rhs| obj.set_clientChannelCelltype rhs },
+    "serverChannelCelltype" => Proc.new {|obj, rhs| obj.set_serverChannelCelltype rhs },
+    "clientChannelCell" => Proc.new {|obj, rhs| obj.set_clientChannelCell rhs },
+    "serverChannelCell" => Proc.new {|obj, rhs| obj.set_serverChannelCell rhs },
+    "clientChannelInitializer" => Proc.new {|obj, rhs| obj.set_clientChannelInitializer rhs },
+    "serverChannelInitializer" => Proc.new {|obj, rhs| obj.set_serverChannelInitializer rhs },
+    "clientSemaphoreCelltype" => Proc.new {|obj, rhs| obj.set_clientSemaphoreCelltype rhs },
+    "clientSemaphoreInitializer" => Proc.new {|obj, rhs| obj.set_clientSemaphoreInitializer rhs },
+    "clientErrorHandler" => Proc.new {|obj, rhs| obj.set_clientErrorHandler rhs },
+    "serverErrorHandler" => Proc.new {|obj, rhs| obj.set_serverErrorHandler rhs },
+    "TDRCelltype"     => Proc.new {|obj, rhs| obj.set_TDRCelltype rhs },
+    "PPAllocatorSize" => Proc.new {|obj, rhs| obj.set_PPAllocatorSize rhs },
+    "substituteAllocator"  => Proc.new {|obj, rhs| obj.set_substituteAllocator rhs },
+    "noServerChannelOpenerCode"  => Proc.new {|obj, rhs| obj.set_noServerChannelOpenerCode rhs },
+    "taskCelltype"    => Proc.new {|obj, rhs| obj.set_taskCelltype rhs },
+    "taskPriority"    => Proc.new {|obj, rhs| obj.set_taskPriority rhs },
+    "stackSize"      => Proc.new {|obj, rhs| obj.set_stackSize rhs },
   }
 
   ##### プラグイン引数チェック関数
@@ -168,7 +168,7 @@ module GenOpaqueMarshaler
     def optparse (str, regexp, expected)
       str.strip!
       token = nil
-      res = str.sub!(regexp){ |matched| token = matched; "" }
+      res = str.sub!(regexp){|matched| token = matched; "" }
       if !token
         cdl_error("syntax error in substituteAllocator option near '#{str}', expected '#{expected}'")
       end
@@ -301,7 +301,7 @@ module GenOpaqueMarshaler
     @marshaler_celltype_file_name = "#{$gen}/#{@marshaler_celltype_name}.cdl"
 
     # signature で対応できないものをチェック
-    @signature.each_param{ |func_decl, param_decl|
+    @signature.each_param{|func_decl, param_decl|
       if param_decl.get_direction == :OUT
         if param_decl.get_count && !param_decl.get_size
           cdl_error("#{@signature.get_namespace_path}.#{func_decl.get_name}.#{param_decl.get_name}: size_is must be specified for out parameter of Opaque RPC")
@@ -445,7 +445,7 @@ EOT
 
     if func_type.has_receive?
       file.print "	/* initialize receive parameters */\n"
-      params.each{ |param|
+      params.each{|param|
         if param.get_direction == :RECEIVE
           file.print "	*#{param.get_name} = 0;\n"
         end
@@ -653,7 +653,7 @@ EOT
 EOT
 
     # signature に含まれる すべての関数について
-    @signature.get_function_head_array.each { |f|
+    @signature.get_function_head_array.each {|f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
       func_id = "FUNCID_#{@signature.get_global_name}_#{f_name}".upcase
@@ -701,7 +701,7 @@ EOT
 
     file.print "/* アンマーシャラ関数のプロトタイプ宣言 */\n"
     # signature に含まれる すべての関数について
-    @signature.get_function_head_array.each { |f|
+    @signature.get_function_head_array.each {|f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
       id = @signature.get_id_from_func_name(f_name)
@@ -718,7 +718,7 @@ EOT
     end
 
     file.print "\n/*** アンマーシャラ関数 ***/\n\n"
-    @signature.get_function_head_array.each { |f|
+    @signature.get_function_head_array.each {|f|
       f_name = f.get_name
       f_type = f.get_declarator.get_type
       id = @signature.get_id_from_func_name(f_name)
@@ -750,7 +750,7 @@ EOT
       # 引数を受取る変数の定義
       params = f.get_declarator.get_type.get_paramlist.get_items
            # FuncHead->  Decl->    FuncType->ParamList
-      params.each{ |par|
+      params.each{|par|
         name = par.get_name
         type = par.get_type.get_original_type
 
@@ -821,7 +821,7 @@ EOT
       end
 
       delim = " "
-      params.each{ |par|
+      params.each{|par|
         file.print delim
         delim = ", "
         if par.get_direction == :RECEIVE
@@ -918,7 +918,7 @@ EOT
   #  b_marshal = false && b_get == true    :  アンマーシャラで出力引数送出
   # b_referenced:: size_is, count_is, string で参照されているものを出力
   def print_params(params, file, nest, b_marshal, b_get, b_referenced, port_name, func_name)
-    params.each{ |param|
+    params.each{|param|
 # p "#{param.get_name}:  b_marshal: #{b_marshal} b_get: #{b_get}"
       if !(b_referenced == param.is_referenced?)
         next
@@ -961,7 +961,7 @@ EOT
 
   #=== アロケータコードを生成 (out のアンマーシャラ用)
   def alloc_for_out_params(params, file, nest, dir, alloc_cp, alloc_cp_extra)
-    params.each{ |param|
+    params.each{|param|
       dir = param.get_direction
       if dir == :OUT
         alloc_for_out_param(param.get_name, param.get_type, file, nest, nil, nil, alloc_cp, alloc_cp_extra)
@@ -1043,7 +1043,7 @@ EOT
       reset_str = ""
     end
 
-    params.each{ |param|
+    params.each{|param|
       if dir == param.get_direction
         indent = "\t" * nest
         type = param.get_type.get_original_type
@@ -1074,7 +1074,7 @@ EOT
   # out nullable の場合、in, send, receive のように、値を渡す直前ではなく、呼出し時に渡す
   def print_out_nullable(params, file, nest, b_marshal);
     indent = "\t" * nest
-    params.each{ |param|
+    params.each{|param|
       next if param.get_direction != :OUT
       next if !param.is_nullable?
       if b_marshal

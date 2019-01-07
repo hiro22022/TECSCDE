@@ -141,7 +141,7 @@ module TECSCDE
       cell_list = { } # ::Cell => TmCell
       if tecsgen_cell_list
         p "=== create cell ==="
-        tecsgen_cell_list.each{ |cell|
+        tecsgen_cell_list.each{|cell|
           # p cell.get_owner.get_namespace
           # p cell.get_owner.get_namespace_path
           if @cell_hash[cell.get_name] # duplicate cell in cdl file
@@ -193,12 +193,12 @@ module TECSCDE
         end
 
         p "=== create join ==="
-        tecsgen_cell_list2.each{ |cell|
-          cell.get_join_list.get_items.each{ |join|
+        tecsgen_cell_list2.each{|cell|
+          cell.get_join_list.get_items.each{|join|
             if join.get_array_member2 == nil
               create_join_from_tecsgen(cell, join, cell_list)
             else
-              join.get_array_member2.each{ |j|
+              join.get_array_member2.each{|j|
                 if !j.nil?
                   create_join_from_tecsgen(cell, j, cell_list)
                 end
@@ -274,7 +274,7 @@ module TECSCDE
         size = paper_info[:size]
         orientation = paper_info[:orientation]
         paper = nil
-        Paper.each{ |name, val|
+        Paper.each{|name, val|
           if val[:size] == size && val[:orientation] == orientation
             p "paper found #{val[:name]}"
             paper = val
@@ -291,7 +291,7 @@ module TECSCDE
       end
 
       #----- cell location -----#
-      info[:cell_list].each{ |cell_location|
+      info[:cell_list].each{|cell_location|
         # region = cell_location[ :region ].to_sym
         name = cell_location[:name].to_sym
         loc = cell_location[:location]
@@ -305,7 +305,7 @@ module TECSCDE
           cell.set_geometry(*loc)
 
           #------ port location -----#
-          cell_location[:port_location].each{ |port_location|
+          cell_location[:port_location].each{|port_location|
             # mikan offset not set yet
             port_name = port_location[:port_name].to_sym
             edge = get_edge_side_val(port_location[:edge])
@@ -357,7 +357,7 @@ module TECSCDE
       end
 
       #----- join location -----#
-      info[:join_list].each{ |jl|
+      info[:join_list].each{|jl|
         # jl[ :call_region ]
         cp_cell_nspath = jl[:call_cell].to_sym
         cp_name = jl[:call_port].to_sym
@@ -369,7 +369,7 @@ module TECSCDE
 
         bl = jl[:bar_list]
         bar_list = []
-        bl.each{ |bar|
+        bl.each{|bar|
           bar_list << [ bar[:type], bar[:position] ]
         }
 
@@ -425,7 +425,7 @@ module TECSCDE
                   ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN)
                 # p "4"
                 bars = []
-                bar_list.each{ |bar_info|
+                bar_list.each{|bar_info|
                   # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
                   pos = bar_info[1]
                   if !pos.nil? && bar_info[0].to_sym == :HBar
@@ -486,7 +486,7 @@ module TECSCDE
 
       f.print "    \"base_dir\" : [\n"
       delim = "        "
-      $base_dir.each{ |bd, b_necessity|
+      $base_dir.each{|bd, b_necessity|
         if b_necessity
           f.print "#{delim}\"#{bd}\""
           delim = ",\n        "
@@ -496,7 +496,7 @@ module TECSCDE
 
       f.print "    \"define_macro\" : [\n"
       delim = ""
-      $define.each { |define|
+      $define.each {|define|
         f.print "#{delim}        \"#{define}\""
         delim = ",\n"
       }
@@ -504,7 +504,7 @@ module TECSCDE
 
       f.print "   \"import_path\" : [\n"
       delim = ""
-      $import_path.each{ |path|
+      $import_path.each{|path|
         tecspath = $tecspath.gsub(/\\/, '\\\\\\\\')
         # p tecspath
         # p path, Regexp.new( "^A#{tecspath}" ), path =~ Regexp.new( "\\A#{tecspath}" )
@@ -516,7 +516,7 @@ module TECSCDE
 
       f.print "    \"direct_import\" : [\n"
       delim = ""
-      Import.get_list.each { |path, import|
+      Import.get_list.each {|path, import|
         if (import.is_imported? == false) && (import.get_cdl_name != @file_editing)
           f.print "#{delim}        \"#{import.get_cdl_name}\""
           delim = ",\n"
@@ -537,7 +537,7 @@ module TECSCDE
     #=== TECSModel#save_cells
     # output cell definition
     def save_cells(f)
-      @cell_list.each{ |cell| # mikan region
+      @cell_list.each{|cell| # mikan region
         if !cell.is_editable?
           next
         end
@@ -547,9 +547,9 @@ module TECSCDE
         if cell.get_cports.length > 0
           f.print "\n    /*** call ports ***/\n"
         end
-        cell.get_cports.each{ |name, cport|
+        cell.get_cports.each{|name, cport|
           if cport.is_array?
-            cport.get_ports.each{ |cport|
+            cport.get_ports.each{|cport|
               join = cport.get_join
               if join
                 eport = join.get_eport
@@ -579,7 +579,7 @@ module TECSCDE
         if attr_list.length > 0
           f.print "\n    /*** attributes ***/\n"
         end
-        attr_list.keys.sort.each{ |attr|
+        attr_list.keys.sort.each{|attr|
           f.print "    #{attr} = #{attr_list[attr]};\n"
         }
 
@@ -623,7 +623,7 @@ EOT
       f.print "    \"cell_list\" : [\n"
       delim_1 = ""
       index = 0
-      @cell_list.each{ |cell|
+      @cell_list.each{|cell|
         x, y, w, h = cell.get_geometry
         f.print <<EOT
 #{delim_1}        {       /** cell_list[ #{index} ] **/
@@ -634,9 +634,9 @@ EOT
             "port_location" : [
 EOT
         delim_2 = ""
-        (cell.get_cports.merge cell.get_eports).each{ |name, cport|
+        (cell.get_cports.merge cell.get_eports).each{|name, cport|
           if cport.is_array?
-            cport.get_ports.each{ |cp|
+            cport.get_ports.each{|cp|
               f.print <<EOT
 #{delim_2}                {
                     "type"      : "port_location",
@@ -673,7 +673,7 @@ EOT
       f.print "    \"join_list\" : [\n"
       delim_1 = ""
       index = 0
-      @join_list.each{ |join|
+      @join_list.each{|join|
         cport, eport, bars = join.get_ports_bars
         if cport.get_subscript
           cp_subsc = "            \"call_port_subscript\" : #{cport.get_subscript},\n"
@@ -700,7 +700,7 @@ EOT
 #{ep_subsc}            "bar_list"    : [
 EOT
         delim_2 = ""
-        bars.each{ |bar|
+        bars.each{|bar|
           f.print <<EOT
 #{delim_2}                {
                      "type"     : "#{(bar.instance_of? HBar) ? "HBar" : "VBar"}",
@@ -727,7 +727,7 @@ EOT
     # get location information from cde file and apply it to TmCell & TmJoin
     def set_location_from_tecsgen_old
       # set cell location
-      @tecsgen.get_cell_location_list.each{ |cl|
+      @tecsgen.get_cell_location_list.each{|cl|
         cell_nspath, x, y, w, h, port_location_list = cl.get_location
         # p "set_location_from_tecsgen", cell_nspath, x, y, w, h, port_location_list
         cell = @cell_hash[cell_nspath.to_s.to_sym]
@@ -738,7 +738,7 @@ EOT
       }
 
       # set join location
-      @tecsgen.get_join_location_list.each{ |jl|
+      @tecsgen.get_join_location_list.each{|jl|
         cp_cell_nspath, cp_name, ep_cell_nspath, ep_name, bar_list = jl.get_location
         cp_subscript = nil # kari
         ep_subscript = nil
@@ -771,7 +771,7 @@ EOT
                   ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN)
                 # p "4"
                 bars = []
-                bar_list.each{ |bar_info|
+                bar_list.each{|bar_info|
                   # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
                   pos = bar_info[1].eval_const nil
                   if !pos.nil? && bar_info[0] == :HBar
@@ -810,21 +810,21 @@ EOT
       f.print " ************************************************/\n"
       f.print "__location_information__ {\n"
 
-      @cell_list.each{ |cell|
+      @cell_list.each{|cell|
         x, y, w, h = cell.get_geometry
         f.print("    __cell__  #{cell.get_name}( #{x}, #{y}, #{w}, #{h} ) {\n")
-        cell.get_cports.each{ |name, cport|
+        cell.get_cports.each{|name, cport|
           if cport.is_array?
-            cport.get_ports.each{ |cp|
+            cport.get_ports.each{|cp|
               f.print "        #{cp.get_name}( #{cp.get_subscript}, #{cp.get_edge_side_name}, #{cp.get_offset} )\n"
             }
           else
             f.print "        #{cport.get_name}( #{cport.get_edge_side_name}, #{cport.get_offset} )\n"
           end
         }
-        cell.get_eports.each{ |name, eport|
+        cell.get_eports.each{|name, eport|
           if eport.is_array?
-            eport.get_ports.each{ |ep|
+            eport.get_ports.each{|ep|
               f.print "        #{ep.get_name}( #{ep.get_subscript}, #{ep.get_edge_side_name}, #{ep.get_offset} )\n"
             }
           else
@@ -833,7 +833,7 @@ EOT
         }
         f.print("    }\n")
       }
-      @join_list.each{ |join|
+      @join_list.each{|join|
         cport, eport, bars = join.get_ports_bars
         if cport.get_subscript
           cp_subsc = "[ #{cport.get_subscript} ]"
@@ -847,7 +847,7 @@ EOT
         end
 
         f.print("    __join__( #{cport.get_cell.get_name}.#{cport.get_name}#{cp_subsc} => #{eport.get_cell.get_name}.#{eport.get_name}#{ep_subsc} ){\n")
-        bars.each{ |bar|
+        bars.each{|bar|
           f.print("        #{(bar.instance_of? HBar) ? "HBar" : "VBar"}( #{bar.get_position} )\n")
         }
         f.print("    }\n")

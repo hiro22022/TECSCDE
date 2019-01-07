@@ -41,12 +41,12 @@ module MrubyBridgeCelltypePluginModule
 
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = {
-      "ignoreUnsigned" => Proc.new { |obj, rhs| obj.set_ignoreUnsigned rhs },
-      "include_inner_cell" => Proc.new { |obj, rhs| obj.set_include_inner_cell rhs },
-      "exclude_cell" => Proc.new { |obj, rhs| obj.set_exclude_cell rhs },
-      "exclude_port" => Proc.new { |obj, rhs| obj.set_exclude_port rhs },
-      "exclude_port_func" => Proc.new { |obj, rhs| obj.set_exclude_port_func rhs },
-      "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
+      "ignoreUnsigned" => Proc.new {|obj, rhs| obj.set_ignoreUnsigned rhs },
+      "include_inner_cell" => Proc.new {|obj, rhs| obj.set_include_inner_cell rhs },
+      "exclude_cell" => Proc.new {|obj, rhs| obj.set_exclude_cell rhs },
+      "exclude_port" => Proc.new {|obj, rhs| obj.set_exclude_port rhs },
+      "exclude_port_func" => Proc.new {|obj, rhs| obj.set_exclude_port_func rhs },
+      "auto_exclude" => Proc.new {|obj, rhs| obj.set_auto_exclude rhs },
   }
 
   require_tecsgen_lib("MrubyBridgeCellPlugin.rb")
@@ -105,11 +105,11 @@ module MrubyBridgeCelltypePluginModule
     end
 
     opt_str = "ignoreUnsigned=#{@b_ignoreUnsigned}, auto_exclude=#{@b_auto_exclude}"
-    @exclude_port.each{ |port|
+    @exclude_port.each{|port|
       opt_str += ",exclude_port=#{port}"
     }
-    @exclude_port_func.each{ |port, funcs|
-      funcs.each{ |func|
+    @exclude_port_func.each{|port, funcs|
+      funcs.each{|func|
         opt_str += ",exclude_port_func=#{port}.#{func}"
       }
     }
@@ -217,7 +217,7 @@ EOT
 
   def set_exclude_cell(rhs)
     cells = rhs.split ","
-    cells.each{ |rhs_cell|
+    cells.each{|rhs_cell|
       rhs_cell.gsub!(/\s/, "")
       @exclude_cells << rhs_cell.to_sym
     }
@@ -227,7 +227,7 @@ EOT
     ports = rhs.split ","
     ct = @cell.get_celltype
     return if ct == nil # error case
-    ports.each{ |rhs_port|
+    ports.each{|rhs_port|
       obj = ct.find(rhs_port.to_sym)
       if((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port '$1' not found or not entry in celltype '$2'", rhs_port, ct.get_name)
@@ -243,7 +243,7 @@ EOT
     port_funcs = rhs.split ","
     ct = @celltype
     return if ct == nil # error case
-    port_funcs.each{ |rhs_port_func|
+    port_funcs.each{|rhs_port_func|
       port_func = rhs_port_func.split(".")
       if port_func.length != 2
         cdl_error("MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func)

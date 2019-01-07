@@ -50,8 +50,8 @@ class HRPRPCPlugin < ThroughPlugin
 
   # RPCPlugin 専用のオプション
   HRPRPCPluginArgProc = RPCPluginArgProc.dup # 複製を作って元を変更しないようにする
-  HRPRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj, rhs| obj.set_noClientSemaphore rhs }
-  HRPRPCPluginArgProc["semaphoreCelltype"] = Proc.new { |obj, rhs| obj.set_semaphoreCelltype rhs }
+  HRPRPCPluginArgProc["noClientSemaphore"] = Proc.new {|obj, rhs| obj.set_noClientSemaphore rhs }
+  HRPRPCPluginArgProc["semaphoreCelltype"] = Proc.new {|obj, rhs| obj.set_semaphoreCelltype rhs }
   @@isFirstInstance = true
 
   #=== RPCPlugin の initialize

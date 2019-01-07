@@ -841,7 +841,7 @@ class StructType < Type
 
     if initializer.instance_of?(Array)
       i = 0
-      st.get_members_decl.get_items.each { |d|
+      st.get_members_decl.get_items.each {|d|
         if initializer[i]
           d.get_type.check_init(locale, "#{ident}.#{d.get_identifier}", initializer[i], kind)
         end
@@ -861,7 +861,7 @@ class StructType < Type
     if @members_decl == nil # @b_define = false またはメンバーのない構造体（エラー）
       return
     end
-    @members_decl.get_items.each{ |md|
+    @members_decl.get_items.each{|md|
       size = md.get_size_is
       if size
         val = size.eval_const(@members_decl)
@@ -929,7 +929,7 @@ class StructType < Type
     else
       # typedef struct { int a; } StructType; の形式の場合
       str += "struct {"
-      @members_decl.get_items.each{ |i|
+      @members_decl.get_items.each{|i|
         str += sprintf("%s %s%s;", "#{i.get_type.get_type_str}", "#{i.get_name}", "#{i.get_type.get_type_str_post}")
       }
       str += "} "
@@ -1008,7 +1008,7 @@ class StructType < Type
 
   def get_member_types_symbol
     mts = ""
-    @members_decl.get_items.each { |member|
+    @members_decl.get_items.each {|member|
       mts += member.get_type.get_type_str + member.get_type.get_type_str_post + ";"
     }
     return mts.to_sym
@@ -1051,7 +1051,7 @@ class FuncType < Type
       @paramlist = ParamList.new(nil)
     end
     @paramlist.set_owner self # ParamList
-    @paramlist.get_items.each{ |p|
+    @paramlist.get_items.each{|p|
       case p.get_direction
       when :IN
         @has_in = true
@@ -1128,7 +1128,7 @@ class FuncType < Type
     end
 
     if @paramlist
-      @paramlist.get_items.each{ |p|
+      @paramlist.get_items.each{|p|
         if p.get_direction != :IN && p.get_direction != :SEND
           cdl_error("T1030 oneway function cannot have $1 parameter for \'$2\'", p.get_direction, p.get_name)
         end
@@ -1284,7 +1284,7 @@ class ArrayType < Type
         end
       end
       index = 0
-      initializer.each{ |i|
+      initializer.each{|i|
         @type.check_init(locale, "#{ident}[#{index}]", i, kind, attribute = nil)
         index += 1
       }
@@ -1407,7 +1407,7 @@ class PtrType < Type
         end
       elsif (val.instance_of?(Array))
         i = 0
-        val.each { |ini|
+        val.each {|ini|
           @type.check_init(locale, "#{ident}[#{i}]", ini, kind, attribute = nil)
           i += 1
         }
@@ -1422,7 +1422,7 @@ class PtrType < Type
       end
 
       i = 0
-      initializer.each { |ini|
+      initializer.each {|ini|
         @type.check_init(locale, "#{ident}[#{i}]", ini, kind, attribute = nil)
         i += 1
       }
@@ -1593,7 +1593,7 @@ class DescriptorType < Type
   end
 
   def self.check_signature
-    @@descriptors.each{ |desc, val|
+    @@descriptors.each{|desc, val|
       if val != true
         desc.check_signature
         @@descriptors[desc] = true
@@ -1624,7 +1624,7 @@ end
 if $unit_test
   puts("===== Unit Test: IntType ===== (types.rb)")
   sizes = [ 8, 16, 32, 64 ]
-  sizes.each{ |n|
+  sizes.each{|n|
     int = IntType.new n
     printf("%8s  max: %d  min:%d\n", "int#{n}_t", int.get_max, int.get_min)
   }

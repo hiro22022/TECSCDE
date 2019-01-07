@@ -327,7 +327,7 @@ EOT
 
         i = 0
         passed_param = {}
-        params.each{ |param|
+        params.each{|param|
           delim = ","
             file.printf("#{delim} (intptr_t)#{param.get_name}")
             passed_param[i] = param.get_name
@@ -414,7 +414,7 @@ EOT
             #    拡張サービスコールのみprb_memを呼出し元タスクに発行する
             #
             num = 0
-            params.each{ |param|
+            params.each{|param|
               if param.get_declarator.get_ptr_level > 0
                 align_check_str = "!ALIGN_TYPE(#{passed_param[num]}, #{param.get_type.get_referto.get_type_str}) || "
 
@@ -508,7 +508,7 @@ eot
 
             delim = ""
             num = 0
-            params.each{ |param|
+            params.each{|param|
               file2.print "#{delim}"
                 delim = ", "
                 file2.print "(#{param.get_type.get_type_str})"
@@ -596,7 +596,7 @@ EOT
       #      callable?をチェックし，呼出し可能であれば，そのドメインを返す
       #
       callable_domains = []
-      @@generated_celltype[@ct_name_body].each { |svcplugin|
+      @@generated_celltype[@ct_name_body].each {|svcplugin|
         if svcplugin.get_caller_cell.get_region.get_domain_root.get_domain_type.get_option == "OutOfDomain"
           if svcplugin.get_caller_cell.get_celltype.is_active?
               #
@@ -609,7 +609,7 @@ EOT
               #  無所属から接続されている場合は，すべてのセルの
               #  restrictをチェック
               #
-            Cell.get_cell_list2.each { |cell|
+            Cell.get_cell_list2.each {|cell|
               if cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
                 callable_domains << cell.get_region.get_domain_root
               end
@@ -643,7 +643,7 @@ EOT
       #  無所属に対するドメインチェックは実施しない
       #  カーネルドメインに対するドメインチェックは実施しない
       #
-      callable_domains = callable_domains.select { |domain|
+      callable_domains = callable_domains.select {|domain|
         ((domain.get_domain_type.get_option != "OutOfDomain") && \
          (domain.get_domain_type.get_option != "kernel"))
       }
@@ -653,14 +653,14 @@ EOT
       #  すべてのユーザドメインから呼出し可能な場合，ドメインチェックは
       #  実施しない
       #
-      all_domain_regions = DomainType.get_domain_regions[:HRP].select { |reg|
+      all_domain_regions = DomainType.get_domain_regions[:HRP].select {|reg|
         ((reg.get_domain_type.get_option != "OutOfDomain") && \
          (reg.get_domain_type.get_option != "kernel"))
 
       }
       # pp "all domains"
       # pp all_domain_regions.map {|reg| reg.get_name}
-      if all_domain_regions.all? {|reg| callable_domains.include?(reg)}
+      if all_domain_regions.all? {|reg| callable_domains.include?(reg) }
         all_domain_callable = true
       end
 
@@ -688,7 +688,7 @@ EOT
           #
         check_code += "\t/* HRPSVC0012.2 */\n"
           check_code += "\tif (TACP(cdmid) & ("
-          check_code += (callable_domains.map { |domain| "TACP(#{domain.get_name})"}).join("|")
+          check_code += (callable_domains.map {|domain| "TACP(#{domain.get_name})" }).join("|")
           check_code += ") != 0U) {\n"
       end
       if check_code != ""
@@ -709,13 +709,13 @@ EOS
   #---------------------------------------------------------#
   #=== シグニチャのチェック
   def check_signature(signature)
-    signature.get_function_head_array.each{ |fh|
+    signature.get_function_head_array.each{|fh|
       type = fh.get_return_type
       check_return_type signature, fh, type
       if fh.get_paramlist.get_items.length > NUM_SVC_ARG_MAX
         cdl_error("HSV0005 $1.$2: # of parameter more than #{NUM_SVC_ARG_MAX}", signature.get_name, fh.get_name)
       end
-      fh.get_paramlist.get_items.each{ |param|
+      fh.get_paramlist.get_items.each{|param|
         check_param signature, fh, param
       }
     }
@@ -783,7 +783,7 @@ EOS
   def check_struct(signature, fh, param)
     type = param.get_type.get_referto
     ot = type.get_original_type
-    ot.get_members_decl.get_items.each{ |decl|
+    ot.get_members_decl.get_items.each{|decl|
       type = decl.get_type
       ot = type.get_original_type
       if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)

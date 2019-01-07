@@ -66,10 +66,10 @@
 class MrubyBridgeSignaturePlugin < SignaturePlugin
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = {
-      "ignoreUnsigned" => Proc.new { |obj, rhs| obj.set_ignoreUnsigned rhs },
-      "include" => Proc.new { |obj, rhs| obj.set_include rhs },
-      "exclude" => Proc.new { |obj, rhs| obj.set_exclude rhs },
-      "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
+      "ignoreUnsigned" => Proc.new {|obj, rhs| obj.set_ignoreUnsigned rhs },
+      "include" => Proc.new {|obj, rhs| obj.set_include rhs },
+      "exclude" => Proc.new {|obj, rhs| obj.set_exclude rhs },
+      "auto_exclude" => Proc.new {|obj, rhs| obj.set_auto_exclude rhs },
   }
 
   @@b_no_banner = false #
@@ -166,7 +166,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       return # 以前に文法エラー発生
     end
 
-    signature.get_function_head_array.each{ |func_head|
+    signature.get_function_head_array.each{|func_head|
       if @includes.length > 0
         if @includes.index func_head.get_name
           dbgPrint "MrubyBridgePlugin: #{func_head.get_name} INCLUDED\n"
@@ -189,7 +189,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     check_name_and_return_type fh_array
     check_parameter_type fh_array
 
-    fh_array.each{ |fh|
+    fh_array.each{|fh|
       if @auto_exclude_list[fh.get_name] == nil
         @func_head_array << fh
       else
@@ -205,7 +205,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   #=== check function name & return type
   def check_name_and_return_type(func_head_array)
     b_init = false; b_init_cell = false
-    func_head_array.each{ |func_head|
+    func_head_array.each{|func_head|
       if(func_head.get_name == :initialize)
         cdl_warning("MRW2001 initialize: internally defined. change to initialize_cell in ruby")
         b_init = true
@@ -232,8 +232,8 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   #=== check paramter type
   def check_parameter_type(func_head_array)
     # check type of parameters
-    func_head_array.each{ |fh|
-      fh.get_paramlist.get_items.each{ |param_decl|
+    func_head_array.each{|fh|
+      fh.get_paramlist.get_items.each{|param_decl|
         case param_decl.get_direction
         when :SEND, :RECEIVE
           if @b_auto_exclude
@@ -331,7 +331,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
         cdl_error("MRB10007 tagless-struct cannot be handled")
       end
     end
-    sttype.get_members_decl.get_items.each { |d|
+    sttype.get_members_decl.get_items.each {|d|
       t = d.get_type.get_original_type
       case t
       when IntType, FloatType, BoolType
@@ -435,7 +435,7 @@ namespace nMruby{
 EOT
 
       # 構造体セルタイプの生成
-      @struct_list.each{ |name, sttype|
+      @struct_list.each{|name, sttype|
         if @@struct_list[name] == nil
           file.print <<EOT
 namespace nMruby{
@@ -503,14 +503,14 @@ EOT
       @@VM_celltypes[vm_name] = vma
     end
 
-    @struct_list.each{ |stname, sttype|
+    @struct_list.each{|stname, sttype|
       if @@VM_struct_list[vm_name]
         @@VM_struct_list[vm_name][ sttype.get_name ] = sttype
       else
         @@VM_struct_list[vm_name] = { sttype.get_name => sttype }
       end
     }
-    @ptr_list.each{ |ptr_celltype_name, tment|
+    @ptr_list.each{|ptr_celltype_name, tment|
       if @@VM_ptr_list[vm_name]
         @@VM_ptr_list[vm_name][ ptr_celltype_name ] = tment
       else
@@ -567,8 +567,8 @@ EOT
 #    }
 
     file.print "\n  // MrubyBridgeSignaturePlugin: MBP601\n"
-    @@VM_celltypes.each{ |vm_name, instance_list|
-      instance_list.each { |celltype_name, array|
+    @@VM_celltypes.each{|vm_name, instance_list|
+      instance_list.each {|celltype_name, array|
         cell = array[0]
   if cell.get_celltype
     ct_name = cell.get_celltype.get_name
@@ -580,14 +580,14 @@ EOT
     }
 
     file.print "  // MBP602\n"
-    @@ptr_list.each{ |name, tment|
+    @@ptr_list.each{|name, tment|
       file.print <<EOT
   cell nMruby::#{name} C#{name} { };
 EOT
     }
 
     file.print "  // MBP603\n"
-    @@struct_list.each{ |name, sttype|
+    @@struct_list.each{|name, sttype|
       file.print <<EOT
   cell nMruby::#{name} C#{name} { };
 EOT
@@ -596,13 +596,13 @@ EOT
     if @@VM_celltypes == nil
       raise "MrubyBridgeSignaturePlugin: are0"
     end
-    @@VM_celltypes.each{ |vm_name, instance_list|
+    @@VM_celltypes.each{|vm_name, instance_list|
       file.print "  /* === VM name is '#{vm_name}' === (MBP610) */\n"
       init_cell_name = "#{vm_name}_TECSInitializer"
 
       file.print "  cell nMruby::tTECSInitializer #{init_cell_name} {\n"
 
-      instance_list.each { |celltype_name, array|
+      instance_list.each {|celltype_name, array|
 #        array.each{ |cell|
 #          ct_name = cell.get_celltype.get_name
         ct_name = celltype_name
@@ -610,12 +610,12 @@ EOT
 #        }
       }
       if @@VM_ptr_list[vm_name]
-        @@VM_ptr_list[vm_name].each{ |name, tment|
+        @@VM_ptr_list[vm_name].each{|name, tment|
           file.print "    cInitialize[] = C#{name}.eInitialize;\n"
         }
       end
       if @@VM_struct_list[vm_name]
-        @@VM_struct_list[vm_name].each{ |name, sttype|
+        @@VM_struct_list[vm_name].each{|name, sttype|
           file.print "    cInitialize[] = C#{name}.eInitialize;\n"
         }
       end
@@ -655,7 +655,7 @@ EOT
     MRB_SET_INSTANCE_TT(rc, MRB_TT_DATA);
 EOT
 
-    @func_head_array.each{ |f|
+    @func_head_array.each{|f|
       if !f.is_function?
         next
       end
@@ -667,7 +667,7 @@ EOT
 
       ret_type = f.get_return_type
       n_param = 0
-      f.get_paramlist.get_items.each{ |param|
+      f.get_paramlist.get_items.each{|param|
         case param.get_direction
         when :IN, :INOUT, :OUT
           n_param += 1
@@ -724,7 +724,7 @@ EOT
 	mrb_define_method(mrb, a, "initialize", Struct_#{tag}_initialize, MRB_ARGS_NONE());
 EOT
 
-      structType.get_members_decl.get_items.each{ |d|
+      structType.get_members_decl.get_items.each{|d|
         file.print "  STRUCT_INIT_MEMBER( #{tag}, #{d.get_name} )\n"
       }
   end
@@ -790,7 +790,7 @@ EOT
         inib_cb = nil
       end
       if inib_cb
-        ct.get_cell_list.each{ |cell|
+        ct.get_cell_list.each{|cell|
           if cell.is_generate?
             name_array = ct.get_name_array(cell)
             file.print "extern #{ct.get_global_name}_CB  #{cell.get_global_name}_#{inib_cb};\n"
@@ -832,7 +832,7 @@ EOT
     nsp.append! ct_name
     ct = Namespace.find nsp
 
-    ct.get_cell_list.each{ |cell|
+    ct.get_cell_list.each{|cell|
       if cell.is_generate?
         join_list = cell.get_join_list
         join = join_list.get_item(:bridgeName)
@@ -873,7 +873,7 @@ EOT
 STRUCT_CLASS( #{tag} )
 EOT
 
-    structType.get_members_decl.get_items.each{ |d|
+    structType.get_members_decl.get_items.each{|d|
       type = d.get_type.get_original_type
       case type
       when IntType, CIntType
@@ -915,7 +915,7 @@ EOT
 mrb_value  MrubyBridge_#{@celltype_name}_initialize( mrb_state *mrb, mrb_value self);
 EOT
 
-    @func_head_array.each{ |f|
+    @func_head_array.each{|f|
       if !f.is_function?
         next
       end
@@ -971,7 +971,7 @@ EOT
   end
 
   def gen_preamble_bridge_func(file, b_singleton, ct_name, global_ct_name)
-    @func_head_array.each{ |f|
+    @func_head_array.each{|f|
       if !f.is_function?
         next
       end
@@ -1005,7 +1005,7 @@ EOT
       n_scalar = 0
       n_ptr    = 0
       n_struct = 0
-      plist.each{ |param|
+      plist.each{|param|
         case param.get_direction
         when :IN, :INOUT, :OUT
           type = param.get_type.get_original_type
@@ -1049,7 +1049,7 @@ EOT
       if n_param > 0
         file.print "	/* retrieve arguments (MBP111) */\n"
         file.print "	mrb_get_args(mrb, \"#{arg_str}\""
-        plist.each{ |param|
+        plist.each{|param|
           case param.get_direction
           when :IN, :INOUT, :OUT
             type = param.get_type.get_original_type
@@ -1074,7 +1074,7 @@ EOT
         if n_scalar > 0 || n_struct > 0
           file.print "	/* convert mrb to C (MBP112) */\n"
         end
-        plist.each{ |param|
+        plist.each{|param|
           case param.get_direction
           when :IN, :INOUT, :OUT
             type = param.get_type.get_original_type
@@ -1112,7 +1112,7 @@ EOT
         if n_ptr > 0
           file.print "	/* convert mrb to C for pointer types (MBP113) */\n"
         end
-        plist.each{ |param|
+        plist.each{|param|
           case param.get_direction
           when :IN, :INOUT, :OUT
             type = param.get_type.get_original_type
@@ -1149,7 +1149,7 @@ EOT
       end
       delim = ""
       file.print "cTECS_", f.get_name, "( "
-      plist.each{ |param|
+      plist.each{|param|
         if param.get_type.get_original_type.kind_of? StructType
           aster = "*"
         else
@@ -1263,10 +1263,10 @@ EOT
   #=== プラグイン引数 include
   def set_include(rhs)
     funcs = rhs.split ","
-    funcs.each{ |rhs_func|
+    funcs.each{|rhs_func|
       found = false
       rhs_func.gsub!(/\s/, "")
-      @signature.get_function_head_array.each{ |a|
+      @signature.get_function_head_array.each{|a|
         if rhs_func.to_sym == a.get_name
           found = true
         end
@@ -1282,7 +1282,7 @@ EOT
   #=== プラグイン引数 exclude
   def set_exclude(rhs)
     funcs = rhs.split ","
-    funcs.each{ |rhs_func|
+    funcs.each{|rhs_func|
       rhs_func.gsub!(/\s/, "")
       func_head = @signature.get_function_head rhs_func.to_sym
       if func_head == false

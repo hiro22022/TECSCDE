@@ -62,7 +62,7 @@ class HRP2ObjectPlugin < HRP2KernelObjectPlugin
       raise "#{@plugin_arg_str} is unknown"
     elsif @plugin_arg_str != "KERNEL"
       arg_list = []
-        @@api[@plugin_arg_str].slice(2..-1).each { |attr|
+        @@api[@plugin_arg_str].slice(2..-1).each {|attr|
           arg_list << "#{val[attr]}"
         }
         file.print tab

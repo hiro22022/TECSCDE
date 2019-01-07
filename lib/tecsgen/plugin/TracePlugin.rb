@@ -56,7 +56,7 @@ class TracePlugin < ThroughPlugin
     parse_plugin_arg
 
     if @cellEntry_list.length > 0
-      @cellEntry_list.each{ |ce|
+      @cellEntry_list.each{|ce|
         if "#{next_cell.get_name}.#{next_cell_port_name}".to_sym == ce.to_sym
           @b_generate = true
         end
@@ -89,7 +89,7 @@ class TracePlugin < ThroughPlugin
 
     send_receive = []
     if !@signature.nil?
-      @signature.each_param{ |fd, param|
+      @signature.each_param{|fd, param|
         dir =param.get_direction
         case dir
         when :SEND, :RECEIVE
@@ -105,7 +105,7 @@ EOT
     if send_receive.length > 0
       file2.print "  [ allocator(\n"
       delim = ""
-      send_receive.each { |a|
+      send_receive.each {|a|
         file2.print "#{delim}\t#{a[1].get_name}.#{a[2].get_name}<=#{@call_port_name}.#{a[1].get_name}.#{a[2].get_name}"
         delim = ",\n"
       }
@@ -203,7 +203,7 @@ EOT
 
     file.print("#{@call_port_name}_#{func_name}(")
 
-    params.each{ |param|
+    params.each{|param|
       file.printf("#{delim} #{param.get_name}")
       delim = ","
     }
@@ -228,7 +228,7 @@ EOT
   end
 
   def print_params(params, file, nest, direction)
-    params.each{ |param|
+    params.each{|param|
       dir = param.get_direction
       if(direction == :IN)
         case dir
@@ -277,7 +277,7 @@ EOT
       else
         outer = "#{name}."
       end
-      members_decl.get_items.each { |m|
+      members_decl.get_items.each {|m|
         print_param(m.get_name, m.get_type, file, nest, direction, m.get_type.get_type_str, outer, nil, members_decl)
       }
     when FuncType  # mikan FuncType
@@ -328,7 +328,7 @@ EOT
             outer = "#{name}->"
           end
           outer2 = nil
-          members.get_items.each { |m|
+          members.get_items.each {|m|
             print_param(m.get_name, m.get_type, file, nest, direction, m.get_type.get_type_str, outer, outer2, members)
           }
         when FuncType  # mikan FuncType
@@ -359,7 +359,7 @@ EOT
           else
             outer = "#{name}[i__#{nest}]."
           end
-          members.get_items.each { |m|
+          members.get_items.each {|m|
             print_param(m.get_name, m.get_type, file, nest + 1, direction, m.get_type.get_type_str, outer, nil, members)
           }
         when FuncType  # mikan FuncType
@@ -424,12 +424,12 @@ EOT
 
   # プラグイン引数名と Proc
   TracePluginArgProc = {
-    "maxArrayDisplay"    => Proc.new { |obj, rhs| obj.set_maxArrayDisplay rhs },
-    "cellEntry"          => Proc.new { |obj, rhs| obj.set_cellEntry rhs },
-    "probeName"          => Proc.new { |obj, rhs| obj.set_probeName rhs },
-    "displayTime"        => Proc.new { |obj, rhs| obj.set_displayTime rhs },
-    "kernelCelltype"     => Proc.new { |obj, rhs| obj.set_kernelCelltype rhs },
-    "syslogCelltype"     => Proc.new { |obj, rhs| obj.set_syslogCelltype rhs },
+    "maxArrayDisplay"    => Proc.new {|obj, rhs| obj.set_maxArrayDisplay rhs },
+    "cellEntry"          => Proc.new {|obj, rhs| obj.set_cellEntry rhs },
+    "probeName"          => Proc.new {|obj, rhs| obj.set_probeName rhs },
+    "displayTime"        => Proc.new {|obj, rhs| obj.set_displayTime rhs },
+    "kernelCelltype"     => Proc.new {|obj, rhs| obj.set_kernelCelltype rhs },
+    "syslogCelltype"     => Proc.new {|obj, rhs| obj.set_syslogCelltype rhs },
   }
 
   def set_maxArrayDisplay(rhs)
@@ -438,7 +438,7 @@ EOT
 
   def set_cellEntry(rhs)
     ces = rhs.to_s.split /\s*,\s*/
-    ces.each{ |ce|
+    ces.each{|ce|
       if ce =~ /^[A-Za-z_]\w*\.[A-Za-z_]\w*$/
         # OK
       else

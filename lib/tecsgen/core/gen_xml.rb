@@ -64,27 +64,27 @@ EOT
 
   def gen_XML(file, nest)
     # signature のコードを生成
-    @signature_list.each { |s|
+    @signature_list.each {|s|
       s.gen_XML file, nest
     }
 
     # celltype のコードを生成
-    @celltype_list.each { |t|
+    @celltype_list.each {|t|
       t.gen_XML(file, nest)
     }
 
     # composite のコードを生成
-    @compositecelltype_list.each { |t|
+    @compositecelltype_list.each {|t|
       t.gen_XML(file, nest)
     }
 
     # cell のコードを生成
-    @cell_list.each { |t|
+    @cell_list.each {|t|
       t.gen_XML(file, nest)
     }
 
     # サブネームスペースのコードを生成
-    @namespace_list.each { |n|
+    @namespace_list.each {|n|
       kind = n.instance_of?(Namespace) ? "namespace" : "region"
       file.print <<EOT
 #{XML_INDENT * nest}<#{kind}>
@@ -113,13 +113,13 @@ EOT
 #{indent}<signature>
 #{indent}#{XML_INDENT}<name> #{@name} </name>
 EOT
-    @function_head_list.get_items.each{ |fh|
+    @function_head_list.get_items.each{|fh|
       file.print <<EOT
 #{indent}#{XML_INDENT}<func>
 #{indent}#{XML_INDENT}#{XML_INDENT}<name> #{fh.get_name} </name>
 #{indent}#{XML_INDENT}#{XML_INDENT}<rettype> #{fh.get_return_type.get_type_str}#{fh.get_return_type.get_type_str_post} </rettype>
 EOT
-      fh.get_paramlist.get_items.each{ |pd|
+      fh.get_paramlist.get_items.each{|pd|
         file.print <<EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<param>
 #{indent}#{XML_INDENT}#{XML_INDENT}#{XML_INDENT}<name> #{pd.get_name} </name>
@@ -170,7 +170,7 @@ EOT
 EOT
     end
 
-    @attribute.each{ |attr|
+    @attribute.each{|attr|
       file.print <<EOT
 #{indent}#{XML_INDENT}<attr>
 #{indent}#{XML_INDENT}#{XML_INDENT}<name> #{attr.get_name} </name>
@@ -187,7 +187,7 @@ EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}<choice>
 EOT
 
-        attr.get_choice_list.each { |choiceElement|
+        attr.get_choice_list.each {|choiceElement|
           file.print <<EOT
 #{indent}#{XML_INDENT}#{XML_INDENT}#{XML_INDENT}<choiceElement>#{choiceElement}</choiceElement>
 EOT
@@ -202,7 +202,7 @@ EOT
 #{indent}#{XML_INDENT}</attr>
 EOT
     }
-    @port.each{ |port|
+    @port.each{|port|
       port_type = port.get_port_type == :CALL ? "call" : "entry"
       file.print <<EOT
 #{indent}#{XML_INDENT}<#{port_type}>
@@ -267,7 +267,7 @@ EOT
 EOT
     end
 
-    @name_list.get_items.each{ |attr|
+    @name_list.get_items.each{|attr|
       if !attr.instance_of? Decl
         next
       end
@@ -285,7 +285,7 @@ EOT
 #{indent}#{XML_INDENT}</attr>
 EOT
     }
-    @name_list.get_items.each{ |port|
+    @name_list.get_items.each{|port|
       if !port.instance_of? Port
         next
       end
@@ -333,7 +333,7 @@ EOT
 #{indent}<cell>
 #{indent}#{XML_INDENT}<name> #{@name} </name>
 EOT
-    @join_list.get_items.each{ |join|
+    @join_list.get_items.each{|join|
       if join.get_definition.kind_of? Port
         kind = "call_join"
       elsif join.get_definition.kind_of? Decl
@@ -342,7 +342,7 @@ EOT
         raise "Unknown"
       end
       if join.get_array_member2
-        join.get_array_member2.each { |j2|
+        join.get_array_member2.each {|j2|
           file.print <<EOT
 #{indent}#{XML_INDENT}<#{kind}>
 #{indent}#{XML_INDENT}#{XML_INDENT}<name> #{join.get_name} </name>

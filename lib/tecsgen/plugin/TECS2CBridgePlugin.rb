@@ -127,7 +127,7 @@ EOT
     file.print("#{func_name}(")
 
     delim = ""
-    params.each{ |param|
+    params.each{|param|
       file.printf("#{delim} #{param.get_name}")
       delim = ","
     }
@@ -151,7 +151,7 @@ EOT
 #include "global_tecsgen.#{$h_suffix}"
 
 EOT
-    @signature.get_function_head_array.each { |f|
+    @signature.get_function_head_array.each {|f|
       decl = f.get_declarator
       func_type = decl.get_type
       params = func_type.get_paramlist.get_items
@@ -165,7 +165,7 @@ EOT
       file2.print("#{ret_type.get_type_str}  #{func_name}(")
 
       delim = ""
-      params.each{ |param|
+      params.each{|param|
         file2.printf("#{delim} #{param.get_name}")
         delim = ","
       }

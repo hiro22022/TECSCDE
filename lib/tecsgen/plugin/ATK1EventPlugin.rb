@@ -56,7 +56,7 @@ class ATK1EventPlugin < CelltypePlugin
 
   #===  意味解析実行後のコード生成
   def self.gen_post_code(file)
-    @@instancies.each { |inst|
+    @@instancies.each {|inst|
       inst.gen_oil_code file
     }
   end
@@ -68,7 +68,7 @@ class ATK1EventPlugin < CelltypePlugin
     whole_mask = 0
 
     # EVENT
-    @celltype.get_cell_list.each { |cell|
+    @celltype.get_cell_list.each {|cell|
 
 #      if cell.is_generate?
       join = cell.get_join_list.get_item(:mask)
@@ -99,7 +99,7 @@ class ATK1EventPlugin < CelltypePlugin
     mask_count = 0;
     mask_place = 0;
 
-    @celltype.get_cell_list.each { |cell|
+    @celltype.get_cell_list.each {|cell|
 
 #      if cell.is_generate?
         # bit place to mask pattern

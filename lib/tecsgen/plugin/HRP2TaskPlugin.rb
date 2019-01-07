@@ -121,7 +121,7 @@ EOT
       if @@generate_memory_module == false
         check_celltype_list = []
 
-          Cell.get_cell_list2.each { |cell|
+          Cell.get_cell_list2.each {|cell|
               # すべてのセルを走査してセルタイプをチェック
             ct = cell.get_celltype
               if ct.class == Celltype && check_celltype_list.include?(ct) == false
@@ -142,7 +142,7 @@ EOT
                   regions = ct.get_domain_roots
                   regions_hrp2 = regions[:HRP2]
                   dbgPrint "HRP2 domain in #{ct.get_name}: "
-                  regions_hrp2.each { |reg|
+                  regions_hrp2.each {|reg|
                     dbgPrint reg.get_name
                   }
                   puts ""
@@ -157,7 +157,7 @@ EOT
                       file.close
                   end
 
-                  regions_hrp2.each { |reg|
+                  regions_hrp2.each {|reg|
                     if reg.is_root?
                       nsp = ""
                     else

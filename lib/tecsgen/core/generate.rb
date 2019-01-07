@@ -151,17 +151,17 @@ class Namespace
       end
 
       # signature のコードを生成
-      @signature_list.each { |s|
+      @signature_list.each {|s|
         s.generate
       }
 
       # celltype のコードを生成
-      @celltype_list.each { |t|
+      @celltype_list.each {|t|
         t.generate
       }
 
       # サブネームスペースのコードを生成
-      @namespace_list.each { |n|
+      @namespace_list.each {|n|
         n.generate
       }
 
@@ -182,17 +182,17 @@ class Namespace
       gen_global_header_post
 
       # signature のコードを生成
-      @signature_list.each { |s|
+      @signature_list.each {|s|
         s.generate_post
       }
 
       # celltype のコードを生成
-      @celltype_list.each { |t|
+      @celltype_list.each {|t|
         t.generate_post
       }
 
       # サブネームスペースのコードを生成
-      @namespace_list.each { |n|
+      @namespace_list.each {|n|
         n.generate_post
       }
 
@@ -221,7 +221,7 @@ EOT
       if Import_C.get_header_list2.length > 0
         # ヘッダ include の出力
         f.printf TECSMsg.get(:IMP_comment), "#_IMP_#"
-        Import_C.get_header_list2.each{ |h|
+        Import_C.get_header_list2.each{|h|
           f.printf("#include \"#{h}\"\n")
         }
         f.printf("/**/\n\n")
@@ -231,7 +231,7 @@ EOT
     end
 
     # typedef, struct, enum を生成
-    @decl_list.each { |d|
+    @decl_list.each {|d|
 
       # d は Typedef, StructType, EnumType のいずれか
       if d.instance_of?(Typedef)
@@ -253,7 +253,7 @@ EOT
 
       if $ram_initializer
         # Proc to judge the necessity of CB initializer
-        b_inline_only_or_proc = Proc.new{ |ct|
+        b_inline_only_or_proc = Proc.new{|ct|
           # print ct.get_name, ": ",  ct.need_CB_initializer?, "\n"
           ct.need_CB_initializer?
         }
@@ -275,7 +275,7 @@ EOT
     end
 
     # const を生成  mikan
-    @const_decl_list.each { |d|
+    @const_decl_list.each {|d|
       f.printf("#define %-14s ((%s%s)%s)\n", d.get_global_name,
                 d.get_type.get_type_str, d.get_type.get_type_str_post,
                 d.get_initializer.eval_const2(nil))
@@ -339,7 +339,7 @@ EOT
 
     f.print "INCLUDES ="
     search_path = $import_path + TECSGEN::Makefile.get_search_path
-    search_path.each{ |path|
+    search_path.each{|path|
       if TECSGEN.is_absolute_path? path
         f.print(TECSGEN.subst_tecspath " -I #{path}")
       else
@@ -348,13 +348,13 @@ EOT
     }
     f.print " -I $(GEN_DIR)\n"
     f.print "DEFINES ="
-    $define.each{ |define| f.print " -D #{define}" }
+    $define.each{|define| f.print " -D #{define}" }
     f.print "\n\n"
     f.printf "# end of fixed variable (unchangeable by config or plugin)\n"
 
 
     vpath_add = ""
-    search_path.each{ |path|
+    search_path.each{|path|
       if path != "."
         if TECSGEN.is_absolute_path? path
           vpath_add += " " + TECSGEN.subst_tecspath(path)
@@ -364,10 +364,10 @@ EOT
       end
     }
     objs_add = ""
-    TECSGEN::Makefile.get_objs.each{ |obj| objs_add += " " + obj }
+    TECSGEN::Makefile.get_objs.each{|obj| objs_add += " " + obj }
     ld_flag_add = TECSGEN::Makefile.get_ldflags
     var_add = ""
-    TECSGEN::Makefile.get_vars.each{ |var|
+    TECSGEN::Makefile.get_vars.each{|var|
       var_add += "#" + TECSGEN::Makefile.get_var_comment(var) + "\n"
       a = TECSGEN::Makefile.get_var_val(var).to_s
       b = var.to_s
@@ -375,9 +375,9 @@ EOT
       var_add += var.to_s + " =" + " " + TECSGEN::Makefile.get_var_val(var).to_s + "\n\n"
     }
     pre_tecsgen_target = ""
-    TECSGEN::Makefile.get_pre_tecsgen_target{ |target| pre_tecsgen_target += " " + target }
+    TECSGEN::Makefile.get_pre_tecsgen_target{|target| pre_tecsgen_target += " " + target }
     post_tecsgen_target = ""
-    TECSGEN::Makefile.get_post_tecsgen_target{ |target| post_tecsgen_target += " " + target }
+    TECSGEN::Makefile.get_post_tecsgen_target{|target| post_tecsgen_target += " " + target }
 
 #
 # LD = gcc
@@ -483,7 +483,7 @@ EOT
     lines = TECSGEN::Makefile.get_lines
     if lines.length > 0
       f.print("# additional lines\n")
-      lines.each{ |line|
+      lines.each{|line|
         f.print line, "\n"
       }
       f.print("# end additional lines\n\n")
@@ -536,7 +536,7 @@ EOT
 EOT
 
     f.print("TECS_IMPORT_CDLS =")
-    Import.get_list.each{ |cdl_expand_path, import|
+    Import.get_list.each{|cdl_expand_path, import|
       path = import.get_cdl_path
       if TECSGEN.is_absolute_path? path
         path = TECSGEN.subst_tecspath path
@@ -546,7 +546,7 @@ EOT
     }
     f.print("\n")
     f.print("TECS_IMPORT_HEADERS =")
-    Import_C.get_header_list.each{ |header, path|
+    Import_C.get_header_list.each{|header, path|
       if TECSGEN.is_absolute_path? path
         path = TECSGEN.subst_tecspath path
       end
@@ -558,13 +558,13 @@ EOT
 
     f.print "SIGNATURE_HEADERS = \\\n"
     if $generating_region.get_n_cells != 0
-      @signature_list.each{ |s|
+      @signature_list.each{|s|
         f.print "\t$(GEN_DIR)/#{s.get_global_name}_tecsgen.#{$h_suffix} \\\n"
       }
     end
     f.print "# SIGNATURE_HEADERS terminator\n\n"
 
-    b_inline_only_or_proc = Proc.new { |ct| true }
+    b_inline_only_or_proc = Proc.new {|ct| true }
     f.print "CELLTYPE_TECSGEN_HEADERS = \\\n"
     gen_celltype_names(f, "\t$(GEN_DIR)/", "_tecsgen.h \\\n", true, b_inline_only_or_proc)
     gen_celltype_names(f, "\t$(GEN_DIR)/", "_tecsgen.h \\\n", false, b_inline_only_or_proc)
@@ -586,7 +586,7 @@ EOT
     ### set domain variables ###
     domain_type = nil
     domain_regions = nil
-    DomainType.get_domain_regions.each{ |dt, regions|
+    DomainType.get_domain_regions.each{|dt, regions|
       # domain_type は一つのノードには、一つしかないので、このループは、必ず一回しか回らない
         ###   mikan 複数のノードがあり、異なる domain_type が指定される可能性はある
       domain_regions = regions
@@ -604,7 +604,7 @@ EOT
         false
       end
     }
-    decideDomainNameProc = Proc.new { |region|
+    decideDomainNameProc = Proc.new {|region|
       if region.is_root?
         if hasDomainProc.call
           dn = "_Root_"
@@ -624,7 +624,7 @@ EOT
 
       f.print("# TECS_DOMAINS: list of domain names (names of 'domain' spacified region)\n")
       f.print("TECS_DOMAINS = ")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         if r.get_domain_type.get_option != "OutOfDomain"
           f.print(" #{r.get_namespace_path.get_global_name}")
         end
@@ -633,7 +633,7 @@ EOT
 
       f.print("# TECS_KERNEL_COBJS: objects belong to kernel domain\n")
       f.print("TECS_KERNEL_COBJS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         if r.get_domain_type.get_kind == :kernel
           f.print("	$(TECSGEN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(PLUGIN#{decideDomainNameProc.call r}_COBJS) \\\n")
@@ -644,7 +644,7 @@ EOT
 
       f.print("# TECS_USER_COBJS: objects belong to user domain\n")
       f.print("TECS_USER_COBJS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         if r.get_domain_type.get_kind == :user
           f.print("	$(TECSGEN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(PLUGIN#{decideDomainNameProc.call r}_COBJS) \\\n")
@@ -655,7 +655,7 @@ EOT
 
       f.print("# TECS_OUTOFDOMAIN_COBJS: objects belong to OutOfDomain\n")
       f.print("TECS_OUTOFDOMAIN_COBJS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         if r.get_domain_type.get_kind == :OutOfDomain
           f.print("	$(TECSGEN#{decideDomainNameProc.call r}_COBJS) \\\n")
           f.print("	$(PLUGIN#{decideDomainNameProc.call r}_COBJS) \\\n")
@@ -666,32 +666,32 @@ EOT
 
       f.print("# TECSGEN_COBJS: objects from sources which are automatically generated by tecsgen\n")
       f.print("TECSGEN_COBJS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         f.print("	$(TECSGEN#{decideDomainNameProc.call r}_COBJS) \\\n")
       }
       f.print("# TECSGEN_COBJS terminator\n\n")
 
       f.print("# PLUGIN_COBJS: objects from sources which are automatically generated by plugin(s)\n")
       f.print("PLUGIN_COBJS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         f.print("	$(PLUGIN#{decideDomainNameProc.call r}_COBJS) \\\n")
       }
       f.print("# PLUGIN_COBJS terminator\n\n")
 
       f.print("CELLTYPE_COBJS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         f.print("	$(CELLTYPE#{decideDomainNameProc.call r}_COBJS) \\\n")
       }
       f.print("# CELLTYPE_COBJS terminator\n\n")
 
       f.print("TECSGEN_SRCS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         f.print("	$(TECSGEN#{decideDomainNameProc.call r}_SRCS) \\\n")
       }
       f.print("# TECSGEN_SRCS terminator\n\n")
 
       f.print("PLUGIN_SRCS = \\\n")
-      domain_regions.each{ |r|
+      domain_regions.each{|r|
         f.print("	$(PLUGIN#{decideDomainNameProc.call r}_SRCS) \\\n")
       }
       f.print("# PLUGIN#_SRCS terminator\n\n")
@@ -699,7 +699,7 @@ EOT
 
     ###
     f.print("# TECSGEN_COBJS: objects from sources which are automatically generated by tecsgen\n")
-    domain_regions.each{ |r|
+    domain_regions.each{|r|
       nsp = decideDomainNameProc.call(r)
       f.print("TECSGEN#{nsp}_COBJS = \\\n")
       gen_celltype_names_domain(f, "	$(_TECS_OBJ_DIR)", "_tecsgen.o \\\n", domain_type, r, false)
@@ -707,7 +707,7 @@ EOT
     }
 
     f.print("# PLUGIN_COBJS: objects from sources which are automatically generated by plugin(s)\n")
-    domain_regions.each{ |r|
+    domain_regions.each{|r|
       nsp = decideDomainNameProc.call(r)
       f.print("PLUGIN#{nsp}_COBJS = \\\n")
       gen_celltype_names_domain(f, "	$(_TECS_OBJ_DIR)", "_tecsgen.o \\\n", domain_type, r, true)
@@ -716,7 +716,7 @@ EOT
     }
 
     f.print("# CELLTYPE_COBJS: objects of celltype code written by user\n")
-    domain_regions.each{ |r|
+    domain_regions.each{|r|
       nsp = decideDomainNameProc.call(r)
       f.print("CELLTYPE#{nsp}_COBJS = \\\n")
       gen_celltype_names_domain2(f, "	$(_TECS_OBJ_DIR)", ".o \\\n", domain_type, r, false, false)
@@ -724,7 +724,7 @@ EOT
     }
 
     f.print("# TECSGEN_SRCS: sources automatically generated by tecsgen\n")
-    domain_regions.each{ |r|
+    domain_regions.each{|r|
       nsp = decideDomainNameProc.call(r)
       f.print("TECSGEN#{nsp}_SRCS = \\\n")
       gen_celltype_names_domain(f, "	$(GEN_DIR)/", "_tecsgen.#{$c_suffix} \\\n", domain_type, r, false)
@@ -732,7 +732,7 @@ EOT
     }
 
     f.print("# PLUGIN_SRCS: sources automatically generated by plugin\n")
-    domain_regions.each{ |r|
+    domain_regions.each{|r|
       nsp = decideDomainNameProc.call(r)
       f.print("PLUGIN#{nsp}_SRCS = \\\n")
       gen_celltype_names_domain(f, "	$(GEN_DIR)/", "_tecsgen.#{$c_suffix} \\\n", domain_type, r, true)
@@ -755,7 +755,7 @@ EOT
   def gen_celltype_names(f, prepend, append, b_plugin, b_inline_only_or_proc = true)
     dbgPrint "gen_celltype_names #{@name}\n"
 
-    @celltype_list.each { |ct|
+    @celltype_list.each {|ct|
       next if !ct.need_generate?
 #      next if b_inline_only == false && ct.is_all_entry_inline?
       next if b_inline_only_or_proc == false && ct.is_all_entry_inline? && !ct.is_active?
@@ -765,7 +765,7 @@ EOT
         f.print " #{prepend}#{ct.get_global_name}#{append}"
       end
     }
-    @namespace_list.each { |ns|
+    @namespace_list.each {|ns|
       ns.gen_celltype_names(f, prepend, append, b_plugin, b_inline_only_or_proc)
     }
   end
@@ -779,7 +779,7 @@ EOT
   def gen_celltype_names_domain(f, prepend, append, domain_type, region, b_plugin, b_inline_only = true)
     dbgPrint "gen_celltype_names #{@name}\n"
 
-    @celltype_list.each { |ct|
+    @celltype_list.each {|ct|
       next if !ct.need_generate?
 #      next if b_inline_only == false && ct.is_all_entry_inline?
       next if b_inline_only == false && ct.is_all_entry_inline? && !ct.is_active?
@@ -801,7 +801,7 @@ EOT
         end
       end
     }
-    @namespace_list.each { |ns|
+    @namespace_list.each {|ns|
       ns.gen_celltype_names_domain(f, prepend, append, domain_type, region, b_plugin, b_inline_only)
     }
   end
@@ -816,7 +816,7 @@ EOT
   def gen_celltype_names_domain2(f, prepend, append, domain_type, region, b_plugin, b_inline_only = true)
     dbgPrint "gen_celltype_names #{@name}\n"
 
-    @celltype_list.each { |ct|
+    @celltype_list.each {|ct|
       next if !ct.need_generate?
 #      next if b_inline_only == false && ct.is_all_entry_inline?
       next if b_inline_only == false && ct.is_all_entry_inline? && !ct.is_active?
@@ -833,7 +833,7 @@ EOT
         end
       end
     }
-    @namespace_list.each { |ns|
+    @namespace_list.each {|ns|
       ns.gen_celltype_names_domain2(f, prepend, append, domain_type, region, b_plugin, b_inline_only)
     }
   end
@@ -841,19 +841,19 @@ EOT
   #=== Namespace#すべてのシグニチャをたどる
   def travers_all_signature # ブロック引数 { |signature|  }
     proc = Proc.new # このメソッドのブロック引数
-    @signature_list.each{ |sig|
+    @signature_list.each{|sig|
       proc.call sig
     }
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.travers_all_signature_proc proc
     }
   end
 
   def travers_all_signature_proc(proc)
-    @signature_list.each{ |sig|
+    @signature_list.each{|sig|
       proc.call sig
     }
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.travers_all_signature_proc proc
     }
   end
@@ -861,19 +861,19 @@ EOT
   #=== Namespace#すべてのセルタイプをたどる
   def travers_all_celltype # ブロック引数 { |celltype|  }
     proc = Proc.new # このメソッドのブロック引数
-    @celltype_list.each{ |ct|
+    @celltype_list.each{|ct|
       proc.call ct
     }
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.travers_all_celltype_proc proc
     }
   end
 
   def travers_all_celltype_proc(proc)
-    @celltype_list.each{ |ct|
+    @celltype_list.each{|ct|
       proc.call ct
     }
-    @namespace_list.each{ |ns|
+    @namespace_list.each{|ns|
       ns.travers_all_celltype_proc proc
     }
   end
@@ -902,7 +902,7 @@ class StructType < Type
 
     f.print "struct #{@tag} {\n"
 
-    @members_decl.get_items.each{ |i|
+    @members_decl.get_items.each{|i|
       f.printf("                %-14s %s%s;\n", "#{i.get_type.get_type_str}", "#{i.get_name}", "#{i.get_type.get_type_str_post}")
     }
 
@@ -964,7 +964,7 @@ EOT
     dl = get_descriptor_list
     if dl.length > 0
       f.printf TECSMsg.get(:SDI_comment), "#_SDI_#"
-      dl.each{ |dt, param|
+      dl.each{|dt, param|
         f.print <<EOT
 /* pre-typedef incomplete-type to avoid error in case of mutual or cyclic reference */
 #ifndef Descriptor_of_#{dt.get_global_name}_Defined
@@ -988,7 +988,7 @@ EOT
     # シグニチャ関数テーブルの出力
     f.printf TECSMsg.get(:SFT_comment), "#_SFT_#"
     f.print("struct tag_#{@global_name}_VMT {\n")
-    get_function_head_array.each{ |fun|
+    get_function_head_array.each{|fun|
       f.print "    "
       functype = fun.get_declarator.get_type
       f.printf("%-14s", functype.get_type_str)
@@ -1006,7 +1006,7 @@ EOT
       end
 
       i = 0
-      items.each{ |param|
+      items.each{|param|
         f.print ", "
         f.print(param.get_type.get_type_str)
         f.print(" ")
@@ -1033,7 +1033,7 @@ EOT
   #=== Signature# 関数の ID の define を出力
   def gen_sh_func_id(f)
     f.print "/* function id */\n"
-    get_function_head_array.each{ |fun|
+    get_function_head_array.each{|fun|
       f.printf("#define\tFUNCID_%-31s (%d)\n", "#{@global_name}_#{fun.get_name}".upcase, get_id_from_func_name(fun.get_name))
     }
     f.print "\n"
@@ -1180,19 +1180,19 @@ class Celltype
       f.print "#undef INITIALIZE_CB\n"
       f.print "#undef SET_CB_INIB_POINTER\n"
 
-      @attribute.each { |a|
+      @attribute.each {|a|
         f.print("#undef ATTR_#{a.get_name}\n")
         f.print("#undef #{@global_name}_ATTR_#{a.get_name}\n")
         f.print("#undef #{@global_name}_GET_#{a.get_name}\n")
       }
-      @var.each { |v|
+      @var.each {|v|
         f.print("#undef VAR_#{v.get_name}\n")
         f.print("#undef VAR_#{v.get_name}\n")
         f.print("#undef #{@global_name}_VAR_#{v.get_name}\n")
         f.print("#undef #{@global_name}_GET_#{v.get_name}\n")
         f.print("#undef #{@global_name}_SET_#{v.get_name}\n")
       }
-      @port.each { |p|
+      @port.each {|p|
         next if p.get_port_type != :CALL
 
         # is_...joined は omit するケースでも出力されるため、omit を検査する前に出力
@@ -1202,7 +1202,7 @@ class Celltype
 
         next if p.is_omit?
 
-        p.get_signature.get_function_head_array.each{ |fun|
+        p.get_signature.get_function_head_array.each{|fun|
           f.print("#undef #{@global_name}_#{p.get_name}_#{fun.get_name}\n")
           if !p.is_require? || p.has_name?
             f.print("#undef #{p.get_name}_#{fun.get_name}\n")
@@ -1220,10 +1220,10 @@ class Celltype
           f.print("#undef #{p.get_name}_ref_desc\n")
         end
       }
-      @port.each { |p|
+      @port.each {|p|
         next if p.get_port_type != :ENTRY
         next if p.is_omit?
-        p.get_signature.get_function_head_array.each{ |fun|
+        p.get_signature.get_function_head_array.each{|fun|
           f.print("#undef #{p.get_name}_#{fun.get_name}\n")
         }
       }
@@ -1243,8 +1243,8 @@ class Celltype
   def generate_cell_code
     fs = { }
     f = nil
-    @domain_roots.each{ |domain_type_name, regions|
-      regions.each{ |r|
+    @domain_roots.each{|domain_type_name, regions|
+      regions.each{|r|
         if r.is_root?
           nsp = ""
         else
@@ -1261,7 +1261,7 @@ class Celltype
     # in case that domain_roots does not include root region
     if f == nil
       regions = nil
-      @domain_roots.each{ |domain_type_name, regions_|
+      @domain_roots.each{|domain_type_name, regions_|
         regions = regions_ # domain_type_name is unique
       }
       if regions.length > 1
@@ -1281,7 +1281,7 @@ class Celltype
     gen_cell_ep_des_type f
 
     # すべての _tecsgen.c に出力
-    fs.each{ |r, f2|
+    fs.each{|r, f2|
       if f == f2
         next
       end
@@ -1310,7 +1310,7 @@ class Celltype
       gen_cell_cb_initialize_code f
     end
 
-    fs.each{ |r, f2|
+    fs.each{|r, f2|
       f2.close
       if f == f2
         f = nil
@@ -1367,7 +1367,7 @@ EOT
 
     # シグニチャヘッダの include
     f.printf TECSMsg.get(:ISH_comment), "#_ISH_#"
-    @port.each { |p|
+    @port.each {|p|
       next if p.is_omit?
       hname = "#{p.get_signature.get_global_name}_tecsgen.#{$h_suffix}".to_sym
       if header_included?(hname) == false
@@ -1391,7 +1391,7 @@ EOT
     f.print("#define TOPPERS_CB_TYPE_ONLY\n")
     f.print("#endif  /* TOPPERS_CB_TYPE_ONLY */\n")
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if p.is_omit?
 
@@ -1462,7 +1462,7 @@ EOT
   # セルタイプヘッダへ呼び口の個数を出力
   def gen_ph_n_cp(f)
     b_comment = false
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if p.is_omit?
       next if p.get_array_size == nil
@@ -1503,7 +1503,7 @@ EOT
   # セルタイプヘッダへ受け口の個数を出力
   def gen_ph_n_ep(f)
     b_comment = false
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       # next if p.is_omit?                       # 受け口配列の個数は省略しない
       next if p.get_array_size == nil
@@ -1554,7 +1554,7 @@ EOT
       end
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if !p.is_optional?
       # next if p.is_omit?  # omit でも test コードは生成する
@@ -1635,7 +1635,7 @@ EOT
   def gen_ph_test_optional_call_port_abbrev(f)
     b_comment = false
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if !p.is_optional?
       # next if p.is_omit?  # omit でも test コードは生成する
@@ -1700,7 +1700,7 @@ EOT
       f.printf(TECSMsg.get(:AAM_comment), "#_AAM_#")
     end
 
-    @attribute.each { |a|
+    @attribute.each {|a|
 
       next if a.is_omit?
 
@@ -1727,7 +1727,7 @@ EOT
     }
     f.print("\n")
 
-    @attribute.each { |a|
+    @attribute.each {|a|
 
       next if a.is_omit?
 
@@ -1775,7 +1775,7 @@ EOT
       f.printf(TECSMsg.get(:VAM_comment), "#_VAM_#")
     end
 
-    @var.each { |v|
+    @var.each {|v|
 
       next if v.is_omit?
 
@@ -1805,7 +1805,7 @@ EOT
       end
     }
     f.print("\n")
-    @var.each { |v|
+    @var.each {|v|
 
       next if v.is_omit?
 
@@ -1839,7 +1839,7 @@ EOT
       f.printf(TECSMsg.get(:AAMA_comment), "#_AAMA_#")
     end
 
-    @attribute.each { |a|
+    @attribute.each {|a|
       next if a.is_omit?
 
       # mikan const_value の場合
@@ -1857,7 +1857,7 @@ EOT
       f.printf(TECSMsg.get(:VAMA_comment), "#_VAMA_#")
     end
 
-    @var.each { |v|
+    @var.each {|v|
       next if v.is_omit?
 
       # mikan const_value の場合
@@ -1877,11 +1877,11 @@ EOT
       f.printf(TECSMsg.get(:CPM_comment), "#_CPM_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if p.is_omit?
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         if @singleton
           if has_INIB?
             inib = "INIB"
@@ -1918,7 +1918,7 @@ EOT
           delim = ","
         end
 
-        ft.get_paramlist.get_items.each{ |param|
+        ft.get_paramlist.get_items.each{|param|
           f.print("#{delim} #{param.get_name}")
           delim = ","
         }
@@ -2003,7 +2003,7 @@ EOT
         end
 
         if b_join
-          ft.get_paramlist.get_items.each{ |param|
+          ft.get_paramlist.get_items.each{|param|
             f.print("#{delim} (#{param.get_name})")
             delim = ","
           }
@@ -2025,7 +2025,7 @@ EOT
     else
       inib = ""
     end
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if !p.is_ref_desc?
 
@@ -2075,7 +2075,7 @@ EOT
       f.printf(TECSMsg.get(:SDF_comment), "#_SDF_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if !p.is_dynamic?
       if has_CB? && has_INIB? && p.get_array_size
@@ -2146,10 +2146,10 @@ EOT
   # b_undef:: bool : true = #undef コードの生成,  false = #define コードの生成
   def gen_ph_dealloc_code(f, append_name, b_undef = false)
     b_msg = false
-    @port.each{ |p|
+    @port.each{|p|
       next if p.is_omit?
 
-      p.each_param{ |port, fd, par|
+      p.each_param{|port, fd, par|
         case par.get_direction # 引数の方向指定子 (in, out, inout, send, receive )
         when :SEND
           # next if port.get_port_type == :CALL
@@ -2204,11 +2204,11 @@ EOT
       f.printf(TECSMsg.get(:CPMA_comment), "#_CPMA_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       # next if p.is_omit?  呼び出すとエラーを起こすコードを生成
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         if p.is_VMT_useless? && !@singleton
           dummy_p_cell_access_pre = "((void)p_cellcb, "
           dummy_p_cell_access_post = ")"
@@ -2235,7 +2235,7 @@ EOT
           delim = ","
         end
 
-        ft.get_paramlist.get_items.each{ |param|
+        ft.get_paramlist.get_items.each{|param|
           f.print("#{delim} #{param.get_name}")
           delim = ","
         }
@@ -2259,7 +2259,7 @@ EOT
           delim = ","
         end
 
-        ft.get_paramlist.get_items.each{ |param|
+        ft.get_paramlist.get_items.each{|param|
           f.print("#{delim} #{param.get_name}")
           delim = ","
         }
@@ -2274,7 +2274,7 @@ EOT
       f.printf(TECSMsg.get(:CRDA_comment), "#_CRDA_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if !p.is_ref_desc?
 
@@ -2316,7 +2316,7 @@ EOT
       p_cellcb = "p_cellcb"
       delim = ", "
     end
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if !p.is_dynamic?
 
@@ -2344,11 +2344,11 @@ EOT
       f.printf(TECSMsg.get(:EPM_comment), "#_EPM_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         f.printf("#define %-16s %s\n",
                   "#{p.get_name}_#{fun.get_name}",
                   "#{@global_name}_#{p.get_name}_#{fun.get_name}")
@@ -2392,13 +2392,13 @@ EOT
       f.printf(TECSMsg.get(:EPP_comment), "#_EPP_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
 
       f.print("/* #{p.get_signature.get_global_name} */\n")
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         if p.is_inline?
           f.print("Inline ")
         end
@@ -2427,7 +2427,7 @@ EOT
           len = 0
         end
         i = 0
-        items.each{ |param|
+        items.each{|param|
           f.print "#{delim} "
           delim = ","
           f.print(param.get_type.get_type_str)
@@ -2447,7 +2447,7 @@ EOT
     if @n_entry_port >0
       f.printf(TECSMsg.get(:EPSP_comment), "#_EPSP_#")
     end
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
 #      if p.is_skelton_useless? || ! p.is_VMT_useless? then    # 受け口最適化
@@ -2458,7 +2458,7 @@ EOT
 
       f.print("/* #{p.get_name} */\n")
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         functype = fun.get_declarator.get_type
         f.printf "%-14s", functype.get_type_str
 
@@ -2475,7 +2475,7 @@ EOT
           len = 0
         end
         i = 0
-        items.each{ |param|
+        items.each{|param|
           f.print "#{delim} "
           delim = ","
           f.print param.get_type.get_type_str
@@ -2556,7 +2556,7 @@ EOT
       end
     end
 
-    @attribute.each{ |a|
+    @attribute.each{|a|
       next if a.is_omit?
       next if inib_cb == :INIB && a.is_rw?
       next if has_INIB? && inib_cb == :CB && !a.is_rw?
@@ -2570,7 +2570,7 @@ EOT
       f.printf("#{const_str}%-14s", a.get_type.get_type_str)
       f.print " #{a.get_name}#{a.get_type.get_type_str_post};\n"
     }
-    @var.each { |v|
+    @var.each {|v|
       next if v.is_omit?
       next if v.get_size_is == nil
       next if $rom && inib_cb == :CB # size_is 指定されたものは INIB にのみ出力する
@@ -2587,7 +2587,7 @@ EOT
       f.print "    /* var #_VA_# */ \n"
     end
 
-    @var.each{ |v|
+    @var.each{|v|
 
       next if v.is_omit?
       next if !v.get_size_is.nil? # size_is 指定された var は attribute へ出力する
@@ -2609,7 +2609,7 @@ EOT
       f.print "    /* call port #_TCP_# */\n"
     end
 
-    @port.each{ |p|
+    @port.each{|p|
       next if p.get_port_type != :CALL
       next if p.is_omit?
       next if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && !$ram_initializer
@@ -2667,7 +2667,7 @@ EOT
       f.print "    /* call port #_NEP_# */ \n"
     end
 
-    @port.each{ |p|
+    @port.each{|p|
       # next if p.is_omit?                       # 受け口配列の個数は省略しない
       if p.get_port_type == :ENTRY && p.get_array_size == "[]"
         f.print("    int_t n_#{p.get_name};\n")
@@ -2760,7 +2760,7 @@ EOT
   def gen_ph_cb_initialize_macro(f)
     f.printf(TECSMsg.get(:CIM_comment), "#_CIM_#")
 
-    @var.each { |v|
+    @var.each {|v|
       init = v.get_initializer
       if init.instance_of? Array
         type = v.get_type
@@ -2788,7 +2788,7 @@ EOT
     if @n_cell_gen > 0 && need_CB_initializer?
       b_var_init = false
       f.print "#define INITIALIZE_CB#{arg}"
-      @var.each { |v|
+      @var.each {|v|
         init = v.get_initializer
         next if init == nil
 
@@ -2825,7 +2825,7 @@ EOT
 
       # dynamic call port の初期化コード
       b_dyn_port = false
-      @port.each{ |p|
+      @port.each{|p|
         next if p.get_port_type != :CALL
         if p.is_dynamic? && $ram_initializer
           if p.get_array_size == nil
@@ -2929,7 +2929,7 @@ EOT
       f.printf(TECSMsg.get(:EDT_comment), "#_EDT_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
       if p.is_skelton_useless? # 受け口最適化
@@ -2958,7 +2958,7 @@ EOT
       f.printf(TECSMsg.get(:EPSF_comment), "#_EPSF_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
       if p.is_skelton_useless? # 受け口最適化
@@ -2968,7 +2968,7 @@ EOT
 
       f.print("/* #{p.get_name} */\n")
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         functype = fun.get_declarator.get_type
         f.printf "%-14s", functype.get_type_str
 
@@ -2985,7 +2985,7 @@ EOT
           len = 0
         end
         i = 0
-        items.each{ |param|
+        items.each{|param|
           f.print "#{delim} "
           delim = ","
           f.print param.get_type.get_type_str
@@ -3021,7 +3021,7 @@ EOT
           delim = ","
         end
 
-        items.each{ |param|
+        items.each{|param|
           f.print "#{delim} "
           delim = ","
           f.print param.get_name
@@ -3042,7 +3042,7 @@ EOT
       f.printf(TECSMsg.get(:EPSFT_comment), "#_EPSFT_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
       if p.is_VMT_useless? # 受け口最適化
@@ -3056,7 +3056,7 @@ EOT
       f.print "const struct tag_#{p.get_signature.get_global_name}_VMT"
       f.print " #{@global_name}_#{p.get_name}_MT_ = {\n"
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         f.print "    #{@global_name}_#{p.get_name}_#{fun.get_name}_skel,\n"
       }
 
@@ -3067,11 +3067,11 @@ EOT
 
   def gen_cell_ep_vdes(fs)
     if @n_cell_gen >0
-      fs.each{ |r, f| f.printf(TECSMsg.get(:CPEPD_comment), "#_CPEPD_#") }
+      fs.each{|r, f| f.printf(TECSMsg.get(:CPEPD_comment), "#_CPEPD_#") }
     end
 
     # このセルタイプのすべてのセルについて
-    @ordered_cell_list.each{ |c|
+    @ordered_cell_list.each{|c|
       if c.is_generate? # 生成対象か？
 
         f = fs[c.get_region.get_domain_root]
@@ -3080,7 +3080,7 @@ EOT
         jl = c.get_join_list
 
         # 全ての結合リストについて
-        jl.get_items.each{ |j|
+        jl.get_items.each{|j|
 
           # 左辺の定義を得る
           definition = j.get_definition
@@ -3163,10 +3163,10 @@ EOT
 
   def gen_cell_ep_vdes_array(fs)
     if @n_cell_gen >0
-      fs.each{ |r, f| f.printf(TECSMsg.get(:CPA_comment), "#_CPA_#") } # mikan 呼び口配列が無い場合も出てしまう
+      fs.each{|r, f| f.printf(TECSMsg.get(:CPA_comment), "#_CPA_#") } # mikan 呼び口配列が無い場合も出てしまう
     end
 
-    @ordered_cell_list.each{ |c|
+    @ordered_cell_list.each{|c|
       if c.is_generate?
         f = fs[c.get_region.get_domain_root]
 
@@ -3174,7 +3174,7 @@ EOT
         # ループを回す変数を jl から @port に変更
         # dynamic, optional
 #        jl.get_items.each{ |j|
-        @port.each { |port|
+        @port.each {|port|
           next if port.get_port_type != :CALL
           dbgPrint("gen_cell_ep_vdes_array: #{c.get_name}.#{port.get_name}\n")
 
@@ -3331,10 +3331,10 @@ EOT
       return
     end
 
-    fs.each{ |r, f| f.printf(TECSMsg.get(:AVAI_comment), "#_AVAI_#") }
+    fs.each{|r, f| f.printf(TECSMsg.get(:AVAI_comment), "#_AVAI_#") }
 
     # attribute, var のポインタ型の参照する配列を生成
-    @ordered_cell_list.each{ |c|
+    @ordered_cell_list.each{|c|
       next if !c.is_generate?
 
       f = fs[c.get_region.get_domain_root]
@@ -3346,7 +3346,7 @@ EOT
       # attribute, var のポインタ変数が配列により初期化される場合の、配列を出力
       av_list = ct.get_attribute_list + ct.get_var_list
       if av_list.length != 0
-        av_list.each{ |a| # a: Decl
+        av_list.each{|a| # a: Decl
           j = jl.get_item(a.get_identifier)
           if j
             init = j.get_rhs
@@ -3397,7 +3397,7 @@ EOT
   def gen_cell_var_init(f)
     # var の{ }で囲まれた初期値指定があるか調べる
     n_init = 0
-    @var.each { |v|
+    @var.each {|v|
       init = v.get_initializer
       if init && init.instance_of?(Array)
         n_init += 1
@@ -3406,7 +3406,7 @@ EOT
 
     if n_init > 0
       f.printf(TECSMsg.get(:AVI_comment), "#_AVI_#")
-      @var.each { |v|
+      @var.each {|v|
         init = v.get_initializer
         if init && init.instance_of?(Array)
           type = v.get_type
@@ -3433,7 +3433,7 @@ EOT
             str = "{ "
             type = org_type.get_type
             # mikan ポインタではなく、配列型としないと、ポインタ変数の領域の分、損する
-            init.each { |i|
+            init.each {|i|
               str += gen_cell_cb_init(f, c, name_array, type, i, v.get_identifier, 1, true)
               str += ", "
             }
@@ -3453,19 +3453,19 @@ EOT
   def gen_cell_cb(fs)
     if has_INIB?
       if @n_cell_gen > 0
-        fs.each{ |r, f| f.printf(TECSMsg.get(:INIB_comment), "#_INIB_#") }
+        fs.each{|r, f| f.printf(TECSMsg.get(:INIB_comment), "#_INIB_#") }
       end
       if @singleton
-        fs.each{ |r, f| f.print "#{@global_name}_INIB #{@global_name}_SINGLE_CELL_INIB = \n" }
+        fs.each{|r, f| f.print "#{@global_name}_INIB #{@global_name}_SINGLE_CELL_INIB = \n" }
         indent = 0
       elsif !@idx_is_id_act
-        fs.each{ |r, f| f.print "#{@global_name}_INIB #{@global_name}_INIB_tab[] = {\n" }
+        fs.each{|r, f| f.print "#{@global_name}_INIB #{@global_name}_INIB_tab[] = {\n" }
         indent = 1
       else
         indent = 0
       end
 
-      @ordered_cell_list.each{ |c|
+      @ordered_cell_list.each{|c|
         next if !c.is_generate?
 
         f = fs[c.get_region.get_domain_root]
@@ -3497,28 +3497,28 @@ EOT
         end
       }
       if !@idx_is_id_act
-        fs.each{ |r, f| f.print("};\n\n") }
+        fs.each{|r, f| f.print("};\n\n") }
       end
     end # has_INIB?
 
     if has_CB?
       if @n_cell_gen >0
-        fs.each{ |r, f| f.printf(TECSMsg.get(:CB_comment), "#_CB_#") }
+        fs.each{|r, f| f.printf(TECSMsg.get(:CB_comment), "#_CB_#") }
       end
 
       # RAM initializer を使用しない、または ROM 化しない
       if $ram_initializer == false || $rom == false
         if @singleton
-          fs.each{ |r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_SINGLE_CELL_CB = \n" }
+          fs.each{|r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_SINGLE_CELL_CB = \n" }
           indent = 0
         elsif !@idx_is_id_act
-          fs.each{ |r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_CB_tab[] = {\n" }
+          fs.each{|r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_CB_tab[] = {\n" }
           indent = 1
         else
           indent = 0
         end
 
-        @ordered_cell_list.each{ |c|
+        @ordered_cell_list.each{|c|
           next if !c.is_generate?
 
           f = fs[c.get_region.get_domain_root]
@@ -3562,14 +3562,14 @@ EOT
           end
         }
         if !@idx_is_id_act
-          fs.each{ |r, f| f.print("};\n\n") }
+          fs.each{|r, f| f.print("};\n\n") }
         end
       else
         if @singleton
-          fs.each{ |r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_SINGLE_CELL_CB;\n" }
+          fs.each{|r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_SINGLE_CELL_CB;\n" }
           indent = 0
         elsif @idx_is_id_act
-          @ordered_cell_list.each{ |c|
+          @ordered_cell_list.each{|c|
             next if !c.is_generate?
 
             f = fs[c.get_region.get_domain_root]
@@ -3579,7 +3579,7 @@ EOT
             f.print "#{@global_name}_CB #{name_array[2]} = {};\n"
           }
         else
-          fs.each{ |r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_CB_tab[#{@n_cell_gen}];\n" }
+          fs.each{|r, f| f.print "struct tag_#{@global_name}_CB #{@global_name}_CB_tab[#{@n_cell_gen}];\n" }
         end
       end
     end # has_CB?
@@ -3590,7 +3590,7 @@ EOT
     if @idx_is_id_act
       if has_INIB? && ($ram_initializer || !has_CB?)
         f.print "/* ID to INIB table #_INTAB_# */\n"
-        @ordered_cell_list.each{ |c|
+        @ordered_cell_list.each{|c|
           if c.is_generate? && (c.get_region.get_domain_root != Region.get_root) # 生成対象かつ、ルート以外か
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
@@ -3599,7 +3599,7 @@ EOT
         }
 
         f.print "#{@global_name}_INIB *const #{@global_name}_INIB_tab[] ={\n"
-        @ordered_cell_list.each{ |c|
+        @ordered_cell_list.each{|c|
           if c.is_generate? # 生成対象か？
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
@@ -3610,7 +3610,7 @@ EOT
       end
       if has_CB?
         f.print "/* ID to CB table #_CBTAB_# */\n"
-        @ordered_cell_list.each{ |c|
+        @ordered_cell_list.each{|c|
           if c.is_generate? && (c.get_region.get_domain_root != Region.get_root) # 生成対象かつ、ルート以外か
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
@@ -3619,7 +3619,7 @@ EOT
         }
 
         f.print "#{@global_name}_CB *#{@global_name}_CB_tab[] ={\n"
-        @ordered_cell_list.each{ |c|
+        @ordered_cell_list.each{|c|
           if c.is_generate? # 生成対象か？
             name_array = get_name_array(c)
             print_indent(f, indent + 1)
@@ -3729,7 +3729,7 @@ EOT
     end
 
     attribute = ct.get_attribute_list
-    attribute.each{ |a| # a: Decl
+    attribute.each{|a| # a: Decl
       next if a.is_omit?
       if cb_inib == :INIB && a.is_rw? == true
         # $rom == true でしか、ここへ来ない
@@ -3750,7 +3750,7 @@ EOT
         gen_cell_cb_init(f, cell, name_array, a.get_type, nil, a.get_identifier, indent + 1)
       end
     }
-    @var.each{ |v|
+    @var.each{|v|
       next if v.is_omit?
       next if v.get_size_is == nil # size_is 指定がある場合 attribute の一部として出力
 
@@ -3770,7 +3770,7 @@ EOT
     if @n_var - @n_var_size_is > 0
       print_indent(f, indent + 1)
       f.print "/* var */ \n"
-      var.each{ |v|
+      var.each{|v|
 
         next if v.is_omit?
         next if v.get_size_is # size_is 指定がある場合 attribute の一部として出力
@@ -3802,7 +3802,7 @@ EOT
        inib_cb == :CB_DYNAMIC && (@n_call_port_dynamic - @n_call_port_array_dynamic) > 0
       print_indent(f, indent + 1)
       f.print "/* call port (#{inib_cb}) #_CP_# */ \n"
-      port.each{ |p|
+      port.each{|p|
         next if p.get_port_type != :CALL
         next if p.is_omit?
         next if p.is_cell_unique? # 最適化（単一セルで呼び口マクロに埋め込まれる）
@@ -3908,7 +3908,7 @@ EOT
     if @n_entry_port != 0
       print_indent(f, indent + 1)
       f.print "/* entry port #_EP_# */ \n"
-      @port.each{ |p|
+      @port.each{|p|
         # next if p.is_omit?  # 受け口配列の個数は省略しない
         if p.get_port_type == :ENTRY && p.get_array_size == "[]"
           print_indent(f, indent + 1)
@@ -4088,7 +4088,7 @@ EOT
         f.print("{                                        /* #{identifier} */\n")
       end
 
-      decls.each{ |d|
+      decls.each{|d|
         # p "#{d.get_identifier}: #{init}"
         next if !init[i]
 
@@ -4145,9 +4145,9 @@ EOT
 
   #== 関数テーブルの外部参照
   def gen_cell_extern_mt(fs)
-    fs.each{ |r, f|
+    fs.each{|r, f|
       if !r.is_root?
-        @port.each{ |p|
+        @port.each{|p|
           next if p.is_omit?
           if p.get_port_type == :ENTRY && !p.is_VMT_useless?
             f.print "extern const struct tag_#{p.get_signature.get_global_name}_VMT"
@@ -4161,11 +4161,11 @@ EOT
   #=== 受け口ディスクリプタの定義を生成
   def gen_cell_ep_des(fs)
     if @n_cell_gen >0
-      fs.each{ |r, f| f.printf(TECSMsg.get(:EPD_comment), "#_EPD_#") }
+      fs.each{|r, f| f.printf(TECSMsg.get(:EPD_comment), "#_EPD_#") }
     end
 
     index = 0
-    @ordered_cell_list.each{ |c|
+    @ordered_cell_list.each{|c|
 
       next if !c.is_generate?
 
@@ -4176,7 +4176,7 @@ EOT
 
       port = ct.get_port_list
       if port.length != 0
-        port.each{ |p|
+        port.each{|p|
           next if p.get_port_type != :ENTRY
           next if p.is_omit?
           if p.is_skelton_useless? # 受け口最適化n ep_opt
@@ -4332,7 +4332,7 @@ EOT
       f.printf(TECSMsg.get(:CAAM_comment), "#_CAAM_#")
     end
 
-    @attribute.each { |a|
+    @attribute.each {|a|
 
       next if a.is_omit?
 
@@ -4340,7 +4340,7 @@ EOT
 
     }
 
-    @var.each { |v|
+    @var.each {|v|
 
       next if v.is_omit?
 
@@ -4358,7 +4358,7 @@ EOT
       f.printf(TECSMsg.get(:TCPF_comment), "#_TCPF_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       # next if p.is_omit?
 
@@ -4396,7 +4396,7 @@ EOT
         f.print " * require port: signature:#{sig_name}#{context}\n"
       end
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
 
         ft = fun.get_declarator.get_type
 
@@ -4418,7 +4418,7 @@ EOT
           delim = ","
         end
 
-        ft.get_paramlist.get_items.each{ |param|
+        ft.get_paramlist.get_items.each{|param|
           # p "type_str: #{param.get_type.get_type_str}"
           f.print("#{delim} #{param.get_type.get_type_str}")
           f.print(" #{param.get_name}#{param.get_type.get_type_str_post}")
@@ -4482,7 +4482,7 @@ EOT
       f.printf(TECSMsg.get(:TEPF_comment), "#_TEPF_#")
     end
 
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :ENTRY
       next if p.is_omit?
       next if b_inline && !p.is_inline?  # inline ポート
@@ -4512,7 +4512,7 @@ EOT
 
 EOT
 
-      p.get_signature.get_function_head_array.each{ |fun|
+      p.get_signature.get_function_head_array.each{|fun|
         f.print <<EOT
 /* #[<ENTRY_FUNC>]# #{p.get_name}_#{fun.get_name}
  * name:         #{p.get_name}_#{fun.get_name}
@@ -4549,7 +4549,7 @@ EOT
         end
 
         i = 0
-        items.each{ |param|
+        items.each{|param|
           f.print "#{delim}"
           delim = ", "
           f.print param.get_type.get_type_str
@@ -4655,7 +4655,7 @@ EOT
 ##### generate tecsgen.cfg
 
   def generate_celltype_factory_code
-    @ct_factory_list.each { |fa|
+    @ct_factory_list.each {|fa|
       if fa.get_name == :write
 
         # 前後の " を取り除く
@@ -4698,14 +4698,14 @@ EOT
   end
 
   def generate_cell_factory_code
-    @ordered_cell_list.each{ |c|
+    @ordered_cell_list.each{|c|
 
       # cell のプロトタイプ宣言なら無視
       next if !c.is_generate?
 
       name_array = get_name_array(c)
 
-      @factory_list.each { |fa|
+      @factory_list.each {|fa|
 
         if fa.get_name == :write
 
@@ -4729,7 +4729,7 @@ EOT
 
           na = [] # シンボルを attribute の値に置き換えた後の引数
           if arg_list
-            arg_list.each { |a|
+            arg_list.each {|a|
               case a[0]
               when :STRING_LITERAL # 文字列定数
                 # s = a[1].sub( /^\"(.*)\"$/, "\\1" )            # 前後の "" を取り除く
@@ -4766,7 +4766,7 @@ EOT
               print "'#{c.get_name}' : factory format: "
               print(format)
               print(" arg: ")
-              na.each { |n| print "'#{n}' " }
+              na.each {|n| print "'#{n}' " }
               print("\n")
             end
 
@@ -4823,7 +4823,7 @@ EOT
     end
 
     # 呼び口または受け口のシグニチャのヘッダ
-    @port.each { |p|
+    @port.each {|p|
       next if p.is_omit?
       headers << "$(GEN_DIR)/#{p.get_signature.get_global_name}_tecsgen.#{$h_suffix}"
     }
@@ -4874,7 +4874,7 @@ EOT
       end
     elsif type.kind_of?(StructType)
       members_decl = type.get_members_decl
-      members_decl.get_items.each { |md|
+      members_decl.get_items.each {|md|
         pre2 = pre + name.to_s + post + "."
         name2 = md.get_name
         post2 = ""
@@ -4954,7 +4954,7 @@ EOT
 
     # 呼び口の結合先のセルタイプのヘッダ（最適化の場合のみ）
     # 結合先の受け口が inline の場合、inline ヘッダも
-    @port.each { |p|
+    @port.each {|p|
       next if p.get_port_type != :CALL
       next if p.is_omit?
 
@@ -5062,7 +5062,7 @@ class AppFile
       return
     end
 
-    @@file_name_list.each{ |name, boo|
+    @@file_name_list.each{|name, boo|
       b_identical = false
       if File.readable? name
         old_lines = File.readlines name

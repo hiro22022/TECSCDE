@@ -40,10 +40,10 @@
 class MrubyBridgeCellPlugin < CellPlugin
   # プラグイン引数名 => Proc
   MrubyBridgePluginArgProc = {
-      "ignoreUnsigned" => Proc.new { |obj, rhs| obj.set_ignoreUnsigned rhs },
-      "exclude_port" => Proc.new { |obj, rhs| obj.set_exclude_port rhs },
-      "exclude_port_func" => Proc.new { |obj, rhs| obj.set_exclude_port_func rhs },
-      "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
+      "ignoreUnsigned" => Proc.new {|obj, rhs| obj.set_ignoreUnsigned rhs },
+      "exclude_port" => Proc.new {|obj, rhs| obj.set_exclude_port rhs },
+      "exclude_port_func" => Proc.new {|obj, rhs| obj.set_exclude_port_func rhs },
+      "auto_exclude" => Proc.new {|obj, rhs| obj.set_auto_exclude rhs },
   }
   @@b_gen_post_code_by_dependent = false # true if gen_post_code is called by MrubyBridgeCelltypePlugin
   @@cell_list = {} # gen_cdl_file'ed list to avoid duplicate generation
@@ -87,7 +87,7 @@ class MrubyBridgeCellPlugin < CellPlugin
     if @exclude_port.length > 0
       # この実装では、存在しない port を指定されてもチェックできない
       # print "MRBBridgeCellPlugin: exclude list\n"
-      port_list.each{ |port|
+      port_list.each{|port|
         if !@exclude_port.include?(port.get_name.to_s)
           # print "MRBBridgeCellPlugin: #{port.get_name} included\n"
           @port_list[port] = ""
@@ -96,16 +96,16 @@ class MrubyBridgeCellPlugin < CellPlugin
         end
       }
     else
-      port_list.each{ |port|
+      port_list.each{|port|
         @port_list[port] = ""
       }
     end
 
     if @exclude_port_func.length > 0
-      @port_list.each{ |port, opt_str|
+      @port_list.each{|port, opt_str|
         delim = ""
         if @exclude_port_func.include?(port.get_name.to_s)
-          @exclude_port_func[port.get_name.to_s].each{ |func_name|
+          @exclude_port_func[port.get_name.to_s].each{|func_name|
             opt_str += delim + "exclude=" + func_name
             delim = ","
           }
@@ -135,7 +135,7 @@ EOT
     end
     @@cell_list[@cell] = @cell
 
-    @port_list.each{ |port, opt_str|
+    @port_list.each{|port, opt_str|
       next if port.get_signature == nil
 
       case port.get_signature.get_context
@@ -208,7 +208,7 @@ EOT
     ports = rhs.split ","
     ct = @cell.get_celltype
     return if ct == nil # error case
-    ports.each{ |rhs_port|
+    ports.each{|rhs_port|
       obj = ct.find(rhs_port.to_sym)
       if((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port '$1' not found or not entry in celltype '$2'", rhs_port, ct.get_name)
@@ -224,7 +224,7 @@ EOT
     port_funcs = rhs.split ","
     ct = @cell.get_celltype
     return if ct == nil # error case
-    port_funcs.each{ |rhs_port_func|
+    port_funcs.each{|rhs_port_func|
       port_func = rhs_port_func.split "."
       if port_func.length != 2
         cdl_error("MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func)

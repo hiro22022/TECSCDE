@@ -65,7 +65,7 @@ class TECSInfoPlugin < CelltypePlugin
     # p "import: cell nTECSInfo::tTECSInfoSub TECSInfoSub under #{cell.get_region.get_name}"
     # TECSInfoSub セルのプロトタイプ宣言
     fn = "#{$gen}/tmp_#{cell.get_region.get_global_name}_TECSInfoSub.cdl"
-    File.open(fn, "w"){ |f|
+    File.open(fn, "w"){|f|
       f.print "/* prototype declaration of TECSInfoSub */\n"
       nest = cell.get_region.gen_region_str_pre f
       indent = "    " * nest
@@ -94,13 +94,13 @@ EOT
   # file 以外の他のファイルにファクトリコードを生成してもよい
   # セルタイププラグインが指定されたセルタイプのみ呼び出される
   def gen_factory(file)
-    File.open("#{$gen}/include_all_signature_header.h", "w"){ |f|
+    File.open("#{$gen}/include_all_signature_header.h", "w"){|f|
       f.print <<EOT
 #ifndef include_all_signature_header_h
 #define include_all_signature_header_h
 
 EOT
-      Namespace.get_root.travers_all_signature{ |sig|
+      Namespace.get_root.travers_all_signature{|sig|
         f.print "#include \"#{sig.get_global_name}_tecsgen.h\"\n"
       }
       f.print <<EOT
@@ -174,7 +174,7 @@ EOT
                :eCelltypeInfo_hasINIB, :FOREACH_CELL, :END_FOREACH_CELL ]
 
     f = AppFile.open("#{$gen}/nTECSInfo_tCelltypeInfo_factory.h")
-    undefs.each{ |u|
+    undefs.each{|u|
       f.print "#undef #{u}\n"
     }
     f.print "#define TOPPERS_CB_TYPE_ONLY\n"
@@ -245,7 +245,7 @@ EOT
 
     undefs = [ :GET_CELLCB, :CELLCB, :CELLIDX, :ATTR_name, :INITIALIZE_CB, :FOREACH_CELL ]
     f = AppFile.open("#{$gen}/nTECSInfo_tCellInfo_factory.h")
-    undefs.each{ |u|
+    undefs.each{|u|
       f.print "#undef #{u}\n"
     }
     Region.get_root.print_cell_define f
