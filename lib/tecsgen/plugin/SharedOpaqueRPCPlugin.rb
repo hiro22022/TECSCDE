@@ -53,14 +53,14 @@ require_tecsgen_lib "lib/GenParamCopy.rb"
 
 class SharedOpaqueRPCPlugin < ThroughPlugin
   # チャンネルを共有するプラグインオブジェクトへのハッシュリスト
-  @@shared_channel_list = {}    # { chan_name => [ Plugin_obj0, Plugin_Obj1, ... ] }
+  @@shared_channel_list = {} # { chan_name => [ Plugin_obj0, Plugin_Obj1, ... ] }
 
   attr_reader :cell_name, :start_region, :end_region
   include GenOpaqueMarshaler
   include GenParamCopy
 
   # SharedOpaqueRPCPlugin 専用のオプション
-  SharedOpaqueRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
+  SharedOpaqueRPCPluginArgProc = RPCPluginArgProc.dup # 複製を作って元を変更しないようにする
   SharedOpaqueRPCPluginArgProc["sharedChannelName"] = Proc.new { |obj, rhs| obj.set_sharedChannelName rhs }
 
   #=== RPCPlugin の initialize
@@ -68,7 +68,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
   def initialize(cell_name, plugin_arg, next_cell, next_cell_port_name, next_cell_port_subscript, signature, celltype, caller_cell)
     super
     initialize_opaque_marshaler
-    @entry_port_name = :eClientEntry   # Marshaler の受け口名 (through セルの入り口)
+    @entry_port_name = :eClientEntry # Marshaler の受け口名 (through セルの入り口)
 
     # オプション：GenOpaqueMarshaler 参照
     @plugin_arg_check_proc_tab = SharedOpaqueRPCPluginArgProc
@@ -248,16 +248,16 @@ EOT
         end
 
         file.print delim
-        delim = ",\n#{indent_str}           "        # 最終行には出さない
+        delim = ",\n#{indent_str}           " # 最終行には出さない
 
-        if subsc        # 配列添数
+        if subsc # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
         end
 
         eport = @entry_port_name # RPCの受け口名に変更
-        file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
+        file.print "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
       end
 
       file.puts ")]"

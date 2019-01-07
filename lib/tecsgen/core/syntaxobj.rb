@@ -206,7 +206,7 @@ class NSBDNode < BDNode
     if @import
       return @import.is_imported?
     else
-      return false    # mikan: 仮 @import が nil になるケースが追求できていない
+      return false # mikan: 仮 @import が nil になるケースが追求できていない
     end
   end
 end
@@ -335,7 +335,7 @@ class Typedef < BDNode
     super()
     decl.set_type(type_spec_qual_list)
     @declarator = decl
-    decl.set_owner self    # Decl(Typedef)
+    decl.set_owner self # Decl(Typedef)
 
     Namespace.new_typedef(self)
   end
@@ -364,7 +364,7 @@ class FuncHead <BDNode
     super()
     declarator.set_type(type)
     @declarator = declarator
-    @declarator.set_owner self  # Decl (FuncHead)
+    @declarator.set_owner self # Decl (FuncHead)
 
     if @declarator.get_type.kind_of?(FuncType)
       if b_oneway
@@ -463,8 +463,8 @@ class Decl < BDNode
     @omit = false
     @size_is = nil
     @count_is = nil
-    @string  = nil
-    @choice_list  = nil
+    @string = nil
+    @choice_list = nil
     @b_referenced  = false
   end
 
@@ -564,7 +564,7 @@ class Decl < BDNode
     unless @type
       @type = type
     else
-      @type.set_type(type)             # 葉に設定
+      @type.set_type(type) # 葉に設定
     end
   end
 
@@ -596,7 +596,7 @@ class Decl < BDNode
   end
 
   def set_specifier_list(spec_list)
-    spec_list.each{  |spec|
+    spec_list.each{ |spec|
       case spec[0]
       when :RW
         @rw = true
@@ -717,25 +717,25 @@ class ParamDecl < BDNode
   def initialize(declarator, specifier, param_specifier)
     super()
     @declarator = declarator
-    @declarator.set_owner self  # Decl (ParamDecl)
+    @declarator.set_owner self # Decl (ParamDecl)
     @declarator.set_type(specifier)
     @param_specifier = param_specifier
     @b_ref = false
     @b_nullable = false
 
-    if @declarator.is_function?    # (1)
+    if @declarator.is_function? # (1)
       cdl_error("S2006 \'$1\' function", get_name)
       return
     end
 
     res = @declarator.check
-    if res          # (2)
+    if res # (2)
       cdl_error("S2007 \'$1\' $2", get_name, res)
       return
     end
 
     @param_specifier.each { |i|
-      case i[0]                                     # (3)
+      case i[0] # (3)
       when :IN, :OUT, :INOUT, :SEND, :RECEIVE
         if @direction == nil
           @direction = i[0]
@@ -749,7 +749,7 @@ class ParamDecl < BDNode
 
         case i[0]
         when :SEND, :RECEIVE
-          @allocator = Namespace.find(i[1])   # 1
+          @allocator = Namespace.find(i[1]) # 1
           if !@allocator.instance_of?(Signature)
             cdl_error("S2009 $1: not found or not signature", i[1])
             next
@@ -807,7 +807,7 @@ class ParamDecl < BDNode
     # p @declarator
 
     #----  set req_level, min_level & max_level  ----#
-    if !(@size||@count||@string)      # (4)
+    if !(@size||@count||@string) # (4)
       req_level = 1
     elsif (@size||@count)&&@string
       req_level = 2
@@ -1020,15 +1020,15 @@ class ParamList < BDNode
     super()
     @param_list = NamedList.new(paramdecl, "parameter")
     @param_list.get_items.each { |paramdecl|
-      paramdecl.set_owner self   # ParamDecl
+      paramdecl.set_owner self # ParamDecl
     }
   end
 
   def add_param(paramdecl)
-    return if paramdecl == nil    # 既にエラー
+    return if paramdecl == nil # 既にエラー
 
     @param_list.add_item(paramdecl)
-    paramdecl.set_owner self   # ParamDecl
+    paramdecl.set_owner self # ParamDecl
   end
 
   def get_items
@@ -1039,17 +1039,17 @@ class ParamList < BDNode
   # 変数は前方参照可能なため、関数頭部の構文解釈が終わった後にチェックする
   def check_param
     @param_list.get_items.each { |i|
-      next if i == nil                      # i == nil : エラー時
+      next if i == nil # i == nil : エラー時
 
       if i.get_type.class == VoidType
         # 単一の void 型はここにはこない
         cdl_error("S2027 '$1' parameter cannot be void type", i.get_name)
       end
 
-      size = i.get_size      # Expression
+      size = i.get_size # Expression
       if size
         val = size.eval_const(@param_list)
-        if val == nil      # 定数式でないか？
+        if val == nil # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = size.get_type(@param_list)
           unless type.kind_of?(IntType)
@@ -1085,10 +1085,10 @@ class ParamList < BDNode
         end
       end
 
-      count = i.get_count      # Expression
+      count = i.get_count # Expression
       if count
         val = count.eval_const(@param_list)
-        if val == nil      # 定数式でないか？
+        if val == nil # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = count.get_type(@param_list)
           unless type.kind_of?(IntType)
@@ -1105,10 +1105,10 @@ class ParamList < BDNode
         end
       end
 
-      string = i.get_string      # Expression
+      string = i.get_string # Expression
       if string != -1 && string
         val = string.eval_const(@param_list)
-        if val == nil      # 定数式でないか？
+        if val == nil # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = string.get_type(@param_list)
           unless type.kind_of?(IntType)
@@ -1187,7 +1187,7 @@ class CDLString
     str.gsub!(/\\v/, "\x0b")
     str.gsub!(/(\\[Xx][0-9A-Fa-f]{1,2})/, '{printf \"\\1\"}')
     str.gsub!(/(\\[0-7]{1,3})/, '{printf \"\\1\"}')
-    str.gsub!(/\\(.)/, "\\1")   # mikan 未定義のエスケープシーケンスを変換してしまう (gcc V3.4.4 では警告が出される)
+    str.gsub!(/\\(.)/, "\\1") # mikan 未定義のエスケープシーケンスを変換してしまう (gcc V3.4.4 では警告が出される)
     return str
   end
 

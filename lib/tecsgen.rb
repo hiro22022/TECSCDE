@@ -105,7 +105,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
       [ "", "tecslib/plugin/" ].each { |lp|
         lib = File.expand_path(path) + "/" + lp + fname
 
-        if File.exist? lib  # ファイル存否と他のエラーを区別するため存在確認をする
+        if File.exist? lib # ファイル存否と他のエラーを区別するため存在確認をする
           begin
             require(lib)
             b_require = true
@@ -280,7 +280,7 @@ class TECSGEN
     $arguments = ""
     ARGV.each { |a| $arguments += " " + a }
 
-    $unopt     = false     # bool:   disable optimizing both call and entry port
+    $unopt = false # bool:   disable optimizing both call and entry port
     $unopt_entry= false    # bool:   disable optimizing entry port
     $gen_base  = "gen"     # string: folder path to place generated files
     $gen       = $gen_base # string: folder path to place generated files
@@ -294,13 +294,13 @@ class TECSGEN
     $verbose   = false     # bool:   verbose mode: show some messages
     $yydebug   = false     # bool:   yydebug: parser debug mode (need bnf-deb.tab.rb)
     $run_dir   = Dir.pwd   # string: tecsgen/tecscde start up directory
-    $base_dir  = {  }      # string=>bool: base dir for import_path (key:base_dir, val:actually used or specified directly)
+    $base_dir  = { } # string=>bool: base dir for import_path (key:base_dir, val:actually used or specified directly)
     $import_path = [ "." ] # string array : import/import_C path
     $import_path_opt = []  # [String]
     $library_path = [ $tecsgen_base_path ] # string array : path to dir where tecsgen.rb placed
-    $define    = [ ]       # string array : define
+    $define = [ ] # string array : define
     $ram_initializer = false # bool: generate ram initializer
-    $region_list = {}      # string array : region path which is generated
+    $region_list = {} # string array : region path which is generated
     $generating_region = nil # Region:  Region to optimisze & generate code   # コマンドラインオプションではない
                              #          Cell#is_generate? にて参照される
     $unit_test = false     # bool:   unit test verification
@@ -308,8 +308,8 @@ class TECSGEN
     $force_overwrite = false # bool:  force overwrite all files if file contents not differ
     $no_banner = false     # bool:   not print banner
     $print_version = false # bool:   print version
-    $target    = "tecs"    # String: target name, ARGV[0] から再設定する（"tecs" は仮のターゲット)
-    $no_default_import_path = false  # bool: no default import path
+    $target = "tecs" # String: target name, ARGV[0] から再設定する（"tecs" は仮のターゲット)
+    $no_default_import_path = false # bool: no default import path
     $c_suffix  = "c"       # suffix for C progorams (for C++ source)
     $h_suffix  = "h"       # suffix for C progoram headers (for C++ source)
 
@@ -349,7 +349,7 @@ class TECSGEN
     # $KCODE_TECSGEN, $KCONV_TECSGEN を仮に設定する (tecs_lang.rb ですぐに再設定される)
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const:
-    set_kcode($KCODE_TECSGEN)  # このファイルの文字コードを設定
+    set_kcode($KCODE_TECSGEN) # このファイルの文字コードを設定
   end # initialize_global_var
 
   def self.analyze_option(additional_option_parser)
@@ -374,7 +374,7 @@ class TECSGEN
       parser.on("-L", "--library-path=path", "path to dir where tecsgen.rb (obsolete, unnecessary to specify -L, those passes are gotten from tecsgen.rb") { |path|
         $library_path << path
       }
-      parser.on("-R", "--RAM-initializer",   "generate RAM initializer. INITIALIZE_TECS() must be called before running any TECS code."){
+      parser.on("-R", "--RAM-initializer", "generate RAM initializer. INITIALIZE_TECS() must be called before running any TECS code."){
         $ram_initializer = true
       }
       parser.on("-U", "--unoptimize", "unoptimize") {
@@ -388,30 +388,30 @@ class TECSGEN
         $cpp = arg
         $b_cpp_specified = true
       }
-      parser.on("-d", "--dryrun",      "dryrun"){
+      parser.on("-d", "--dryrun", "dryrun"){
         $dryrun = true
       }
       parser.on("-f", "--force-overwrite", "force overwrite all files") {
         $force_overwrite = true
       }
-      parser.on("-g", "--gen=dir",     "generate dir") { |dir|
+      parser.on("-g", "--gen=dir", "generate dir") { |dir|
         $gen = $gen_base = dir
       }
-      parser.on("-i", "--idx_is_id",   "set idx_is_id to all celltypes") {
+      parser.on("-i", "--idx_is_id", "set idx_is_id to all celltypes") {
         $idx_is_id = true
       }
       #  parser.on('-k', '--kcode=code',  'set kanji code: euc|sjis|none|utf8, none is default') { |code|
-      parser.on("-k", "--kcode=code",  "set kanji code: euc|sjis|none|utf8") { |code|
+      parser.on("-k", "--kcode=code", "set kanji code: euc|sjis|none|utf8") { |code|
         $kcode = code
       }
       #  old_mode は V1.0.C.22 で廃止
       #  parser.on('-o', '--old-mode',    'old mode' ){
       #    $old_mode = true
       #  }
-      parser.on("-r", "--ram",     "RAM only"){
+      parser.on("-r", "--ram", "RAM only"){
         $rom = false
       }
-      parser.on("-s", "--show-tree",   "show parsing tree"){
+      parser.on("-s", "--show-tree", "show parsing tree"){
         $show_tree = true
       }
       parser.on("-t", "--generator-debug", "generator debug"){
@@ -421,10 +421,10 @@ class TECSGEN
       parser.on("-u", "--unique-id", "assign unique id for each cell"){
         $unique_id = true
       }
-      parser.on("-v", "--verbose",     "verbose mode"){
+      parser.on("-v", "--verbose", "verbose mode"){
         $verbose = true
       }
-      parser.on("-y", "--yydebug",     "yydebug"){
+      parser.on("-y", "--yydebug", "yydebug"){
         $yydebug = true
       }
       parser.on("--no-banner", "not display banner") {
@@ -439,7 +439,7 @@ class TECSGEN
       parser.on("--generate-all-template", "generate all celltypes' templates") {
         $generate_all_template = true
       }
-      parser.on("--generate-no-template",  "generate no template") {
+      parser.on("--generate-no-template", "generate no template") {
         $generate_no_template = true
       }
       parser.on("--no-default-import-path", "no default import path"){

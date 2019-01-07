@@ -132,8 +132,8 @@ class NotifierPlugin < CelltypePlugin
         # 受け口関数名．siHandlerBodyを想定しているので，関数名はmainで固定である．
         @entry_fn_name = "#{@port.get_celltype.get_global_name}_#{@port.get_name}_main"
 
-        @props = []   # Array<EntryProperty>
-        @prop_map = {}  # Hash<EntryProperty, Integer>
+        @props = [] # Array<EntryProperty>
+        @prop_map = {} # Hash<EntryProperty, Integer>
       end
 
       # @return [String] グローバルに一意(なものとして扱えるよう)な識別子．
@@ -928,7 +928,7 @@ class NotifierPlugin < CelltypePlugin
     super
     @plugin_arg_check_proc_tab = NotifierPluginArgProc
     @plugin_arg_str = option
-    @plugin_arg_str = option.gsub(/\A"(.*)/, '\1')    # 前後の "" を取り除く
+    @plugin_arg_str = option.gsub(/\A"(.*)/, '\1') # 前後の "" を取り除く
     @plugin_arg_str.sub!(/(.*)"\z/, '\1')
     @factory = nil
     @output_file = nil
@@ -1070,7 +1070,7 @@ class NotifierPlugin < CelltypePlugin
           case match
           when ActivateTaskHandlerType,       WakeUpTaskHandlerType,
                SetVariableHandlerType,        SetVariableToErrorCodeHandlerType,
-                IncrementVariableHandlerType,  SignalSemaphoreHandlerType,
+                IncrementVariableHandlerType, SignalSemaphoreHandlerType,
                SetEventflagHandlerType,       SendToDataqueueHandlerType,
                SendErrorCodeToDataqueueHandlerType
             if option == "OutOfDomain"
@@ -1088,7 +1088,7 @@ class NotifierPlugin < CelltypePlugin
               cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 and $2 must be placed in same domain", cell.get_name, call_join.get_cell.get_name)
             end
             dbgPrint "#{self.class.name}: match pattern 2.\n"
-          when NullHandlerType.new  # エラー通知を指定していない
+          when NullHandlerType.new # エラー通知を指定していない
             dbgPrint "#{self.class.name}: match pattern 3.\n"
           end
         }
@@ -1097,11 +1097,11 @@ class NotifierPlugin < CelltypePlugin
         if option == "kernel"
           pre_text  = "KERNEL_DOMAIN{\n"
           post_text = "}\n"
-          indent    =  "\t"
+          indent    = "\t"
         elsif option != "OutOfDomain"
           pre_text  = "DOMAIN(#{domain_root.get_name.to_s}){\n"
           post_text = "}\n"
-          indent    =  "\t"
+          indent    = "\t"
         end
       else
         cdl_error("NTF9999: NotifierPlugin: unknown domain type $1", domain_root.get_domain_type.get_name)

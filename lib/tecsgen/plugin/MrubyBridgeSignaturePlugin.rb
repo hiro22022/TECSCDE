@@ -72,17 +72,17 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
   }
 
-  @@b_no_banner = false         #
-  @@b_gen_post_code_by_dependent = false  # true if gen_post_code is called by MrubyBridgeCellPlugin
+  @@b_no_banner = false #
+  @@b_gen_post_code_by_dependent = false # true if gen_post_code is called by MrubyBridgeCellPlugin
   @@celltypes = { }             # {celltype_name => [ BridgePlugin のインスタンスの配列 }
   @@init_celltypes = { }        # {celltype_name => [ BridgePlugin のインスタンスの配列 }
   @@struct_list = { }           # {struct_name=>StructType}
   @@ptr_list = { }              # {ptr_celltype_name=> @@TYPE_MAP の対応するもの}
   @@VM_list = { }               # VM_name => true
-  @@VM_celltypes = {  }             # VM_name => { @celltype_name => セルの配列 }
+  @@VM_celltypes = { } # VM_name => { @celltype_name => セルの配列 }
   @@VM_struct_list = { }           # {name=>StructType}
   @@VM_ptr_list = { }              # { VM_name => {name=> @@TYPE_MAP の対応するもの} }
-  @@TYPE_MAP = {           # type_str   class             GET_SET
+  @@TYPE_MAP = { # type_str   class             GET_SET
     :char_t            => [:char_t,    "Char",     :Char,  :INT   ],
     :uchar_t           => [:uchar_t,   "UChar",    :Char,  :INT   ],
     :schar_t           => [:schar_t,   "SChar",    :Char,  :INT   ],
@@ -98,7 +98,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     :uint64_t          => [:uint64_t,  "UInt64",   :Int,   :INT   ],
 
     :int               => [:int,       "Int",      :Int,  :INT   ],
-    :char              => [:char,      "Char",     :Char, :INT   ],    # char は char_t として扱う
+    :char              => [:char,      "Char",     :Char, :INT   ], # char は char_t として扱う
     :short             => [:short,     "Short",    :Int,  :INT   ],
     :long              => [:long,      "Long",     :Int,  :INT   ],
 
@@ -126,7 +126,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   # TECSGEN::Makefile.add_obj "$(MRUBY_MAIN_OBJ)"
   TECSGEN::Makefile.add_ldflag "-lmruby -L$(MRUBYPATH)/lib -lm"
   TECSGEN::Makefile.add_search_path "$(MRUBYPATH)/include"
-  TECSGEN::Makefile.add_var "MRUBYPATH",      "..",  "CHANGE this to suitable path"
+  TECSGEN::Makefile.add_var "MRUBYPATH", "..", "CHANGE this to suitable path"
   # TECSGEN::Makefile.add_var "MRUBY_MAIN_OBJ", "$(_TECS_OBJ_DIR)tecs_mruby.o", "CHANGE this if your have your main"
 
   #=== プラグインインスタンスの初期化
@@ -146,7 +146,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     @struct_list = { }
     @ptr_list = { }
     @auto_exclude_list = {}
-    @b_auto_exclude = true     # auto_exclude = true by default
+    @b_auto_exclude = true # auto_exclude = true by default
 
     @plugin_arg_check_proc_tab = MrubyBridgePluginArgProc
     parse_plugin_arg
@@ -163,7 +163,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     end
 
     if signature.get_function_head_array == nil
-      return   # 以前に文法エラー発生
+      return # 以前に文法エラー発生
     end
 
     signature.get_function_head_array.each{ |func_head|
@@ -241,7 +241,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
                       param_decl.get_name, param_decl.get_direction.to_s.downcase, fh.get_name)
             @auto_exclude_list[fh.get_name] = fh
           else
-            cdl_error("MRB1003 $1: $2 parameter cannot be used in mruby Bridge",  param_decl.get_name, param_decl.get_direction.to_s.downcase)
+            cdl_error("MRB1003 $1: $2 parameter cannot be used in mruby Bridge", param_decl.get_name, param_decl.get_direction.to_s.downcase)
           end
         end
         type = param_decl.get_type
@@ -251,7 +251,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
         b_ng = false
         case type_org
         when IntType
-          case  type_org.get_bit_size
+          case type_org.get_bit_size
           when 8, 16, 32, 64
           when -1, -2, -3, -4, -11
           else
@@ -301,7 +301,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
           end
         when StructType
           check_struct_member type_org, fh
-        else  # ArrayType, FuncType, EnumType, VoidType
+        else # ArrayType, FuncType, EnumType, VoidType
           b_ng = true
         end
         if b_ng
@@ -326,7 +326,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       if @b_auto_exclude
         cdl_info("MRI9999 tagless-struct cannot be handled, $1 automatcally excluded", fh.get_name)
         @auto_exclude_list[fh.get_name] = fh
-        return  # 登録しないように打ち切る
+        return # 登録しないように打ち切る
       else
         cdl_error("MRB10007 tagless-struct cannot be handled")
       end
@@ -340,7 +340,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
           cdl_info("MRI9999 $1: type $2 not allowed for struct member, $3 automatcally excluded",
                     d.get_name, d.get_type.get_type_str + d.get_type.get_type_str_post, fh.get_name)
           @auto_exclude_list[fh.get_name] = fh
-          return  # 登録しないように打ち切る
+          return # 登録しないように打ち切る
         else
           cdl_error("MRB1006 $1: type $2 not allowed for struct member", d.get_name, d.get_type.get_type_str + d.get_type.get_type_str_post)
         end
@@ -715,7 +715,7 @@ EOT
   def gen_ep_func_body_struct(file, b_singleton, ct_name, global_ct_name, sig_name, ep_name, func_name, func_global_name, func_type, params)
     tag = ct_name
     structType = @@struct_list[tag]
-    file.print  <<EOT
+    file.print <<EOT
 	struct RClass *a;                                /* MBP720 */
 
 	a = mrb_define_class_under(mrb, TECS, "Struct#{tag}", mrb->object_class);
@@ -1218,7 +1218,7 @@ EOT
 =end
     if(param.get_size)
       sz_str = param.get_size.to_s
-    elsif param.get_string      # mikan とりあえず size_is と string の同時指定 (二重ポインタ) はなし
+    elsif param.get_string # mikan とりあえず size_is と string の同時指定 (二重ポインタ) はなし
       sz_str = param.get_string.to_s
     else
       sz_str = "1"
@@ -1298,7 +1298,7 @@ EOT
     if rhs == "false"
       @b_auto_exclude = false
     elsif rhs == "true"
-      @b_auto_exclude = true     # auto_exclude = true by default
+      @b_auto_exclude = true # auto_exclude = true by default
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")
     end

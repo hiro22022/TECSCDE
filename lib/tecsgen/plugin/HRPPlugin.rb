@@ -54,7 +54,7 @@ class HRPPlugin < DomainPlugin
       @option = option
     else
       cdl_error("HRPPlugin: '$1' is unacceptable domain kind, specify 'kernel' or 'user'", option)
-      @option = "kernel"   # とりあえず kernel を設定しておく
+      @option = "kernel" # とりあえず kernel を設定しておく
     end
   end
 
@@ -87,7 +87,7 @@ class HRPPlugin < DomainPlugin
     if HRPKernelObjectManager.include_celltype?(join.
                                                  get_cell.
                                                  get_real_celltype(join.get_rhs_port1).
-                                                 get_global_name)                # oyama: get_name => get_global_name
+                                                 get_global_name) # oyama: get_name => get_global_name
         # 結合先がカーネルオブジェクトセル
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
         # 何もしないthrough
@@ -144,7 +144,7 @@ class HRPPlugin < DomainPlugin
   # ATT_MODを生成済みかどうか                   # 2017.8.27
   @@generate_memory_module = false
 
-  @@include_extsvc_fncd = false  # 17.07.26 暫定
+  @@include_extsvc_fncd = false # 17.07.26 暫定
   #
   #  ATT_MODの生成
   #  gen_factory実行時には，すべてのセルタイププラグインを生成済みのはずなので，
@@ -156,7 +156,7 @@ class HRPPlugin < DomainPlugin
     if @@include_extsvc_fncd == false
       file = AppFile.open("#{$gen}/tecsgen.cfg")
       file.print "/* HRPPlugin 001 */\n"
-      file.print "#include \"extsvc_fncode.h\"\n"   ## 2017.7.26
+      file.print "#include \"extsvc_fncode.h\"\n" ## 2017.7.26
       file.close
       @@include_extsvc_fncd = true
     end
@@ -273,11 +273,11 @@ class HRPPlugin < DomainPlugin
   end
 
   #----- Inter Domain Join Set -----#
-  @@inter_domain_join_set = {}      # {entry_cell =>{domain_root=>count} }  Hash of inter domain join
+  @@inter_domain_join_set = {} # {entry_cell =>{domain_root=>count} }  Hash of inter domain join
   def self.add_inter_domain_join_set(join)
     rhs_cell = join.get_cell
     dbgPrint "--------- add_inter_domain:#{join.get_owner.get_namespace_path} => #{join.get_cell.get_namespace_path}-----\n"
-    domain_root = join.get_owner.get_region.get_domain_root   # lhs cell's domain root
+    domain_root = join.get_owner.get_region.get_domain_root # lhs cell's domain root
     if @@inter_domain_join_set[rhs_cell] == nil
       @@inter_domain_join_set[rhs_cell] = []
     end
@@ -313,7 +313,7 @@ class HRPPlugin < DomainPlugin
     acv = ""
     cell_domain_root = cell.get_region.get_domain_root
     if cell_domain_root.get_domain_type.get_kind != :OutOfDomain
-      domain_roots << cell.get_region.get_domain_root  # 結合先のドメインも含める
+      domain_roots << cell.get_region.get_domain_root # 結合先のドメインも含める
     end
     domain_roots.each{ |dr|
       case dr.get_domain_type.get_kind

@@ -186,7 +186,7 @@ class PointerVal < BaseVal
   end
 
   def cast(type)
-    t = type.get_original_type   # typedef の元を得る
+    t = type.get_original_type # typedef の元を得る
     if t.kind_of? IntType
       val = t.check_and_clip(@int_val, :IntType)
       return IntegerVal.new(val)
@@ -384,7 +384,7 @@ class IntegerVal < BaseVal
   end
 
   def cast(type)
-    t = type.get_original_type   # typedef の元を得る
+    t = type.get_original_type # typedef の元を得る
     if t.kind_of? IntType
       val = t.check_and_clip(@val, :IntType)
       return IntegerVal.new(val)
@@ -468,7 +468,7 @@ class BoolVal < BaseVal
   end
 
   def cast(type)
-    t = type.get_original_type   # typedef の元を得る
+    t = type.get_original_type # typedef の元を得る
     if @val
       val = 1
     else
@@ -582,7 +582,7 @@ class FloatVal < BaseVal
   end
 
   def cast(type)
-    t = type.get_original_type   # typedef の元を得る
+    t = type.get_original_type # typedef の元を得る
     if t.kind_of? IntType
       val = t.check_and_clip(@val, :FloatType)
       return IntegerVal.new(val)
@@ -621,14 +621,14 @@ class StringVal < BaseVal
   def initialize(str, spec = :NORMAL)
     super()
     @str = str
-    @specifier = spec   # mikan L"str" wide 文字列未対応
+    @specifier = spec # mikan L"str" wide 文字列未対応
   end
 
   #===
   #
   # string の cast はできない mikan ポインタ型への cast はできるべき
   def cast(type)
-    t = type.get_original_type   # typedef の元を得る
+    t = type.get_original_type # typedef の元を得る
     if t.kind_of? IntType
       cdl_error("V1022 string cannot cast to integer")
     elsif t.kind_of? FloatType
@@ -645,6 +645,6 @@ class StringVal < BaseVal
   end
 
   def val
-    @str.to_s   # Token で扱われていた名残 (val を取り出す)
+    @str.to_s # Token で扱われていた名残 (val を取り出す)
   end
 end

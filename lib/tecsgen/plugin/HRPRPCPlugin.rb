@@ -49,7 +49,7 @@ class HRPRPCPlugin < ThroughPlugin
   include GenParamCopy
 
   # RPCPlugin 専用のオプション
-  HRPRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
+  HRPRPCPluginArgProc = RPCPluginArgProc.dup # 複製を作って元を変更しないようにする
   HRPRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj, rhs| obj.set_noClientSemaphore rhs }
   HRPRPCPluginArgProc["semaphoreCelltype"] = Proc.new { |obj, rhs| obj.set_semaphoreCelltype rhs }
   @@isFirstInstance = true
@@ -258,9 +258,9 @@ EOT
         end
 
         file.print delim
-        delim = ",\n"        # 最終行には出さない
+        delim = ",\n" # 最終行には出さない
 
-        if subsc        # 配列添数
+        if subsc # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
@@ -268,7 +268,7 @@ EOT
 
         eport = "eThroughEntry" # RPCの受け口名に変更
         file.print nest_str
-        file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
+        file.print "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
       end
 
       file.puts ")]"

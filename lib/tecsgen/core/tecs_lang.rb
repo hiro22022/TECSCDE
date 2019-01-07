@@ -265,7 +265,7 @@ class TECS_LANG
   # $CHARSET_CONSOLE  コンソール文字コード
 
   # デフォルトの設定（正規化済みのこと）
-  $LANG_FILE_DEFAULT  = :en_US
+  $LANG_FILE_DEFAULT = :en_US
   $CHARSET_FILE_DEFAULT = nil
   $LANG_CONSOLE_DEFAULT = :en_US
   $CHARSET_CONSOLE_DEFAULT = nil

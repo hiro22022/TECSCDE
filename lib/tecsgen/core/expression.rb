@@ -97,7 +97,7 @@ class Expression < Node
     elsif val.kind_of? BoolVal
       return val.to_i
     elsif val.kind_of? PointerVal
-      return val.to_i           # mikan エラー V1008 が発生してしまう
+      return val.to_i # mikan エラー V1008 が発生してしまう
       # elsif val.kind_of? EnumVal then
       # enum mikan
     else
@@ -118,7 +118,7 @@ class Expression < Node
   # eval_const で値が得られない場合、型を導出可能であれば型を得る
   # param を含んだ式は定数値を求められないが、型を得ることはできる
   # 未定義変数を含んだ型は、得ることができない (ダミー型定義が返る)
-  def get_type(namedList)        # 名前空間の NamedList を指定
+  def get_type(namedList) # 名前空間の NamedList を指定
     elements_get_type(@elements, namedList)
   end
 
@@ -143,7 +143,7 @@ class Expression < Node
   # name_list:: attribute (Celltype::@attribute_list), struct の @member_list を仮定している
   def elements_to_s(elements, name_list = nil, pre = nil, post = nil)
     if elements.instance_of? Token
-      return elements.to_s    # OP_DOT, OP_REF の右辺
+      return elements.to_s # OP_DOT, OP_REF の右辺
     end
 
     case elements[0]
@@ -157,7 +157,7 @@ class Expression < Node
         return nsp.get_path_str
       end
     when :INTEGER_CONSTANT, :FLOATING_CONSTANT, :OCTAL_CONSTANT, :HEX_CONSTANT, :CHARACTER_LITERAL, :STRING_LITERAL_LIST, :BOOL_CONSTANT
-      return  elements[1].to_s
+      return elements[1].to_s
     when :PARENTHESES
       return "(#{elements_to_s(elements[1], name_list, pre, post)})"
     when :OP_SUBSC
@@ -239,7 +239,7 @@ class Expression < Node
   def elements_rpn(elements, name_list = nil, name_list2 = nil)
     if elements.instance_of? Token
       print "rpn: #{elements.to_s}\n"
-      return elements.to_s    # OP_DOT, OP_REF の右辺
+      return elements.to_s # OP_DOT, OP_REF の右辺
     end
 
     case elements[0]
@@ -345,7 +345,7 @@ class Expression < Node
   #
   # RETURN: 評価した定数、評価できなかった場合は nil を返す
 
-  MAX_NEST_LEVEL = 64    # 簡易のループ検出（参照のネストを 64 まで許可する）
+  MAX_NEST_LEVEL = 64 # 簡易のループ検出（参照のネストを 64 まで許可する）
   def elements_eval_const(elements, name_list, name_list2 = nil, nest = nil)
     case elements[0]
     when :IDENTIFIER
@@ -423,7 +423,7 @@ class Expression < Node
       if(elements[1].instance_of?(TrueClass))
         return BoolVal.new(true)
       elsif(elements[1].instance_of?(FalseClass))
-        return  BoolVal.new(false)
+        return BoolVal.new(false)
       else
         throw("BOOL constant error")
       end
@@ -474,7 +474,7 @@ class Expression < Node
       raise Error
 
     when :STRING_LITERAL_LIST
-      return  StringVal.new(elements[1])
+      return StringVal.new(elements[1])
     when :PARENTHESES
       return elements_eval_const(elements[1], name_list, name_list2, nest);
     when :OP_SUBSC
@@ -694,7 +694,7 @@ class Expression < Node
       end
       unless paramdecl
         cdl_error("E1012 $1: not found in parameter list", nsp.get_path_str)
-        return IntType.new(32)        # dummy result
+        return IntType.new(32) # dummy result
       end
       return paramdecl.get_type
 # mikan get_type
@@ -715,7 +715,7 @@ class Expression < Node
       type = elements_get_type(elements[1], namedList)
       unless type.kind_of?(PtrType)
         cdl_error("E1013 \'*\': operand is not pointer value")
-        return IntType.new(8)    # IntType を返しておく
+        return IntType.new(8) # IntType を返しておく
       end
       return type.get_referto
 
@@ -758,7 +758,7 @@ class Expression < Node
         paramdecl = nil
       end
 
-      return unless paramdecl      # if nil already error in element_get_type
+      return unless paramdecl # if nil already error in element_get_type
 
       direct = paramdecl.get_direction
       judge = false
@@ -778,7 +778,7 @@ class Expression < Node
         when :IN, :SEND
           judge = true if (direct == :IN || direct == :INOUT)
           req_direct = "in or inout"
-        when :OUT, :RECEIVE     # mikan out で count_is のみ指定されている場合 in でなくてはならない
+        when :OUT, :RECEIVE # mikan out で count_is のみ指定されている場合 in でなくてはならない
           judge = true if (direct == :OUT || direct == :INOUT)
           req_direct = "out or inout"
         when :INOUT
@@ -822,7 +822,7 @@ class Expression < Node
     ele = @elements
     case alloc_type
     when :NORMAL_ALLOC
-      if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER   # 1
+      if ele[0] != :OP_DOT || ele[1][0] != :IDENTIFIER # 1
         cdl_error("E1017 $1: rhs not \'Cell.ePort\' form", ele[0].to_s)
         return nil
       end
@@ -832,7 +832,7 @@ class Expression < Node
     when :INTERNAL_ALLOC
       if(ele[0] == :IDENTIFIER)
         if ele[1].is_name_only?
-          return [ ele[1].get_path[0] ]  # mikan a::b
+          return [ ele[1].get_path[0] ] # mikan a::b
         else
           cdl_error("E1018 $1: namespace cannot be specified", ele[1].to_s)
         end
@@ -842,13 +842,13 @@ class Expression < Node
     when :RELAY_ALLOC
       if(ele[0] != :OP_DOT ||
           ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || !ele[1][1][1].is_name_only? ||
-          !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token))   # 1
-        cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s)   # S1086
+          !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token)) # 1
+        cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s) # S1086
       end
       func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
       return [ cp_name, func_name, param_name ]
     end
-    return  nil
+    return nil
   end
 
   # Expression#Expression のクローンを作成する
@@ -885,20 +885,20 @@ class Expression < Node
   def analyze_cell_join_expression
     # 右辺の Expression の要素を取り出す
     elements = @elements
-    if elements[0] == :OP_SUBSC  # 右辺：受け口配列？
+    if elements[0] == :OP_SUBSC # 右辺：受け口配列？
       # elements = [ :OP_SUBSC, [ :OP_DOT, [ :IDENTIFIER, token ], token ], expression ]
-      subscript = elements[2].eval_const(nil)  # 受け口配列の添数
-      elements  = elements[1]          # mikan 配列だった場合
+      subscript = elements[2].eval_const(nil) # 受け口配列の添数
+      elements  = elements[1] # mikan 配列だった場合
     else
       subscript = nil
     end
 
     # elements = [ :OP_DOT, [ :IDENTIFIER, token ], token ]
-    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER   # 1
+    if elements[0] != :OP_DOT || elements[1][0] != :IDENTIFIER # 1
       return nil
     end
 
-    nsp = elements[1][1]         # NamespacePath
+    nsp = elements[1][1] # NamespacePath
     port_name = elements[2].val
 
     return [ nsp, subscript, port_name]
@@ -967,7 +967,7 @@ class Expression < Node
     return true
   end
 
-  private :elements_to_s, :elements_eval_const,  :elements_get_type
+  private :elements_to_s, :elements_eval_const, :elements_get_type
 end
 
 

@@ -52,7 +52,7 @@ class HRP2Plugin < DomainPlugin
       @option = option
     else
       cdl_error("HRPPlugin: '$1' is unacceptable domain kind, specify 'trusted' or 'nontrusted'", option)
-      @option = "trusted"   # とりあえず trusted を設定しておく
+      @option = "trusted" # とりあえず trusted を設定しておく
     end
   end
 

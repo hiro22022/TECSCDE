@@ -48,7 +48,7 @@ class Plugin < Node
   def initialize
     super
     @b_silent = false
-    @locale = nil       # set_locale が呼び出されるまで nil となる
+    @locale = nil # set_locale が呼び出されるまで nil となる
     @error_backlog = []
   end
 
@@ -178,10 +178,10 @@ class Plugin < Node
       arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')
 
       # 右辺文字列
-      if arg =~ /\A\\"(.*?)\\"\s*,/      # \"  \" で囲まれている場合
+      if arg =~ /\A\\"(.*?)\\"\s*,/ # \"  \" で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A%(.*?)%\s*,/      # %   % で囲まれている場合
+      elsif arg =~ /\A%(.*?)%\s*,/ # %   % で囲まれている場合
         rhs = $1
         remain = $'
       elsif arg =~ /\A!(.*?)!\s*,/    # $   $ で囲まれている場合
@@ -190,14 +190,14 @@ class Plugin < Node
       elsif arg =~ /\A'(.*?)'\s*,/    # $   $ で囲まれている場合
         rhs = $1
         remain = $'
-      elsif  arg =~ /\A\\"(.*?)\\"\s*,/  # || にも [,$] にもできなかった
+      elsif arg =~ /\A\\"(.*?)\\"\s*,/ # || にも [,$] にもできなかった
         rhs = $1
         remain = $'
       # elsif arg =~ /\A(.*?)\s*$/ then
-      elsif arg =~ /\A\\"(.*?)\\"\s*\z/      # \"  \" で囲まれている場合
+      elsif arg =~ /\A\\"(.*?)\\"\s*\z/ # \"  \" で囲まれている場合
         rhs = $1
         remain = $'
-      elsif arg =~ /\A%(.*?)%\s*\z/      # %   % で囲まれている場合
+      elsif arg =~ /\A%(.*?)%\s*\z/ # %   % で囲まれている場合
         rhs = $1
         remain = $'
       elsif arg =~ /\A!(.*?)!\s*\z/    # $   $ で囲まれている場合
@@ -206,7 +206,7 @@ class Plugin < Node
       elsif arg =~ /\A'(.*?)'\s*\z/    # $   $ で囲まれている場合
         rhs = $1
         remain = $'
-      elsif  arg =~ /\A\\"(.*?)\\"\s*\z/  # || にも [,$] にもできなかった
+      elsif arg =~ /\A\\"(.*?)\\"\s*\z/ # || にも [,$] にもできなかった
         rhs = $1
         remain = $'
       elsif arg =~ /\A(.*?),/
@@ -227,11 +227,11 @@ class Plugin < Node
         rhs = " "
       end
 
-      arg = remain         # arg の残りの部分
-      arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1')      # 前の空白読み飛ばす
+      arg = remain # arg の残りの部分
+      arg.sub!(/\A\s*(?:\\\n)*\s*(.*)/, '\1') # 前の空白読み飛ばす
 
       # \ を外す
-      rhs = rhs.gsub(/\\(.)/, "\\1")   # ここで $' が変わることに注意！
+      rhs = rhs.gsub(/\\(.)/, "\\1") # ここで $' が変わることに注意！
       # print "parse_plugin_arg:  #{ident} #{rhs}\n"
       @plugin_arg_list[ident] = rhs
 

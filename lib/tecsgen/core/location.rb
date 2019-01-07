@@ -64,7 +64,7 @@ class TECSGEN
 
 #==  Cell_location
   # tecscde の位置情報
-  class  Cell_location
+  class Cell_location
     #=== Join_location#initialize
     # cell_nspath::NamespacePath
     # x,y,w,h::Expression
@@ -89,7 +89,7 @@ class TECSGEN
 
   #==  Join_location
   # tecscde の位置情報
-  class  Join_location
+  class Join_location
     @@join_location_list = []
 
     #=== Join_location#initialize

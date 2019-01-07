@@ -135,7 +135,7 @@ EOT
 
     if @b_generate != false
       nest = @region.gen_region_str_pre file
-      indent_str =  "  " * nest
+      indent_str = "  " * nest
       if @next_cell_port_subscript
         subscript = "[" + @next_cell_port_subscript.to_s + "]"
       else
@@ -239,7 +239,7 @@ EOT
         case dir
         when :OUT, :INOUT
           print_param(param.get_name, param.get_type, file, nest, dir, param.get_type.get_type_str, nil, nil)
-        when  :RECEIVE
+        when :RECEIVE
           outer = "*"
           outer2 = nil
           print_param(param.get_name, param.get_type.get_referto, file, nest, dir,

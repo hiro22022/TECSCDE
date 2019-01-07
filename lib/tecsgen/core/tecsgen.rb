@@ -38,7 +38,7 @@
 
 
 class TECSGEN
-  @@b_post_coded = false     # ポストコード生成開始後 true
+  @@b_post_coded = false # ポストコード生成開始後 true
 
   #=== import パス (-I) を末尾に追加
   # 既に登録済みであれば、追加しない
@@ -193,23 +193,23 @@ class TECSGEN
       return @@var_comments[var]
     end
 
-    def self.get_ldflags  # String を返す
+    def self.get_ldflags # String を返す
       return @@ldflags
     end
 
-    def self.get_search_path  # Array を返す
+    def self.get_search_path # Array を返す
       return @@search_path.uniq
     end
 
-    def self.get_pre_tecsgen_target  # Array を返す
+    def self.get_pre_tecsgen_target # Array を返す
       return @@pre_tecsgen_target.uniq
     end
 
-    def self.get_post_tecsgen_target  # Array を返す
+    def self.get_post_tecsgen_target # Array を返す
       return @@post_tecsgen_target.uniq
     end
 
-    def self.get_lines  # 付加する行を得る
+    def self.get_lines # 付加する行を得る
       return @@lines.uniq
     end
 
@@ -272,7 +272,7 @@ class TECSGEN
     # through プラグインで生成されたセルにも require も生成できる (set_definition_join の後ろで実施)
 
     ####  post コードの生成と構文解析 ####
-    @@b_post_coded = true     # ポストコード生成開始後 true
+    @@b_post_coded = true # ポストコード生成開始後 true
     # 引数がなければ、プラグインのポストコードを出力しない
     if ARGV.length > 0
       dbgPrint("## Generating Post Code\n")
@@ -311,7 +311,7 @@ class TECSGEN
     @root_namespace.set_max_entry_port_inner_cell
 
     dbgPrint("## Set require join\n")
-    @root_namespace.set_require_join   # mikan post の前にも
+    @root_namespace.set_require_join # mikan post の前にも
     # ポストコードで生成されたセルの require のjoin を生成
     # mikan require で through が適用されて、ポストコードが必要となっても出力されない
   end # semantics_analisys_1
@@ -335,7 +335,7 @@ class TECSGEN
 
     dbgPrint("## Checking referenced but undefined cell\n")
     @root_namespace.check_ref_but_undef
-  end  #  semantics_analisys_2
+  end #  semantics_analisys_2
 
   def optimize_and_generate
     #### Region link root ごとにオプティマイズおよび生成 ####
@@ -391,12 +391,12 @@ class TECSGEN
       end
 
       dbgPrint("## Unset optimize variables\n")
-      @root_namespace.reset_optimize   # 最適化をリセットする
+      @root_namespace.reset_optimize # 最適化をリセットする
 
       if Generator.get_n_error == 0
         # エラーが発生していたら、設定しない
         dbgPrint("## Set cell id\n")
-        @root_namespace.set_cell_id_and_domain      # セルの ID とドメイン情報を設定（linkunit 毎に0からつける）
+        @root_namespace.set_cell_id_and_domain # セルの ID とドメイン情報を設定（linkunit 毎に0からつける）
 
         # エラーが発生していたら、最適化は実施しない
         if !$unopt

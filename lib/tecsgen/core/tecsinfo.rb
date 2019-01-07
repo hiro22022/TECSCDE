@@ -130,7 +130,7 @@ EOT
       end
     }
     @namespace_list.each { |ns|
-      if ns.instance_of? Namespace   # region を含めない
+      if ns.instance_of? Namespace # region を含めない
         ns.print_info_ns f, indent
       end
     }
@@ -540,14 +540,14 @@ EOT
         array_size = "0"
       end
 
-      f.printf "#define %-50s (#{array_size})\n",               "#{@global_name}_#{port.get_name}__array_size"
+      f.printf "#define %-50s (#{array_size})\n", "#{@global_name}_#{port.get_name}__array_size"
     }
   end
 end
 
 class Port
   def print_info(f, ct_global, indent)
-    return if @signature == nil     # signature not found error in cdl
+    return if @signature == nil # signature not found error in cdl
     if @port_type == :ENTRY
       f.print <<EOT
 #{indent}cell nTECSInfo::tEntryInfo #{ct_global}_#{@name}EntryInfo{
@@ -798,10 +798,10 @@ class Type
   end
 
   def print_info_post(f, indent)
-    if self.class.superclass == Type     # 親クラスが Type の場合 types.rb のクラス
+    if self.class.superclass == Type # 親クラスが Type の場合 types.rb のクラス
       type_name = self.class.name
     else
-      type_name = self.class.superclass.name  # ctypes.rb のクラス (親クラスが types.rb のクラス)
+      type_name = self.class.superclass.name # ctypes.rb のクラス (親クラスが types.rb のクラス)
     end
     # p "type: #{type_name}, #{self.class.name}"
 

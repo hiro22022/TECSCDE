@@ -45,8 +45,8 @@ class MrubyBridgeCellPlugin < CellPlugin
       "exclude_port_func" => Proc.new { |obj, rhs| obj.set_exclude_port_func rhs },
       "auto_exclude" => Proc.new { |obj, rhs| obj.set_auto_exclude rhs },
   }
-  @@b_gen_post_code_by_dependent = false  # true if gen_post_code is called by MrubyBridgeCelltypePlugin
-  @@cell_list = {}      # gen_cdl_file'ed list to avoid duplicate generation
+  @@b_gen_post_code_by_dependent = false # true if gen_post_code is called by MrubyBridgeCelltypePlugin
+  @@cell_list = {} # gen_cdl_file'ed list to avoid duplicate generation
   @@signature_list = {}
 
   require_tecsgen_lib("MrubyBridgeSignaturePlugin.rb")
@@ -68,7 +68,7 @@ class MrubyBridgeCellPlugin < CellPlugin
     @b_ignoreUnsigned = false
     @exclude_port = []
     @exclude_port_func = {}
-    @b_auto_exclude = true     # auto_exclude = true by default
+    @b_auto_exclude = true # auto_exclude = true by default
     MrubyBridgeSignaturePlugin.set_gen_post_code_by_dependent
 
     @plugin_arg_str = CDLString.remove_dquote option
@@ -207,7 +207,7 @@ EOT
   def set_exclude_port(rhs)
     ports = rhs.split ","
     ct = @cell.get_celltype
-    return if ct == nil    # error case
+    return if ct == nil # error case
     ports.each{ |rhs_port|
       obj = ct.find(rhs_port.to_sym)
       if((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
@@ -223,7 +223,7 @@ EOT
   def set_exclude_port_func(rhs)
     port_funcs = rhs.split ","
     ct = @cell.get_celltype
-    return if ct == nil    # error case
+    return if ct == nil # error case
     port_funcs.each{ |rhs_port_func|
       port_func = rhs_port_func.split "."
       if port_func.length != 2
@@ -234,7 +234,7 @@ EOT
         cdl_error("MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port, ct.get_name)
       else
         signature = obj.get_signature
-        next if signature == nil     # error case
+        next if signature == nil # error case
         if signature.get_function_head port_func[1].to_sym
           # print "MRBBridgeCellPlugin: #{port_func[0]}.#{port_func[1]} exclude\n"
           if @exclude_port_func[port_func[0]]
@@ -256,7 +256,7 @@ EOT
     if rhs == "false"
       @b_auto_exclude = false
     elsif rhs == "true"
-      @b_auto_exclude = true     # auto_exclude = true by default
+      @b_auto_exclude = true # auto_exclude = true by default
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")
     end

@@ -5,6 +5,8 @@ AllCops:
     - "vendor/**/*"
     - "lib/**/*.tab.rb"
 
+Layout/ExtraSpacing:
+  AllowForAlignment: true
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: space
   SpaceBeforeBlockParameters: false

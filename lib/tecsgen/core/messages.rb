@@ -57,7 +57,7 @@ class TECSMsg
  # S0001 の部分が使用される
  # Generator.error2 から呼び出される
   def self.get_error_message(body)
-    body =~ /^[A-Z0-9]+/    # エラー番号を取り出す
+    body =~ /^[A-Z0-9]+/ # エラー番号を取り出す
     num = $&
     if num
       msg = @@error_message[num.to_sym]
@@ -75,7 +75,7 @@ class TECSMsg
  #=== TECSMsg#ローカライズされたウォーニングメッセージを得る
  # Generator.warning2 から呼び出される
   def self.get_warning_message(body)
-    body =~ /^[A-Z0-9]+/    # ウォーニング番号を取り出す
+    body =~ /^[A-Z0-9]+/ # ウォーニング番号を取り出す
     num = $&
     msg = @@warning_message[num.to_sym]
     if msg == nil
@@ -89,7 +89,7 @@ class TECSMsg
  #=== TECSMsg#ローカライズされた情報メッセージを得る
  # Generator.info2 から呼び出される
   def self.get_info_message(body)
-    body =~ /^[A-Z0-9]+/    # 情報番号を取り出す
+    body =~ /^[A-Z0-9]+/ # 情報番号を取り出す
     num = $&
     msg = @@info_message[num.to_sym]
     if msg == nil

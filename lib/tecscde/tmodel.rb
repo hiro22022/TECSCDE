@@ -414,7 +414,7 @@ module TECSCDE
     #=== TECSModel.is_opposite?
     # this function can be applicable only when edge_side1, edge_side2 are parallel
     def self.is_opposite?(edge_side1, edge_side2)
-      (((edge_side1 ^ edge_side2) & 0b01) !=  0) ? true : false
+      (((edge_side1 ^ edge_side2) & 0b01) != 0) ? true : false
     end
 
     #=== TECSModel.round_length_val
@@ -472,7 +472,7 @@ module TECSCDE
 
     #=== TECSModel#get_region_by_location
     def get_region_by_location(x, y)
-      @root_region   # mikan
+      @root_region # mikan
     end
 
     #=== TECSModel#create_root_region
@@ -863,7 +863,7 @@ module TECSCDE
           if port.get_edge_side == edge_side
             dist = port.get_offset - offs
             if dist > 0
-              port.move(move_offs, move_offs)    # move same value for x, y (only x or y applied in the method)
+              port.move(move_offs, move_offs) # move same value for x, y (only x or y applied in the method)
             end
           end
         }
@@ -1116,13 +1116,13 @@ module TECSCDE
             else
               port = @ports[subscript]
               # p "new_join: 2 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
-              if self.instance_of? TmCPortArray   # CPort cannot have multiple join
+              if self.instance_of? TmCPortArray # CPort cannot have multiple join
                 if port.get_join
                   TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: duplicate join")
                   return nil
                 end
               end
-              return  port
+              return port
             end
           else # no index
             found = false
@@ -1254,7 +1254,7 @@ EOT
           end
           new_port = new_port(subsc + 1)
           new_port.set_position(port.get_edge_side, port.get_offset + DIST_PORT)
-          @ports[subsc + 1] =  new_port
+          @ports[subsc + 1] = new_port
 
           p "insert ####"
         }
@@ -1558,7 +1558,7 @@ EOT
       end
     end # class TmPort
 
-    class TmCPort < TmPort      # mikan cp array
+    class TmCPort < TmPort # mikan cp array
       # @join::TmJoin
 
       def initialize(owner, port_def, subscript = nil)
@@ -1569,7 +1569,7 @@ EOT
         @subscript = subscript
         # p "subscript=#{subscript}"
 
-        @name = "cCport"  # temporal
+        @name = "cCport" # temporal
         @edge_side, @offs = get_cell.get_new_cport_position port_def
         modified {
         }
@@ -1631,7 +1631,7 @@ EOT
       end
     end # class TmCPort
 
-    class TmEPort < TmPort   # mikan ep array
+    class TmEPort < TmPort # mikan ep array
       # @joins::[TmJoin]
 
       def initialize(owner, port_def, subscript = nil)
@@ -1675,7 +1675,7 @@ EOT
       def delete
         modified {
 
-          joins = @joins.dup  # in join.edelete delete_join is called and change @joins
+          joins = @joins.dup # in join.edelete delete_join is called and change @joins
           joins.each{ |join|
             join.delete
           }
@@ -1901,13 +1901,13 @@ EOT
       # RETURN:: true if x is between a & b
       def is_between?(x, a, b)
         if a >= b
-          if  b <= x && x <= a
+          if b <= x && x <= a
             true
           else
             false
           end
         else
-          if  a <= x && x <= b
+          if a <= x && x <= b
             true
           else
             false
@@ -1999,7 +1999,7 @@ EOT
 
           if bars.length >= 1 && bars[bars.length - 1] == self
             @owner.get_eport.move(x_inc, y_inc)
-            return   # last bar
+            return # last bar
           end
 
           bars.each{ |bar|
@@ -2009,7 +2009,7 @@ EOT
             bar_prev = bar
           }
 
-          if bar_prev  # prev_bar is nil if self is 1st bar
+          if bar_prev # prev_bar is nil if self is 1st bar
             # p "bar_prev exist"
             if bar_prev.instance_of? HBar
               xm = bar_prev.get_position + x_inc

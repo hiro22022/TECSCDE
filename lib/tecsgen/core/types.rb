@@ -248,7 +248,7 @@ class DefinedType < Type
     @type_name = type_name
 
     # mikan type_name が path になっていないため暫定
-    @typedef = Namespace.find([ type_name ])  # 1
+    @typedef = Namespace.find([ type_name ]) # 1
 
 #    if @type.class != Typedef then
 #      raise NotTypedef
@@ -304,8 +304,8 @@ class DefinedType < Type
     return @type.get_original_type
   end
 
-  def check  # 意味的誤りがあれば、文字列を返す
-    nil    # typedef の段階で意味チェックされている
+  def check # 意味的誤りがあれば、文字列を返す
+    nil # typedef の段階で意味チェックされている
   end
 
   def check_init(locale, ident, initializer, kind, attribute = nil)
@@ -418,18 +418,18 @@ class IntType < Type
     end
   end
 
-  def check  # 意味的誤りがあれば、文字列を返す
+  def check # 意味的誤りがあれば、文字列を返す
     nil
   end
 
   def check_init(locale, ident, initializer, kind, attribute = nil)
-    val = initializer  # C_EXP, Array
+    val = initializer # C_EXP, Array
     if val.instance_of?(Expression)
       val = val.eval_const2(nil, attribute)
       # 評価の結果 C_EXP や Array となる可能性がある
     end
 
-    if val.instance_of? Token    # StringVal 導入により、もはや Token は来ないはず
+    if val.instance_of? Token # StringVal 導入により、もはや Token は来ないはず
       # val が Token の場合 == の右辺が String だとエラーを起こす (#198)
       cdl_error2(locale, "T1009 $1: $2: not integer", ident, val)
       return
@@ -491,9 +491,9 @@ class IntType < Type
     val = in_val.to_i
     if get_max && val > get_max
       if from_type == :IntType
-        rval = ((1 << bit_size)-1) & val   # bit 数でクリップ
+        rval = ((1 << bit_size)-1) & val # bit 数でクリップ
       else
-        rval = get_max                         # 最大値でクリップ (FloatType)
+        rval = get_max # 最大値でクリップ (FloatType)
       end
       cdl_warning("W2003 $1: too large to cast to $2, clipped($3)", in_val, get_type_str, rval)
     elsif get_min && val < get_min
@@ -504,7 +504,7 @@ class IntType < Type
       end
       if @sign == :SIGNED || @sign == nil
         cdl_warning("W2004 $1: too small to cast to $2, clipped($3)", in_val, get_type_str, rval)
-      else    # @sign == :UNSIGNED || @sign == nil (char の場合)
+      else # @sign == :UNSIGNED || @sign == nil (char の場合)
         cdl_warning("W2005 $1: negative value for unsigned: convert to $2", in_val, rval)
       end
     else
@@ -516,13 +516,13 @@ class IntType < Type
   def get_min
     if @sign == :SIGNED || @sign == nil
       if @bit_size == -1
-        bit_sz = 8   # char_t は、有符号に扱う
+        bit_sz = 8 # char_t は、有符号に扱う
       else
         bit_sz = @bit_size
       end
       case bit_sz
       when 8, 16, 32, 64, 128
-        return  - (1 << (bit_sz - 1))
+        return - (1 << (bit_sz - 1))
       else # -1, -2, -3, -4, -5, -11
         return nil
       end
@@ -534,7 +534,7 @@ class IntType < Type
   def get_max
     if @bit_size == -1
       if @sign == nil
-        return 255   # char_t は、無符号に扱う
+        return 255 # char_t は、無符号に扱う
       else
         bit_sz = 8
       end
@@ -593,7 +593,7 @@ class IntType < Type
       str = "#{str}#{signL}long"
     when -5      # long long 型
       str = "#{str}#{signL}long long"
-    when 8, 16, 32, 64, 128     # int16, int32, int64, int128 型
+    when 8, 16, 32, 64, 128 # int16, int32, int64, int128 型
       str = "#{str}#{sign}int#{@bit_size}_t"
     end
 
@@ -632,7 +632,7 @@ class FloatType < Type
     @bit_size = bit_size
   end
 
-  def check  # 意味的誤りがあれば、文字列を返す
+  def check # 意味的誤りがあれば、文字列を返す
     nil
   end
 
@@ -783,7 +783,7 @@ class StructType < Type
   end
 
   def new_member(member_decl)
-    member_decl.set_owner self   # Decl (StructType)
+    member_decl.set_owner self # Decl (StructType)
     @members_decl.add_item(member_decl)
     if member_decl.get_type.has_pointer?
       @b_has_pointer_member = true
@@ -796,7 +796,7 @@ class StructType < Type
     end
   end
 
-  def check  # 意味的誤りがあれば、文字列を返す
+  def check # 意味的誤りがあれば、文字列を返す
     nil
   end
 
@@ -858,7 +858,7 @@ class StructType < Type
   end
 
   def end_of_parse()
-    if @members_decl == nil   # @b_define = false またはメンバーのない構造体（エラー）
+    if @members_decl == nil # @b_define = false またはメンバーのない構造体（エラー）
       return
     end
     @members_decl.get_items.each{ |md|
@@ -918,7 +918,7 @@ class StructType < Type
     @tag
   end
 
-  def get_type_str      # mikan struct get_type_str
+  def get_type_str # mikan struct get_type_str
     str = super
 
     if @b_hasTag
@@ -1050,7 +1050,7 @@ class FuncType < Type
     else
       @paramlist = ParamList.new(nil)
     end
-    @paramlist.set_owner self  # ParamList
+    @paramlist.set_owner self # ParamList
     @paramlist.get_items.each{ |p|
       case p.get_direction
       when :IN
@@ -1069,13 +1069,13 @@ class FuncType < Type
     }
   end
 
-  def check  # 意味的誤りがあれば、文字列を返す
-    if @type.class == ArrayType  # 配列を返す関数
+  def check # 意味的誤りがあれば、文字列を返す
+    if @type.class == ArrayType # 配列を返す関数
       return "function returning array"
-    elsif @type.class == FuncType  # 関数を返す関数
+    elsif @type.class == FuncType # 関数を返す関数
       return "function returning function"
     end
-    return @type.check   # 関数の return する型のチェック
+    return @type.check # 関数の return する型のチェック
 
     # パラメータの型のチェックは ParamList#check_param で行う
   end
@@ -1256,16 +1256,16 @@ class ArrayType < Type
     # "[#{@subscript.to_s}]#{@type.get_type_str_post}"
   end
 
-  def check  # 意味的誤りがあれば、文字列を返す
-    if @type.class == FuncType    # 関数の配列
+  def check # 意味的誤りがあれば、文字列を返す
+    if @type.class == FuncType # 関数の配列
       return "array of function"
-    elsif @type.class == ArrayType  # 添数なし配列の配列
+    elsif @type.class == ArrayType # 添数なし配列の配列
       unless @type.get_subscript
         return "subscript not specified"
       end
     end
 
-    return @type.check    # 配列要素の型をチェック
+    return @type.check # 配列要素の型をチェック
   end
 
   def check_struct_tag(kind)
@@ -1344,7 +1344,7 @@ class PtrType < Type
     unless @type
       @type = type
     else
-      @type.set_type(type)  # 枝先の type を設定
+      @type.set_type(type) # 枝先の type を設定
     end
   end
 
@@ -1366,13 +1366,13 @@ class PtrType < Type
     "#{parenthes}#{@type.get_type_str_post}"
   end
 
-  def check  # 意味的誤りがあれば、文字列を返す
+  def check # 意味的誤りがあれば、文字列を返す
     return nil if @type == nil
     @type.check
   end
 
   def check_struct_tag(kind)
-    if kind != :MEMBER  # 構造体メンバーの場合、ポインタの先の構造体タグをチェックしない
+    if kind != :MEMBER # 構造体メンバーの場合、ポインタの先の構造体タグをチェックしない
       @type.check_struct_tag kind
     end
   end
@@ -1381,7 +1381,7 @@ class PtrType < Type
     if (initializer.instance_of?(Expression))
       val = initializer.eval_const2(nil, attribute)
       if val.kind_of? PointerVal
-        type = val.get_type  # PtrType
+        type = val.get_type # PtrType
         t1 = self
         t2 = type
         while(t1.kind_of?(PtrType) && t2.kind_of?(PtrType))
@@ -1402,7 +1402,7 @@ class PtrType < Type
       elsif val.kind_of? StringVal
         # 文字列定数
         # mikan L"wide string"
-        if @type.get_bit_size != -1 && @type.get_bit_size != -11  # -1: char_t
+        if @type.get_bit_size != -1 && @type.get_bit_size != -11 # -1: char_t
           cdl_error2(locale, "T1034 $1: unsuitable string constant", ident)
         end
       elsif (val.instance_of?(Array))

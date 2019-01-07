@@ -319,7 +319,7 @@ EOT
     str = str.gsub(/(^|[^\$])\$preferred_region\$/, "\\1#{@region.get_global_name}")
     str = str.gsub(/(^|[^\$])\$count\$/, "\\1#{@count}")
 
-    str = str.gsub(/\$\$/, "\$")                       # $$ を $ に置換
+    str = str.gsub(/\$\$/, "\$") # $$ を $ に置換
 
     return str
   end

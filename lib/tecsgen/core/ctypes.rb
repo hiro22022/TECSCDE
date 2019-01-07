@@ -64,7 +64,7 @@ module CType
     if self.instance_of?(CIntType) && another.instance_of?(CIntType)
       if another.get_bit_size != -3
         if @bit_size == -4 && another.get_bit_size == -4
-          @bit_size = -5  # long long
+          @bit_size = -5 # long long
         else
           # self は int 型、another の bit_size が (int 以外であれば)そちらにする
           # mikan 上記以外で 両方 -3 でなければ、本来エラー
@@ -179,7 +179,7 @@ class CFloatType < FloatType
     if @bit_size != -64
       cdl_warning("W9999 long specified for $1", get_type_str)
     else
-      @bit_size = -128  # @bit_size = -128 : long double
+      @bit_size = -128 # @bit_size = -128 : long double
     end
   end
 end

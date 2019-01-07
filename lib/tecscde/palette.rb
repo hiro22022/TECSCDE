@@ -79,7 +79,7 @@ module TECSCDE
 
       #----- export BUTTON -----#
       @button_export = @builder["button_export"]
-      @button_export.signal_connect("clicked") {  @control.on_export   }
+      @button_export.signal_connect("clicked") { @control.on_export }
 
       #----- pointer BUTTON -----#
       @button_pointer = @builder["togglebutton_pointer"]
@@ -101,11 +101,11 @@ module TECSCDE
 
       #----- undo BUTTON -----#
       @button_undo = @builder["button_undo"]
-      @button_undo.signal_connect("clicked") {  @control.on_undo   }
+      @button_undo.signal_connect("clicked") { @control.on_undo }
 
       #----- redo BUTTON -----#
       @button_redo = @builder["button_redo"]
-      @button_redo.signal_connect("clicked") {  @control.on_redo   }
+      @button_redo.signal_connect("clicked") { @control.on_redo }
       # currently redo doesn't work well
       @button_redo.set_sensitive false
 

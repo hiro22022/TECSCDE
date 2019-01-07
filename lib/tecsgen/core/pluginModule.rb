@@ -67,9 +67,9 @@ module PluginModule
       end
 
       plClass = Object.const_get plugin_name
-      if (plClass <= superClass)       # plClass inherits superClass
+      if (plClass <= superClass) # plClass inherits superClass
         return plClass
-      elsif (plClass <= MultiPlugin)     # plClass inherits MultiPlugin
+      elsif (plClass <= MultiPlugin) # plClass inherits MultiPlugin
         dbgPrint "pluginClass=#{plClass}\n"
         plugin_object = plClass.get_plugin superClass
         dbgPrint "pluginClass=#{plugin_object}\n"
@@ -79,7 +79,7 @@ module PluginModule
         @@loaded_plugin_list[plugin_name.to_sym] = :MultiPlugin
         return plugin_object
       else
-        cdl_error("P2002 $1: not kind of $2",  plugin_name, superClass.name)
+        cdl_error("P2002 $1: not kind of $2", plugin_name, superClass.name)
         return nil
       end
     rescue Exception => evar
@@ -96,7 +96,7 @@ module PluginModule
 
   #=== プラグインの gen_cdl_file を呼びして cdl ファイルを生成させ、解釈を行う
   def generate_and_parse(plugin_object)
-    if plugin_object == nil     # プラグインのロードに失敗している（既にエラー）
+    if plugin_object == nil # プラグインのロードに失敗している（既にエラー）
       return
     end
     plugin_name = plugin_object.class.name.to_sym

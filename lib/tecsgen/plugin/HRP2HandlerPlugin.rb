@@ -54,7 +54,7 @@ class HRP2HandlerPlugin < HRP2KernelObjectPlugin
     end
       # $cbp$  #983
       name_array = @celltype.get_name_array cell
-      cell_CBP = name_array[8]    # CBP
+      cell_CBP = name_array[8] # CBP
       # CRE_XXXの生成
       domainOption = cell.get_region.get_domain_root.get_domain_type.get_option
       # if (cell.get_region.get_region_type != :DOMAIN) || (cell.get_region.get_param != :KERNEL_DOMAIN)

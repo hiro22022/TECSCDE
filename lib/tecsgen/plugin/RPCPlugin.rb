@@ -56,7 +56,7 @@ class RPCPlugin < ThroughPlugin
   include GenParamCopy
 
   # RPCPlugin 専用のオプション
-  TransparentRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
+  TransparentRPCPluginArgProc = RPCPluginArgProc.dup # 複製を作って元を変更しないようにする
   TransparentRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj, rhs| obj.set_noClientSemaphore rhs }
   TransparentRPCPluginArgProc["semaphoreCelltype"] = Proc.new { |obj, rhs| obj.set_semaphoreCelltype rhs }
 
@@ -216,16 +216,16 @@ EOT
       cell.get_allocator_list.each do |type, eport, subsc, func, buf, alloc|
 
         file.print delim
-        delim = ",\n#{indent_str}           "        # 最終行には出さない
+        delim = ",\n#{indent_str}           " # 最終行には出さない
 
-        if subsc        # 配列添数
+        if subsc # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
         end
 
         eport = "eThroughEntry" # RPCの受け口名に変更
-        file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc}"
+        file.print "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc}"
       end
 
       file.puts ")]"

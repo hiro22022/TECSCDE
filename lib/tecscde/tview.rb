@@ -100,7 +100,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
 module TECSCDE
 
-  DPI = 96.0                                  # Dot per Inch
+  DPI = 96.0 # Dot per Inch
 #  DPI = 72.0                                  # Dot per Inch
 
   ScaleHeight = 50                            # Height of HScale widget
@@ -247,7 +247,7 @@ module TECSCDE
       # }
 
       @vbox.pack_start @scrolledWindow
-      @vbox.pack_end @hbox, false  # expand = false
+      @vbox.pack_end @hbox, false # expand = false
 
       createCanvas
       @scrolledWindow.set_size_request(width, height - ScaleHeight)
@@ -270,7 +270,7 @@ module TECSCDE
       dbgPrint("canvas width=#{@canvas_width}, height=#{@canvas_height}\n")
 
       # BUTTON PRESS event action
-      @canvas.signal_connect("button-press-event"){ |canvas, event|        # canvas = @canvas
+      @canvas.signal_connect("button-press-event"){ |canvas, event| # canvas = @canvas
         dbgPrint "pressed" + event.to_s + "\n"
         xd, yd = event.coords
         xm = dot2mm xd
@@ -346,13 +346,13 @@ module TECSCDE
       clearCanvasPixmap
 
       #----- draw cells -----#
-      @model.get_cell_list.each{  |cell|
+      @model.get_cell_list.each{ |cell|
         drawCell cell
       }
 
       #----- draw joins -----#
       # draw linew before draw texts (if other colors are used, it is better to lay texts upper side)
-      @model.get_join_list.each{  |join|
+      @model.get_join_list.each{ |join|
         drawJoin join
       }
 
@@ -425,7 +425,7 @@ module TECSCDE
     def createHScale
       @scale_val = ScaleValIni
       @hScale = Gtk::HScale.new(ScaleValMin, ScaleValMax, 1)
-      @hScale.set_digits 0   # 小数点以下
+      @hScale.set_digits 0 # 小数点以下
       @hScale.set_value @scale_val
       @hScale.set_size_request(@mainWindowWidth, ScaleHeight)
       @hScale.signal_connect("value-changed"){ |scale_self, scroll_type|
@@ -482,7 +482,7 @@ module TECSCDE
       @cairo_context_target.stroke
 
       gap = mm2dot GapActive
-      gap = 2 if gap < 2  # if less than 2 dots, let gap 2 dots
+      gap = 2 if gap < 2 # if less than 2 dots, let gap 2 dots
       if cell.get_celltype && cell.get_celltype.is_active?
 #        @drawTarget.draw_rectangle( @canvasGc, false, x1 + gap, y1 + gap, w1 - 2 * gap, h1 - 2 * gap )
         @cairo_context_target.rectangle(x1 + gap + 0.5, y1 + gap + 0.5, w1 - 2 * gap, h1 - 2 * gap)
@@ -630,12 +630,12 @@ module TECSCDE
     def draw_hilite_objects(obj_list)
       obj_list.each{|obj|
         if obj.kind_of? TECSModel::TmCell
-          drawCellRectDirect  obj
+          drawCellRectDirect obj
           # drawTargetDirect
           # drawCell obj
           # drawTargetReset
         elsif obj.kind_of? TECSModel::TmPort
-          drawPortDirect  obj
+          drawPortDirect obj
         elsif obj.kind_of? TECSModel::TmJoinBar
           drawBarDirect obj
         end
@@ -732,7 +732,7 @@ module TECSCDE
           # @drawTarget.draw_line( @canvasGc, xm, ym, xm2, ym )
           @cairo_context_target.line_to xm2, ym
           xm = xm2
-        else  # VBar
+        else # VBar
           ym2 = mm2dot(bar.get_position) + 0.5
           # @drawTarget.draw_line( @canvasGc, xm, ym, xm, ym2 )
           @cairo_context_target.line_to xm, ym2
@@ -791,7 +791,7 @@ module TECSCDE
           xm2 = mm2dot(bar2.get_position)
           @gdkWindow.draw_line(@canvasGc, xm, ym, xm2, ym)
           xm = xm2
-        else  # VBar
+        else # VBar
           ym2 = mm2dot(bar2.get_position)
           @gdkWindow.draw_line(@canvasGc, xm, ym, xm, ym2)
           ym = ym2
@@ -902,7 +902,7 @@ module TECSCDE
       case alignment
       when ALIGN_CENTER
         # calc text draww postion
-        x2 = x - (cr_te.width  + cr_te.x_bearing) / 2
+        x2 = x - (cr_te.width + cr_te.x_bearing) / 2
         y2 = y - (cr_te.y_bearing) / 2
       when ALIGN_RIGHT
         x2 = x - cr_te.width - cr_te.x_bearing - mm2dot(GapPort)
@@ -993,20 +993,20 @@ module TECSCDE
       cr_te = cr.text_extents(text)
       # p "width=#{cr_te.width} x_bearing=#{cr_te.x_bearing} height=#{cr_te.height} y_bearing=#{cr_te.y_bearing}"
       case alignment
-      when ALIGN_CENTER   # this case is not used & not checked
+      when ALIGN_CENTER # this case is not used & not checked
         # calc text draww postion
         x2 = x - 2
-        y2 = y - (cr_te.width  + cr_te.x_bearing) / 2
+        y2 = y - (cr_te.width + cr_te.x_bearing) / 2
       when ALIGN_RIGHT
         x2 = x - 2
-        y2 = y + cr_te.width  + cr_te.x_bearing + mm2dot(GapPort)
+        y2 = y + cr_te.width + cr_te.x_bearing + mm2dot(GapPort)
       when ALIGN_LEFT
         x2 = x - 2
         y2 = y - mm2dot(GapPort)
       end
-      @cairo_matrix.set_rotate90(x2, y2)  # rotate around (0, 0) then shift (x2, y2)
+      @cairo_matrix.set_rotate90(x2, y2) # rotate around (0, 0) then shift (x2, y2)
       cr.matrix = @cairo_matrix
-      cr.move_to(0, 0)  # this assumes that (0, 0) is left bottom of strings
+      cr.move_to(0, 0) # this assumes that (0, 0) is left bottom of strings
       cr.show_text(text)
       @cairo_matrix.set_rotate0
       cr.matrix = @cairo_matrix
@@ -1041,7 +1041,7 @@ module TECSCDE
 
       matrix = Cairo::Matrix.new(0, -1, 1, 0, x2, y2)
       cr.matrix = matrix
-      cr.move_to(0, 0)  # this assumes that (0, 0) is left bottom of strings
+      cr.move_to(0, 0) # this assumes that (0, 0) is left bottom of strings
       cr.show_text(text)
       cr.matrix = Cairo::Matrix.new(1, 0, 0, 1, 0, 0)
     end
@@ -1054,7 +1054,7 @@ module TECSCDE
       @entryWin = Gtk::Window.new Gtk::Window::TOPLEVEL
       @entryWin.add @entry
       @entryWin.realize
-      @entryWin.window.reparent @canvas.window, 0, 0  # Gdk level operation
+      @entryWin.window.reparent @canvas.window, 0, 0 # Gdk level operation
 
       # these steps are to avoid to move ( 0, 0 ) at 1st appear
       @entryWin.show_all
@@ -1132,7 +1132,7 @@ module TECSCDE
       @canvasGc.foreground = @@colors[Color_editable]
 
       @cairo_context_target.restore
-      @cairo_context_target.save    # prepare for next time
+      @cairo_context_target.save # prepare for next time
       @cairo_context_target.matrix = @cairo_matrix
     end
 
@@ -1223,7 +1223,7 @@ module TECSCDE
       end
 
       scale_val_bak = @scale_val
-      @scale_val = 72.0 / TECSCDE::DPI * 100     # PDF surface = 72 DPI,  mm2dot assume 100 DPI by default
+      @scale_val = 72.0 / TECSCDE::DPI * 100 # PDF surface = 72 DPI,  mm2dot assume 100 DPI by default
       target_bak = @cairo_context_target
 
       paper = Cairo::Paper.const_get(@model.get_paper[:name])
@@ -1240,7 +1240,7 @@ module TECSCDE
         #----- clip in rectangle frame -----#
         @cairo_context_target.rectangle(0, 0, paper_width, paper_height)
         @cairo_context_target.clip false # preserve = false
-        @cairo_context_target.save      # (* pair *)   # must be saved initially
+        @cairo_context_target.save # (* pair *)   # must be saved initially
 
         #----- draw contents of PDF -----#
         paint_canvas

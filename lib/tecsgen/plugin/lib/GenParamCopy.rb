@@ -42,7 +42,7 @@
 # RPCPlugin, OpaqueRPCPlugin に include される．
 # RPCPlugin (トランスペアレント) では、oneway 関数で in のポインタ引数の場合に限って print_param が用いられる．
 #
-module  GenParamCopy
+module GenParamCopy
 
   #=== 引数の転送コードを生成
 
@@ -86,7 +86,7 @@ EOT
           sign = "U"
         when :SIGNED
           if bit_size == -1 || bit_size == -11
-            sign = "S"   # signed char の場合のみ S がつく
+            sign = "S" # signed char の場合のみ S がつく
           else
             sign = ""
           end
@@ -95,7 +95,7 @@ EOT
         end
 
         case bit_size
-        when -1, -11  # -1: char_t, -11: char
+        when -1, -11 # -1: char_t, -11: char
           type_str = "#{sign}Char"
         when -2
           type_str = "#{sign}Short"
@@ -139,7 +139,7 @@ EOT
       if count || size || string
         nest = print_nullable_pre(name, type, file, nest, dir, outer, outer2, b_marshal, b_get)
         indent = "\t" * nest
-        loop_counter_type = IntType.new(32)   # mikan 型を size_is, count_is の引数の型とする
+        loop_counter_type = IntType.new(32) # mikan 型を size_is, count_is の引数の型とする
         file.print "#{indent}{\t/* GenParamCopy 4 */\n"
         file.print "#{indent}	#{loop_counter_type.get_type_str}  i__#{nest}, length__#{nest};\n"
 
@@ -176,24 +176,24 @@ EOT
                        name, type.get_type.get_type_str + type.get_type.get_type_str_post)
           end
           if !b_get
-            if  string.instance_of? Expression
+            if string.instance_of? Expression
               len = string.to_str(name_list, outer, outer2)
               file.print "#{indent}	length__#{nest} = STRNLEN#{b_size}(#{outer}#{name}#{outer2},(#{len}-1))+1;\t/* GenParamCopy 6 */\n"
               file.print "#{indent}	if( length__#{nest} < #{len})\tlength__#{nest} += 1;\n"
             else
               file.print "#{indent}	length__#{nest} = STRLEN#{b_size}(#{outer}#{name}#{outer2})+1;\t/* GenParamCopy 7 */\n"
             end
-            size_str = "length__#{nest}"     # string の場合、strnlen 以上の領域を確保しない
+            size_str = "length__#{nest}" # string の場合、strnlen 以上の領域を確保しない
           else
             if (dir == :INOUT)
               if (string.instance_of? Expression)
                 len = string.to_str(name_list, outer, outer2)
-                size_str = "#{len}"              # string(len) の場合 len を確保する
+                size_str = "#{len}" # string(len) の場合 len を確保する
               else
                 raise "unsuscripted string used for inout parameter #{name}"
               end
             else
-              size_str = "length__#{nest}"     # string の場合、strnlen 以上の領域を確保しない
+              size_str = "length__#{nest}" # string の場合、strnlen 以上の領域を確保しない
             end
           end
           print_param0("length__#{nest}", loop_counter_type, file, nest + 1, dir, nil, nil, b_marshal, b_get)
@@ -267,7 +267,7 @@ EOT
       else
         size_str = subsc.to_str(name_list, outer, outer2)
 
-        loop_counter_type = IntType.new(32)   # mikan 型を size_is, count_is の引数の型とする
+        loop_counter_type = IntType.new(32) # mikan 型を size_is, count_is の引数の型とする
         file.print "#{indent}{\t/* GenParamCopy 11 */\n"
         file.print "#{indent}	#{loop_counter_type.get_type_str}  i__#{nest}, length__#{nest} = #{size_str};\n"
 
@@ -283,7 +283,7 @@ EOT
   def print_nullable_pre(name, type, file, nest, dir, outer, outer2, b_marshal, b_get)
     if type.is_nullable?
       indent = "	" * nest
-      if dir == :OUT  # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
+      if dir == :OUT # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
         # 'null or not' is sent in the function 'print_out_nullable'
         if b_get
           file.print "#{indent}if( #{outer}#{name}#{outer2} ){\t/* GenParamCopy Null 10 */\n"
@@ -334,7 +334,7 @@ EOT
   #== nullable (post)
   def print_nullable_post(name, type, file, nest, dir, outer, outer2, b_marshal, b_get)
     if type.is_nullable?
-      if dir == :OUT  # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
+      if dir == :OUT # OUT の場合 print_out_nullable で NULL かどうかの情報を渡す
         nest -= 1
         indent = "	" * nest
         file.print "#{indent}}  /* ! b_#{name}_null_   GenParamCopy Null 50 */\n"

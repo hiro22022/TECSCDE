@@ -52,7 +52,7 @@ class HRP2AlarmHandlerPlugin < HRP2KernelObjectPlugin
     val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
       # $cbp$  #983
       name_array = @celltype.get_name_array cell
-      cell_CBP = name_array[8]    # CBP
+      cell_CBP = name_array[8] # CBP
       # CRE_XXXの生成
       if (cell.get_region.get_region_type != :DOMAIN) || (cell.get_region.get_param != :KERNEL_DOMAIN)
           # 無所属 or ユーザドメインに属する場合

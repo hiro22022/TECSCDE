@@ -67,7 +67,7 @@ class SharedRPCPlugin < ThroughPlugin
 
     # オプション：GenTransparentMarshaler 参照
     @plugin_arg_check_proc_tab = RPCPluginArgProc
-    @channelCellName = ""     # nil にしておく
+    @channelCellName = "" # nil にしておく
     parse_plugin_arg
 
     @shared_channel_ct_name = :"tSharedRPCPlugin_#{@channelCelltype}"
@@ -270,16 +270,16 @@ EOT
       cell.get_allocator_list.each do |type, eport, subsc, func, buf, alloc|
 
         file.print delim
-        delim = ",\n#{indent_str}           "        # 最終行には出さない
+        delim = ",\n#{indent_str}           " # 最終行には出さない
 
-        if subsc        # 配列添数
+        if subsc # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
         end
 
         eport = "eThroughEntry" # RPCの受け口名に変更
-        file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc}"
+        file.print "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc}"
       end
 
       file.puts ")]"

@@ -168,7 +168,7 @@ module GenOpaqueMarshaler
     def optparse (str, regexp, expected)
       str.strip!
       token = nil
-      res = str.sub!(regexp){ |matched|  token = matched;  "" }
+      res = str.sub!(regexp){ |matched| token = matched; "" }
       if !token
         cdl_error("syntax error in substituteAllocator option near '#{str}', expected '#{expected}'")
       end
@@ -276,7 +276,7 @@ module GenOpaqueMarshaler
   def initialize_opaque_marshaler
     # オプション設定される変数のデフォルトを設定
     @taskPriority = 11
-    @stackSize  = 4096
+    @stackSize = 4096
     @serverChannelCelltype = :tSocketServer
     @clientChannelCelltype = :tSocketClient
     @serverChannelCell = :"#{@cell_name}Server"
@@ -286,7 +286,7 @@ module GenOpaqueMarshaler
     @taskCelltype = :tTask
     @PPAllocatorSize = nil
     # @TDRCelltype  = :"tTDR"   # "tNBOTDR" に変更の予定
-    @TDRCelltype  = :tNBOTDR
+    @TDRCelltype = :tNBOTDR
     @substituteAllocator = {}
     @noServerChannelOpenerCode = false
     @semaphoreCelltype = :tSemaphore
@@ -475,8 +475,8 @@ EOT
     # p "celltype_name, sig_name, func_name, func_global_name"
     # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
-    b_get = false    # marshal なら put
-    b_marshal = true  # marshal
+    b_get = false # marshal なら put
+    b_marshal = true # marshal
 
     # in 方向の入出力を出力
     if func_type.has_inward?
@@ -513,7 +513,7 @@ EOT
       file.print "	if( (ercd_=cTDR_receiveSOP( true )) != E_OK )\n"
       file.print "		goto error_reset;\n"
 
-      b_get = true     # marshaler は get
+      b_get = true # marshaler は get
       file.print "	/* 戻り値の受け取り */\n"
       print_param("retval_", func_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
 
@@ -538,7 +538,7 @@ EOT
 
       file.print "\n	/* パケットの終わりをチェック */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_RECV_EOP );\n"
-      file.print "	if( (ercd_=cTDR_receiveEOP(false)) != E_OK )\n"  # b_continue = false
+      file.print "	if( (ercd_=cTDR_receiveEOP(false)) != E_OK )\n" # b_continue = false
       file.print "		goto error_reset;\n"
 
     end # ! func_type.is_oneway?
@@ -789,8 +789,8 @@ EOT
       # in 方向の入出力を入力
       file.print "\n	/* 入力引数受取 */\n"
       file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_RECV_BODY );\n"
-      b_get = true    # unmarshal では get
-      b_marshal  = false
+      b_get = true # unmarshal では get
+      b_marshal = false
       print_params(params, file, 1, b_marshal, b_get, true, "cServerCall", f_name)
       print_params(params, file, 1, b_marshal, b_get, false, "cServerCall", f_name)
       print_out_nullable(params, file, 1, b_marshal);
@@ -842,7 +842,7 @@ EOT
         file.print "	if( ( ercd_ = cTDR_sendSOP( false ) ) != E_OK )\n"
         file.print "		goto error_reset;\n"
 
-        b_get = false     # unmarshaler は put
+        b_get = false # unmarshaler は put
         if(!b_void)
           file.print "	/* 戻り値の送出 */\n"
           print_param("retval_", f_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
@@ -876,9 +876,9 @@ EOT
 
         file.print "	/* パケットの終わり（掃きだし） */\n"
         file.print "	SET_RPC_STATE( *state_, RPCSTATE_SERVER_SEND_EOP );\n"
-        file.print "	if( (ercd_=cTDR_sendEOP(false)) != E_OK )\n"  # b_continue = false
+        file.print "	if( (ercd_=cTDR_sendEOP(false)) != E_OK )\n" # b_continue = false
         file.print "		goto error_reset;\n"
-      end  # ! f.is_oneway?
+      end # ! f.is_oneway?
 
       file.print "	return E_OK;\n"
       file.print <<EOT
@@ -939,7 +939,7 @@ EOT
       else
         case dir
         when :OUT, :INOUT
-          alloc_cp = nil        # inout の b_get==true&&b_marsha==true のときアロケータコードは不用
+          alloc_cp = nil # inout の b_get==true&&b_marsha==true のときアロケータコードは不用
           alloc_cp_extra = nil
           print_param(param.get_name, param.get_type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra)
         when :RECEIVE
@@ -982,7 +982,7 @@ EOT
       indent = "\t" * nest
       count = type.get_count; size = type.get_size; string = type.get_string
       if count || size || string
-        loop_counter_type = IntType.new(16)   # mikan 方を size_is, count_is の引数の型とする
+        loop_counter_type = IntType.new(16) # mikan 方を size_is, count_is の引数の型とする
         if count
           len = type.get_count.to_s
         elsif size
@@ -1049,7 +1049,7 @@ EOT
         type = param.get_type.get_original_type
         aster = ""
         if dir == :RECEIVE
-          type = type.get_type.get_original_type   # ポインタを一つ外す
+          type = type.get_type.get_original_type # ポインタを一つ外す
           if b_reset
             aster = "*"
           end
@@ -1072,7 +1072,7 @@ EOT
 
   #== out で nullable な引数の情報を渡す
   # out nullable の場合、in, send, receive のように、値を渡す直前ではなく、呼出し時に渡す
-  def  print_out_nullable(params, file, nest, b_marshal);
+  def print_out_nullable(params, file, nest, b_marshal);
     indent = "\t" * nest
     params.each{ |param|
       next if param.get_direction != :OUT

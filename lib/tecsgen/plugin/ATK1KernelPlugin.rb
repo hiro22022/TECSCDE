@@ -268,7 +268,7 @@ EOT
 
   def self.gen_post_code(file)
     @@cell_list.each { |cell|
-      join =  cell.get_join_list.get_item(:useResourceScheduler)
+      join = cell.get_join_list.get_item(:useResourceScheduler)
       if join
         flag = join.get_rhs.to_s
         if flag == "TRUE"

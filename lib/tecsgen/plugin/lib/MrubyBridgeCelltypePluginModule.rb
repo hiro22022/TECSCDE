@@ -65,7 +65,7 @@ module MrubyBridgeCelltypePluginModule
     @exclude_port = []
     @exclude_port_func = {}
     @b_ignoreUnsigned = false
-    @b_auto_exclude = true     # auto_exclude = true by default
+    @b_auto_exclude = true # auto_exclude = true by default
     @@plugin_list << self
 
     @plugin_arg_check_proc_tab = MrubyBridgePluginArgProc
@@ -226,7 +226,7 @@ EOT
   def set_exclude_port(rhs)
     ports = rhs.split ","
     ct = @cell.get_celltype
-    return if ct == nil    # error case
+    return if ct == nil # error case
     ports.each{ |rhs_port|
       obj = ct.find(rhs_port.to_sym)
       if((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
@@ -242,7 +242,7 @@ EOT
   def set_exclude_port_func(rhs)
     port_funcs = rhs.split ","
     ct = @celltype
-    return if ct == nil    # error case
+    return if ct == nil # error case
     port_funcs.each{ |rhs_port_func|
       port_func = rhs_port_func.split(".")
       if port_func.length != 2
@@ -253,7 +253,7 @@ EOT
         cdl_error("MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port_func, ct.get_name)
       else
         signature = obj.get_signature
-        next if signature == nil     # error case
+        next if signature == nil # error case
         if signature.get_function_head port_func[1].to_sym
           # print "MRBBridgeCellPlugin: #{port_func[0]}.#{port_func[1]} exclude\n"
           if @exclude_port_func[port_func[0]]
@@ -275,7 +275,7 @@ EOT
     if rhs == "false"
       @b_auto_exclude = false
     elsif rhs == "true"
-      @b_auto_exclude = true     # auto_exclude = true by default
+      @b_auto_exclude = true # auto_exclude = true by default
     else
       cdl_warning("MRB9999 auto_exclude: unknown rhs value ignored. specify true or false")
     end

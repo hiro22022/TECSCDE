@@ -48,7 +48,7 @@ class OpaqueRPCPlugin < ThroughPlugin
   include GenParamCopy
 
   # OpaqueRPCPlugin 専用のオプション
-  OpaqueRPCPluginArgProc = RPCPluginArgProc.dup  # 複製を作って元を変更しないようにする
+  OpaqueRPCPluginArgProc = RPCPluginArgProc.dup # 複製を作って元を変更しないようにする
   OpaqueRPCPluginArgProc["noClientSemaphore"] = Proc.new { |obj, rhs| obj.set_noClientSemaphore rhs }
 
   #=== RPCPlugin の initialize
@@ -213,9 +213,9 @@ EOT
         end
 
         file.print delim
-        delim = ",\n"        # 最終行には出さない
+        delim = ",\n" # 最終行には出さない
 
-        if subsc        # 配列添数
+        if subsc # 配列添数
           subsc_str = '[#{subsc}]'
         else
           subsc_str = ""
@@ -223,7 +223,7 @@ EOT
 
         eport = "eThroughEntry" # RPCの受け口名に変更
         file.print nest_str
-        file.print  "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
+        file.print "#{eport}#{subsc_str}.#{func}.#{buf} = #{alloc_str}"
       end
 
       file.puts ")]"

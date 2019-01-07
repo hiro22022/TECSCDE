@@ -196,7 +196,7 @@ Structure of Palette Window
     end
 
     #----- palette -----#
-    def  create_new_operation_window
+    def create_new_operation_window
       @palette = TECSCDE::Palette.new self
 #      @palette.get_entry_cell_name
  #     @palette.get_attrTreeView
@@ -511,8 +511,8 @@ EOT
 
     def add(celltype)
       iter = @treeView.model.append
-      iter[COL_NAME]  = celltype.get_name
-      iter[COL_NSPATH]  = celltype.get_owner.get_namespace_path.to_s
+      iter[COL_NAME] = celltype.get_name
+      iter[COL_NSPATH] = celltype.get_owner.get_namespace_path.to_s
     end
 
     def selected
@@ -808,7 +808,7 @@ EOT
       end
     end
 
-    def each  # proc
+    def each # proc
       proc = Proc.new
       @hilite_objs.each{ |obj|
         proc.call obj

@@ -227,8 +227,8 @@ EOT
     # p "celltype_name, sig_name, func_name, func_global_name"
     # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
-    b_get = false    # marshal なら put
-    b_marshal = true  # marshal
+    b_get = false # marshal なら put
+    b_marshal = true # marshal
 
     # in 方向の入出力を出力
     file.print "    /* 入力引数送出 */\n"
@@ -462,7 +462,7 @@ EOT
 
         # p "pn:: #{name} #{bit_size} #{type.get_type_str}"
         case bit_size
-        when  -1, -11  # -1: char_t, -11: char
+        when -1, -11 # -1: char_t, -11: char
           type_str = "#{signC}Char"
           cast_str = "#{sign}char_t"
         when -2
@@ -613,7 +613,7 @@ EOT
       # 戻り値を受け取る変数の定義
       if !b_void
         if f.is_oneway?
-          retval_ptr = ""   # oneway の場合、受け取るが捨てられる
+          retval_ptr = "" # oneway の場合、受け取るが捨てられる
         else
           retval_ptr = "*"
         end
@@ -622,8 +622,8 @@ EOT
 
       # in 方向の入出力を入力
       file.print "\n        /* 入力引数受取 */\n"
-      b_get = true    # unmarshal では get
-      b_marshal  = false
+      b_get = true # unmarshal では get
+      b_marshal = false
       print_params(param_list, file, 1, b_marshal, b_get, true, f.is_oneway?)
       print_params(param_list, file, 1, b_marshal, b_get, false, f.is_oneway?)
       if !b_void && !f.is_oneway?
@@ -668,7 +668,7 @@ EOT
       goto error_reset;
     }
 EOT
-      end  # ! f.is_oneway?
+      end # ! f.is_oneway?
       file.print <<EOT
     return E_OK;
 error_reset:

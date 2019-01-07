@@ -138,16 +138,16 @@ module TECSCDE
          y = @paper[ :height ] -30
 =end
 
-      cell_list = { }  # ::Cell => TmCell
+      cell_list = { } # ::Cell => TmCell
       if tecsgen_cell_list
         p "=== create cell ==="
         tecsgen_cell_list.each{ |cell|
           # p cell.get_owner.get_namespace
           # p cell.get_owner.get_namespace_path
-          if @cell_hash[cell.get_name]    # duplicate cell in cdl file
+          if @cell_hash[cell.get_name] # duplicate cell in cdl file
             next
           end
-          if cell.get_celltype == nil       # celltype not found error in cdl (tecsgen)
+          if cell.get_celltype == nil # celltype not found error in cdl (tecsgen)
             p "add_cell: celltype not found: #{cell.get_name} #{cell.get_owner.get_namespace_path}"
             next
           end
@@ -217,7 +217,7 @@ module TECSCDE
     #=== TECSModel#create_cell_from_tecsgen
     def create_cell_from_tecsgen(cell, x, y)
       new_cell_ = new_cell(x, y, cell.get_celltype.get_name, cell.get_celltype.get_owner.get_namespace_path.to_s, cell)
-      new_name = cell.get_name          # automatically given name
+      new_name = cell.get_name # automatically given name
       new_cell_.change_name(new_name)
 
       # decide cell box size from text width
@@ -247,7 +247,7 @@ module TECSCDE
               return
             end
             rhs_cell = cell_list[join.get_cell]
-            if rhs_cell == nil      # not joined in cdl (tecsgen)
+            if rhs_cell == nil # not joined in cdl (tecsgen)
               return
             end
             # eport = rhs_cell.get_eports[ join.get_port_name ]
@@ -329,7 +329,7 @@ module TECSCDE
                 next
               end
               p0 = port
-              port = port.get_ports[subscript]   # array
+              port = port.get_ports[subscript] # array
               if port == nil
                 p "port '#{port_name}' : 'subscript=#{subscript}' out of range"
                 next
@@ -411,7 +411,7 @@ module TECSCDE
             # p "2"
             b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0].to_sym
-            if (b_vertical  && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
+            if (b_vertical && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
 
@@ -537,7 +537,7 @@ module TECSCDE
     #=== TECSModel#save_cells
     # output cell definition
     def save_cells(f)
-      @cell_list.each{ |cell|                           # mikan region
+      @cell_list.each{ |cell| # mikan region
         if !cell.is_editable?
           next
         end
@@ -740,7 +740,7 @@ EOT
       # set join location
       @tecsgen.get_join_location_list.each{ |jl|
         cp_cell_nspath, cp_name, ep_cell_nspath, ep_name, bar_list = jl.get_location
-        cp_subscript = nil   # kari
+        cp_subscript = nil # kari
         ep_subscript = nil
         # p "set_location_from_tecsgen, #{cp_cell_nspath}, #{cp_name}, #{ep_cell_nspath}, #{ep_name}, #{bar_list}"
         cp_cell = @cell_hash[cp_cell_nspath.to_s.to_sym]
@@ -757,7 +757,7 @@ EOT
             # p "2"
             b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0]
-            if (b_vertical  && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
+            if (b_vertical && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
               # bar_list: [ [:HBar, pos]
@@ -867,7 +867,7 @@ EOT
       when "EDGE_RIGHT"
         EDGE_RIGHT
       else
-        0   # same as EDGE_TOP
+        0 # same as EDGE_TOP
       end
     end
   end #  class TECSModel

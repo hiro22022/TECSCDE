@@ -87,7 +87,7 @@ class Namespace
 end
 
 class Celltype
-  ID_BASE = 1               # reset_optimize でリセットする
+  ID_BASE = 1 # reset_optimize でリセットする
   @@ID_BASE = ID_BASE
 
   def set_cell_id_and_domain
@@ -127,7 +127,7 @@ class Celltype
       end
     }
 
-    @ordered_cell_list = []   # id = 1 が添数 0 に格納される
+    @ordered_cell_list = [] # id = 1 が添数 0 に格納される
     # ID 指定されているセルに id 番号を与える
     id_specified_cells.each{ |c|
       id = c.get_specified_id
@@ -294,7 +294,7 @@ class Celltype
             j.get_array_member2.each { |j2|
               if j2
                 port_cells << j2.get_rhs_cell
-                port_ports << j2.get_rhs_port   # 右辺のポート
+                port_ports << j2.get_rhs_port # 右辺のポート
               else
                 # optional で、ある添数のみ初期化されていない（すべて初期化されない場合は、下）
                 port_cells << nil
@@ -304,12 +304,12 @@ class Celltype
           else
             # 全ての結合先を集める
             port_cells << j.get_rhs_cell
-            port_ports << j.get_rhs_port   # 右辺のポート
+            port_ports << j.get_rhs_port # 右辺のポート
           end
         else
           # optional で初期化されていない（nil を要素に加えておく）
           port_cells << nil
-          port_ports << nil   # 右辺のポート
+          port_ports << nil # 右辺のポート
         end
       }
 
@@ -351,7 +351,7 @@ class Celltype
             end
           end
 
-        else  # 呼び先が複数のセル（単一のポート）
+        else # 呼び先が複数のセル（単一のポート）
 
           # 呼び口は optional で初期化されていない、または受け口は配列ではないか？
           if port_ports[0] == nil || port_ports[0].get_array_size == nil
@@ -363,7 +363,7 @@ class Celltype
                 print "VMT_useless & skelton useless optimize\n"
               end
             else
-              port.set_VMT_useless                           # VMT 不要最適化 (スケルトン関数 or 受け口関数を呼出す)
+              port.set_VMT_useless # VMT 不要最適化 (スケルトン関数 or 受け口関数を呼出す)
 
               if $verbose
                 print "VMT_useless optimize\n"
@@ -403,12 +403,12 @@ class Celltype
         jl = cell.get_join_list
         j = jl.get_item(port.get_name)
 
-        if j    # optional で結合されていない場合 nil
+        if j # optional で結合されていない場合 nil
           if j.get_array_member2
             # 呼び口配列
             j.get_array_member2.each { |j2|
               if j2
-                port2 = j2.get_rhs_port   # 右辺のポート
+                port2 = j2.get_rhs_port # 右辺のポート
                 # 受け口側の最適化可能性を設定
                 port2.set_entry_VMT_skelton_useless(b_VMT_useless, b_skelton_useless)
               # else
@@ -416,7 +416,7 @@ class Celltype
               end
             }
           else
-            port2 = j.get_rhs_port      # 右辺のポート
+            port2 = j.get_rhs_port # 右辺のポート
             # 受け口側の最適化可能性を設定
             port2.set_entry_VMT_skelton_useless(b_VMT_useless, b_skelton_useless)
           end
@@ -432,7 +432,7 @@ class Celltype
 
     @b_cp_optimized = false  # 呼び口最適化
     @n_call_port_omitted_in_CB = 0 # 呼び口最適化により不生成となったポートの数
-    @n_cell_gen = 0          # 生成セル個数
+    @n_cell_gen = 0 # 生成セル個数
     @port.each{ |p|
       p.reset_optimize
     }

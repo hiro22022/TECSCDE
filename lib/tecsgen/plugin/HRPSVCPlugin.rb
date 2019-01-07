@@ -95,7 +95,7 @@ end
 #  　　　　　で実施されるため，ここでは判定しないこととした
 #
 class HRPSVCPlugin < ThroughPlugin
-  NUM_SVC_ARG_MAX = 5              # HRP3 の拡張サービスコールで扱うことのできる引数の最大個数
+  NUM_SVC_ARG_MAX = 5 # HRP3 の拡張サービスコールで扱うことのできる引数の最大個数
 
   #=== RPCPlugin の initialize
   #  説明は ThroughPlugin (plugin.rb) を参照
@@ -420,7 +420,7 @@ EOT
 
                   if param.get_type.get_referto.kind_of?(IntType)
                     case param.get_type.get_referto.get_bit_size
-                    when -11, -1, 8   # char, char_t, int8_t (無符号含む)
+                    when -11, -1, 8 # char, char_t, int8_t (無符号含む)
                     #
                     #  charデータの場合，ALIGN_TYPEは必ずTRUE
                     #  となるので，エラーチェックを省略
@@ -463,7 +463,7 @@ EOT
                     prb_func = "prb_mem"
                       if param.get_size
                         size_str = param.get_size.to_s
-                      elsif param.get_string          # 引数なしの string はない
+                      elsif param.get_string # 引数なしの string はない
                         size_str = param.get_string.to_s
                         # prb_func = "prb_str"             # out, inout の場合、必ず領域を確保する. prb_mem を用いる
                       else
@@ -770,7 +770,7 @@ EOS
       check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}", type
     elsif ot.kind_of? PtrType
       cdl_error("HSV0003 $1.$2.$3 multi-pointer type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
-    elsif  ot.kind_of? StructType
+    elsif ot.kind_of? StructType
       check_struct signature, fh, param
     else
       cdl_error("HSV0004 $1.$2.$3 $4 type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
