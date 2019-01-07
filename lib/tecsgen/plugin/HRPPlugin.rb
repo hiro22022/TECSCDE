@@ -284,6 +284,7 @@ class HRPPlugin < DomainPlugin
     # 左辺のドメインルートを記録
     @@inter_domain_join_set[rhs_cell] << join
   end
+
   def self.get_inter_domain_join_set(rhs_cell)
     if @@inter_domain_join_set[rhs_cell]
       @@inter_domain_join_set[rhs_cell].uniq!
@@ -292,6 +293,7 @@ class HRPPlugin < DomainPlugin
     end
     return @@inter_domain_join_set[rhs_cell]
   end
+
   def self.get_inter_domain_join_roots(rhs_cell)
     dbgPrint "--------- get_inter_domain #{rhs_cell.get_namespace_path} -----\n"
     domain_roots = []

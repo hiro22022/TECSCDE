@@ -69,6 +69,7 @@ class HRP2ObjectPlugin < HRP2KernelObjectPlugin
         file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"
     end
   end
+
     #=== HRP2SemaphorePlugin#print_cfg_sac
     # SAC_SEMの出力
     # file:: FILE:     出力先ファイル

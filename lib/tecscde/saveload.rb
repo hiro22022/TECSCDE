@@ -262,7 +262,6 @@ module TECSCDE
       end
     end
 
-
     def set_paper_from_tecsgen
       info = TOOL_INFO.get_tool_info(:tecscde)
       if info == nil || info[:paper] == nil
@@ -454,7 +453,6 @@ module TECSCDE
         end
       }
     end
-
 
     #=== TECSModel#validate
     # validate JSON format data in __tool_info__( "tecscde" )

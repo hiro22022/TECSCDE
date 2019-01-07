@@ -65,6 +65,7 @@ class HRPKernelObjectManager
       #
     raise "class #{self.class.name} shall not have instances"
   end
+
   def self.include_celltype?(str)
     return @@kernel_objs.include?(str)
   end

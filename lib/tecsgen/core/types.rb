@@ -1154,15 +1154,19 @@ class FuncType < Type
   def has_in?
     @has_in
   end
+
   def has_inout?
     @has_inout
   end
+
   def has_out?
     @has_out
   end
+
   def has_send?
     @has_send
   end
+
   def has_receive?
     @has_receive
   end
@@ -1171,6 +1175,7 @@ class FuncType < Type
   def has_inward?
     @has_in || @has_inout || @has_send
   end
+
   #=== 出力方向のパラメータを持つか
   def has_outward?
     @has_inout || @has_out || @has_receive

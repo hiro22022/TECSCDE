@@ -149,6 +149,7 @@ module TECSCDE
 
       @view.paint_canvas
     end
+
     def get_model
       @model
     end

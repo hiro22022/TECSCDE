@@ -75,6 +75,7 @@ class HRPObjectPlugin < HRPKernelObjectPlugin
         file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"
     end
   end
+
     #=== HRPObjectPlugin#print_cfg_sac
     # SAC_XXXの出力
     # file:: FILE:     出力先ファイル

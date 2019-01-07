@@ -339,6 +339,7 @@ class Console
       STDOUT.print str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
     end
   end
+
   def self.puts(str)
     if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
       STDOUT.puts str

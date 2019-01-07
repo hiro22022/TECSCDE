@@ -86,7 +86,6 @@ class Plugin < Node
   def gen_cdl_file(file)
   end
 
-
 ### コード生段階で呼び出されるメソッド ###
   #=== プラグインは gen_ep_func を提供するか
   # gen_ep_func 定義   ⇒ テンプレートではない、セルタイプコード(tCelltype.c)を生成

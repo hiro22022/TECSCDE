@@ -50,6 +50,7 @@ class HRP2SemaphorePlugin < HRP2KernelObjectPlugin
     file.print tab
       file.puts "CRE_SEM(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:max]}});"
   end
+
     #=== HRP2SemaphorePlugin#print_cfg_sac
     # SAC_SEMの出力
     # file:: FILE:     出力先ファイル
@@ -58,6 +59,7 @@ class HRP2SemaphorePlugin < HRP2KernelObjectPlugin
   def print_cfg_sac(file, val, acv)
     file.puts "SAC_SEM(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
   end
+
     # tSemaphoreの受け口リスト
   def get_entry_ports_name_list()
     @@ep

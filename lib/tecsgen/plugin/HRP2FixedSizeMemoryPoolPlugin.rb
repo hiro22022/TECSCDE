@@ -51,6 +51,7 @@ class HRP2FixedSizeMemoryPoolPlugin < HRP2KernelObjectPlugin
     file.print tab
       file.puts "CRE_MPF(#{val[:id]}, {#{val[:attribute]}, #{val[:blockCount]}, #{val[:blockSize]}, #{val[:mpf]}, #{val[:mpfmb]}});"
   end
+
     #=== HRP2FixedSizeMemoryPoolPlugin#print_cfg_sac
     # SAC_MPFの出力
     # file:: FILE:     出力先ファイル
@@ -59,6 +60,7 @@ class HRP2FixedSizeMemoryPoolPlugin < HRP2KernelObjectPlugin
   def print_cfg_sac(file, val, acv)
     file.puts "SAC_MPF(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
   end
+
     # tFixedSizeMemoryPoolの受け口リスト
   def get_entry_ports_name_list()
     @@ep

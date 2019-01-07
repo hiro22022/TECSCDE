@@ -606,7 +606,6 @@ EOT
     end
   end
 
-
   #=== PREAMBLE 部のコード生成
   # アンマーシャラセルタイプの場合、アンマーシャラ関数のプロトタイプ宣言を生成
   def gen_preamble(file, b_singleton, ct_name, global_name)

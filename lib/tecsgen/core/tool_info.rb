@@ -267,9 +267,11 @@ class TECSGEN
   def self.new_cell_location(cell_location)
     @@current_tecsgen.new_cell_location cell_location
   end
+
   def new_cell_location(cell_location)
     @cell_location_list << cell_location
   end
+
   def get_cell_location_list
     @cell_location_list
   end
@@ -277,9 +279,11 @@ class TECSGEN
   def self.new_join_location(join_location)
     @@current_tecsgen.new_join_location join_location
   end
+
   def new_join_location(join_location)
     @join_location_list << join_location
   end
+
   def get_join_location_list
     @join_location_list
   end

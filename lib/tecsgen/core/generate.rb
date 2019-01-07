@@ -112,7 +112,6 @@ def print_Makefile_note(f)
   f.print TECSMsg.get(:Makefile_note)
 end
 
-
 def print_indent(f, n)
   f.print "    " * n
 end
@@ -806,6 +805,7 @@ EOT
       ns.gen_celltype_names_domain(f, prepend, append, domain_type, region, b_plugin, b_inline_only)
     }
   end
+
   #== Namespace#すべてのセルタイプの名前を出力
   # セルタイプコードのための名前出力
   # gen_celltype_names_domain と gen_celltype_names_domain2 の相違
@@ -848,6 +848,7 @@ EOT
       ns.travers_all_signature_proc proc
     }
   end
+
   def travers_all_signature_proc(proc)
     @signature_list.each{ |sig|
       proc.call sig
@@ -867,6 +868,7 @@ EOT
       ns.travers_all_celltype_proc proc
     }
   end
+
   def travers_all_celltype_proc(proc)
     @celltype_list.each{ |ct|
       proc.call ct
@@ -1425,7 +1427,6 @@ EOT
 #      end
 #    }
   end
-
 
   def gen_ph_base(f)
     return if @singleton
@@ -2538,7 +2539,6 @@ EOT
     end
   end
 
-
   #===   attribute の型宣言出力
   # inib_cb::  :INIB または :CB
   def gen_cell_cb_type_attribute(f, inib_cb)
@@ -2755,7 +2755,6 @@ EOT
     end
   end
 
-
   #===  変数var初期化コード
   #
   def gen_ph_cb_initialize_macro(f)
@@ -2884,7 +2883,6 @@ EOT
     end
   end
 
-
   def gen_ph_inline(f)
     # inline ポートが一つでもあれば、inline.h の include
     if @n_entry_port_inline > 0
@@ -2896,7 +2894,6 @@ EOT
   def gen_ph_endif(f, post = "TECSGEN")
     f.print("#endif /* #{@global_name}_#{post}H */\n")
   end
-
 
 ##### celltype factory header
   def generate_factory_header
@@ -2917,7 +2914,6 @@ EOT
     f.print("#endif /* #{@name}_FACTORY_H */\n")
     f.close
   end
-
 
 #####  celltype glue code
   def gen_cell_private_header(f)
@@ -4980,7 +4976,6 @@ EOT
     return headers
   end
 
-
   #=== $id$, $ct$, $cb$, $idx$ 置換
   #
   #  str に以下の置換を行う
@@ -5106,9 +5101,11 @@ class MemFile
   def initialize
     @string = ""
   end
+
   def print(str)
     @string += str
   end
+
   def get_string
     @string
   end

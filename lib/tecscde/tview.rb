@@ -952,6 +952,7 @@ module TECSCDE
       draw_text_v_cairo(x, y, text, obj_type, alignment)
       # draw_text_v_cairo_pango( x, y, text, obj_type, alignment )
     end
+
       #----- Gdk Pango version -----#
     def draw_text_v_gdk(x, y, text, obj_type, alignment)
       pc = @pango_context

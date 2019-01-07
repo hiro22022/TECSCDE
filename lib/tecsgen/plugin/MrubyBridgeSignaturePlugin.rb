@@ -1259,6 +1259,7 @@ EOT
       @b_ignoreUnsigned = true
     end
   end
+
   #=== プラグイン引数 include
   def set_include(rhs)
     funcs = rhs.split ","
@@ -1277,6 +1278,7 @@ EOT
       end
     }
   end
+
   #=== プラグイン引数 exclude
   def set_exclude(rhs)
     funcs = rhs.split ","
@@ -1290,6 +1292,7 @@ EOT
       end
     }
   end
+
   #=== プラグイン引数 auto_exclude
   def set_auto_exclude(rhs)
     if rhs == "false"

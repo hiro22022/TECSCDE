@@ -56,7 +56,6 @@ class CelltypePlugin < Plugin
   def new_cell(cell)
   end
 
-
   #=== tCelltype_factory.h に挿入するコードを生成する
   # file 以外の他のファイルにファクトリコードを生成してもよい
   # セルタイププラグインが指定されたセルタイプのみ呼び出される

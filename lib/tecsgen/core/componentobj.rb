@@ -1067,6 +1067,7 @@ class Celltype < NSBDNode # < Nestable
     }
     return nil
   end
+
   def find_ref_desc_port(signature)
     if signature == nil  # すでにエラー
       return nil
@@ -1078,6 +1079,7 @@ class Celltype < NSBDNode # < Nestable
     }
     return nil
   end
+
   #=== Celltype#ディスクリプタ型でシグニチャが一致し dyn_ref に対応づく引数を探す
   # dyn_ref::Symbol: :DYNAMIC=ディスクリプタを得る手段となる引数を探す．:REF_DESC=渡す手段となる引数を探す
   def find_descriptor_param(signature, dyn_ref)
@@ -4757,7 +4759,6 @@ class Namespace < NSBDNode
     return object
   end
 
-
   def find(name)
     @name_list.get_item(name)
   end
@@ -5555,7 +5556,6 @@ class Join < BDNode
     end
   end
 
-
   #=== Join# 生成しないリージョンへの結合かチェック
   # 右辺のセルが、生成されないリージョンにあればエラー
   # 右辺は、プラグイン生成されたセルがあれば、それを対象とする
@@ -5975,9 +5975,11 @@ class Join < BDNode
   def get_rhs_cell1   # get_cell と同じ
     @cell
   end
+
   def get_rhs_port1   # get_port_name 同じ
     @port_name
   end
+
   def get_rhs_subscript1
     @rhs_subscript
   end
@@ -7479,6 +7481,7 @@ EOT
   def self.get_header_list
     @@header_list
   end
+
   def self.get_header_list2
     @@header_list2
   end
@@ -7685,6 +7688,7 @@ class NamespacePath < Node
     @path << ident
     return self
   end
+
   #=== NamespacePath# append する
   # このメソッドは、元の NamespacePath オブジェクトを変形しない
   # RETURN:: 複製した NamespacePath
@@ -7724,6 +7728,7 @@ class NamespacePath < Node
   def to_s
     get_path_str
   end
+
   def get_path_str
     first = true
     if @b_absolute
@@ -7745,6 +7750,7 @@ class NamespacePath < Node
   def is_absolute?
     @b_absolute
   end
+
   def is_name_only?
     @path.length == 1 && @b_absolute == false
   end

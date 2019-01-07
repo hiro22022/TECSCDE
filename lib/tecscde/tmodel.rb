@@ -791,6 +791,7 @@ module TECSCDE
           return [ EDGE_RIGHT, DIST_PORT * (inc_n_cport + 1) ]
         end
       end
+
       def get_new_eport_position(port_def)
         if $b_tate
           return [ EDGE_TOP, DIST_PORT * (inc_n_eport + 1) ]
@@ -881,6 +882,7 @@ module TECSCDE
       def get_cports
         @cports
       end
+
       #=== TmCell#get_eports ***
       def get_eports
         @eports
@@ -1040,6 +1042,7 @@ module TECSCDE
       def delete_cell(cell)
         @owner.delete_cell cell
       end
+
       def rename_cell(cell, name)
         @owner.rename_cell cell, name
       end
@@ -1807,6 +1810,7 @@ EOT
       def get_ports_bars
         [@cport, @eport, @bars]
       end
+
       def get_bars
         @bars
       end

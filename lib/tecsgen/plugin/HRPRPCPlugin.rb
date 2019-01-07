@@ -375,7 +375,6 @@ EOT
     @end_region.gen_region_str_post file
   end
 
-
   #=== プラグイン引数 noClientSemaphore のチェック
   def set_noClientSemaphore(rhs)
     rhs = rhs.to_sym

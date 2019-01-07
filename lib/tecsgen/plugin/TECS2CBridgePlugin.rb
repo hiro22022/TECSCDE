@@ -139,7 +139,6 @@ EOT
     end
   end
 
-
   def gen_postamble(file, b_singleton, ct_name, global_name)
     # generate header file here, NOT postamble
     file2 = CFile.open(@header_name, "w")

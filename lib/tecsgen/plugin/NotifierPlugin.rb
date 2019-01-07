@@ -118,6 +118,7 @@ class NotifierPlugin < CelltypePlugin
 
       # 同値性の定義．Hashのキーとして使用するのに必要．
       def eql?(o) @cell == o.cell && @subscript == o.subscript end
+
       def hash() @cell.hash ^ @subscript.hash end
     end
 
@@ -547,6 +548,7 @@ class NotifierPlugin < CelltypePlugin
       return super(handler, cell, join, *args) &&
         join && join.get_rhs_cell.get_celltype.get_name == :tTask
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       taskCell = join.get_cell
       id_attr_join = taskCell.get_join_list.get_item(:id)
@@ -565,6 +567,7 @@ class NotifierPlugin < CelltypePlugin
 
           return [id]
     end
+
     def might_fail
       return true
     end
@@ -574,6 +577,7 @@ class NotifierPlugin < CelltypePlugin
       return super(handler, cell, join, *args) &&
         join.get_port_name == :eiActivateNotificationHandler
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_ACTTSK"
@@ -587,6 +591,7 @@ class NotifierPlugin < CelltypePlugin
       return super(handler, cell, join, *args) &&
         join.get_port_name == :eiWakeUpNotificationHandler
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_WUPTSK"
@@ -603,11 +608,13 @@ class NotifierPlugin < CelltypePlugin
         SETVAR_VALUE_ATTR
       ] # .to_set
     end
+
     def validate_join(handler, cell, join, *args)
       return super(handler, cell, join, *args) &&
         join.nil? &&
         handler == EVENT_HANDLER
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       var_addr = attrMap[SETVAR_ADDR_ATTR].get_rhs.to_s
       var_value = attrMap[SETVAR_VALUE_ATTR].get_rhs.to_s
@@ -619,6 +626,7 @@ class NotifierPlugin < CelltypePlugin
 
           return [var_addr, var_value]
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_SETVAR"
@@ -633,11 +641,13 @@ class NotifierPlugin < CelltypePlugin
         SETVAR_ADDR_ATTR
       ] # .to_set
     end
+
     def validate_join(handler, cell, join, *args)
       return super(handler, cell, join, *args) &&
         join.nil? &&
         handler == ERROR_HANDLER
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       var_addr = attrMap[SETVAR_ADDR_ATTR].get_rhs.to_s
 
@@ -647,6 +657,7 @@ class NotifierPlugin < CelltypePlugin
 
           return [var_addr]
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when ERROR_HANDLER then return "TENFY_SETVAR"
@@ -661,10 +672,12 @@ class NotifierPlugin < CelltypePlugin
         INCVAR_ADDR_ATTR
       ] # .to_set
     end
+
     def validate_join(handler, cell, join, *args)
       return super(handler, cell, join, *args) &&
         join.nil?
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       var_addr = attrMap[INCVAR_ADDR_ATTR].get_rhs.to_s
 
@@ -674,6 +687,7 @@ class NotifierPlugin < CelltypePlugin
 
           return [var_addr]
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_INCVAR"
@@ -687,6 +701,7 @@ class NotifierPlugin < CelltypePlugin
       return super(handler, cell, join, *args) &&
         join && join.get_rhs_cell.get_celltype.get_name == :tSemaphore
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       semaphoreCell = join.get_cell
       id_attr_join = semaphoreCell.get_join_list.get_item(:id)
@@ -705,9 +720,11 @@ class NotifierPlugin < CelltypePlugin
 
           return [id]
     end
+
     def might_fail
       return true
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_SIGSEM"
@@ -723,10 +740,12 @@ class NotifierPlugin < CelltypePlugin
         SETFLG_FLAG_ATTR
       ] # .to_set
     end
+
     def validate_join(handler, cell, join, *args)
       return super(handler, cell, join, *args) &&
         join && join.get_rhs_cell.get_celltype.get_name == :tEventflag
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       eventflagCell = join.get_cell
       id_attr_join = eventflagCell.get_join_list.get_item(:id)
@@ -749,9 +768,11 @@ class NotifierPlugin < CelltypePlugin
 
           return [id, flg_pattern]
     end
+
     def might_fail
       return true
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_SETFLG"
@@ -764,10 +785,12 @@ class NotifierPlugin < CelltypePlugin
     def initialize()
       super
     end
+
     def validate_join(handler, cell, join, *args)
       return super(handler, cell, join, *args) &&
         join && join.get_rhs_cell.get_celltype.get_name == :tDataqueue
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       dataqueueCell = join.get_cell
       id_attr_join = dataqueueCell.get_join_list.get_item(:id)
@@ -788,6 +811,7 @@ class NotifierPlugin < CelltypePlugin
 
           return [id]
     end
+
     def might_fail
       return true
     end
@@ -799,9 +823,11 @@ class NotifierPlugin < CelltypePlugin
         SNDDTQ_VALUE_ATTR
       ] # .to_set
     end
+
     def validate_join(handler, cell, join, *args)
       return super(handler, cell, join, *args) && handler == EVENT_HANDLER
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       params = super(handler, join, attrMap, cell, adpt_gen)
 
@@ -815,6 +841,7 @@ class NotifierPlugin < CelltypePlugin
 
           return params
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_SNDDTQ"
@@ -826,9 +853,11 @@ class NotifierPlugin < CelltypePlugin
     def initialize()
       super
     end
+
     def validate_join(handler, cell, join, *args)
       return super(handler, cell, join, *args) && handler == ERROR_HANDLER
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when ERROR_HANDLER then return "TENFY_SNDDTQ"
@@ -842,12 +871,14 @@ class NotifierPlugin < CelltypePlugin
         handler != ERROR_HANDLER && # invalid for error handler
         join && join.get_rhs_cell.get_celltype.get_name == :tTimeEventHandler
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when EVENT_HANDLER then return "TNFY_HANDLER"
         else raise "unknown handler #{handler}"
       end
     end
+
     def gen_cfg_handler_parameters(handler, join, attrMap, cell, adpt_gen)
       # tTimeEventHandlerの結合先を取得
       handler_cell = join.get_rhs_cell
@@ -868,6 +899,7 @@ class NotifierPlugin < CelltypePlugin
         join.nil? &&
         handler != EVENT_HANDLER # handler is mandatory for normal handler!
     end
+
     def gen_cfg_handler_type(handler)
       case handler
         when ERROR_HANDLER then return nil

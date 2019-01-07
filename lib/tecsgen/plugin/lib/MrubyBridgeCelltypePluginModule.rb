@@ -222,6 +222,7 @@ EOT
       @exclude_cells << rhs_cell.to_sym
     }
   end
+
   def set_exclude_port(rhs)
     ports = rhs.split ","
     ct = @cell.get_celltype

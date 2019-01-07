@@ -249,6 +249,7 @@ EOT
       end
     }
   end
+
   #=== プラグイン引数 auto_exclude
   def set_auto_exclude(rhs)
     # print "MrubyBridgeCellPlugin: auto_exclude=#{rhs}\n"

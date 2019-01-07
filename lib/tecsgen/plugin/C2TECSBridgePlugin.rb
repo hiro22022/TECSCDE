@@ -107,7 +107,6 @@ EOT
     # nothing to do
   end
 
-
   def gen_postamble(file, b_singleton, ct_name, global_name)
     header_file = open(@header_name, "w")
 
@@ -194,10 +193,12 @@ EOT
   def set_prefix(rhs)
     @prefix = rhs.to_s
   end
+
   #===  set_suffix - suffix プラグインオプション
   def set_suffix(rhs)
     @suffix = rhs.to_s
   end
+
   #===  set_header_name - header_name プラグインオプション
   def set_header_name(rhs)
     @header_name = "#{$gen}/" + rhs.to_s

@@ -127,6 +127,7 @@ class TECSGEN
     def self.add_obj(obj)
       @@objs << obj
     end
+
     #=== 追加する変数
     # プラグインからは、デフォルト値を変更できる
     # config により
@@ -142,25 +143,30 @@ class TECSGEN
         @@var_comments[var.to_sym] = comment
       end
     end
+
     #=== LDFLAGS に追加する
     def self.add_ldflag(ldflag)
       @@ldflags += " " + ldflag
     end
+
     #=== サーチパスを追加する
     # CFLAGS, vpath に追加する
     def self.add_search_path(path)
       @@search_path << path
     end
+
     #=== PRE_TECSGEN_TARGET に追加する
     # PRE_TECSGEN_TARGET に target を追加する
     def self.add_pre_tecsgen_target(target)
       @@pre_tecsgen_target << pre_tecsgen_target
     end
+
     #=== POST_TECSGEN_TARGET に追加する
     # POST_TECSGEN_TARGET に target を追加する
     def self.add_post_tecsgen_target(target)
       @@post_tecsgen_target << pre_tecsgen_target
     end
+
     #=== 追加する変数
     def self.add_line(line)
       @@lines << line.to_s + "\n"
@@ -169,6 +175,7 @@ class TECSGEN
     def self.get_objs  # Array を返す
       return @@objs.uniq
     end
+
     def self.get_vars  # Array を返す
       if RUBY_VERSION >= "1.9"
         return (@@vars.keys + @@vars_default.keys).sort.uniq
@@ -177,24 +184,31 @@ class TECSGEN
         return (@@vars.keys + @@vars_default.keys).map{|s| s.to_s }.sort.uniq.map!{|s| s.to_sym }
       end
     end
+
     def self.get_var_val(var)
       return @@vars[var] ? @@vars[var] : @@vars_default[var]
     end
+
     def self.get_var_comment(var)
       return @@var_comments[var]
     end
+
     def self.get_ldflags  # String を返す
       return @@ldflags
     end
+
     def self.get_search_path  # Array を返す
       return @@search_path.uniq
     end
+
     def self.get_pre_tecsgen_target  # Array を返す
       return @@pre_tecsgen_target.uniq
     end
+
     def self.get_post_tecsgen_target  # Array を返す
       return @@post_tecsgen_target.uniq
     end
+
     def self.get_lines  # 付加する行を得る
       return @@lines.uniq
     end

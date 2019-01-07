@@ -1013,6 +1013,7 @@ class C_EXP < Node
   def eval_const(name_list, name_list2 = nil)
     return self
   end
+
   def eval_const2(name_list, name_list2 = nil, nest = nil)
     return self
   end

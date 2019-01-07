@@ -265,7 +265,6 @@ module GenOpaqueMarshaler
     @serverErrorHandler = rhs.to_sym
   end
 
-
   #===  セルの名前を得る
   # ThroughPlugin::get_cell_name plugin.rb をオーバーライド
   def get_cell_name
@@ -910,7 +909,6 @@ EOT
       # ここ（個々の関数）ではエラーハンドラーは呼び出さない。呼び元（サーバーのメイン関数）で呼び出す。
     }
   end
-
 
   # b_marshal:: bool
   # b_get:: bool

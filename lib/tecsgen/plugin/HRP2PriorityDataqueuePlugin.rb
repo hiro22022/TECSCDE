@@ -49,6 +49,7 @@ class HRP2PriorityDataqueuePlugin < HRP2KernelObjectPlugin
     file.print tab
       file.puts "CRE_PDQ(#{val[:id]}, {#{val[:attribute]}, #{val[:count]}, #{val[:maxDataPriority]}, #{val[:pdqmb]}});"
   end
+
     #=== HRP2PriorityDataqueuePlugin#print_cfg_sac
     # SAC_PDQの出力
     # file:: FILE:     出力先ファイル
@@ -57,6 +58,7 @@ class HRP2PriorityDataqueuePlugin < HRP2KernelObjectPlugin
   def print_cfg_sac(file, val, acv)
     file.puts "SAC_PDQ(#{val[:id]}, {#{acv[0]}, #{acv[1]}, #{acv[2]}, #{acv[3]}});"
   end
+
     # tPriorityDataqueueの受け口リスト
   def get_entry_ports_name_list()
     @@ep

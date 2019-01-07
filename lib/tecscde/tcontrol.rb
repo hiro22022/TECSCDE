@@ -122,6 +122,7 @@ Structure of Palette Window
     def on_save
       flush_print "save\n"; @model.save(@model.get_file_editing)
     end
+
     def on_export
       fname = @model.get_file_editing.sub(/\.[Cc][Dd][Ee]\Z/, ".pdf")
       if !(fname =~ /\.pdf\Z/)
@@ -130,33 +131,40 @@ Structure of Palette Window
       flush_print "export to #{fname}\n"
       @view.export(fname)
     end
+
     def on_pointer
       flush_print "mode: pointer\n"
       @mode = :MODE_POINTER
     end
+
     def on_new_cell
       @mode = :MODE_NEW_CELL
       flush_print "mode: new\n"
     end
+
     def on_undo
       @model.undo
       @hilite_objs.reset
       update
     end
+
     def on_redo
       @model.redo
       @hilite_objs.reset
       update
     end
+
     def on_quit
       flush_print "quit\n";Gtk.main_quit
     end
+
     def on_cell_name_entry_active(entry)
       @b_cell_renaming = true
       @hilite_objs.change_cell_name entry.text
       @b_cell_renaming = false
       update
     end
+
     def on_cell_name_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
       if !@b_cell_renaming
@@ -164,12 +172,14 @@ Structure of Palette Window
         update
       end
     end
+
     def on_cell_region_entry_active(entry)
 #      @b_cell_renaming = true
 #      @hilite_objs.change_cell_name entry.text
 #      @b_cell_renaming = false
 #      update
     end
+
     def on_cell_region_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
 #      if ! @b_cell_renaming
@@ -177,6 +187,7 @@ Structure of Palette Window
 #        update
 #      end
     end
+
     def set_attrOperationWidgets(window, ctv, attrTreeView, cell_name_entry, cell_region_entry, cell_frame)
       @window = window
       @celltypeTreeView = ctv
