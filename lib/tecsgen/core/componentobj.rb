@@ -7226,11 +7226,7 @@ module Importable
 
     $base_dir.each_key{|bd|
       $import_path.each{|path|
-#        if path =~ /\A\// || path =~ /\A[a-zA-Z]:/
         pt = "#{path}/#{file}"
-#        else
-#          pt = "#{bd}/#{path}/#{file}"
-#        end
         begin
           Dir.chdir $run_dir
           Dir.chdir bd
@@ -7244,6 +7240,7 @@ module Importable
             return pt
           end
         rescue
+          # TODO Add debug print to display exception
         end
       }
     }
