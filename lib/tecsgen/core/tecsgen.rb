@@ -243,6 +243,7 @@ class TECSGEN
     # すべての cdl を import する
     argv.each{|f|
       dbgPrint("## Import: #{f}\n")
+      TECSGEN.add_import_path(File.expand_path(File.dirname(f)))
       Import.new(f, false, false)
     }
 
