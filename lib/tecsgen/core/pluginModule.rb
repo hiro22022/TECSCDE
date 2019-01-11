@@ -56,7 +56,7 @@ module PluginModule
     begin
       unless @@loaded_plugin_list[plugin_name.to_sym]
         @@loaded_plugin_list[plugin_name.to_sym] = 0
-        if ($verbose)
+        if $verbose
           print("load '#{plugin_name}.rb'\n")
         end
         # "#{plugin_name}.rb" をロード（システム用ではないので、fatal エラーにしない）
@@ -67,9 +67,9 @@ module PluginModule
       end
 
       plClass = Object.const_get plugin_name
-      if (plClass <= superClass) # plClass inherits superClass
+      if plClass <= superClass # plClass inherits superClass
         return plClass
-      elsif (plClass <= MultiPlugin) # plClass inherits MultiPlugin
+      elsif plClass <= MultiPlugin # plClass inherits MultiPlugin
         dbgPrint "pluginClass=#{plClass}\n"
         plugin_object = plClass.get_plugin superClass
         dbgPrint "pluginClass=#{plugin_object}\n"

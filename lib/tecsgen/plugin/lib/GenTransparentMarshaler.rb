@@ -267,7 +267,7 @@ EOT
       cLockChannel_signal();
 EOT
 
-    if (b_void == false)
+    if b_void == false
       # 呼び元に戻り値をリターン
       file.print("    return retval_;\n")
     else
@@ -289,7 +289,7 @@ EOT
 
 EOT
 
-    if (b_ret_er != false)
+    if b_ret_er != false
       # 呼び元に戻り値をリターン
       file.print("    return ercd_;\n")
     else
@@ -411,7 +411,7 @@ EOT
         alloc_cp_extra = nil
         print_param(param.get_name, type, file, nest, dir, nil, nil, b_marshal, b_get, alloc_cp, alloc_cp_extra)
       else
-        if (b_get == false && b_marshal == true || b_get == true && b_marshal == false)
+        if b_get == false && b_marshal == true || b_get == true && b_marshal == false
           case dir
 #          when :IN, :INOUT, :SEND
           when :IN, :INOUT, :OUT, :SEND, :RECEIVE
@@ -508,7 +508,7 @@ EOT
         cast_str = "(" + cast_str + ")"
       end
 
-      if (b_get)
+      if b_get
         cast_str.gsub!(/\)$/, "*)")
         file.print "    " * nest
         file.print "if( ( ercd_ = cTDR_get#{type_str}( #{cast_str}&(#{outer}#{name}#{outer2}) ) ) != E_OK )\n"

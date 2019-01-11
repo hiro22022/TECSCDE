@@ -221,7 +221,7 @@ EOT
 
     print_params(params, file, 0, :OUT)
 
-    if (!func_type.get_type.is_void?)
+    if !func_type.get_type.is_void?
       print_param("retval", func_type.get_type, file, 0, :RETURN, func_type.get_type.get_type_str, nil, nil)
       file.print("\treturn retval;\n")
     end
@@ -230,7 +230,7 @@ EOT
   def print_params(params, file, nest, direction)
     params.each{|param|
       dir = param.get_direction
-      if (direction == :IN)
+      if direction == :IN
         case dir
         when :IN, :INOUT, :SEND
           print_param(param.get_name, param.get_type, file, nest, dir, param.get_type.get_type_str, nil, nil)

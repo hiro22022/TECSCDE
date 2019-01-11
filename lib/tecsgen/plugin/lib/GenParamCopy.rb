@@ -121,7 +121,7 @@ EOT
 
       end
 
-      if (b_get)
+      if b_get
         file.print indent
         file.print "if( ( ercd_ = cTDR_get#{type_str}( &(#{outer}#{name}#{outer2}) ) ) != E_OK )\t/* GenParamCopy 2 */\n"
         file.print indent
@@ -185,8 +185,8 @@ EOT
             end
             size_str = "length__#{nest}" # string の場合、strnlen 以上の領域を確保しない
           else
-            if (dir == :INOUT)
-              if (string.instance_of? Expression)
+            if dir == :INOUT
+              if string.instance_of? Expression
                 len = string.to_str(name_list, outer, outer2)
                 size_str = "#{len}" # string(len) の場合 len を確保する
               else

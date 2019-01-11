@@ -114,7 +114,7 @@ module TECSCDE
       argv = TECSGEN.get_argv
       if argv.length > 0
         last_arg = argv[-1]
-        if (last_arg =~ /\.cde\Z/)
+        if last_arg =~ /\.cde\Z/
           @file_editing = last_arg
         else
           if last_arg =~ /\.cdl\Z/

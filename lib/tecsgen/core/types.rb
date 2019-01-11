@@ -989,7 +989,7 @@ class StructType < Type
 
     md1 = @members_decl.get_items
     md2 = md.get_items
-    if (md1.length != md2.length)
+    if md1.length != md2.length
       return false
     end
 
@@ -1123,7 +1123,7 @@ class FuncType < Type
   def set_oneway(b_oneway)
     @b_oneway = b_oneway
 
-    if ((@type.get_type_str != "ER" && @type.get_type_str != "void") || @type.get_type_str_post != "")
+    if (@type.get_type_str != "ER" && @type.get_type_str != "void") || @type.get_type_str_post != ""
       cdl_error("T1029 oneway function cannot return type \'$1$2\', \'void\' or \'ER\' is permitted", @type.get_type_str, @type.get_type_str_post)
     end
 
@@ -1273,7 +1273,7 @@ class ArrayType < Type
   end
 
   def check_init(locale, ident, initializer, kind, attribute = nil)
-    if (initializer.instance_of?(Array))
+    if initializer.instance_of?(Array)
       # 要素数が指定されている場合、初期化要素数をチェック
       if @subscript
         n_sub = @subscript.eval_const(nil)
@@ -1378,13 +1378,13 @@ class PtrType < Type
   end
 
   def check_init(locale, ident, initializer, kind, attribute = nil)
-    if (initializer.instance_of?(Expression))
+    if initializer.instance_of?(Expression)
       val = initializer.eval_const2(nil, attribute)
       if val.kind_of? PointerVal
         type = val.get_type # PtrType
         t1 = self
         t2 = type
-        while (t1.kind_of?(PtrType) && t2.kind_of?(PtrType))
+        while t1.kind_of?(PtrType) && t2.kind_of?(PtrType)
           t1 = t1.get_type
           t2 = t2.get_type
           if (t1.class == t2.class) && (t1.get_bit_size == t2.get_bit_size)
@@ -1405,7 +1405,7 @@ class PtrType < Type
         if @type.get_bit_size != -1 && @type.get_bit_size != -11 # -1: char_t
           cdl_error2(locale, "T1034 $1: unsuitable string constant", ident)
         end
-      elsif (val.instance_of?(Array))
+      elsif val.instance_of?(Array)
         i = 0
         val.each {|ini|
           @type.check_init(locale, "#{ident}[#{i}]", ini, kind, attribute = nil)
@@ -1416,7 +1416,7 @@ class PtrType < Type
       else
         cdl_error2(locale, "T1035 $1: unsuitable initializer for pointer", ident)
       end
-    elsif (initializer.instance_of?(Array))
+    elsif initializer.instance_of?(Array)
       if @size == nil && @count == nil
         cdl_error2(locale, "T9999 $1: non-size_is pointer cannot have array initializer", ident)
       end
@@ -1426,7 +1426,7 @@ class PtrType < Type
         @type.check_init(locale, "#{ident}[#{i}]", ini, kind, attribute = nil)
         i += 1
       }
-    elsif (initializer.instance_of?(C_EXP))
+    elsif initializer.instance_of?(C_EXP)
 
     else
       cdl_error2(locale, "T1036 $1: unsuitable initializer for pointer", ident)

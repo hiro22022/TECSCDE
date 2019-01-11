@@ -551,7 +551,7 @@ EOT
 		cLockChannel_signal();
 EOT
 
-    if (b_void == false)
+    if b_void == false
       # 呼び元に戻り値をリターン
       file.print("	return retval_;\n")
     else
@@ -593,7 +593,7 @@ EOT
 		cErrorHandler_errorOccured( func_id_, ercd_, state_ );
 EOT
 
-    if (b_ret_er != false)
+    if b_ret_er != false
       # 呼び元に戻り値をリターン
       file.print("	return ERCD( E_RPC, MERCD( ercd_ ) );\n")
     else
@@ -755,11 +755,11 @@ EOT
         type = par.get_type.get_original_type
 
         dir = par.get_direction
-        if (dir == :RECEIVE)
+        if dir == :RECEIVE
           # type は PtrType で、それを取り除いた型
           type = type.get_type
         end
-        if (dir == :SEND || dir == :RECEIVE)
+        if dir == :SEND || dir == :RECEIVE
           init = " = 0"
         else
           init = ""
@@ -843,7 +843,7 @@ EOT
         file.print "		goto error_reset;\n"
 
         b_get = false # unmarshaler は put
-        if (!b_void)
+        if !b_void
           file.print "	/* 戻り値の送出 */\n"
           print_param("retval_", f_type.get_type, file, 1, :RETURN, nil, nil, b_marshal, b_get)
         end
@@ -925,7 +925,7 @@ EOT
       end
 
       dir = param.get_direction
-      if (b_get == false && b_marshal == true || b_get == true && b_marshal == false)
+      if b_get == false && b_marshal == true || b_get == true && b_marshal == false
         case dir
         when :IN, :INOUT
           alloc_cp = "cPPAllocator_alloc"

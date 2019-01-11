@@ -1285,13 +1285,13 @@ module TECSCDE
       center = len / 2
       i = 0
       n = 0
-      while ((center / 2 > i) && (i < center) && (str[center + i] != nil))
+      while (center / 2 > i) && (i < center) && (str[center + i] != nil)
         char_i = str[center - i]
         char_j = str[center + i]
         if char_j == Char__ || (Char_A <= char_j && char_j <= Char_Z)
           n = center + i
           break
-        elsif (Char_A <= char_i && char_i <= Char_Z)
+        elsif Char_A <= char_i && char_i <= Char_Z
           n = center - i
           break
         elsif char_i == Char__

@@ -2491,7 +2491,7 @@ EOT
   end
 
   def gen_ph_cell_cb_type(f)
-    if ($rom)
+    if $rom
       # 定数部は ROM, 変数部は RAM
 
       if has_INIB?
@@ -2764,7 +2764,7 @@ EOT
       init = v.get_initializer
       if init.instance_of? Array
         type = v.get_type
-        if (type.kind_of? PtrType)
+        if type.kind_of? PtrType
           # PtrType は ArrayType にすり替える
 
           # 初期化子の要素数とする (後は 0 である)
@@ -2798,7 +2798,7 @@ EOT
 #        print v.get_name, type.class, "\n"
 #        if init.instance_of? Array || type.kind_of?( StructType ) then
         if init.instance_of? Array
-          if (type.kind_of?(ArrayType) || type.kind_of?(PtrType))
+          if type.kind_of?(ArrayType) || type.kind_of?(PtrType)
             pre = "&"
             post = "[0]"
           elsif type.kind_of? StructType
@@ -2997,7 +2997,7 @@ EOT
         f.print ")\n"
 
         f.print "{\n"
-        if (!@singleton || !p.get_array_size.nil?)
+        if !@singleton || !p.get_array_size.nil?
           f.print "    struct tag_#{@global_name}_#{p.get_name}_DES *lepd\n"
           f.print "        = (struct tag_#{@global_name}_#{p.get_name}_DES *)epd;\n"
         end
@@ -3099,7 +3099,7 @@ EOT
           # 呼び口配列か?
           if am
             i = 0
-            while (i < am.length)
+            while i < am.length
               j = am[i]
               if j
                 if am[i].get_rhs_cell.get_celltype == self
@@ -3354,7 +3354,7 @@ EOT
             init = a.get_initializer
           end
 
-          if (a.is_type?(PtrType) && ((init && init.instance_of?(Array)) || init == nil))
+          if a.is_type?(PtrType) && ((init && init.instance_of?(Array)) || init == nil)
             ptr_type = a.get_type
             size = ptr_type.get_size
 
@@ -3376,7 +3376,7 @@ EOT
               # name_array[3]: cell_CB_INIT
               if !($ram_initializer && a.get_kind == :VAR)
                 # -R (ram initializer 使用) の場合 var は初期化コードを出力しない
-                if (init)
+                if init
                   str = " = #{gen_cell_cb_init(f, c, name_array, array_type, init, a.get_identifier, 1, true)}"
                   str = str.sub(/\}$/, "};\n")
                 else
@@ -3412,7 +3412,7 @@ EOT
           type = v.get_type
           org_type = v.get_type.get_original_type
 
-          if (org_type.kind_of? PtrType)
+          if org_type.kind_of? PtrType
             # PtrType は ArrayType にすり替える
 
             # 初期化子の要素数だけとする（後は 0)
@@ -3429,7 +3429,7 @@ EOT
           if org_type.kind_of? StructType
             # celltype の default の初期値あり
             str = gen_cell_cb_init(f, c, name_array, type, init, v.get_identifier, 1, true)
-          elsif (org_type.kind_of?(PtrType) || org_type.kind_of?(ArrayType))
+          elsif org_type.kind_of?(PtrType) || org_type.kind_of?(ArrayType)
             str = "{ "
             type = org_type.get_type
             # mikan ポインタではなく、配列型としないと、ポインタ変数の領域の分、損する
@@ -3933,7 +3933,7 @@ EOT
       type = type.get_type
     end
 
-    if (init == nil)
+    if init == nil
 
       if f_get_str
         # 初期値未指定
@@ -4203,7 +4203,7 @@ EOT
               else
                 f.print "    &#{@global_name}_#{p.get_name}_MT_,\n"
               end
-              if (@idx_is_id_act)
+              if @idx_is_id_act
                 f.print "    #{c.get_id},           /* ID */\n"
               else
                 if has_CB?
@@ -4283,7 +4283,7 @@ EOT
 
     f = AppFile.open(fname)
 
-    unless (@plugin && @plugin.gen_ep_func?)
+    unless @plugin && @plugin.gen_ep_func?
       f.printf(TECSMsg.get(:template_note), @name, @name)
     else
       print_note(f, true)
@@ -4297,7 +4297,7 @@ EOT
     f.printf TECSMsg.get(:PAC_comment), "#_PAC_#"
 
     gen_template_private_header f
-    if (@plugin)
+    if @plugin
       # このメソッドの引数は plugin.rb の説明を見よ
       @plugin.gen_preamble(f, @singleton, @name, @global_name)
     end
@@ -4306,7 +4306,7 @@ EOT
 
     f.print TECSMsg.get(:postamble_note)
 
-    if (@plugin)
+    if @plugin
       # このメソッドの引数は plugin.rb の説明を見よ
       @plugin.gen_postamble(f, @singleton, @name, @global_name)
     end
@@ -4563,7 +4563,7 @@ EOT
 
         f.print "{\n"
 
-        if (@plugin && @plugin.gen_ep_func?)
+        if @plugin && @plugin.gen_ep_func?
           # このメソッドの引数は plugin.rb の説明を見よ
           @plugin.gen_ep_func_body(f, @singleton, @name, @global_name, p.get_signature.get_global_name, p.get_name, fun.get_name, "#{@global_name}_#{p.get_name}_#{fun.get_name}", functype, items)
 
@@ -4626,7 +4626,7 @@ EOT
 
     gen_ph_guard f, "_INLINE"
 
-    unless (@plugin && @plugin.gen_ep_func?)
+    unless @plugin && @plugin.gen_ep_func?
       f.printf(TECSMsg.get(:inline_template_note), @name, @name)
     else
       print_note(f, true)
@@ -4641,7 +4641,7 @@ EOT
 
     f.print TECSMsg.get(:postamble_note)
 
-    if (@plugin)
+    if @plugin
       # このメソッドの引数は plugin.rb の説明を見よ
       @plugin.gen_postamble(f, @singleton, @name, @global_name)
     end
@@ -4897,7 +4897,7 @@ EOT
 
       if b_reset || type.is_nullable?
         nullable = ""
-        if (!b_reset && type.is_nullable?)
+        if !b_reset && type.is_nullable?
           nullable = "\t/* nullable */"
         end
         level2 = level + 1

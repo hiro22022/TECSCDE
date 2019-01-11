@@ -334,7 +334,7 @@ EOT
             i += 1
         }
 
-        while (i < NUM_SVC_ARG_MAX) do
+        while i < NUM_SVC_ARG_MAX do
           delim = ","
             file.printf("#{delim} 0")
             passed_param[i] = "par#{i + 1}"
@@ -726,7 +726,7 @@ EOS
   # 整数、ブール、void は可能、他は不可
   def check_return_type(signature, fh, type)
     ot = type.get_original_type
-    if (type.get_type_str == "ER" || type.get_type_str == "ER_UINT")
+    if type.get_type_str == "ER" || type.get_type_str == "ER_UINT"
       # OK!
     elsif ot.kind_of?(IntType) || ot.kind_of?(VoidType) || ot.kind_of?(BoolType)
       cdl_warning("HSW0001 $1.$2: $3 return type cannot get access violation error", signature.get_name, fh.get_name, type.get_type_str.downcase)
@@ -791,7 +791,7 @@ EOS
         check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}.#{decl.get_name} member", type
       else
         dbgPrint "struct member #{decl.get_name} #{type} #{decl.get_type} #{decl.get_type.get_original_type}\n"
-        if (decl.get_type.get_original_type.kind_of? ArrayType)
+        if decl.get_type.get_original_type.kind_of? ArrayType
           dbgPrint "member array type #{decl.get_type.get_original_type.get_type} #{decl.get_type.get_original_type.get_type.get_original_type}\n"
           check_struct_member_array signature, fh, param, decl
         else
@@ -816,7 +816,7 @@ EOS
   def check_intptr(msg, type)
     dbgPrint "check_intptr IN\n"
     t = type
-    while (t.kind_of? DefinedType)
+    while t.kind_of? DefinedType
       dbgPrint "check_intptr #{msg} #{t.get_type_str} #{t.get_original_type.get_type_str}\n"
       tstr = t.get_type_str
       tstr.sub!(/const /, "")

@@ -394,7 +394,7 @@ class Expression < Node
         return object.get_rhs.eval_const2(name_list, name_list2, nest)
       elsif !object.instance_of?(Decl)
         # Decl でない場合： 定数でもない
-        if (!object.instance_of?(ParamDecl))
+        if !object.instance_of?(ParamDecl)
                                                       # mikan paramdecl は無視する
                                                       # ParamList から呼ばれたとき
           cdl_error("E1003 $1: not constant", nsp.get_path_str)
@@ -420,9 +420,9 @@ class Expression < Node
         end
       end
     when :BOOL_CONSTANT
-      if (elements[1].instance_of?(TrueClass))
+      if elements[1].instance_of?(TrueClass)
         return BoolVal.new(true)
-      elsif (elements[1].instance_of?(FalseClass))
+      elsif elements[1].instance_of?(FalseClass)
         return BoolVal.new(false)
       else
         throw("BOOL constant error")
@@ -766,23 +766,23 @@ class Expression < Node
       when "size_is", "string"
         case dir
         when :IN, :OUT, :INOUT, :SEND
-          judge = true if (direct == :IN || direct == :INOUT)
+          judge = true if direct == :IN || direct == :INOUT
           req_direct = "in or inout"
         when :RECEIVE
-          judge = true if (direct == :OUT || direct == :INOUT)
+          judge = true if direct == :OUT || direct == :INOUT
           req_direct = "out or inout"
         end
 
       when "count_is"
         case dir
         when :IN, :SEND
-          judge = true if (direct == :IN || direct == :INOUT)
+          judge = true if direct == :IN || direct == :INOUT
           req_direct = "in or inout"
         when :OUT, :RECEIVE # mikan out で count_is のみ指定されている場合 in でなくてはならない
-          judge = true if (direct == :OUT || direct == :INOUT)
+          judge = true if direct == :OUT || direct == :INOUT
           req_direct = "out or inout"
         when :INOUT
-          judge = true if (direct == :INOUT)
+          judge = true if direct == :INOUT
           req_direct = "inout"
         end
       end
@@ -830,7 +830,7 @@ class Expression < Node
       port_name = elements[2].val
       return [ cell_nsp, port_name ]
     when :INTERNAL_ALLOC
-      if (ele[0] == :IDENTIFIER)
+      if ele[0] == :IDENTIFIER
         if ele[1].is_name_only?
           return [ ele[1].get_path[0] ] # mikan a::b
         else
@@ -840,9 +840,9 @@ class Expression < Node
         cdl_error("E1019 $1: rhs not in 'allocator_entry_port' form", ele[1].to_s)
       end
     when :RELAY_ALLOC
-      if (ele[0] != :OP_DOT ||
+      if ele[0] != :OP_DOT ||
           ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || !ele[1][1][1].is_name_only? ||
-          !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token)) # 1
+          !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token) # 1
         cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s) # S1086
       end
       func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
