@@ -171,7 +171,7 @@ class HRPPlugin < DomainPlugin
       file.print "/* HRPPlugin 002 */\n"
       regions.each{|region|
         if !region.is_root?
-          nsp = "#{region.get_global_name}"
+          nsp = region.get_global_name.to_s
           file2 = AppFile.open("#{$gen}/tecsgen_#{nsp}.cfg")
           file2.close
           case region.get_domain_type.get_kind

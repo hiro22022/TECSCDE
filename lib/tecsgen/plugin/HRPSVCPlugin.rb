@@ -509,7 +509,7 @@ eot
             delim = ""
             num = 0
             params.each{|param|
-              file2.print "#{delim}"
+              file2.print delim.to_s
                 delim = ", "
                 file2.print "(#{param.get_type.get_type_str})"
                 file2.print passed_param[num]

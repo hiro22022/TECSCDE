@@ -190,7 +190,7 @@ EOT
             if dir == :INOUT
               if string.instance_of? Expression
                 len = string.to_str(name_list, outer, outer2)
-                size_str = "#{len}" # string(len) の場合 len を確保する
+                size_str = len.to_s # string(len) の場合 len を確保する
               else
                 raise "unsuscripted string used for inout parameter #{name}"
               end

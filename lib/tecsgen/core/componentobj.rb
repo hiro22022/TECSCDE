@@ -113,7 +113,7 @@ class Signature < NSBDNode # < Nestable
     @name = name
     Namespace.new_signature(self)
     set_namespace_path # @NamespacePath の設定
-    if "#{Namespace.get_global_name}" == ""
+    if Namespace.get_global_name&.empty?
       @global_name = @name
     else
       @global_name = :"#{Namespace.get_global_name}_#{@name}"
@@ -606,10 +606,10 @@ class Celltype < NSBDNode # < Nestable
     super()
     @@current_object = self
     @name = name
-    if "#{Namespace.get_global_name}" != ""
-      @global_name = :"#{Namespace.get_global_name}_#{@name}"
-    else
+    if Namespace.get_global_name&.empty?
       @global_name = name
+    else
+      @global_name = :"#{Namespace.get_global_name}_#{@name}"
     end
 
     @name_list = NamedList.new(nil, "symbol in celltype #{name}")
@@ -1490,10 +1490,10 @@ class Cell < NSBDNode # < Nestable
   def set_name(name)
     @name = name
     @local_name = name
-    if "#{Namespace.get_global_name}" != ""
-      @global_name = :"#{Namespace.get_global_name}_#{name}"
-    else
+    if Namespace.get_global_name&.empty?
       @global_name = name
+    else
+      @global_name = :"#{Namespace.get_global_name}_#{name}"
     end
 
     # この時点ではプロトタイプか、定義か分らないが、自己参照のために登録
@@ -2179,7 +2179,7 @@ class Cell < NSBDNode # < Nestable
       # debug
       dbgPrint " composite join name: #{cj.get_name}  cell: #{cj.get_cell_name}  cell elem: #{cj.get_cell_elem_name}\n"
 
-      name = @cell_list["#{cj.get_cell_name}"].get_real_global_name(cj.get_cell_elem_name)
+      name = @cell_list[cj.get_cell_name.to_s].get_real_global_name(cj.get_cell_elem_name)
       return name
 
     else
@@ -2211,7 +2211,7 @@ class Cell < NSBDNode # < Nestable
       dbgPrint "   composite join name: #{cj.get_name}  cell: #{cj.get_cell_name}  cell elem: #{cj.get_cell_elem_name}\n"
 
       # composite の内部のセルに対し再帰的に get_real_global_port_name を適用
-      name = @cell_list["#{cj.get_cell_name}"].get_real_global_port_name(cj.get_cell_elem_name)
+      name = @cell_list[cj.get_cell_name.to_s].get_real_global_port_name(cj.get_cell_elem_name)
       return name
 
     else
@@ -2231,7 +2231,7 @@ class Cell < NSBDNode # < Nestable
       cj = @celltype.find_export(port_name)
 
       # composite の内部のセルに対し再帰的に get_real_port を適用
-      port = @cell_list["#{cj.get_cell_name}"].get_real_port(cj.get_cell_elem_name)
+      port = @cell_list[cj.get_cell_name.to_s].get_real_port(cj.get_cell_elem_name)
       return port
     else
 
@@ -2251,7 +2251,7 @@ class Cell < NSBDNode # < Nestable
       cj = @celltype.find_export(port_name)
 
       # composite の内部のセルに対し再帰的に get_real_port を適用
-      cell = @cell_list["#{cj.get_cell_name}"].get_real_cell(cj.get_cell_elem_name)
+      cell = @cell_list[cj.get_cell_name.to_s].get_real_cell(cj.get_cell_elem_name)
       return cell
     else
 
@@ -2288,7 +2288,7 @@ class Cell < NSBDNode # < Nestable
 
       if cj # 既にエラー
         # composite の内部のセルに対し再帰的に get_real_port を適用
-        cell = @cell_list["#{cj.get_cell_name}"]
+        cell = @cell_list[cj.get_cell_name.to_s]
         if cell && cell.get_celltype
           cell.port_referenced(cell.get_celltype.find(cj.get_cell_elem_name))
         end
@@ -3195,7 +3195,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     @real_singleton = nil
     @b_active = false
     @real_active = nil
-    if "#{Namespace.get_global_name}" == ""
+    if Namespace.get_global_name&.empty?
       @global_name = @name
     else
       @global_name = :"#{Namespace.get_global_name}_#{@name}"
@@ -3712,7 +3712,7 @@ class CompositeCelltype < NSBDNode # < Nestable
       # セルの clone を生成
 #      clone_cell_list[ "#{name}_#{c.get_name}" ] =  c.clone_for_composite( name, global_name, ja )
       c2 =  c.clone_for_composite(name, global_name, namespacePath, ja, @name, region, plugin, locale)
-      clone_cell_list["#{c.get_local_name}"] = c2
+      clone_cell_list[c.get_local_name.to_s] = c2
       clone_cell_list2 << c2
       clone_cell_list3[c] = c2
 
@@ -3722,7 +3722,7 @@ class CompositeCelltype < NSBDNode # < Nestable
       dbgPrint "  cloned: #{nm} = #{c.get_global_name}\n"
       # join の owner を clone されたセルに変更する V1.1.0.25
       c.get_join_list.get_items.each{|j|
-        j.set_cloned(clone_cell_list["#{c.get_local_name}"])
+        j.set_cloned(clone_cell_list[c.get_local_name.to_s])
       }
       dbgPrint "change_rhs_port: inner cell #{c.get_name}\n"
       c.change_rhs_port clone_cell_list3
@@ -5599,7 +5599,7 @@ class Join < BDNode
       when :THROUGH
         # set plugin_name
         plugin_name = s[1].to_s
-        plugin_name[0] = "#{plugin_name[/^./].upcase}" # 先頭文字を大文字に : ruby のクラス名の制約
+        plugin_name[0] = plugin_name.capitalize # 先頭文字を大文字に : ruby のクラス名の制約
 
         # set cell_name
         cell_name = :"#{s[1].to_s}_"

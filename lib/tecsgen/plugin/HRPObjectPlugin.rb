@@ -69,7 +69,7 @@ class HRPObjectPlugin < HRPKernelObjectPlugin
         end
         # p @plugin_arg_str, slice_end, val[:attribute], (val[:attribute] =~ /\bTA_CEILING\b/)
         params.slice(2..slice_end).each {|attr|
-          arg_list << "#{val[attr]}"
+          arg_list << val[attr].to_s
         }
         file.print tab
         file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"

@@ -727,7 +727,7 @@ EOT
       param_list.each{|par|
         file.print delim
         delim = ", "
-        file.print "#{par.get_name}"
+        file.print par.get_name.to_s
       }
       file.print(" );\n")
 

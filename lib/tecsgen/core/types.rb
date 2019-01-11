@@ -930,7 +930,7 @@ class StructType < Type
       # typedef struct { int a; } StructType; の形式の場合
       str += "struct {"
       @members_decl.get_items.each{|i|
-        str += sprintf("%s %s%s;", "#{i.get_type.get_type_str}", "#{i.get_name}", "#{i.get_type.get_type_str_post}")
+        str += sprintf("%s %s%s;", i.get_type.get_type_str, i.get_name, i.get_type.get_type_str_post)
       }
       str += "} "
 
@@ -1244,7 +1244,7 @@ class ArrayType < Type
   end
 
   def get_type_str
-    return "#{@type.get_type_str}"
+    return @type.get_type_str.to_s
   end
 
   def get_type_str_post

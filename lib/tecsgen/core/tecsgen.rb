@@ -297,7 +297,7 @@ class TECSGEN
           Generator.error("G9999 fail to close #{tmp_file_name}")
         end
         dbgPrint("## Import Post Code\n")
-        Import.new("#{tmp_file_name}")
+        Import.new(tmp_file_name.to_s)
       end
     end
 

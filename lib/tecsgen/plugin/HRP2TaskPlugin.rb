@@ -56,7 +56,7 @@ class HRP2TaskPlugin < HRP2KernelObjectPlugin
       # $cbp$の代わり
     index = cell.get_id - @celltype.get_id_base
       # cell_CB_name = "#{@celltype.get_global_name}_pCB_tab[#{index}]"
-      cell_CB_name = "#{index}"
+      cell_CB_name = index.to_s
       # CRE_XXX/DEF_XXXの生成
       dbgPrint "assign task plugin\n"
       domainOption = cell.get_region.get_domain_root.get_domain_type.get_option

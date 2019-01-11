@@ -292,11 +292,11 @@ EOT
       if se
         loop_count = "(((#{se.to_str(name_list, outer, outer2)})>#{max_loop}) ? #{max_loop} : (#{se.to_str(name_list, outer, outer2)}))"
         file.print("#{indent}syslog( LOG_INFO, \"#{indent}size_is(#{se.to_str(name_list, outer, outer2)})=%d\", #{se.to_str(name_list, outer, outer2)} );\n")
-        size = "#{se.to_str(name_list, outer, outer2)}"
+        size = se.to_str(name_list, outer, outer2).to_s
       elsif ce
         loop_count = "(((#{ce.to_str(name_list, outer, outer2)})>#{max_loop}) ? #{max_loop} : (#{ce.to_str(name_list, outer, outer2)})) "
         file.print("#{indent}syslog( LOG_INFO, \"#{indent}count_is(#{ce.to_str(name_list, outer, outer2)})=%d\", #{ce.to_str(name_list, outer, outer2)} );\n")
-        size = "#{ce.to_str(name_list, outer, outer2)}"
+        size = ce.to_str(name_list, outer, outer2).to_s
       end
 
       # mikan PtrType: string
@@ -335,7 +335,7 @@ EOT
         when ArrayType # mikan ArrayType
         when BoolType, IntType, FloatType, EnumType, PtrType
           outer = "*#{outer}"
-          outer2 = "#{outer2}"
+          outer2 = outer2.to_s
           print_param(name, type, file, nest, direction, type_str, outer, outer2)
         end
       else # loop_count != nil

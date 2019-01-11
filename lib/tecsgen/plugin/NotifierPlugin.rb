@@ -192,7 +192,7 @@ class NotifierPlugin < CelltypePlugin
           if subscript == :generic
             params << "(int_t)extinf"
           else
-            params << "#{subscript}"
+            params << subscript.to_s
           end
         end
 

@@ -885,9 +885,9 @@ class Typedef
 #    show_tree 1
 
     f.printf("typedef %-14s %s%s;\n",
-      "#{@declarator.get_type.get_type_str}",
-      "#{@declarator.get_name}",
-      "#{@declarator.get_type.get_type_str_post}")
+      @declarator.get_type.get_type_str,
+      @declarator.get_name,
+      @declarator.get_type.get_type_str_post)
   end
 end
 
@@ -903,7 +903,7 @@ class StructType < Type
     f.print "struct #{@tag} {\n"
 
     @members_decl.get_items.each{|i|
-      f.printf("                %-14s %s%s;\n", "#{i.get_type.get_type_str}", "#{i.get_name}", "#{i.get_type.get_type_str_post}")
+      f.printf("                %-14s %s%s;\n", i.get_type.get_type_str, i.get_name, i.get_type.get_type_str_post)
     }
 
     f.print "};\n"
@@ -2295,11 +2295,11 @@ EOT
       end
 
       f.printf("#define %s_refer_to_descriptor(#{array})\\\n          %s_refer_to_descriptor( #{p_cellcb}#{array2} )\n",
-                "#{p.get_name}",
-                "#{@global_name}_#{p.get_name}")
+               p.get_name,
+               "#{@global_name}_#{p.get_name}")
       f.printf("#define %s_ref_desc(#{array})\\\n          %s_refer_to_descriptor(#{array})\n",
-                "#{p.get_name}",
-                "#{p.get_name}")
+               p.get_name,
+               p.get_name)
     }
     f.print("\n")
   end
@@ -2330,10 +2330,10 @@ EOT
         subsc3 = ""
       end
       f.printf("#define %s_set_descriptor( #{subsc}desc )\\\n          %s_set_descriptor( #{p_cellcb}#{delim}#{subsc}desc )\n",
-                "#{p.get_name}",
+                p.get_name,
                 "#{@global_name}_#{p.get_name}")
       f.printf("#define %s_unjoin( #{subsc2} )\\\n          %s_unjoin( #{p_cellcb}#{subsc3} )\n",
-                "#{p.get_name}",
+                p.get_name,
                 "#{@global_name}_#{p.get_name}")
     }
     f.print("\n")
@@ -2817,7 +2817,7 @@ EOT
           if @singleton
             post = ""
           else
-            post = "#{p_that}"
+            post = p_that.to_s
           end
           f.print "\t#{that}#{v.get_name} = #{init.to_str(@name_list, pre, post)};"
         end
@@ -3211,17 +3211,17 @@ EOT
             if !port.is_skelton_useless?
               f.printf("struct %s * #{const}%s_%s[] = {\n",
                         "tag_#{port.get_signature.get_global_name}_VDES",
-                        "#{c.get_global_name}",
-                        "#{port.get_name}" + init)
+                        c.get_global_name,
+                        port.get_name.to_s + init)
             else
 
 #              スケルトン関数不要最適化の場合、この配列は参照されない
               # mikan このケースがテストされていない
               f.printf("#{const}%s_IDX  %s_%s[] = {\n",
 #                        "#{j.get_celltype.get_global_name}",   # 右辺 composite に対応できない
-                        "#{j.get_rhs_cell.get_celltype.get_global_name}",
-                        "#{c.get_global_name}",
-                        "#{j.get_name}")
+                        j.get_rhs_cell.get_celltype.get_global_name,
+                        c.get_global_name,
+                        j.get_name.to_s)
             end
             if port.get_array_size == "[]"
               length = am.length
@@ -3281,8 +3281,8 @@ EOT
             if port.is_dynamic? && $ram_initializer
               f.printf("struct %s * %s_%s[ #{length} ];\n",
                         "tag_#{port.get_signature.get_global_name}_VDES",
-                        "#{c.get_global_name}",
-                        "#{port.get_name}")
+                        c.get_global_name,
+                        port.get_name)
             end
           end
         }
@@ -4004,7 +4004,7 @@ EOT
       end
 
       if f_get_str
-        return "#{init_str}"
+        return init_str.to_s
       else
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init_str},", identifier)
@@ -4023,7 +4023,7 @@ EOT
       end
 
       if f_get_str
-        return "#{init_str}"
+        return init_str.to_s
       else
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init_str},", identifier)
@@ -4031,7 +4031,7 @@ EOT
     elsif type.is_a?(FloatType)
       # mikan C_EXP for FloatType
       if f_get_str
-        return "#{init.eval_const2(cell.get_join_list, @name_list)}"
+        return init.eval_const2(cell.get_join_list, @name_list).to_s
       else
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list, @name_list)},", identifier)
@@ -4039,7 +4039,7 @@ EOT
     elsif type.is_a?(EnumType)
       # mikan C_EXP for EnumType
       if f_get_str
-        return "#{init.eval_const2(cell.get_join_list, @name_list)}"
+        return init.eval_const2(cell.get_join_list, @name_list).to_s
       else
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list, @name_list)},", identifier)
@@ -4120,7 +4120,7 @@ EOT
         init_str = subst_name(init.get_c_exp_string, name_array)
 
         if f_get_str
-          return "#{init_str}"
+          return init_str.to_s
         else
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "#{init_str},", identifier)
@@ -4128,7 +4128,7 @@ EOT
 
       else
         if f_get_str
-          return "#{init.eval_const2(cell.get_join_list, @name_list)}"
+          return init.eval_const2(cell.get_join_list, @name_list).to_s
         else
           f.print "    " * indent
 # p init.eval_const2(cell.get_join_list,@name_list).class
@@ -4550,7 +4550,7 @@ EOT
 
         i = 0
         items.each{|param|
-          f.print "#{delim}"
+          f.print delim.to_s
           delim = ", "
           f.print param.get_type.get_type_str
           # p "type_str2: #{param.get_type.get_type_str}"
@@ -4579,7 +4579,7 @@ EOT
                 ret_cd = "#{TECSMsg.get(:oneway_ercd_note)}\n	return(E_OK);"
               end
             else
-              er_cd = "#{TECSMsg.get(:ercd_note)}"
+              er_cd = TECSMsg.get(:ercd_note).to_s
               ret_cd = nil
             end
             f.print <<EOT
@@ -4859,7 +4859,7 @@ EOT
     elsif type.is_a?(ArrayType)
       if type.get_type.has_pointer?
         loop_str = "i#{level}__"
-        count_str = "#{type.get_subscript.eval_const(nil)}"
+        count_str = type.get_subscript.eval_const(nil).to_s
         f.print " \\\n"
         f.print "#{indent}{ int_t  #{loop_str};"
         f.print " \\\n"

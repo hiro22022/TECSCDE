@@ -63,7 +63,7 @@ class HRP2ObjectPlugin < HRP2KernelObjectPlugin
     elsif @plugin_arg_str != "KERNEL"
       arg_list = []
         @@api[@plugin_arg_str].slice(2..-1).each {|attr|
-          arg_list << "#{val[attr]}"
+          arg_list << val[attr].to_s
         }
         file.print tab
         file.puts "CRE_#{@@api[@plugin_arg_str].at(0)}(#{val[:id]}, { #{arg_list.join(", ")} });"

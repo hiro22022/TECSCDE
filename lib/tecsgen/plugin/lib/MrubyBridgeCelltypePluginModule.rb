@@ -124,7 +124,7 @@ generate( MrubyBridgeCellPlugin, #{cell.get_namespace_path}, "#{opt_str}" );
 EOT
     f2.close
     dbgPrint "MrubyBridgeCelltypePluginModule new_cell: Import #{fn2}\n"
-    Import.new "#{fn2}"
+    Import.new fn2.to_s
     @@count += 1
   end
 
