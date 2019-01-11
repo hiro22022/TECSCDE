@@ -96,8 +96,8 @@ class ATK1EventPlugin < CelltypePlugin
 
     }
 
-    mask_count = 0;
-    mask_place = 0;
+    mask_count = 0
+    mask_place = 0
 
     @celltype.get_cell_list.each {|cell|
 

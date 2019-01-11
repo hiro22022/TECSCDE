@@ -713,12 +713,12 @@ class ParamDecl
     if @size
       size = "\"#{@size.get_rpn(paramdecl_list)}\""
     else
-      size = "(char_t*)0";
+      size = "(char_t*)0"
     end
     if @count
       count = "\"#{@count.get_rpn(paramdecl_list)}\""
     else
-      count = "(char_t*)0";
+      count = "(char_t*)0"
     end
     if @string
       if @string == -1
@@ -727,7 +727,7 @@ class ParamDecl
         string =  "\"#{@string.get_rpn(paramdecl_list)}\""
       end
     else
-      string = "(char_t*)0";
+      string = "(char_t*)0"
     end
     f.print <<EOT
 #{indent}cell nTECSInfo::tParamInfo #{signature_global_name}_#{func_name}_#{get_name}ParamInfo {
@@ -746,9 +746,9 @@ end
 class Decl
   def print_info(f, parent_ID_str, indent, decl_type)
     if @size_is
-      size = "\"mikan\"";
+      size = "\"mikan\""
     else
-      size = "(char_t*)0";
+      size = "(char_t*)0"
     end
     f.print <<EOT
 #{indent}cell nTECSInfo::tVarDeclInfo #{parent_ID_str}_#{get_name}VarDeclInfo {

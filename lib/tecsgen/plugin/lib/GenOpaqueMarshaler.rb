@@ -290,7 +290,7 @@ module GenOpaqueMarshaler
     @substituteAllocator = {}
     @noServerChannelOpenerCode = false
     @semaphoreCelltype = :tSemaphore
-    @semaphoreInitializer = :"count = 1; attribute = C_EXP( \"TA_NULL\" ); ";
+    @semaphoreInitializer = :"count = 1; attribute = C_EXP( \"TA_NULL\" ); "
     @clientErrorHandler = nil
     @serverErrorHandler = nil
     @b_genOpener = false
@@ -485,7 +485,7 @@ EOT
       print_params(params, file, 1, b_marshal, b_get, true, "eClientEntry", func_name)
       print_params(params, file, 1, b_marshal, b_get, false, "eClientEntry", func_name)
     end
-    print_out_nullable(params, file, 1, b_marshal);
+    print_out_nullable(params, file, 1, b_marshal)
 
     if !func_type.is_oneway?
       b_continue = "true"
@@ -793,7 +793,7 @@ EOT
       b_marshal = false
       print_params(params, file, 1, b_marshal, b_get, true, "cServerCall", f_name)
       print_params(params, file, 1, b_marshal, b_get, false, "cServerCall", f_name)
-      print_out_nullable(params, file, 1, b_marshal);
+      print_out_nullable(params, file, 1, b_marshal)
 
 
       # パケットの受信完了
@@ -1072,7 +1072,7 @@ EOT
 
   #== out で nullable な引数の情報を渡す
   # out nullable の場合、in, send, receive のように、値を渡す直前ではなく、呼出し時に渡す
-  def print_out_nullable(params, file, nest, b_marshal);
+  def print_out_nullable(params, file, nest, b_marshal)
     indent = "\t" * nest
     params.each{|param|
       next if param.get_direction != :OUT

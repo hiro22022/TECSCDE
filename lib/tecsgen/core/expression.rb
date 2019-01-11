@@ -476,7 +476,7 @@ class Expression < Node
     when :STRING_LITERAL_LIST
       return StringVal.new(elements[1])
     when :PARENTHESES
-      return elements_eval_const(elements[1], name_list, name_list2, nest);
+      return elements_eval_const(elements[1], name_list, name_list2, nest)
     when :OP_SUBSC
       cdl_error("E1004 cannot evaluate \'[]\' operator")
       return nil

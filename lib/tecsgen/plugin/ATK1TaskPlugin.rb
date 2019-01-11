@@ -150,8 +150,8 @@ class ATK1TaskPlugin < CelltypePlugin
         join.get_rhs.each {|evt|
           str = evt.to_s.gsub(/^"(.*)"$/, '\1')
           if !(str == "OMISSIBLE")
-            cell.set_specified_id(extended_task_count);
-              ++extended_task_count;
+            cell.set_specified_id(extended_task_count)
+              ++extended_task_count
               break
           end
         }
