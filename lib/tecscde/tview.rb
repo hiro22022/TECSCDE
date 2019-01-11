@@ -902,7 +902,7 @@ module TECSCDE
       when ALIGN_CENTER
         # calc text draww postion
         x2 = x - (cr_te.width + cr_te.x_bearing) / 2
-        y2 = y - (cr_te.y_bearing) / 2
+        y2 = y - cr_te.y_bearing / 2
       when ALIGN_RIGHT
         x2 = x - cr_te.width - cr_te.x_bearing - mm2dot(GapPort)
         y2 = y - cr_te.height - cr_te.y_bearing - 2

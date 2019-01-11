@@ -62,7 +62,7 @@ class HRPObjectPlugin < HRPKernelObjectPlugin
     elsif @plugin_arg_str != "KERNEL"
       arg_list = []
         params = @@api[@plugin_arg_str]
-        if @plugin_arg_str == "MUTEX" && ((val[:attribute] =~ /\bTA_CEILING\b/).nil?)
+        if @plugin_arg_str == "MUTEX" && (val[:attribute] =~ /\bTA_CEILING\b/).nil?
           slice_end = -2 # :ceilingPriority を外す
         else
           slice_end = -1

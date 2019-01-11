@@ -2283,7 +2283,7 @@ class Cell < NSBDNode # < Nestable
       # セルタイプ内で port_name の CompositeCelltypeJoin を探す（コード生成段階では必ず見つかる）
       cj = @celltype.find_export(port.get_name)
 
-      dbgPrint " port_referenced: #{@celltype.get_name} #{@name} cj=#{cj && (cj.get_name) || "nil"}\n"
+      dbgPrint " port_referenced: #{@celltype.get_name} #{@name} cj=#{cj && cj.get_name || "nil"}\n"
 
       if cj # 既にエラー
         # composite の内部のセルに対し再帰的に get_real_port を適用
@@ -6912,7 +6912,7 @@ class Region < Namespace
     end
 
     if @owner
-      @family_line = (@owner.get_family_line.dup) << self
+      @family_line = @owner.get_family_line.dup << self
     else
       @family_line = [ self ] # root region
     end
@@ -7532,7 +7532,7 @@ class Import < Node
     @b_reuse = b_reuse
     @b_reuse_real = @b_reuse || Generator.is_reuse?
 
-    if (Generator.get_plugin) && (File.exist? "#{$gen}/#{@cdl}")
+    if Generator.get_plugin && (File.exist? "#{$gen}/#{@cdl}")
       @cdl_path = "#{$gen}/#{@cdl}"
       found = true
     else

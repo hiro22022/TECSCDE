@@ -171,7 +171,7 @@ module TECSCDE
             flush_print "truncate undo buffer #{@change_set_list.length} to #{@change_no}\n"
             # print( "range: #{(@change_no)..(@change_set_list.length)-1}\n" )
             # p "length0=#{@change_set_list.length}"
-            @change_set_list.slice!((@change_no)..(@change_set_list.length - 1))
+            @change_set_list.slice!(@change_no..(@change_set_list.length - 1))
             # p "length1=#{@change_set_list.length}"
           end
         else
@@ -971,7 +971,7 @@ module TECSCDE
           end
         }
         @cports.each{|name, cport|
-          if (!cport.complete?) && (!cport.is_optional?)
+          if !cport.complete? && !cport.is_optional?
             return false
           end
         }

@@ -92,7 +92,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
     else
       @@shared_channel_list[@shared_channel_cell] << self
     end
-    @sub_channel_no = (@@shared_channel_list[@shared_channel_cell].length) - 1
+    @sub_channel_no = @@shared_channel_list[@shared_channel_cell].length - 1
 
     prev_start = @@shared_channel_list[@shared_channel_cell][0].start_region
     if @start_region != prev_start

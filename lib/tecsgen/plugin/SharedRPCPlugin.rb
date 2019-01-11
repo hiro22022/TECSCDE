@@ -87,7 +87,7 @@ class SharedRPCPlugin < ThroughPlugin
       # 二番目以降
       @@shared_channel_list[@shared_channel_cell] << self
     end
-    @sub_channel_no = (@@shared_channel_list[@shared_channel_cell].length) - 1
+    @sub_channel_no = @@shared_channel_list[@shared_channel_cell].length - 1
 
     if @region != @@shared_channel_list[@shared_channel_cell][0].region
       # 初出とリージョン不一致 (初出は、自分自身とチェックされる。無駄だが小さいので放置)

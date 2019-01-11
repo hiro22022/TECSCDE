@@ -1472,7 +1472,7 @@ class PtrType < Type
       @string = string
     end
 
-    if (!@size.nil?) && (@b_nullable != false)
+    if !@size.nil? && (@b_nullable != false)
       cdl_error("T9999 size_is & nullable cannot be specified simultaneously. If size is zero, pointer must be null")
     end
   end
