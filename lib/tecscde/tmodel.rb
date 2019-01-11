@@ -1211,7 +1211,7 @@ module TECSCDE
       # this method is called from Control
       def delete_hilited(port)
         if @port_def.get_array_size != "[]"
-          TECSCDE::message_box(<<EOT, :OK)
+          TECSCDE.message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
 Cannot delete array member.
 EOT
@@ -1232,7 +1232,7 @@ EOT
             }
           }
         else
-          TECSCDE::message_box(<<EOT, :OK)
+          TECSCDE.message_box(<<EOT, :OK)
 cannot delete array member with subscript==0
 EOT
         end
@@ -1242,7 +1242,7 @@ EOT
       # this method is called from Control
       def insert(port, before_after)
         if @port_def.get_array_size != "[]"
-          TECSCDE::message_box(<<EOT, :OK)
+          TECSCDE.message_box(<<EOT, :OK)
 Array size is fixed (#{@port_def.get_array_size}).
 Cannot insert array member.
 EOT

@@ -102,7 +102,7 @@ class TECSGEN
 
   #=== tecsgen のデフォルトを設定
   def self.set_default_config
-    Makefile::set_default_config
+    Makefile.set_default_config
   end
 
   ###

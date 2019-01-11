@@ -141,7 +141,7 @@ module TECSCDE
     begin
       aSet = MainViewAndModel.new tecsgen
       # aSet.test_main
-      Gtk::main()
+      Gtk.main()
       # rescue Exception => evar
       #  p "exception caught"
       # ensure

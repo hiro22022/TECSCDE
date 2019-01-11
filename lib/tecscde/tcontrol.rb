@@ -268,7 +268,7 @@ Structure of Palette Window
             @cport_joining = object
             @view.set_cursor CURSOR_JOINING
           else
-            TECSCDE::message_box(<<EOT, :OK)
+            TECSCDE.message_box(<<EOT, :OK)
 Call port has already been joined.
 Delete existing join before creating new join.
 If you want to hilited port, click with pressing shift key.

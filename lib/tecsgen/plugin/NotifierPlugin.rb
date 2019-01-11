@@ -415,10 +415,10 @@ class NotifierPlugin < CelltypePlugin
   end
 
   # 通常のハンドラ
-  EVENT_HANDLER = Handler::new("ciNotificationHandler")
+  EVENT_HANDLER = Handler.new("ciNotificationHandler")
 
   # エラーハンドラ (通常のハンドラが失敗した場合に呼び出される)
-  ERROR_HANDLER = Handler::new("ciErrorNotificationHandler")
+  ERROR_HANDLER = Handler.new("ciErrorNotificationHandler")
 
   HANDLERS = [
     EVENT_HANDLER,
@@ -445,11 +445,11 @@ class NotifierPlugin < CelltypePlugin
   # ハンドラタイプに合致しない属性が指定された場合に
   # エラーを出力できるよう、全ての属性をここで列挙する。
 
-  SETVAR_ADDR_ATTR =   HandlerAttribute::new("setVariableAddress")
-  SETVAR_VALUE_ATTR =  HandlerAttribute::new("setVariableValue")
-  INCVAR_ADDR_ATTR =   HandlerAttribute::new("incrementedVariableAddress")
-  SNDDTQ_VALUE_ATTR =  HandlerAttribute::new("dataqueueSentValue")
-  SETFLG_FLAG_ATTR =   HandlerAttribute::new("flagPattern")
+  SETVAR_ADDR_ATTR =   HandlerAttribute.new("setVariableAddress")
+  SETVAR_VALUE_ATTR =  HandlerAttribute.new("setVariableValue")
+  INCVAR_ADDR_ATTR =   HandlerAttribute.new("incrementedVariableAddress")
+  SNDDTQ_VALUE_ATTR =  HandlerAttribute.new("dataqueueSentValue")
+  SETFLG_FLAG_ATTR =   HandlerAttribute.new("flagPattern")
 
   ATTRS = [
     SETVAR_ADDR_ATTR,

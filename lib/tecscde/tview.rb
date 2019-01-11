@@ -195,7 +195,7 @@ module TECSCDE
       @b_color_by_region = false
       MainView.setup_colormap
 
-      @main_window = Gtk::Window::new(Gtk::Window::TOPLEVEL)
+      @main_window = Gtk::Window.new(Gtk::Window::TOPLEVEL)
       @main_window_width = width = 900
       @main_window_height = height = 600
       @main_window.title = "TECSCDE - TECS Component Diagram Editor"
