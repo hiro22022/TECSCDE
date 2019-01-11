@@ -1139,7 +1139,7 @@ module TECSCDE
       line_attr = @canvasGc.line_attributes
       line_width = line_attr[0]
       line_attr[0] = width
-      @canvasGc.set_line_attributes *line_attr
+      @canvasGc.set_line_attributes(*line_attr)
     end
 
     def self.setup_colormap

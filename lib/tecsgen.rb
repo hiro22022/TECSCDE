@@ -184,7 +184,7 @@ end
 
 def dbgPrintf(*param)
   if $debug
-    printf *param
+    printf(*param)
   end
 end
 
