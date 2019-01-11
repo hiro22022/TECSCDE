@@ -143,7 +143,7 @@ module TECSCDE
   #----- Paper -----#
   PAPER_MARGIN = 10 # (mm)
 
-  #----- constnts for divString -----#
+  #----- constnts for div_string -----#
   Char_A = "A"[0]
   Char_Z = "Z"[0]
   Char__ = "_"[0]
@@ -522,7 +522,7 @@ module TECSCDE
       if @b_emphasize_cell_name
         wmn, hmn = get_text_extent(cell_name.to_s, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
         if wmn > w
-          s1, s2 = divString cell_name.to_s
+          s1, s2 = div_string cell_name.to_s
           draw_text(x1 + w1/2, y1+  h1/2 - mm2dot(hmn)/2, s1, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
           draw_text(x1 + w1/2, y1+  h1/2 + mm2dot(hmn)/2, s2, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
         else
@@ -1274,9 +1274,9 @@ module TECSCDE
       paint_canvas
     end
 
-    #=== MainView#divString
+    #=== MainView#div_string
     # divide string near center at A-Z or '_'
-    def divString(str)
+    def div_string(str)
       len = str.length
       if len <= 4
         return [str, ""]
