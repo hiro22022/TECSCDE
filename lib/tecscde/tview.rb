@@ -55,7 +55,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
  (1) structure of MainWindow
 
-   +- @mainWindow::Window---------------------+
+   +- @main_window::Window--------------------+
    |+-@vbox::VBox(1/2)-----------------------+|
    ||+-- @scrolledWindow::ScrolledWindow---+ ||
    ||| +---------------------------------+ | ||
@@ -164,9 +164,9 @@ module TECSCDE
 
   #== MainView class
   class MainView
-    # @mainWindow::Gtk::Window
-    # @mainWindowHeight::Integer
-    # @mainWindowWidth::Integer
+    # @main_window::Gtk::Window
+    # @main_window_height::Integer
+    # @main_window_width::Integer
     # @vbox::VBox
     # @canvas_height::Integer
     # @canvas_width::Integer
@@ -195,17 +195,17 @@ module TECSCDE
       @b_color_by_region = false
       MainView.setup_colormap
 
-      @mainWindow = Gtk::Window::new(Gtk::Window::TOPLEVEL)
-      @mainWindowWidth = width = 900
-      @mainWindowHeight = height = 600
-      @mainWindow.title = "TECSCDE - TECS Component Diagram Editor"
-      @mainWindow.set_default_size(width, height)
-      @mainWindow.sensitive = true
-      @mainWindow.signal_connect("delete-event") do |window, *args|
-        TECSCDE.quit(@model, @mainWindow)
+      @main_window = Gtk::Window::new(Gtk::Window::TOPLEVEL)
+      @main_window_width = width = 900
+      @main_window_height = height = 600
+      @main_window.title = "TECSCDE - TECS Component Diagram Editor"
+      @main_window.set_default_size(width, height)
+      @main_window.sensitive = true
+      @main_window.signal_connect("delete-event") do |window, *args|
+        TECSCDE.quit(@model, @main_window)
       end
       # KEY-PRESS event action
-      @mainWindow.signal_connect("key-press-event"){|win, event|
+      @main_window.signal_connect("key-press-event"){|win, event|
         if @entryWin.visible?
           # while cell name editing, send forward to Entry window
           event.set_window @entryWin.window
@@ -214,19 +214,19 @@ module TECSCDE
           @control.key_pressed(event.keyval & 0xff, event.state)
         end
       }
-      @mainWindow.signal_connect("focus-in-event"){|win, event|
+      @main_window.signal_connect("focus-in-event"){|win, event|
         # p "event:#{event.class} in"
       }
-      @mainWindow.signal_connect("focus-out-event"){|win, event|
+      @main_window.signal_connect("focus-out-event"){|win, event|
         # p "event:#{event.class} out"
       }
-      @mainWindow.signal_connect("grab-broken-event"){|win, event|
+      @main_window.signal_connect("grab-broken-event"){|win, event|
         # p "event:#{event.class}"
       }
-      @mainWindow.signal_connect("grab-focus"){|win|
+      @main_window.signal_connect("grab-focus"){|win|
         # p "event:grab-focus"
       }
-      @mainWindow.signal_connect("grab-notify"){|win, arg1|
+      @main_window.signal_connect("grab-notify"){|win, arg1|
         # p "event:grab-notify"
       }
 
@@ -236,7 +236,7 @@ module TECSCDE
       @vbox = Gtk::VBox.new
       # @vbox.set_resize_mode Gtk::RESIZE_IMMEDIATE
       # p @vbox.resize_mode
-      @mainWindow.add @vbox
+      @main_window.add @vbox
 
       @scrolledWindow = Gtk::ScrolledWindow.new
       # @scrolledWindow.signal_connect("expose_event") { |win, evt|
@@ -251,13 +251,13 @@ module TECSCDE
       createCanvas
       @scrolledWindow.set_size_request(width, height - ScaleHeight)
 
-      @mainWindow.show_all
+      @main_window.show_all
 
       create_edit_window
     end
 
     def get_window
-      @mainWindow
+      @main_window
     end
 
     #------ CANVAS  ------#
@@ -426,7 +426,7 @@ module TECSCDE
       @hScale = Gtk::HScale.new(ScaleValMin, ScaleValMax, 1)
       @hScale.set_digits 0 # 小数点以下
       @hScale.set_value @scale_val
-      @hScale.set_size_request(@mainWindowWidth, ScaleHeight)
+      @hScale.set_size_request(@main_window_width, ScaleHeight)
       @hScale.signal_connect("value-changed"){|scale_self, scroll_type|
         # set scale_val in the range [ScaleValMin..ScaleValMax]
         scale_val = scale_self.value
