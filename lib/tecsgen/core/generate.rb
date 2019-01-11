@@ -237,10 +237,10 @@ EOT
       if d.instance_of?(Typedef)
 
         # Typedef の場合、declarator の @type が　CType でないか
-        if !d.get_declarator.get_type.kind_of?(CType)
+        if !d.get_declarator.get_type.is_a?(CType)
           d.gen_gh f
         end
-      elsif !d.kind_of?(CType)
+      elsif !d.is_a?(CType)
 
         # CType ではない (StructType または EnumType)
         d.gen_gh f
@@ -760,7 +760,7 @@ EOT
 #      next if b_inline_only == false && ct.is_all_entry_inline?
       next if b_inline_only_or_proc == false && ct.is_all_entry_inline? && !ct.is_active?
       # print "Proc:", b_inline_only_or_proc.kind_of?( Proc ), b_inline_only_or_proc.class, "\n"
-      next if b_inline_only_or_proc.kind_of?(Proc) && (b_inline_only_or_proc.call(ct) == false)
+      next if b_inline_only_or_proc.is_a?(Proc) && (b_inline_only_or_proc.call(ct) == false)
       if (b_plugin && ct.get_plugin) || (!b_plugin && !ct.get_plugin)
         f.print " #{prepend}#{ct.get_global_name}#{append}"
       end
@@ -2561,7 +2561,7 @@ EOT
       next if inib_cb == :INIB && a.is_rw?
       next if has_INIB? && inib_cb == :CB && !a.is_rw?
 
-      if a.get_type.kind_of?(PtrType) && !a.get_type.is_const? && a.get_size_is
+      if a.get_type.is_a?(PtrType) && !a.get_type.is_const? && a.get_size_is
         const_str = "const "
       else
         const_str = ""
@@ -2764,7 +2764,7 @@ EOT
       init = v.get_initializer
       if init.instance_of? Array
         type = v.get_type
-        if type.kind_of? PtrType
+        if type.is_a? PtrType
           # PtrType は ArrayType にすり替える
 
           # 初期化子の要素数とする (後は 0 である)
@@ -2798,10 +2798,10 @@ EOT
 #        print v.get_name, type.class, "\n"
 #        if init.instance_of? Array || type.kind_of?( StructType ) then
         if init.instance_of? Array
-          if type.kind_of?(ArrayType) || type.kind_of?(PtrType)
+          if type.is_a?(ArrayType) || type.is_a?(PtrType)
             pre = "&"
             post = "[0]"
-          elsif type.kind_of? StructType
+          elsif type.is_a? StructType
             pre = "&"
             post = ""
 #          elsif type.kind_of? PtrType then
@@ -3412,7 +3412,7 @@ EOT
           type = v.get_type
           org_type = v.get_type.get_original_type
 
-          if org_type.kind_of? PtrType
+          if org_type.is_a? PtrType
             # PtrType は ArrayType にすり替える
 
             # 初期化子の要素数だけとする（後は 0)
@@ -3426,10 +3426,10 @@ EOT
           name_array = get_name_array(c)
           # f.print "const #{type0.get_type_str}\t#{@global_name}_#{v.get_name}_VAR_INIT#{type0.get_type_str_post} = "
           f.print "const #{type.get_type_str}\t#{@global_name}_#{v.get_name}_VAR_INIT#{type.get_type_str_post} = "
-          if org_type.kind_of? StructType
+          if org_type.is_a? StructType
             # celltype の default の初期値あり
             str = gen_cell_cb_init(f, c, name_array, type, init, v.get_identifier, 1, true)
-          elsif org_type.kind_of?(PtrType) || org_type.kind_of?(ArrayType)
+          elsif org_type.is_a?(PtrType) || org_type.is_a?(ArrayType)
             str = "{ "
             type = org_type.get_type
             # mikan ポインタではなく、配列型としないと、ポインタ変数の領域の分、損する
@@ -3929,7 +3929,7 @@ EOT
     cell_CB_name = name_array[2]
     cell_CB_INIT = name_array[3]
 
-    while type.kind_of?(DefinedType)
+    while type.is_a?(DefinedType)
       type = type.get_type
     end
 
@@ -3937,19 +3937,19 @@ EOT
 
       if f_get_str
         # 初期値未指定
-        if type.kind_of?(BoolType)
+        if type.is_a?(BoolType)
           str = "false" # formerly tecs_false
-        elsif type.kind_of?(IntType)
+        elsif type.is_a?(IntType)
           str = "0"
-        elsif type.kind_of?(FloatType)
+        elsif type.is_a?(FloatType)
           str = "0.0"
-        elsif type.kind_of?(EnumType)
+        elsif type.is_a?(EnumType)
           str = "0"
-        elsif type.kind_of?(ArrayType)
+        elsif type.is_a?(ArrayType)
           str = "{}"
-        elsif type.kind_of?(StructType)
+        elsif type.is_a?(StructType)
           str = "{}"
-        elsif type.kind_of?(PtrType)
+        elsif type.is_a?(PtrType)
           if type.get_size
             str = "#{cell_CB_INIT}_#{identifier}_INIT"
           else
@@ -3961,25 +3961,25 @@ EOT
         return str
       else
         # 初期値未指定
-        if type.kind_of?(BoolType)
+        if type.is_a?(BoolType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "false,", identifier) # formerly tecs_false
-        elsif type.kind_of?(IntType)
+        elsif type.is_a?(IntType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "0,", identifier)
-        elsif type.kind_of?(FloatType)
+        elsif type.is_a?(FloatType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "0.0,", identifier)
-        elsif type.kind_of?(EnumType)
+        elsif type.is_a?(EnumType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "0,", identifier)
-        elsif type.kind_of?(ArrayType)
+        elsif type.is_a?(ArrayType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "{},", identifier)
-        elsif type.kind_of?(StructType)
+        elsif type.is_a?(StructType)
           f.print "    " * indent
           f.printf("%-40s /* %s */\n", "{},", identifier)
-        elsif type.kind_of?(PtrType)
+        elsif type.is_a?(PtrType)
           if type.get_size
             f.print "    " * indent
             f.printf("%-40s /* %s */\n", "#{cell_CB_INIT}_#{identifier}_INIT,", identifier)
@@ -3996,7 +3996,7 @@ EOT
 
     # このメソッドは Celltype のものである必要は無い（上に続くのでここに置く）
     # 初期値指定あり
-    if type.kind_of?(BoolType)
+    if type.is_a?(BoolType)
       if init.instance_of?(C_EXP)
         init_str = subst_name(init.get_c_exp_string, name_array)
       else
@@ -4015,7 +4015,7 @@ EOT
 #        f.print "    " * indent
 #        f.printf( "%-40s /* %s */\n", "#{init.eval_const2(nil)},", identifier )
 #      end
-    elsif type.kind_of?(IntType)
+    elsif type.is_a?(IntType)
       if init.instance_of?(C_EXP)
         init_str = subst_name(init.get_c_exp_string, name_array)
       else
@@ -4028,7 +4028,7 @@ EOT
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init_str},", identifier)
       end
-    elsif type.kind_of?(FloatType)
+    elsif type.is_a?(FloatType)
       # mikan C_EXP for FloatType
       if f_get_str
         return "#{init.eval_const2(cell.get_join_list, @name_list)}"
@@ -4036,7 +4036,7 @@ EOT
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list, @name_list)},", identifier)
       end
-    elsif type.kind_of?(EnumType)
+    elsif type.is_a?(EnumType)
       # mikan C_EXP for EnumType
       if f_get_str
         return "#{init.eval_const2(cell.get_join_list, @name_list)}"
@@ -4044,7 +4044,7 @@ EOT
         f.print "    " * indent
         f.printf("%-40s /* %s */\n", "#{init.eval_const2(cell.get_join_list, @name_list)},", identifier)
       end
-    elsif type.kind_of?(ArrayType)
+    elsif type.is_a?(ArrayType)
       if type.get_subscript
         len = type.get_subscript.eval_const(cell.get_join_list, @name_list)
       else
@@ -4078,7 +4078,7 @@ EOT
         f.print("},\n")
       end
 
-    elsif type.kind_of?(StructType)
+    elsif type.is_a?(StructType)
       i = 0
       decls = type.get_members_decl.get_items
       if f_get_str
@@ -4107,7 +4107,7 @@ EOT
         f.print("},\n")
       end
 
-    elsif type.kind_of?(PtrType)
+    elsif type.is_a?(PtrType)
 
       if init.instance_of?(Array)
         if f_get_str
@@ -4569,7 +4569,7 @@ EOT
 
         else
           if !@singleton
-            if functype.get_type.kind_of?(DefinedType) && (functype.get_type.get_type_str == "ER" || functype.get_type.get_type_str == "ER_UINT")
+            if functype.get_type.is_a?(DefinedType) && (functype.get_type.get_type_str == "ER" || functype.get_type.get_type_str == "ER_UINT")
               if !fun.is_oneway?
                 f.print "	ER\t\tercd = E_OK;\n"
                 er_cd = "return(E_ID);"
@@ -4856,7 +4856,7 @@ EOT
     indent = "	" + "  " * (level + 1)
     if !type.has_pointer?
       return
-    elsif type.kind_of?(ArrayType)
+    elsif type.is_a?(ArrayType)
       if type.get_type.has_pointer?
         loop_str = "i#{level}__"
         count_str = "#{type.get_subscript.eval_const(nil)}"
@@ -4872,14 +4872,14 @@ EOT
         f.print " \\\n"
         f.print "#{indent}}"
       end
-    elsif type.kind_of?(StructType)
+    elsif type.is_a?(StructType)
       members_decl = type.get_members_decl
       members_decl.get_items.each {|md|
         pre2 = pre + name.to_s + post + "."
         name2 = md.get_name
         post2 = ""
         type2 = md.get_type.get_original_type
-        if type2.kind_of? PtrType # mikan typedef された型
+        if type2.is_a? PtrType # mikan typedef された型
           if type2.get_count
             count_str = type2.get_count.to_str(members_decl, pre2, post2)
           elsif type2.get_size
@@ -4893,7 +4893,7 @@ EOT
         gen_dealloc_code_for_type(f, md.get_type, dealloc_func_name, pre2, name2, post2, level, b_reset, count_str)
       }
 
-    elsif type.kind_of?(PtrType)
+    elsif type.is_a?(PtrType)
 
       if b_reset || type.is_nullable?
         nullable = ""

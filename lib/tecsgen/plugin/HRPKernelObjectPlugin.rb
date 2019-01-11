@@ -106,7 +106,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
             val = {}
             @celltype.get_attribute_list.each{|a|
                 # p a.get_name
-              if a.get_type.kind_of?(ArrayType)
+              if a.get_type.is_a?(ArrayType)
                 val[a.get_name] = []
                   if j = cell.get_join_list.get_item(a.get_name)
                       # セル生成時に初期化する場合

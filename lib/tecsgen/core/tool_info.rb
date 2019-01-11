@@ -151,7 +151,7 @@ class TOOL_INFO
           error("#{path}: required property not found '#{name}'\n")
           next
         end
-        if val_type.kind_of? Array
+        if val_type.is_a? Array
           validate_array_member val, val_type, path2
         else
           validate_types val, val_type, path2
@@ -170,7 +170,7 @@ class TOOL_INFO
             # error( "#{path}: required property not found '#{name}'\n" )
             next
           end
-          if val_type.kind_of? Array
+          if val_type.is_a? Array
             validate_array_member val, val_type, path2
           else
             validate_types val, val_type, path2
@@ -180,7 +180,7 @@ class TOOL_INFO
     end
 
     def validate_array_member(array, val_types, path)
-      if !array.kind_of? Array
+      if !array.is_a? Array
         error("#{path2}: array required as value\n")
         return
       end
@@ -224,7 +224,7 @@ class TOOL_INFO
         # when :nil   # mikan
         # when :bool  # mikan
       else # object or fixed string
-        if val_type.kind_of? String
+        if val_type.is_a? String
           # val is specified by String
           if type == :string
             if obj == val_type
@@ -243,13 +243,13 @@ class TOOL_INFO
 
     def get_object_type(obj)
 # p "#{obj.class} #{obj.to_s}"
-      if obj.kind_of? Integer
+      if obj.is_a? Integer
         return :integer
-      elsif obj.kind_of? Float
+      elsif obj.is_a? Float
         return :number
-      elsif obj.kind_of? String
+      elsif obj.is_a? String
         return :string
-      elsif obj.kind_of? Hash
+      elsif obj.is_a? Hash
         return obj[:type].to_sym
       end
       return nil

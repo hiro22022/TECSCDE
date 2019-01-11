@@ -47,7 +47,7 @@ module GenParamCopy
   #=== 引数の転送コードを生成
 
   def print_param(name, type, file, nest, dir, outer, outer2, b_marshal, b_get, alloc_cp = nil, alloc_cp_extra = nil, name_list = nil)
-    if type.get_original_type.kind_of?(ArrayType) && b_get && dir != :OUT
+    if type.get_original_type.is_a?(ArrayType) && b_get && dir != :OUT
       indent = "	" * nest
       subsc = type.get_subscript
       if subsc.nil?

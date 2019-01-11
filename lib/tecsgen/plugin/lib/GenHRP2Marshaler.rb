@@ -165,8 +165,8 @@ EOT
     type = func_type.get_type.get_original_type
 
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
-    if !type.kind_of?(VoidType)
-      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
+    if !type.is_a?(VoidType)
+      if func_type.get_type.is_a?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
         file.print("    #{func_type.get_type.get_type_str}  retval_ = E_OK;\n")
         b_ret_er = true
       else
@@ -389,7 +389,7 @@ EOT
       id = signature.get_id_from_func_name(f_name)
 
       # 関数は返り値を持つか?
-      if f_type.get_type.kind_of?(VoidType)
+      if f_type.get_type.is_a?(VoidType)
         b_void = true
       else
         b_void = false
@@ -445,7 +445,7 @@ EOT
 
       dir = param.get_direction
       type = param.get_type
-      if b_oneway && dir == :IN && type.get_original_type.kind_of?(PtrType) || type.get_original_type.kind_of?(ArrayType)
+      if b_oneway && dir == :IN && type.get_original_type.is_a?(PtrType) || type.get_original_type.is_a?(ArrayType)
         # oneway, in, PtrType の場合コピー
         alloc_cp = "cPPAllocator_alloc"
         alloc_cp_extra = nil
@@ -640,7 +640,7 @@ EOT
       id = @signature.get_id_from_func_name(f_name)
 
       # 関数は返り値を持つか?
-      if f_type.get_type.kind_of?(VoidType)
+      if f_type.get_type.is_a?(VoidType)
         b_void = true
       else
         b_void = false
@@ -663,7 +663,7 @@ EOT
       param_list.each{|par|
         name = par.get_name
         type = par.get_type
-        if type.kind_of? ArrayType
+        if type.is_a? ArrayType
           type = type.get_type
           aster = "(*"
           aster2 = ")"

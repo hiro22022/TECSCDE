@@ -187,13 +187,13 @@ class PointerVal < BaseVal
 
   def cast(type)
     t = type.get_original_type # typedef の元を得る
-    if t.kind_of? IntType
+    if t.is_a? IntType
       val = t.check_and_clip(@int_val, :IntType)
       return IntegerVal.new(val)
-    elsif t.kind_of? FloatType
+    elsif t.is_a? FloatType
       cdl_error("V1005 Cannot cast pointer to float")
       return FloatVal.new(@int_val)
-    elsif t.kind_of? PtrType
+    elsif t.is_a? PtrType
       return PointerVal.new(@int_val, type)
     else
       cdl_error("V1006 pointer value cannot cast to $1", type.class)
@@ -248,7 +248,7 @@ class IntegerVal < BaseVal
   end
 
   def *(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return FloatVal.new(@val.to_f * val.to_f)
     else
       return IntegerVal.new(@val * val.to_i)
@@ -256,7 +256,7 @@ class IntegerVal < BaseVal
   end
 
   def /(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       v2 = val.to_f   # to_f を2回評価しない
       if v2 == 0.0
         cdl_error("V1009 / : divieded by zero")
@@ -274,7 +274,7 @@ class IntegerVal < BaseVal
   end
 
   def %(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       v2 = val.to_f   # to_f を2回評価しない
       if v2 == 0.0
         cdl_error("V1011 % : divieded by zero")
@@ -292,7 +292,7 @@ class IntegerVal < BaseVal
   end
 
   def +(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return FloatVal.new(@val.to_f + val.to_f)
     else
       return IntegerVal.new(@val + val.to_i)
@@ -300,7 +300,7 @@ class IntegerVal < BaseVal
   end
 
   def -(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return FloatVal.new(@val.to_f - val.to_f)
     else
       return IntegerVal.new(@val - val.to_i)
@@ -316,7 +316,7 @@ class IntegerVal < BaseVal
   end
 
   def >(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return BoolVal.new(@val.to_f > val.to_f)
     else
       return BoolVal.new(@val > val.to_i)
@@ -324,7 +324,7 @@ class IntegerVal < BaseVal
   end
 
   def <(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return BoolVal.new(@val.to_f < val.to_f)
     else
       return BoolVal.new(@val < val.to_i)
@@ -332,7 +332,7 @@ class IntegerVal < BaseVal
   end
 
   def >=(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return BoolVal.new(@val.to_f >= val.to_f)
     else
       return BoolVal.new(@val >= val.to_i)
@@ -340,7 +340,7 @@ class IntegerVal < BaseVal
   end
 
   def <=(val)
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return BoolVal.new(@val.to_f <= val.to_f)
     else
       return BoolVal.new(@val <= val.to_i)
@@ -348,7 +348,7 @@ class IntegerVal < BaseVal
   end
 
   def eq(val) # == val
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return BoolVal.new(@val.to_f == val.to_f)
     else
       return BoolVal.new(@val == val.to_i)
@@ -356,7 +356,7 @@ class IntegerVal < BaseVal
   end
 
   def neq(val) # != val
-    if val.kind_of? FloatVal
+    if val.is_a? FloatVal
       return BoolVal.new(@val.to_f != val.to_f)
     else
       return BoolVal.new(@val != val.to_i)
@@ -385,14 +385,14 @@ class IntegerVal < BaseVal
 
   def cast(type)
     t = type.get_original_type # typedef の元を得る
-    if t.kind_of? IntType
+    if t.is_a? IntType
       val = t.check_and_clip(@val, :IntType)
       return IntegerVal.new(val)
-    elsif t.kind_of? FloatType
+    elsif t.is_a? FloatType
       return FloatVal.new(@val)
-    elsif t.kind_of? PtrType
+    elsif t.is_a? PtrType
       return PointerVal.new(@val, type)
-    elsif t.kind_of? BoolType
+    elsif t.is_a? BoolType
       return BoolVal.new(@val.to_b)
     else
       cdl_error("V1013 integer value cannot cast to $1", type.class)
@@ -442,7 +442,7 @@ class BoolVal < BaseVal
   end
 
   def eq(val) # == val
-    if val.kind_of? BoolVal
+    if val.is_a? BoolVal
       return BoolVal.new(self.to_i == val.to_i)
     else
       cdl_error("V1014 comparing bool value with \'$1\'", val.class)
@@ -451,7 +451,7 @@ class BoolVal < BaseVal
   end
 
   def neq(val) # != val
-    if val.kind_of? BoolVal
+    if val.is_a? BoolVal
       return BoolVal.new(self.to_i != val.to_i)
     else
       cdl_error("V1015 comparing bool value with \'$1\'", val.class)
@@ -474,11 +474,11 @@ class BoolVal < BaseVal
     else
       val = 0
     end
-    if t.kind_of? IntType
+    if t.is_a? IntType
       return IntegerVal.new(val)
-    elsif t.kind_of? FloatType
+    elsif t.is_a? FloatType
       return FloatVal.new(val)
-    elsif t.kind_of? BoolType
+    elsif t.is_a? BoolType
       return self
     else
       cdl_error("V1016 bool value cannot cast to $1", type.class)
@@ -583,10 +583,10 @@ class FloatVal < BaseVal
 
   def cast(type)
     t = type.get_original_type # typedef の元を得る
-    if t.kind_of? IntType
+    if t.is_a? IntType
       val = t.check_and_clip(@val, :FloatType)
       return IntegerVal.new(val)
-    elsif t.kind_of? FloatType
+    elsif t.is_a? FloatType
       return self
     else
       cdl_error("V1019 floating value cannot cast to $1", type)
@@ -629,11 +629,11 @@ class StringVal < BaseVal
   # string の cast はできない mikan ポインタ型への cast はできるべき
   def cast(type)
     t = type.get_original_type # typedef の元を得る
-    if t.kind_of? IntType
+    if t.is_a? IntType
       cdl_error("V1022 string cannot cast to integer")
-    elsif t.kind_of? FloatType
+    elsif t.is_a? FloatType
       cdl_error("V1023 string cannot cast to float")
-    elsif t.kind_of? PtrType
+    elsif t.is_a? PtrType
       cdl_error("V1024 string cannot cast to pointer")
     else
       cdl_error("V1025 string cannot cast to $1", type)

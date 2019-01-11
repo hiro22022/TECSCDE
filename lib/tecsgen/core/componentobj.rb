@@ -272,21 +272,21 @@ class Signature < NSBDNode # < Nestable
           params = fd.get_type.get_paramlist.get_items
           if params
             if !params[0].instance_of?(ParamDecl) ||
-                !params[0].get_type.get_original_type.kind_of?(IntType) ||
+                !params[0].get_type.get_original_type.is_a?(IntType) ||
                 params[0].get_direction != :IN
               # 第一引数が int 型でない
               if !params[0].instance_of?(ParamDecl) ||
-                  !params[0].get_type.kind_of?(PtrType) ||
-                  !params[0].get_type.get_type.kind_of?(PtrType) ||
-                  params[0].get_type.get_type.get_type.kind_of?(PtrType) ||
+                  !params[0].get_type.is_a?(PtrType) ||
+                  !params[0].get_type.get_type.is_a?(PtrType) ||
+                  params[0].get_type.get_type.get_type.is_a?(PtrType) ||
                   params[0].get_direction != :OUT
                 # 第一引数がポインタ型でもない
                 cdl_error3(@locale, "S1003 $1: \'alloc\' 1st parameter neither [in] integer type nor [out] double pointer type", @name)
               end
             elsif !params[1].instance_of?(ParamDecl) ||
-                !params[1].get_type.kind_of?(PtrType) ||
-                !params[1].get_type.get_type.kind_of?(PtrType) ||
-                params[1].get_type.get_type.get_type.kind_of?(PtrType) ||
+                !params[1].get_type.is_a?(PtrType) ||
+                !params[1].get_type.get_type.is_a?(PtrType) ||
+                params[1].get_type.get_type.get_type.is_a?(PtrType) ||
                 params[0].get_direction != :IN
               # (第一引数が整数で) 第二引数がポインタでない
               cdl_error3(@locale, "S1004 $1: \'alloc\' 2nd parameter not [in] double pointer", @name)
@@ -299,8 +299,8 @@ class Signature < NSBDNode # < Nestable
           params = fd.get_type.get_paramlist.get_items
           if params
             if !params[0].instance_of?(ParamDecl) ||
-                !params[0].get_type.kind_of?(PtrType) ||
-                params[0].get_type.get_type.kind_of?(PtrType) ||
+                !params[0].get_type.is_a?(PtrType) ||
+                params[0].get_type.get_type.is_a?(PtrType) ||
                 params[0].get_direction != :IN
               cdl_error3(@locale, "S1006 $1: \'dealloc\' 1st parameter not [in] pointer type", @name)
 #            elsif params[1] != nil then    # 第二引き数はチェックしない
@@ -387,11 +387,11 @@ end
         if params
           params.each{|param|
             t = param.get_type.get_original_type
-            while t.kind_of? PtrType
+            while t.is_a? PtrType
               t = t.get_referto
             end
             # p "has_desc #{param.get_name} #{t}"
-            if t.kind_of? DescriptorType
+            if t.is_a? DescriptorType
               desc_list[t.get_signature] = param
               # p self.get_name, t.get_signature.get_name
               if t.get_signature == self
@@ -478,9 +478,9 @@ module CelltypePluginModule
   #=== Celltype# セルタイププラグインをこのセルタイプに適用
   def apply_plugin(plugin_name, option)
     # plClass = load_plugin( plugin_name, CelltypePlugin )
-    if kind_of? Celltype
+    if is_a? Celltype
       plugin_class = CelltypePlugin
-    elsif kind_of? CompositeCelltype
+    elsif is_a? CompositeCelltype
       plugin_class = CompositePlugin
     else
       raise "unknown class #{self.class.name}"
@@ -775,7 +775,7 @@ class Celltype < NSBDNode # < Nestable
     # attribute の size_is 指定が妥当かチェック
     (@attribute + @var).each{|a|
       if a.get_size_is
-        if !a.get_type.kind_of?(PtrType)
+        if !a.get_type.is_a?(PtrType)
           # size_is がポインタ型以外に指定された
           cdl_error("S1011 $1: size_is specified for non-pointer type", a.get_identifier)
         else
@@ -787,7 +787,7 @@ class Celltype < NSBDNode # < Nestable
             if !init.instance_of?(Array)
               # 初期化子が配列ではない
               cdl_error("S1012 $1: unsuitable initializer, need array initializer", a.get_identifier)
-            elsif size.kind_of?(Integer) && size < init.length
+            elsif size.is_a?(Integer) && size < init.length
               # size_is 指定された個数よりも初期化子の配列要素が多い
               cdl_error("S1013 $1: too many initializer, $2 for $3", a.get_identifier, init.length, size)
             # elsif a.get_size_is.eval_const( nil ) == nil  # C_EXP の可能性あり
@@ -796,7 +796,7 @@ class Celltype < NSBDNode # < Nestable
           end
         end
       else
-        if a.get_type.kind_of?(PtrType)
+        if a.get_type.is_a?(PtrType)
           if a.get_initializer.instance_of?(Array) ||
               (a.get_initializer.instance_of?(Expression) &&
                 a.get_initializer.eval_const2(@name_list).instance_of?(Array))
@@ -1087,12 +1087,12 @@ class Celltype < NSBDNode # < Nestable
     @port.each{|port|
       port.each_param{|port, func, param|
         type = param.get_type
-        while type.kind_of? PtrType
+        while type.is_a? PtrType
           type = type.get_type
         end
         dbgPrint("[DYNAMIC] dyn_ref=#{dyn_ref} port_type=#{port.get_port_type} dir=#{param.get_direction} paramName=#{param.get_name} paramType=#{type.class}\n")
         # print( "[DYNAMIC] dyn_ref=#{dyn_ref} port_type=#{port.get_port_type} dir=#{param.get_direction} paramName=#{param.get_name} paramType=#{type.class}\n" )
-        if type.kind_of? DescriptorType
+        if type.is_a? DescriptorType
           if type.get_signature == signature
             dir = param.get_direction
             if dir == :INOUT
@@ -2149,7 +2149,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell# composite のセルか？
   def is_of_composite?
-    if @celltype.kind_of? CompositeCelltype
+    if @celltype.is_a? CompositeCelltype
       return true
     else
       return false
@@ -2639,7 +2639,7 @@ class Cell < NSBDNode # < Nestable
             cdl_error("S1043 call port \'$1\' not initialized in cell \'$2\'. this call port is created by tecsgen. check allocator specifier", p.get_name, @name)
           end
         end
-      elsif p.get_array_size.kind_of? Integer
+      elsif p.get_array_size.is_a? Integer
         # 添数あり呼び口配列の場合、すべての添数要素が初期化されているかチェックする
 
         am = j.get_array_member2
@@ -2729,12 +2729,12 @@ class Cell < NSBDNode # < Nestable
           next
         end
 
-        if !a.get_type.kind_of?(PtrType)
+        if !a.get_type.is_a?(PtrType)
           cdl_error("S1048 $1: size_is specified for non-pointer type", a.get_name)
         else
           size = a.get_size_is.eval_const(@join_list, @celltype.get_name_list)
           a.get_type.set_scs(a.get_size_is, nil, nil, nil, false)
-          if !size.kind_of? Integer # C_EXP の可能性あり
+          if !size.is_a? Integer # C_EXP の可能性あり
             # mikan 多分ここでのエラー発生は不要、eval_const の中で変数が存在しない、型が不適切などのエラーになるはず
             cdl_error("S1049 $1: size_is arg not constant", a.get_name)
           else
@@ -2767,7 +2767,7 @@ class Cell < NSBDNode # < Nestable
       else
         if !a.instance_of? CompositeCelltypeJoin
           # composite は size_is 指定できない
-          if a.get_type.kind_of?(PtrType)
+          if a.get_type.is_a?(PtrType)
             j = @join_list.get_item(a.get_identifier)
             if j && j.get_rhs.instance_of?(Array)
               ## size_is 指定されていないポインタが Array で初期化されていたら、エラーとする
@@ -3043,7 +3043,7 @@ class Cell < NSBDNode # < Nestable
       func_hash.each{|func_name, region_list|
         region_list.each{|rn|
           obj = Namespace.find [rn]
-          if obj.kind_of? Region
+          if obj.is_a? Region
             if obj.get_domain_root != @region.get_domain_root
             else
               cdl_info("I9999 $1: restrict calling domain to $2, which is same domain as the cell locates", @name, rn)
@@ -3905,7 +3905,7 @@ class Port < BDNode
 #      end
       @array_size = array_size
     elsif array_size
-      if array_size.kind_of? Expression
+      if array_size.is_a? Expression
         @array_size = array_size.eval_const(nil)
       else
         @array_size = array_size # これはアロケータ呼び口の場合（元の呼び口で既に評価済み）
@@ -3915,7 +3915,7 @@ class Port < BDNode
       end
 
       # if Integer( @array_size ) != @array_size || @array_size <= 0 then
-      if !@array_size.kind_of? Integer
+      if !@array_size.is_a? Integer
         cdl_error("S1074 Not Integer $1", array_size.to_s)
       end
 
@@ -4585,7 +4585,7 @@ class Namespace < NSBDNode
       @NamespacePath = NamespacePath.new(name, true)
     else
       ns = @@namespace_stack[@@namespace_sp].find(name)
-      if ns.kind_of? Namespace
+      if ns.is_a? Namespace
         dbgPrint "namespace: re-appear #{@name}\n"
         # 登録済み namespace の再登録
         ns.push ns
@@ -4744,7 +4744,7 @@ class Namespace < NSBDNode
     i += 1
     while i < length
 
-      unless object.kind_of?(Namespace)
+      unless object.is_a?(Namespace)
         # クラスメソッド内で cdl_error を呼び出すことはできない
         # また、前方参照対応後、正確な行番号が出ない問題も生じる
         # cdl_error( "S1092 \'$1\' not namespace" , name )
@@ -5324,7 +5324,7 @@ class Join < BDNode
           else
 
             as = object2.get_array_size
-            if as.kind_of?(Integer) && as <= @rhs_subscript
+            if as.is_a?(Integer) && as <= @rhs_subscript
               # 受け口配列の大きさに対し、右辺の添数が同じか大きい
               cdl_error("S1115 $1[$2]: subscript out of range (< $3)", @port_name, @rhs_subscript, as)
             else
@@ -5414,7 +5414,7 @@ class Join < BDNode
     # さもないとプラグイン生成されたものとの間で、無限に生成される
 ##    if Generator.get_nest >= 1 then
 ##    if Generator.get_plugin then     # mikan これは必要？ (意味解析段階での実行になるので不適切)
-    if @owner.get_plugin.kind_of?(ThroughPlugin)
+    if @owner.get_plugin.is_a?(ThroughPlugin)
       # プラグイン生成されたセルの場合、結合チェックのみ
       return
     end
@@ -7627,10 +7627,10 @@ class Generate < Node
     dbgPrint "generate: #{plugin_name} #{object_nsp} option=#{option}\n"
 
     object = Namespace.find(object_nsp)
-    if object.kind_of?(Signature) ||
-       object.kind_of?(Celltype) ||
-       object.kind_of?(CompositeCelltype) ||
-       object.kind_of?(Cell)
+    if object.is_a?(Signature) ||
+       object.is_a?(Celltype) ||
+       object.is_a?(CompositeCelltype) ||
+       object.is_a?(Cell)
       @plugin_object = object.apply_plugin(@plugin_name, @option)
     elsif object
       # V1.5.0 以前の仕様では、signature のみ可能だった

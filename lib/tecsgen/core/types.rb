@@ -102,9 +102,9 @@ class Type < Node
   end
 
   def is_void?
-    if self.kind_of? DefinedType
+    if self.is_a? DefinedType
       return @type.is_void?
-    elsif self.kind_of? VoidType
+    elsif self.is_a? VoidType
       return true
     else
       return false
@@ -437,7 +437,7 @@ class IntType < Type
       # #192 var が attribute を参照し、attribute の右辺が C_EXP の場合
       # const の右辺が C_EXP の場合も
       return
-    elsif val.kind_of? FloatVal
+    elsif val.is_a? FloatVal
       cdl_error2(locale, "T1011 $1: need cast to assign float to integer", ident)
       return
     elsif val.instance_of? Array
@@ -448,7 +448,7 @@ class IntType < Type
       return
     end
 
-    if !val.kind_of? IntegerVal
+    if !val.is_a? IntegerVal
       cdl_error2(locale, "T1012 $1: $2: not integer", ident, val)
       return
     end
@@ -657,7 +657,7 @@ class FloatType < Type
     elsif val.nil?
       cdl_error2(locale, "T1019 $1: initializer is not constant", ident)
       return
-    elsif !val.kind_of?(IntegerVal) && !val.kind_of?(FloatVal)
+    elsif !val.is_a?(IntegerVal) && !val.is_a?(FloatVal)
       cdl_error2(locale, "T1037 $1: not number", ident)
       return
     end
@@ -826,7 +826,7 @@ class StructType < Type
     if initializer.instance_of?(Expression)
       t = initializer.get_type(attribute)
       # print "Check init #{t.class} #{t.get_name}\n"
-      if !t.kind_of?(StructType)
+      if !t.is_a?(StructType)
         if t
           str = t.get_type_str
         else
@@ -867,7 +867,7 @@ class StructType < Type
         val = size.eval_const(@members_decl)
         if val.nil?
           type = size.get_type(@members_decl)
-          if !type.kind_of?(IntType)
+          if !type.is_a?(IntType)
             cdl_error("T1025 size_is argument is not integer type")
           end
         end
@@ -877,7 +877,7 @@ class StructType < Type
         val = count.eval_const(@members_decl)
         if val.nil?
           type = count.get_type(@members_decl)
-          if !type.kind_of?(IntType)
+          if !type.is_a?(IntType)
             cdl_error("T1026 count_is argument is not integer type")
           end
         end
@@ -889,7 +889,7 @@ class StructType < Type
         val = string.eval_const(@members_decl)
         if val.nil?
           type = string.get_type(@members_decl)
-          if !type.kind_of?(IntType)
+          if !type.is_a?(IntType)
             cdl_error("T1027 string argument is not integer type")
           end
         end
@@ -1349,7 +1349,7 @@ class PtrType < Type
   end
 
   def get_type_str
-    if @type.kind_of?(ArrayType) || @type.kind_of?(FuncType)
+    if @type.is_a?(ArrayType) || @type.is_a?(FuncType)
       parenthes = "("
     else
       parenthes = ""
@@ -1358,7 +1358,7 @@ class PtrType < Type
   end
 
   def get_type_str_post
-    if @type.kind_of?(ArrayType) || @type.kind_of?(FuncType)
+    if @type.is_a?(ArrayType) || @type.is_a?(FuncType)
       parenthes = ")"
     else
       parenthes = ""
@@ -1380,26 +1380,26 @@ class PtrType < Type
   def check_init(locale, ident, initializer, kind, attribute = nil)
     if initializer.instance_of?(Expression)
       val = initializer.eval_const2(nil, attribute)
-      if val.kind_of? PointerVal
+      if val.is_a? PointerVal
         type = val.get_type # PtrType
         t1 = self
         t2 = type
-        while t1.kind_of?(PtrType) && t2.kind_of?(PtrType)
+        while t1.is_a?(PtrType) && t2.is_a?(PtrType)
           t1 = t1.get_type
           t2 = t2.get_type
           if (t1.class == t2.class) && (t1.get_bit_size == t2.get_bit_size)
-          elsif (t1.kind_of?(CDefinedType) || t2.kind_of?(CDefinedType)) && t1.get_type_str == t2.get_type_str && t1.get_type_str_post && t2.get_type_str_post
+          elsif (t1.is_a?(CDefinedType) || t2.is_a?(CDefinedType)) && t1.get_type_str == t2.get_type_str && t1.get_type_str_post && t2.get_type_str_post
             # int8_t などが、一方は .h に定義されているケース
           else
             cdl_error2(locale, "T1032 $1: incompatible pointer type", ident)
             break
           end
         end
-      elsif val.kind_of? IntegerVal
+      elsif val.is_a? IntegerVal
         if val.to_i != 0
           cdl_error2(locale, "T1033 $1: need cast to assign integer to pointer", ident)
         end
-      elsif val.kind_of? StringVal
+      elsif val.is_a? StringVal
         # 文字列定数
         # mikan L"wide string"
         if @type.get_bit_size != -1 && @type.get_bit_size != -11 # -1: char_t
@@ -1445,11 +1445,11 @@ class PtrType < Type
     @b_nullable = b_nullable
 
     # string は最も左側の ptr に作用する
-    if @type.kind_of?(PtrType)
+    if @type.is_a?(PtrType)
       # ptr_level が 2 以上であることは ParamDecl#initializer でチェックされる
       clone_type
       @type.set_scs(nil, nil, string, nil, false)
-    elsif @type.kind_of?(VoidType) && (size || count || string)
+    elsif @type.is_a?(VoidType) && (size || count || string)
       str = ""
       if size
         str = "size_is"
@@ -1604,7 +1604,7 @@ class DescriptorType < Type
   def check_signature
     # p "Desc #{@signature_nsp.to_s}"
     obj = Namespace.find @signature_nsp
-    if !obj.kind_of? Signature
+    if !obj.is_a? Signature
       cdl_error("T9999 '$1': not signature or not found", @signature_nsp.to_s)
     else
       if obj.has_descriptor?

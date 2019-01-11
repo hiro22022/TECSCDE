@@ -400,7 +400,7 @@ EOT
     # 戻り値記憶用の変数を出力（void 型の関数では出力しない）
     if !type.is_void?
       file.print("\t#{func_type.get_type.get_type_str}\t\tretval_;\n")
-      if func_type.get_type.kind_of?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
+      if func_type.get_type.is_a?(DefinedType) && (func_type.get_type.get_type_str == "ER" || func_type.get_type.get_type_str == "ER_INT")
         b_ret_er = true
       end
     else
@@ -765,7 +765,7 @@ EOT
           init = ""
         end
 
-        if type.kind_of? ArrayType
+        if type.is_a? ArrayType
           type = type.get_type
           aster = "(*"
           aster2 = ")"
@@ -1008,7 +1008,7 @@ EOT
 #{indent}	goto error_reset;
 EOT
 
-        if type.get_type.kind_of? PtrType
+        if type.get_type.is_a? PtrType
           file.print "#{indent}{\n"
           file.print "#{indent}	#{loop_counter_type.get_type_str}  i__#{nest}, length__#{nest} = #{len};\n"
           file.print "#{indent}	for( i__#{nest} = 0; i__#{nest} < length__#{nest}; i__#{nest}++ ){\n"

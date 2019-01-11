@@ -380,7 +380,7 @@ module TECSCDE
         # check existance of cells
         if !cp_cell.nil? && !ep_cell.nil?
           cport = cp_cell.get_cports[cp_name]
-          if cport.kind_of? TmCPortArray
+          if cport.is_a? TmCPortArray
             if cp_subscript.nil?
               TECSCDE.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
               next
@@ -392,7 +392,7 @@ module TECSCDE
             end
           end
           eport = ep_cell.get_eports[ep_name]
-          if eport.kind_of? TmEPortArray
+          if eport.is_a? TmEPortArray
             if ep_subscript.nil?
               TECSCDE.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
               next

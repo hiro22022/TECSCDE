@@ -175,7 +175,7 @@ class NSBDNode < BDNode
   #=== 属する namespace を得る
   # owner を namespace にたどり着くまで上にたどる
   def get_namespace
-    if @owner.kind_of? Namespace
+    if @owner.is_a? Namespace
       return @owner
     elsif !@owner.nil?
       return @owner.get_namespace
@@ -265,7 +265,7 @@ class NamedList
   end
 
   def get_item(name)
-    if !name.kind_of? Symbol
+    if !name.is_a? Symbol
       print "get_item: '#{name}', items are below\n"
       @names.each{|nm, item|
         p nm
@@ -310,7 +310,7 @@ class NamedList
   end
 
   def assert_name(item)
-    if !item.get_name.kind_of? Symbol
+    if !item.get_name.is_a? Symbol
       raise "Not symbol for NamedList item"
     end
   end
@@ -366,7 +366,7 @@ class FuncHead < BDNode
     @declarator = declarator
     @declarator.set_owner self # Decl (FuncHead)
 
-    if @declarator.get_type.kind_of?(FuncType)
+    if @declarator.get_type.is_a?(FuncType)
       if b_oneway
         @declarator.get_type.set_oneway(b_oneway)
       end
@@ -374,8 +374,8 @@ class FuncHead < BDNode
     @declarator.get_type.check_struct_tag :FUNCHEAD
 
     # check if return type is pointer
-    if declarator.get_type.kind_of? FuncType
-      if declarator.get_type.get_type.get_original_type.kind_of?(PtrType) &&
+    if declarator.get_type.is_a? FuncType
+      if declarator.get_type.get_type.get_original_type.is_a?(PtrType) &&
           Signature.get_current.is_deviate? == false
         cdl_warning("W3004 $1 pointer type has returned. specify deviate or stop return pointer", @declarator.get_identifier)
       end
@@ -511,7 +511,7 @@ class Decl < BDNode
       end
     end
 
-    if (@type.kind_of? ArrayType) && @type.get_subscript.nil? && (@omit == false)
+    if (@type.is_a? ArrayType) && @type.get_subscript.nil? && (@omit == false)
       if @kind == :ATTRIBUTE
         cdl_error("S2004 $1: array subscript must be specified or omit", @identifier)
       elsif @kind == :VAR || @kind == :MEMBER
@@ -531,7 +531,7 @@ class Decl < BDNode
     level = 0
     type = @type
     while 1
-      if type.kind_of?(PtrType)
+      if type.is_a?(PtrType)
         level += 1
         type = type.get_referto
 #      elsif type.kind_of?( ArrayType ) then  # 添数なし配列はポインタとみなす
@@ -542,7 +542,7 @@ class Decl < BDNode
 #          break
 #        end
         # mikan ポインタの添数あり配列のポインタレベルは０でよい？
-      elsif type.kind_of?(DefinedType)
+      elsif type.is_a?(DefinedType)
         type = type.get_type
         # p "DefinedType: #{type} #{type.class}"
       else
@@ -655,9 +655,9 @@ class Decl < BDNode
   def is_type?(type)
     t = @type
     while 1
-      if t.kind_of?(type)
+      if t.is_a?(type)
         return true
-      elsif t.kind_of?(DefinedType)
+      elsif t.is_a?(DefinedType)
         t = t.get_type
       else
         return false
@@ -670,7 +670,7 @@ class Decl < BDNode
     while 1
       if type.is_const?
         return true
-      elsif type.kind_of?(DefinedType)
+      elsif type.is_a?(DefinedType)
         type = type.get_type
       else
         return false
@@ -829,10 +829,10 @@ class ParamDecl < BDNode
     # if size_is specified and pointer refer to struct, max_level increase
     if @size
       type = @declarator.get_type.get_original_type
-      while type.kind_of? PtrType
+      while type.is_a? PtrType
         type = type.get_referto.get_original_type
       end
-      if type.kind_of? StructType
+      if type.is_a? StructType
         max_level += 1
       end
     end
@@ -850,7 +850,7 @@ class ParamDecl < BDNode
     end
 
     type = @declarator.get_type
-    while type.kind_of?(DefinedType)
+    while type.is_a?(DefinedType)
       type = type.get_original_type
     end
 
@@ -870,7 +870,7 @@ class ParamDecl < BDNode
       t2 = type
       while i < ptr_level
         t2 = t2.get_referto
-        while t2.kind_of?(DefinedType)
+        while t2.is_a?(DefinedType)
           t2 = t2.get_original_type
         end
         i += 1
@@ -969,12 +969,12 @@ class ParamDecl < BDNode
   def need_PPAllocator?(b_opaque = false)
     if !b_opaque
 #      if @direction == :IN && ( @size || @count || @string ) then
-      if @direction == :IN && @declarator.get_type.get_original_type.kind_of?(PtrType)
+      if @direction == :IN && @declarator.get_type.get_original_type.is_a?(PtrType)
         return true
       end
     else
       if (@direction == :IN || @direction == :OUT || @direction == :INOUT) &&
-          @declarator.get_type.get_original_type.kind_of?(PtrType)
+          @declarator.get_type.get_original_type.is_a?(PtrType)
         return true
       end
     end
@@ -1052,7 +1052,7 @@ class ParamList < BDNode
         if val.nil? # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = size.get_type(@param_list)
-          unless type.kind_of?(IntType)
+          unless type.is_a?(IntType)
             cdl_error("S2017 size_is argument is not integer type")
           else
             size.check_dir_for_param(@param_list, i.get_direction, "size_is")
@@ -1091,7 +1091,7 @@ class ParamList < BDNode
         if val.nil? # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = count.get_type(@param_list)
-          unless type.kind_of?(IntType)
+          unless type.is_a?(IntType)
             cdl_error("S2020 count_is argument is not integer type")
           else
             count.check_dir_for_param(@param_list, i.get_direction, "count_is")
@@ -1111,7 +1111,7 @@ class ParamList < BDNode
         if val.nil? # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = string.get_type(@param_list)
-          unless type.kind_of?(IntType)
+          unless type.is_a?(IntType)
             cdl_error("S2023 string argument is not integer type")
           else
             string.check_dir_for_param(@param_list, i.get_direction, "string")

@@ -778,13 +778,13 @@ class Type
     end
     # p "ID Str: #{get_ID_str}"
     @@typeinfo_printed[get_ID_str] = self
-    if self.kind_of? PtrType
+    if self.is_a? PtrType
       get_referto.print_info f, indent
-    elsif self.kind_of? ArrayType
+    elsif self.is_a? ArrayType
       get_type.print_info f, indent
-    elsif self.kind_of? DefinedType
+    elsif self.is_a? DefinedType
       get_type.print_info f, indent
-    elsif self.kind_of? StructType
+    elsif self.is_a? StructType
       get_members_decl.get_items.each{|decl|
         decl.print_info f, get_ID_str, indent, :DECLTYPE_STMEMBER
       }
@@ -814,17 +814,17 @@ class Type
 #{indent}    b_const        = #{is_const?};
 #{indent}    b_volatile     = #{is_volatile?};
 EOT
-    if self.kind_of? PtrType
+    if self.is_a? PtrType
       f.print "#{indent}    cTypeInfo        = #{get_referto.get_ID_str}TypeInfo.eTypeInfo;\n"
-    elsif self.kind_of? ArrayType
+    elsif self.is_a? ArrayType
       f.print "#{indent}    cTypeInfo        = #{get_type.get_ID_str}TypeInfo.eTypeInfo;\n"
-    elsif self.kind_of? DefinedType
+    elsif self.is_a? DefinedType
       f.print "#{indent}    cTypeInfo        = #{get_type.get_ID_str}TypeInfo.eTypeInfo;\n"
-    elsif self.kind_of? StructType
+    elsif self.is_a? StructType
       get_members_decl.get_items.each{|decl|
         f.print "#{indent}    cVarDeclInfo[] = #{get_ID_str}_#{decl.get_name}VarDeclInfo.eVarDeclInfo;\n"
       }
-    elsif self.kind_of? DescriptorType
+    elsif self.is_a? DescriptorType
       f.print "#{indent}    cSignatureInfo   = #{get_signature.get_global_name}SignatureInfo.eSignatureInfo;\n"
     end
 
@@ -841,13 +841,13 @@ EOT
   # Descriptor() => Descriptor_of_
   def get_ID_str
     # puts "get_ID_str: #{self.class.name}"
-    if kind_of? PtrType
+    if is_a? PtrType
       str = get_referto.get_ID_str + "_Ptr_"
-    elsif kind_of? ArrayType
+    elsif is_a? ArrayType
       str = get_type.get_ID_str + "_Array" + get_subscript.eval_const(nil).to_s + "_"
-    elsif kind_of? StructType
+    elsif is_a? StructType
       str = "struct #{@tag}"
-    elsif kind_of? DescriptorType
+    elsif is_a? DescriptorType
       str = "Descriptor_of_" + get_signature.get_global_name.to_s
     else
       str = get_type_str + get_type_str_post

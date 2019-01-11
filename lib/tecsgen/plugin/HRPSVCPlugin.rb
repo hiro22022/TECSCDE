@@ -300,7 +300,7 @@ EOT
         #   return retval;
         # }
 
-    if !func_type.get_type.kind_of?(VoidType)
+    if !func_type.get_type.is_a?(VoidType)
       file.print("  #{func_type.get_type_str}  retval;\n")
     end
 
@@ -308,7 +308,7 @@ EOT
         # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
         delim = ""
-        if !func_type.get_type.kind_of?(VoidType)
+        if !func_type.get_type.is_a?(VoidType)
           file.print("  retval = (#{func_type.get_type_str})")
         else
           file.print("  ")
@@ -343,7 +343,7 @@ EOT
 
         file.print(" );\n\n")
 
-        if !func_type.get_type.kind_of?(VoidType)
+        if !func_type.get_type.is_a?(VoidType)
           file.print("  return retval;\n")
         end
 
@@ -379,7 +379,7 @@ EOT
               @b_printed_include_stdint = true
             end
 
-            if func_type.get_type.kind_of?(VoidType)
+            if func_type.get_type.is_a?(VoidType)
               retval_assign = ""
             else
               retval_assign = "retval = (ER_UINT)"
@@ -418,7 +418,7 @@ EOT
               if param.get_declarator.get_ptr_level > 0
                 align_check_str = "!ALIGN_TYPE(#{passed_param[num]}, #{param.get_type.get_referto.get_type_str}) || "
 
-                  if param.get_type.get_referto.kind_of?(IntType)
+                  if param.get_type.get_referto.is_a?(IntType)
                     case param.get_type.get_referto.get_bit_size
                     when -11, -1, 8 # char, char_t, int8_t (無符号含む)
                     #
@@ -728,7 +728,7 @@ EOS
     ot = type.get_original_type
     if type.get_type_str == "ER" || type.get_type_str == "ER_UINT"
       # OK!
-    elsif ot.kind_of?(IntType) || ot.kind_of?(VoidType) || ot.kind_of?(BoolType)
+    elsif ot.is_a?(IntType) || ot.is_a?(VoidType) || ot.is_a?(BoolType)
       cdl_warning("HSW0001 $1.$2: $3 return type cannot get access violation error", signature.get_name, fh.get_name, type.get_type_str.downcase)
       check_intptr "#{signature.get_name}.#{fh.get_name} return type", type
     else
@@ -743,16 +743,16 @@ EOS
     dir = param.get_direction
     case dir
     when :IN
-      if ot.kind_of?(IntType) || ot.kind_of?(BoolType)
+      if ot.is_a?(IntType) || ot.is_a?(BoolType)
         # OK!
         check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}", type
-      elsif ot.kind_of? PtrType
+      elsif ot.is_a? PtrType
         check_ptr signature, fh, param, dir
       else
         cdl_error("HSV0002 $1.$2.$3 $4 param type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
       end
     when :OUT, :INOUT
-      if ot.kind_of? PtrType
+      if ot.is_a? PtrType
         check_ptr signature, fh, param, dir
       else
         # error
@@ -765,12 +765,12 @@ EOS
   def check_ptr(signature, fh, param, dir)
     type = param.get_type.get_referto
     ot = type.get_original_type
-    if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)
+    if ot.is_a?(IntType) || ot.is_a?(BoolType) || ot.is_a?(FloatType)
       # OK!
       check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}", type
-    elsif ot.kind_of? PtrType
+    elsif ot.is_a? PtrType
       cdl_error("HSV0003 $1.$2.$3 multi-pointer type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
-    elsif ot.kind_of? StructType
+    elsif ot.is_a? StructType
       check_struct signature, fh, param
     else
       cdl_error("HSV0004 $1.$2.$3 $4 type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
@@ -786,12 +786,12 @@ EOS
     ot.get_members_decl.get_items.each{|decl|
       type = decl.get_type
       ot = type.get_original_type
-      if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)
+      if ot.is_a?(IntType) || ot.is_a?(BoolType) || ot.is_a?(FloatType)
         # OK!
         check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}.#{decl.get_name} member", type
       else
         dbgPrint "struct member #{decl.get_name} #{type} #{decl.get_type} #{decl.get_type.get_original_type}\n"
-        if decl.get_type.get_original_type.kind_of? ArrayType
+        if decl.get_type.get_original_type.is_a? ArrayType
           dbgPrint "member array type #{decl.get_type.get_original_type.get_type} #{decl.get_type.get_original_type.get_type.get_original_type}\n"
           check_struct_member_array signature, fh, param, decl
         else
@@ -805,7 +805,7 @@ EOS
     # p "check_struct_member_array: #{member_decl.get_type.get_type_str}"
     type = member_decl.get_type.get_type
     ot = type.get_original_type
-    if ot.kind_of?(IntType) || ot.kind_of?(BoolType) || ot.kind_of?(FloatType)
+    if ot.is_a?(IntType) || ot.is_a?(BoolType) || ot.is_a?(FloatType)
       # OK!
       check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}.#{member_decl.get_name} member", type
     else
@@ -816,7 +816,7 @@ EOS
   def check_intptr(msg, type)
     dbgPrint "check_intptr IN\n"
     t = type
-    while t.kind_of? DefinedType
+    while t.is_a? DefinedType
       dbgPrint "check_intptr #{msg} #{t.get_type_str} #{t.get_original_type.get_type_str}\n"
       tstr = t.get_type_str
       tstr.sub!(/const /, "")

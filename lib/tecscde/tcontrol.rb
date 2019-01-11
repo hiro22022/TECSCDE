@@ -234,16 +234,16 @@ Structure of Palette Window
 
       if button == 1
         object = find_near xm, ym
-        if object.kind_of?(TECSModel::TmCell) && click_count == 2
+        if object.is_a?(TECSModel::TmCell) && click_count == 2
           if object.is_editable?
 # p "begin_edit_name"
             @view.begin_edit_name object, time
             @hilite_objs.reset(object)
             @sub_mode = :SM_EDIT_CELL_NAME
           end
-        elsif object.kind_of?(TECSModel::TmCell) ||
+        elsif object.is_a?(TECSModel::TmCell) ||
 #         if object.kind_of?( TECSModel::TmCell ) ||
-            object.kind_of?(TECSModel::TmJoinBar)
+            object.is_a?(TECSModel::TmJoinBar)
           @sub_mode = :SM_MOVING_CELL_BAR
           # p "FOUND Cell or Bar"
           if state.shift_mask?
@@ -254,7 +254,7 @@ Structure of Palette Window
             @hilite_objs.reset(object)
           end
           @view.draw_hilite_objects @hilite_objs
-        elsif object.kind_of? TECSModel::TmCPort
+        elsif object.is_a? TECSModel::TmCPort
           # p "FOUND TmCPort"
           if state.shift_mask?
             @sub_mode = :SM_MOVING_CPORT
@@ -274,7 +274,7 @@ Delete existing join before creating new join.
 If you want to hilited port, click with pressing shift key.
 EOT
           end
-        elsif object.kind_of? TECSModel::TmEPort
+        elsif object.is_a? TECSModel::TmEPort
           if state.shift_mask?
             @sub_mode = :SM_MOVING_EPORT
             @hilite_objs.add object
@@ -334,7 +334,7 @@ EOT
         @view.draw_hilite_objects @hilite_objs
       when :SM_JOINING
         object = find_near xm, ym
-        if object.kind_of? TECSModel::TmEPort
+        if object.is_a? TECSModel::TmEPort
           if object.get_signature == @cport_joining.get_signature
             @view.set_cursor CURSOR_JOIN_OK
           end
@@ -343,7 +343,7 @@ EOT
 
       when :SM_NONE
         object = find_near xm, ym
-        if object.kind_of? TECSModel::TmCPort
+        if object.is_a? TECSModel::TmCPort
           @view.set_cursor CURSOR_PORT
         else
           @view.set_cursor CURSOR_NORMAL
@@ -362,7 +362,7 @@ EOT
         @model.set_undo_point
       when :SM_JOINING
         object = find_near xm, ym
-        if object.kind_of? TECSModel::TmEPort
+        if object.is_a? TECSModel::TmEPort
           if object.get_signature == @cport_joining.get_signature
             join = @model.new_join(@cport_joining, object)
             @model.set_undo_point
@@ -386,18 +386,18 @@ EOT
       case keyval
       when 0xff     # delete key
         @hilite_objs.each{|object|
-          if object.kind_of? TECSModel::TmJoinBar
+          if object.is_a? TECSModel::TmJoinBar
             object.get_join.delete
-          elsif object.kind_of? TECSModel::TmCell
+          elsif object.is_a? TECSModel::TmCell
             object.delete
-          elsif object.kind_of? TECSModel::TmPort
+          elsif object.is_a? TECSModel::TmPort
             object.delete_hilited
           end
         }
         @hilite_objs.reset
       when 0x63     # Insert
         @hilite_objs.each{|object|
-          if object.kind_of? TECSModel::TmPort
+          if object.is_a? TECSModel::TmPort
             object.insert(state.shift_mask? ? :before : :after)
           end
         }
@@ -792,8 +792,8 @@ EOT
     # obj::TmCell | TmBar | TmPort: new object to be hilited
     def reset_if_ncessary(obj)
       if @hilite_objs.length > 0
-        if @hilite_objs[0].kind_of? TECSModel::TmPort
-          if obj.kind_of? TECSModel::TmPort
+        if @hilite_objs[0].is_a? TECSModel::TmPort
+          if obj.is_a? TECSModel::TmPort
             if obj.get_owner_cell != @hilite_objs[0].get_owner_cell
               reset
             end
@@ -801,7 +801,7 @@ EOT
             reset
           end
         else
-          if obj.kind_of? TECSModel::TmPort
+          if obj.is_a? TECSModel::TmPort
             reset
           end
         end
@@ -831,14 +831,14 @@ EOT
     end
 
     def change_cell_name(name)
-      if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
+      if @hilite_objs.length == 1 && @hilite_objs[0].is_a?(TECSModel::TmCell)
         @hilite_objs[0].change_name name.to_sym
         @hilite_objs[0].get_model.set_undo_point
       end
     end
 
     def cell_plugin_dialog
-      if @hilite_objs.length == 1 && @hilite_objs[0].kind_of?(TECSModel::TmCell)
+      if @hilite_objs.length == 1 && @hilite_objs[0].is_a?(TECSModel::TmCell)
         dialog = CellPluginDialog.new @hilite_objs[0]
         dialog.run
       end
@@ -848,7 +848,7 @@ EOT
       cell = nil
       n_cell = 0
       each{|obj|
-        if obj.kind_of? TECSModel::TmCell
+        if obj.is_a? TECSModel::TmCell
           cell = obj
           n_cell += 1
         end

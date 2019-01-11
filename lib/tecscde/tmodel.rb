@@ -84,7 +84,7 @@ module TECSCDE
       if @owner
         return @owner.get_model
       else
-        if self.kind_of? TECSModel
+        if self.is_a? TECSModel
           raise "get_model: self is not TECSModel: #{self.class}"
         end
         self
@@ -100,7 +100,7 @@ module TECSCDE
     def copy_from(tm_object)
       tm_object.instance_variables.each{|iv|
         val = tm_object.instance_variable_get(iv)
-        if val.kind_of?(Array) || val.kind_of?(Hash)
+        if val.is_a?(Array) || val.is_a?(Hash)
           instance_variable_set(iv, val.dup)
         else
           instance_variable_set(iv, val)
@@ -360,7 +360,7 @@ module TECSCDE
     def rename_cell(cell, new_name)
       modified {
 
-        if !new_name.kind_of? Symbol
+        if !new_name.is_a? Symbol
           raise "cell name not Symbol"
         end
         if cell.get_name == new_name
@@ -734,7 +734,7 @@ module TECSCDE
       #=== TmCell::get_near_port ***
       def get_near_port(x, y)
         (@cports.merge @eports).each{|name, port|
-          if port.kind_of? TmPort
+          if port.is_a? TmPort
             xp, yp = port.get_position
           else
             pt = port.get_near_port(x, y)
@@ -846,7 +846,7 @@ module TECSCDE
         }
         nearest_port = nil
         (@eports.values + @cports.values).each{|port|
-          if port.kind_of? TmPortArray
+          if port.is_a? TmPortArray
             port.get_ports.each{|pt|
               nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
@@ -875,7 +875,7 @@ module TECSCDE
           end
         }
         (@eports.values + @cports.values).each{|port|
-          if port.kind_of? TmPortArray
+          if port.is_a? TmPortArray
             port.get_ports.each{|pt|
               proc_adjust.call(pt, offs, edge_side, move_offs)
             }
@@ -986,7 +986,7 @@ module TECSCDE
         h_min = 0
         w_min = 0
         (@cports.values + @eports.values).each{|port|
-          if port.kind_of? TmPortArray
+          if port.is_a? TmPortArray
             port.get_ports.each{|pt|
               offs = pt.get_offset
               case pt.get_edge_side
@@ -1469,7 +1469,7 @@ EOT
       end
 
       def get_cell
-        if @owner.kind_of? TmCell
+        if @owner.is_a? TmCell
           @owner
         else
           @owner.get_owner
@@ -1531,7 +1531,7 @@ EOT
         if !@owner.is_editable?
           return
         end
-        if @owner.kind_of? TmPortArray
+        if @owner.is_a? TmPortArray
           @owner.delete_hilited self
         end
       end
@@ -1540,7 +1540,7 @@ EOT
       # before_after::Symbol: :before, :after
       # insert if this port is a member of unsubscripted array.
       def insert(before_after)
-        if @owner.kind_of? TmPortArray
+        if @owner.is_a? TmPortArray
           @owner.insert self, before_after
         end
       end
@@ -1552,9 +1552,9 @@ EOT
 
       #=== TmPort#get_owner_cell
       def get_owner_cell
-        if @owner.kind_of? TmCell
+        if @owner.is_a? TmCell
           return @owner
-        elsif @owner.kind_of? TmPortArray
+        elsif @owner.is_a? TmPortArray
           return @owner.get_owner
         else
           raise "unknown cell"

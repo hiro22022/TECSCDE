@@ -334,9 +334,9 @@ EOT
 #{indent}#{XML_INDENT}<name> #{@name} </name>
 EOT
     @join_list.get_items.each{|join|
-      if join.get_definition.kind_of? Port
+      if join.get_definition.is_a? Port
         kind = "call_join"
-      elsif join.get_definition.kind_of? Decl
+      elsif join.get_definition.is_a? Decl
         kind = "attr_join"
       else
         raise "Unknown"

@@ -560,7 +560,7 @@ module TECSCDE
           color_name = Color_uneditable
         end
       else
-        if port.kind_of?(TECSModel::TmCPort) && !port.is_optional?
+        if port.is_a?(TECSModel::TmCPort) && !port.is_optional?
           color_name = Color_incomplete
         else
           color_name = Color_unjoin
@@ -628,14 +628,14 @@ module TECSCDE
     #=== TView#draw_hilite_objects
     def draw_hilite_objects(obj_list)
       obj_list.each{|obj|
-        if obj.kind_of? TECSModel::TmCell
+        if obj.is_a? TECSModel::TmCell
           drawCellRectDirect obj
           # drawTargetDirect
           # drawCell obj
           # drawTargetReset
-        elsif obj.kind_of? TECSModel::TmPort
+        elsif obj.is_a? TECSModel::TmPort
           drawPortDirect obj
-        elsif obj.kind_of? TECSModel::TmJoinBar
+        elsif obj.is_a? TECSModel::TmJoinBar
           drawBarDirect obj
         end
       }
@@ -682,7 +682,7 @@ module TECSCDE
       # @cairo_context_target.set_source_color( @@colors[ Color_hilite ] )
       draw_port_name port
 
-      if port.kind_of? TECSModel::TmEPort
+      if port.is_a? TECSModel::TmEPort
         draw_entry_port_triangle(port)
       end
 

@@ -286,7 +286,7 @@ EOT
 
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
         # 拡張サービスコール呼出し
-      if !func_type.get_type.kind_of?(VoidType)
+      if !func_type.get_type.is_a?(VoidType)
         file.print("  #{func_type.get_type_str}  retval;\n")
       end
 
@@ -307,7 +307,7 @@ EOT
         # p "#{ct_name}, #{sig_name}, #{func_name}, #{func_global_name}"
 
         delim = ""
-        if !func_type.get_type.kind_of?(VoidType)
+        if !func_type.get_type.is_a?(VoidType)
           file.print("  retval = (#{func_type.get_type_str})")
         else
           file.print("  ")
@@ -344,7 +344,7 @@ EOT
 
         file.print(" );\n")
 
-        if !func_type.get_type.kind_of?(VoidType)
+        if !func_type.get_type.is_a?(VoidType)
           file.print("  return retval;\n")
         end
 
@@ -377,7 +377,7 @@ EOT
 # EOT
 #             end
 
-            if func_type.get_type.kind_of?(VoidType)
+            if func_type.get_type.is_a?(VoidType)
               retval_assign = ""
                 retval_return = ""
             else
@@ -441,7 +441,7 @@ EOT
 
             file2.print ");\n"
 
-            if !func_type.get_type.kind_of?(VoidType)
+            if !func_type.get_type.is_a?(VoidType)
               file2.print "\n    return #{retval_return};\n"
             end
             file2.print "}\n\n"

@@ -374,7 +374,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
 
   def get_type_map_ent(ttype)
     # structure type is registerd in check_struct_member
-    if ttype.kind_of? StructType
+    if ttype.is_a? StructType
       return
     end
     tstr = ttype.get_type_str.sub(/const /, "")    # const は無視
@@ -1150,7 +1150,7 @@ EOT
       delim = ""
       file.print "cTECS_", f.get_name, "( "
       plist.each{|param|
-        if param.get_type.get_original_type.kind_of? StructType
+        if param.get_type.get_original_type.is_a? StructType
           aster = "*"
         else
           aster = ""

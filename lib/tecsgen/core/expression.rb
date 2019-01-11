@@ -90,13 +90,13 @@ class Expression < Node
 
   def eval_const(name_list, name_list2 = nil)
     val = elements_eval_const(@elements, name_list, name_list2, 0)
-    if val.kind_of? IntegerVal
+    if val.is_a? IntegerVal
       return val.to_i
-    elsif val.kind_of? FloatVal
+    elsif val.is_a? FloatVal
       return val.to_f
-    elsif val.kind_of? BoolVal
+    elsif val.is_a? BoolVal
       return val.to_i
-    elsif val.kind_of? PointerVal
+    elsif val.is_a? PointerVal
       return val.to_i # mikan エラー V1008 が発生してしまう
       # elsif val.kind_of? EnumVal then
       # enum mikan
@@ -531,7 +531,7 @@ class Expression < Node
 # p "val.respond_to?( \"-@\" )=#{val.respond_to?( "-@" )} #{val.class}"
 # p "val.respond_to?( \"~@\" )=#{val.respond_to?( "~@" )}"
 # 2.0      if val.respond_to?( "~@" ) then  # Ruby 1.9, 2.0 preview 版では例外が発生してしまう
-      if val.kind_of? IntegerVal
+      if val.is_a? IntegerVal
         return ~ val
       else
         return nil
@@ -677,7 +677,7 @@ class Expression < Node
   def elements_get_type(elements, namedList)
     type = elements_get_type_sub(elements, namedList)
     # 返された方が DefinedType の場合 元の型を返す
-    if type.kind_of?(DefinedType)
+    if type.is_a?(DefinedType)
       type = type.get_type
     end
     return type
@@ -713,7 +713,7 @@ class Expression < Node
 #    when :OP_U_AMP
     when :OP_U_ASTER
       type = elements_get_type(elements[1], namedList)
-      unless type.kind_of?(PtrType)
+      unless type.is_a?(PtrType)
         cdl_error("E1013 \'*\': operand is not pointer value")
         return IntType.new(8) # IntType を返しておく
       end
@@ -960,7 +960,7 @@ class Expression < Node
   # すべてが BaseVal の子クラス（値）であれば、評価可能と判断する
   def evaluable?(*v)
     v.each{|val|
-      if !val.kind_of?(BaseVal)
+      if !val.is_a?(BaseVal)
         return false
       end
     }

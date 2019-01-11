@@ -305,7 +305,7 @@ EOT
       type0 = type
       type = referto
       type_str = type.get_type_str
-      if type.kind_of?(DefinedType)
+      if type.is_a?(DefinedType)
         type = type.get_original_type
       end
 
@@ -339,7 +339,7 @@ EOT
           print_param(name, type, file, nest, direction, type_str, outer, outer2)
         end
       else # loop_count != nil
-        if type.kind_of?(PtrType) || type.kind_of?(StructType)
+        if type.is_a?(PtrType) || type.is_a?(StructType)
           num_per_loop = 1
         else
           num_per_loop = 4
