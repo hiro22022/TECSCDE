@@ -511,7 +511,7 @@ class Decl < BDNode
       end
     end
 
-    if(@type.kind_of? ArrayType) && (@type.get_subscript == nil) && (@omit == false)
+    if (@type.kind_of? ArrayType) && (@type.get_subscript == nil) && (@omit == false)
       if @kind == :ATTRIBUTE
         cdl_error("S2004 $1: array subscript must be specified or omit", @identifier)
       elsif @kind == :VAR || @kind == :MEMBER

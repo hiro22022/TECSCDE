@@ -239,13 +239,13 @@ class HRPKernelObjectPlugin < CelltypePlugin
                         when :user
                           if dr.get_namespace_path != cell.get_region.get_domain_root.get_namespace_path
                             # 他のユーザードメインからの結合
-                            if(b_warn == false)
+                            if (b_warn == false)
                               cdl_error("HRP9999 '$1': kernel object joined from other user domain. kernel object joined from multi-user-domain must be placed out of domain", cell.get_name)
                               b_warn = true
                             end
                           end
                         when :OutOfDomain
-                          if(b_info == false)
+                          if (b_info == false)
                             # 無所属からの結合
                             # cdl_error( "HRP9999 kernel object joined from out of domain" )
                             if cell_domain_type.get_kind == :OutOfDomain

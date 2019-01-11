@@ -48,7 +48,7 @@ class Mruby2CBridgePlugin < SignaturePlugin
   end
 
   def gen_cdl_file(file)
-    if(@@signature_list.length == 0)
+    if (@@signature_list.length == 0)
       print_msg "  Mruby2CBridgePlugin: [initialize function] 'void initializeBridge( mrb_state *mrb )' must be called from VM.\n"
       c2tecs = "generate( C2TECSBridgePlugin, nMruby::sInitializeBridge, \"silent=true\" );\n"
     end

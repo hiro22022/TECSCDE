@@ -420,9 +420,9 @@ class Expression < Node
         end
       end
     when :BOOL_CONSTANT
-      if(elements[1].instance_of?(TrueClass))
+      if (elements[1].instance_of?(TrueClass))
         return BoolVal.new(true)
-      elsif(elements[1].instance_of?(FalseClass))
+      elsif (elements[1].instance_of?(FalseClass))
         return BoolVal.new(false)
       else
         throw("BOOL constant error")
@@ -830,7 +830,7 @@ class Expression < Node
       port_name = elements[2].val
       return [ cell_nsp, port_name ]
     when :INTERNAL_ALLOC
-      if(ele[0] == :IDENTIFIER)
+      if (ele[0] == :IDENTIFIER)
         if ele[1].is_name_only?
           return [ ele[1].get_path[0] ] # mikan a::b
         else
@@ -840,7 +840,7 @@ class Expression < Node
         cdl_error("E1019 $1: rhs not in 'allocator_entry_port' form", ele[1].to_s)
       end
     when :RELAY_ALLOC
-      if(ele[0] != :OP_DOT ||
+      if (ele[0] != :OP_DOT ||
           ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || !ele[1][1][1].is_name_only? ||
           !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token)) # 1
         cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s) # S1086

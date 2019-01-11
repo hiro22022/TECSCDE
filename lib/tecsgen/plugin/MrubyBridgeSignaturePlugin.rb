@@ -206,10 +206,10 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   def check_name_and_return_type(func_head_array)
     b_init = false; b_init_cell = false
     func_head_array.each{|func_head|
-      if(func_head.get_name == :initialize)
+      if (func_head.get_name == :initialize)
         cdl_warning("MRW2001 initialize: internally defined. change to initialize_cell in ruby")
         b_init = true
-      elsif(func_head.get_name == :initialize_cell)
+      elsif (func_head.get_name == :initialize_cell)
         b_init_cell = true
       end
       rtype = func_head.get_return_type.get_original_type
@@ -224,7 +224,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
         end
       end
     }
-    if(b_init && b_init_cell)
+    if (b_init && b_init_cell)
       cdl_warning("MRB1002 initialize: internally defined. change to initialize_cell in ruby")
     end
   end
@@ -264,7 +264,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
           ttype = ttype_org.get_original_type # 上記の typedef されている場合、元の型
           register_ptr_type ttype_org, fh
 
-          if(type_org.get_string.to_s == "-1")
+          if (type_org.get_string.to_s == "-1")
             case param_decl.get_direction
             when :OUT, :INOUT
               if @b_auto_exclude
@@ -286,7 +286,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
           when FloatType
           when BoolType
           when StructType
-            if(type_org.get_size || type_org.get_string || type_org.get_count)
+            if (type_org.get_size || type_org.get_string || type_org.get_count)
               if @b_auto_exclude
                 cdl_info("MRI9999 $1: size_is, count_is, string cannot be specified for struct pointer, $2 automatcally excluded",
                           param_decl.get_name, fh.get_name)
@@ -1216,7 +1216,7 @@ EOT
       raise "MrubyBridgeSignaturePlugin: not handle type 2 #{ttype}"
     end
 =end
-    if(param.get_size)
+    if (param.get_size)
       sz_str = param.get_size.to_s
     elsif param.get_string # mikan とりあえず size_is と string の同時指定 (二重ポインタ) はなし
       sz_str = param.get_string.to_s

@@ -336,7 +336,7 @@ EOT
             i += 1
         }
 
-        while(i < 5) do
+        while (i < 5) do
           delim = ","
             file.printf("#{delim} 0")
             i += 1

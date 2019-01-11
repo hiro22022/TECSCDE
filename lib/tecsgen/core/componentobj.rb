@@ -387,7 +387,7 @@ end
         if params
           params.each{|param|
             t = param.get_type.get_original_type
-            while(t.kind_of? PtrType)
+            while (t.kind_of? PtrType)
               t = t.get_referto
             end
             # p "has_desc #{param.get_name} #{t}"
@@ -753,9 +753,9 @@ class Celltype < NSBDNode # < Nestable
     attribute.each {|a|
       a.set_owner self
       @name_list.add_item(a)
-      if(a.is_omit?)
+      if (a.is_omit?)
         @n_attribute_omit += 1
-      elsif(a.is_rw?)
+      elsif (a.is_rw?)
         @n_attribute_rw += 1
       else
         @n_attribute_ro += 1
@@ -929,14 +929,14 @@ class Celltype < NSBDNode # < Nestable
       return
     end
 
-    if(!ct.is_singleton?)
+    if (!ct.is_singleton?)
       # シングルトンではない
       cdl_error("S1018 $1 : not singleton cell", obj.get_name)
     end
 
     # 受け口を探す
     obj2 = ct.find(ep_name)
-    if((!obj2.instance_of? Port) || obj2.get_port_type != :ENTRY)
+    if ((!obj2.instance_of? Port) || obj2.get_port_type != :ENTRY)
       cdl_error("S1019 \'$1\' : not entry port", ep_name)
       return
     elsif obj2.get_array_size
@@ -965,7 +965,7 @@ class Celltype < NSBDNode # < Nestable
         port.get_signature.get_function_head_array.each{|f|
           # mikan ここは、namedList からの検索にならないの？（効率が悪い）
           obj2.get_signature.get_function_head_array.each{|f2|
-            if(f.get_name == f2.get_name)
+            if (f.get_name == f2.get_name)
               cdl_error("S1022 $1.$2 : \'$3\' conflict function name in $4.$5", obj.get_name, obj2.get_name, f.get_name, req[1].get_name, req[2].get_name)
             end
           }
@@ -1598,8 +1598,8 @@ class Cell < NSBDNode # < Nestable
           rhs = join.get_rhs
           if rhs.instance_of? Expression
             ele = rhs.get_elements
-            if(ele[0] == :IDENTIFIER) #  attr = attr_ext （右辺単項）か？ #1
-              if(CompositeCelltype.has_attribute?(ele[1].get_name)) # mikan a::b.ePort がエラーにならないかも
+            if (ele[0] == :IDENTIFIER) #  attr = attr_ext （右辺単項）か？ #1
+              if (CompositeCelltype.has_attribute?(ele[1].get_name)) # mikan a::b.ePort がエラーにならないかも
                 ident = ele[1].get_name # 右辺は attribute．
               else
                 # 右辺は attribute にないのであれば、定数のはず
@@ -1791,7 +1791,7 @@ class Cell < NSBDNode # < Nestable
   #  このメソッドは、composite の中の cell でしか呼ばれない．
   def external_join(internal_cell_elem_name, export_name, b_composite)
     # cCall => composite.cCall; ではないか？
-    if(b_composite == false)
+    if (b_composite == false)
       # cCall => cCall; のような場合
       if @celltype.find(export_name)
         cdl_error("S1036 $1 : cannot refer to $2\'s here. Use \'composite.$3\' to refer to composite celltype\'s", export_name, @celltype.get_name, export_name)
@@ -2643,7 +2643,7 @@ class Cell < NSBDNode # < Nestable
         # 添数あり呼び口配列の場合、すべての添数要素が初期化されているかチェックする
 
         am = j.get_array_member2
-        if(am)
+        if (am)
           # join は配列
 
           # 呼び口配列定義での配列の大きさ
@@ -2669,7 +2669,7 @@ class Cell < NSBDNode # < Nestable
 #            length = am.length
 #          end
           i = 0
-          while(i < length)
+          while (i < length)
             if am[i] == nil
               if !p.is_optional?
                 cdl_error("S1045 $1[$2]: not initialized", p.get_name, i)
@@ -2729,12 +2729,12 @@ class Cell < NSBDNode # < Nestable
           next
         end
 
-        if(!a.get_type.kind_of?(PtrType))
+        if (!a.get_type.kind_of?(PtrType))
           cdl_error("S1048 $1: size_is specified for non-pointer type", a.get_name)
         else
           size = a.get_size_is.eval_const(@join_list, @celltype.get_name_list)
           a.get_type.set_scs(a.get_size_is, nil, nil, nil, false)
-          if(!size.kind_of? Integer) # C_EXP の可能性あり
+          if (!size.kind_of? Integer) # C_EXP の可能性あり
             # mikan 多分ここでのエラー発生は不要、eval_const の中で変数が存在しない、型が不適切などのエラーになるはず
             cdl_error("S1049 $1: size_is arg not constant", a.get_name)
           else
@@ -2757,7 +2757,7 @@ class Cell < NSBDNode # < Nestable
                 ini = ini.eval_const(@celltype.get_name_list)
               end
               if ini.instance_of? Array
-                if(ini.length > size)
+                if (ini.length > size)
                   cdl_error("S1168 too many initializer for array, $1 for $2", ini.length, size)
                 end
               end
@@ -3283,7 +3283,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     # すべてのエクスポート定義に対応した呼び口、受け口、属性が存在するかチェック
     @name_list.get_items.each{|n|
-      if(@export_name_list.get_item(n.get_name) == nil)
+      if (@export_name_list.get_item(n.get_name) == nil)
         cdl_error("S1056 $1 : cannot export, nothing designated", n.get_name)
       end
     }
@@ -3399,17 +3399,17 @@ class CompositeCelltype < NSBDNode # < Nestable
 
     # エクスポート定義と一致するかどうかチェック
     obj2 = @name_list.get_item(export_name)
-    if(obj2 == nil)
+    if (obj2 == nil)
       cdl_error("S1062 $1 has no export definition", export_name)
     elsif obj2.instance_of?(Decl)
-      if(!obj.instance_of? Decl)
+      if (!obj.instance_of? Decl)
         cdl_error("S1063 $1 is port but previously defined as an attribute", export_name)
       elsif !obj.get_type.equal? obj2.get_type
         cdl_error("S1064 $1 : type \'$2$3\' mismatch with pprevious definition\'$4$5\'", export_name, obj.get_type.get_type_str, obj.get_type.get_type_str_post, obj2.get_type.get_type_str, obj2.get_type.get_type_str_post)
       end
     elsif obj2.instance_of?(Port)
-      if(obj.instance_of? Port)
-        if(obj.get_port_type != obj2.get_port_type)
+      if (obj.instance_of? Port)
+        if (obj.get_port_type != obj2.get_port_type)
           cdl_error("S1065 $1 : port type $2 mismatch with previous definition $3", export_name, obj.get_port_type, obj2.get_port_type)
         elsif obj.get_signature != obj2.get_signature
           if !obj.get_signature.nil? && !obj2.get_signature.nil?
@@ -4240,7 +4240,7 @@ end
       when :INTERNAL_ALLOC
 
         ele = ai[3].get_elements
-        if(ele[0] != :IDENTIFIER)
+        if (ele[0] != :IDENTIFIER)
           cdl_error("S1086 $1: rhs not in 'allocator_entry_port' form", ai[3].to_s)
           next
         end
@@ -4256,7 +4256,7 @@ end
 
       when :RELAY_ALLOC
         ele = ai[3].get_elements
-        if(ele[0] != :OP_DOT ||
+        if (ele[0] != :OP_DOT ||
             ele[1][0] != :OP_DOT || ele[1][1][0] != :IDENTIFIER || !ele[1][1][1].is_name_only? ||
             !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token)) # 1
           # [ :OP_DOT, [ :OP_DOT, [ :IDENTIFIER,  name_space_path ],  Token(1) ],  Token(2) ]
@@ -4576,8 +4576,8 @@ class Namespace < NSBDNode
     super()
     @name = name
 
-    if(name == "::")
-      if(!@@root_namespace.nil?)
+    if (name == "::")
+      if (!@@root_namespace.nil?)
         # root は一回のみ生成できる
         raise "try to re-create root namespace"
       end
@@ -5324,7 +5324,7 @@ class Join < BDNode
           else
 
             as = object2.get_array_size
-            if(as.kind_of?(Integer) && as <= @rhs_subscript)
+            if (as.kind_of?(Integer) && as <= @rhs_subscript)
               # 受け口配列の大きさに対し、右辺の添数が同じか大きい
               cdl_error("S1115 $1[$2]: subscript out of range (< $3)", @port_name, @rhs_subscript, as)
             else
@@ -5378,13 +5378,13 @@ class Join < BDNode
     cell = get_rhs_cell2 # 右辺のセルを得る
     port = get_rhs_port2
 
-    if(cell && cell.get_allocator_list) # cell == nil なら既にエラー
+    if (cell && cell.get_allocator_list) # cell == nil なら既にエラー
 
       dbgPrint "create_allocator_join: #{@owner.get_name}.#{@name}=>#{cell ? cell.get_name : "nil"}\n"
 
       cell.get_allocator_list.each {|a|
 
-        if(a[0 + 1] == port && a[1 + 1] == @rhs_subscript)
+        if (a[0 + 1] == port && a[1 + 1] == @rhs_subscript)
           # 名前の一致するものの結合を生成する
           # 過不足は、別途チェックされる
           cp_name = :"#{@name}_#{a[2 + 1]}_#{a[3 + 1]}"
@@ -5432,8 +5432,8 @@ class Join < BDNode
 
       # 不一致になるところ（兄弟）を探す
       i = 1 # i = 0 は :RootRegion なので必ず一致
-      while(i < len1 && i < len2)
-        if(f1[i] != f2[i])
+      while (i < len1 && i < len2)
+        if (f1[i] != f2[i])
           break
         end
         i += 1
@@ -5705,7 +5705,7 @@ class Join < BDNode
 
       if rp == nil
         plClass = load_plugin(plugin_name, ThroughPlugin)
-        if(plClass)
+        if (plClass)
           gen_through_cell_code_and_parse(plugin_name, i, next_cell, next_port_name, next_port_subscript, plClass)
         end
       else
@@ -6053,7 +6053,7 @@ class Join < BDNode
 
     elsif @subscript >= 0
       # 添数指定ありの場合
-      if(subscript2 == nil || subscript2 < 0)
+      if (subscript2 == nil || subscript2 < 0)
         # join2 左辺は非配列または添数なし
         # 配列が不一致
         cdl_error("S1128 \'$1\' inconsistent array definition", @name)
@@ -6069,7 +6069,7 @@ class Join < BDNode
 
     else
       # 添数指定なしの場合
-      if(subscript2 == nil || subscript2 >= 0)
+      if (subscript2 == nil || subscript2 >= 0)
         # join2 左辺は非配列または添数有
         # 配列が不一致
         cdl_error("S1130 \'R1\' inconsistent array definition", @name)
@@ -6394,7 +6394,7 @@ class CompositeCelltypeJoin < BDNode
 #    if @cell.equal?( cell ) && ( port_decl == nil || @port_decl.equal?( port_decl ) ) then
     # なぜ port_decl が一致しなければならなかったか忘れた。
     # recursive_composite で名前の一致に変更   060917
-    if((@cell.get_name == cell.get_name) && (port_decl == nil || @port_decl.get_name == port_decl.get_name))
+    if ((@cell.get_name == cell.get_name) && (port_decl == nil || @port_decl.get_name == port_decl.get_name))
       true
     else
       false
@@ -6814,7 +6814,7 @@ class Region < Namespace
         # @@region_stack[@@region_stack_sp] = object
 
         # 再出現時に specifier が指定されているか？
-        if(@in_through_list.length != 0 || @out_through_list.length != 0 || @to_through_list.length != 0 ||
+        if (@in_through_list.length != 0 || @out_through_list.length != 0 || @to_through_list.length != 0 ||
             !@region_type.nil? || !@domain_type.nil?)
           cdl_error("S1140 $1: region specifier must place at first appearence", name)
         end
@@ -7092,8 +7092,8 @@ class Region < Namespace
 
       # 不一致になるところ（兄弟）を探す
       i = 1 # i = 0 は :RootRegion なので必ず一致
-      while(i < len1 && i < len2)
-        if(f1[i] != f2[i])
+      while (i < len1 && i < len2)
+        if (f1[i] != f2[i])
           break
         end
         i += 1
@@ -7346,7 +7346,7 @@ class Import_C < Node
     }
 
     # 読込み済み？
-    if(@@header_list[header])
+    if (@@header_list[header])
       # 第二引数 define が以前と異なる
       if @@define_list[header].to_s != define.to_s
         cdl_error("S1143 import_C: arg2: mismatch with previous one")
@@ -7391,7 +7391,7 @@ class Import_C < Node
     cmd = "#{$cpp} #{def_opt} #{include_opt} #{tmp_C}"
 
     begin
-      if($verbose)
+      if ($verbose)
         puts "CPP: #{cmd}"
       end
 
@@ -7532,7 +7532,7 @@ class Import < Node
     @b_reuse = b_reuse
     @b_reuse_real = @b_reuse || Generator.is_reuse?
 
-    if(Generator.get_plugin) && (File.exist? "#{$gen}/#{@cdl}")
+    if (Generator.get_plugin) && (File.exist? "#{$gen}/#{@cdl}")
       @cdl_path = "#{$gen}/#{@cdl}"
       found = true
     else
@@ -7550,7 +7550,7 @@ class Import < Node
 
     # 読込み済みなら、読込まない
     prev = @@import_list[File.expand_path(@cdl_path)]
-    if(prev)
+    if (prev)
       if prev.is_reuse_real? != @b_reuse_real
         cdl_warning("W1008 $1: reuse designation mismatch with previous import", @cdl)
       end

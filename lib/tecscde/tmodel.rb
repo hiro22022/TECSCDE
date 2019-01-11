@@ -724,7 +724,7 @@ module TECSCDE
       #=== TmCell::is_near?( x, y )  ***
       def is_near?(x, y)
         # p "is_near? @x=#{@x} @width=#{@width} @y=#{@y} @height=#{@height} x=#{x} y=#{y}"
-        if(@x < x) && (x < (@x + @width)) && (@y < y) && (y < (@y + @height))
+        if (@x < x) && (x < (@x + @width)) && (@y < y) && (y < (@y + @height))
           true
         else
           false
@@ -744,7 +744,7 @@ module TECSCDE
             next
           end
           # p "get_near_port x=#{x} y=#{y} xp=#{xp} yp=#{yp}"
-          if((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
+          if ((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
             # p "near port: found"
             return port
           end
@@ -1166,7 +1166,7 @@ module TECSCDE
         @ports.each{|port|
           xp, yp = port.get_position
           # p "get_near_port x=#{x} y=#{y} xp=#{xp} yp=#{yp}"
-          if((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
+          if ((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
             # p "near port: found"
             return port
           end

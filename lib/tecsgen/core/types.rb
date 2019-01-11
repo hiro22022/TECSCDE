@@ -989,7 +989,7 @@ class StructType < Type
 
     md1 = @members_decl.get_items
     md2 = md.get_items
-    if(md1.length != md2.length)
+    if (md1.length != md2.length)
       return false
     end
 
@@ -1384,7 +1384,7 @@ class PtrType < Type
         type = val.get_type # PtrType
         t1 = self
         t2 = type
-        while(t1.kind_of?(PtrType) && t2.kind_of?(PtrType))
+        while (t1.kind_of?(PtrType) && t2.kind_of?(PtrType))
           t1 = t1.get_type
           t2 = t2.get_type
           if (t1.class == t2.class) && (t1.get_bit_size == t2.get_bit_size)
@@ -1426,7 +1426,7 @@ class PtrType < Type
         @type.check_init(locale, "#{ident}[#{i}]", ini, kind, attribute = nil)
         i += 1
       }
-    elsif(initializer.instance_of?(C_EXP))
+    elsif (initializer.instance_of?(C_EXP))
 
     else
       cdl_error2(locale, "T1036 $1: unsuitable initializer for pointer", ident)

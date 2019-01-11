@@ -210,7 +210,7 @@ EOT
     return if ct == nil # error case
     ports.each{|rhs_port|
       obj = ct.find(rhs_port.to_sym)
-      if((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
+      if ((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port '$1' not found or not entry in celltype '$2'", rhs_port, ct.get_name)
       else
         # print "MRBBridgeCellPlugin: exclude #{rhs_port}\n"
@@ -230,7 +230,7 @@ EOT
         cdl_error("MRB9999 exclude_port_func: '$1' not in 'port.func' form", rhs_port_func)
       end
       obj = ct.find(port_func[0].to_sym)
-      if((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
+      if ((!obj.instance_of? Port) || obj.get_port_type != :ENTRY)
         cdl_error("MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port, ct.get_name)
       else
         signature = obj.get_signature

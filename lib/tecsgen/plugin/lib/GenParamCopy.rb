@@ -121,7 +121,7 @@ EOT
 
       end
 
-      if(b_get)
+      if (b_get)
         file.print indent
         file.print "if( ( ercd_ = cTDR_get#{type_str}( &(#{outer}#{name}#{outer2}) ) ) != E_OK )\t/* GenParamCopy 2 */\n"
         file.print indent
