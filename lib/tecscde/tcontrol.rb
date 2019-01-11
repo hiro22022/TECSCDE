@@ -262,7 +262,7 @@ Structure of Palette Window
           elsif state.control_mask?
             @sub_mode = :SM_MOVING_CPORT
             @hilite_objs.reset(object)
-          elsif object.get_join == nil
+          elsif object.get_join.nil?
             @sub_mode = :SM_JOINING
             @hilite_objs.reset
             @cport_joining = object
@@ -595,7 +595,7 @@ EOT
       # ATTRIBUTE column
       col = Gtk::TreeViewColumn.new("attribute", renderer, :text => COL_NAME)
       col.set_cell_data_func(renderer) {|col, renderer, model, iter|
-        if iter[COL_VALUE] == nil || iter[COL_VALUE] == ""
+        if iter[COL_VALUE].nil? || iter[COL_VALUE] == ""
           renderer.foreground = "red"
         elsif @cell.is_editable?
           renderer.foreground = "black"
@@ -623,7 +623,7 @@ EOT
       col = Gtk::TreeViewColumn.new("value", renderer, :text => COL_VALUE)
       col.set_cell_data_func(renderer) {|col, renderer, model, iter|
         # p "iter[0]=#{iter[0]}"
-        if @cell.get_attr_list[iter[COL_NAME].to_sym] == nil
+        if @cell.get_attr_list[iter[COL_NAME].to_sym].nil?
           renderer.foreground = "orange"
         elsif @cell.is_editable?
           renderer.foreground = "black"
@@ -674,7 +674,7 @@ EOT
 
         # p "new_text='#{new_text}'"
         if (iter = @treeView.model.get_iter(path))
-          if new_text == nil || new_text == ""
+          if new_text.nil? || new_text == ""
             if @ct_attr_list[iter[COL_NAME]]
               iter[COL_VALUE] = @ct_attr_list[iter[COL_NAME]]
             else

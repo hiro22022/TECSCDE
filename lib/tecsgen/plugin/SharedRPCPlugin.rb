@@ -80,7 +80,7 @@ class SharedRPCPlugin < ThroughPlugin
       cdl_error("SharedRPCPlugin: need channelCellName option")
     end
 
-    if @@shared_channel_list[@shared_channel_cell] == nil
+    if @@shared_channel_list[@shared_channel_cell].nil?
       # 初出
       @@shared_channel_list[@shared_channel_cell] = [ self ]
     else
@@ -97,7 +97,7 @@ class SharedRPCPlugin < ThroughPlugin
     end
 
     if @signature.need_PPAllocator?
-      if @PPAllocatorSize == nil
+      if @PPAllocatorSize.nil?
         cdl_error("PPAllocatorSize must be speicified for oneway [in] array")
       end
     end
@@ -110,13 +110,13 @@ class SharedRPCPlugin < ThroughPlugin
 
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@shared_channel_ct_name] == nil
+    if @@generated_celltype[@shared_channel_ct_name].nil?
       @@generated_celltype[@shared_channel_ct_name] = [ self ]
     else
       @@generated_celltype[@shared_channel_ct_name] << self
     end
 
-    if @@generated_celltype[@ct_name] == nil
+    if @@generated_celltype[@ct_name].nil?
       @@generated_celltype[@ct_name] = [ self ]
     else
       @@generated_celltype[@ct_name] << self

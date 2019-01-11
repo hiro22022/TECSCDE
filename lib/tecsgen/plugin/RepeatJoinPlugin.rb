@@ -54,7 +54,7 @@ class RepeatJoinPlugin < CellPlugin
 
       # Join の右辺を解析
       ret = j.get_rhs.analyze_cell_join_expression
-      if ret == nil
+      if ret.nil?
         next
       end
       rhs_nsp = ret[0]; rhs_subscript = ret[1]; rhs_port_name = ret[2]
@@ -117,7 +117,7 @@ class RepeatJoinPlugin < CellPlugin
       nsp = NamespacePath.new(rhs.to_sym, true)
       expr = Expression.create_single_identifier(nsp, nil)
       res = expr.eval_const(nil)
-      if res == nil
+      if res.nil?
         cdl_error("count value ($1): not single identifier or integer number", rhs.to_s)
         @count = 0
       else

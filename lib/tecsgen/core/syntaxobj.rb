@@ -158,7 +158,7 @@ class BDNode < Node
   #=== owner を得る
   # class の説明を参照
   def get_owner
-    if @owner == nil
+    if @owner.nil?
       raise "Node have no owner #{self.class.name} #{get_name}"
     end
     @owner
@@ -511,7 +511,7 @@ class Decl < BDNode
       end
     end
 
-    if (@type.kind_of? ArrayType) && (@type.get_subscript == nil) && (@omit == false)
+    if (@type.kind_of? ArrayType) && (@type.get_subscript.nil?) && (@omit == false)
       if @kind == :ATTRIBUTE
         cdl_error("S2004 $1: array subscript must be specified or omit", @identifier)
       elsif @kind == :VAR || @kind == :MEMBER
@@ -737,7 +737,7 @@ class ParamDecl < BDNode
     @param_specifier.each {|i|
       case i[0] # (3)
       when :IN, :OUT, :INOUT, :SEND, :RECEIVE
-        if @direction == nil
+        if @direction.nil?
           @direction = i[0]
         elsif i[0] == @direction
           cdl_warning("W3001 $1: duplicate", i[0])
@@ -792,7 +792,7 @@ class ParamDecl < BDNode
 
     }
 
-    if @direction == nil
+    if @direction.nil?
       cdl_error("S2014 No direction specified. [in/out/inout/send/receive]")
     end
 
@@ -844,7 +844,7 @@ class ParamDecl < BDNode
       cdl_error("S2014 $1 need pointer or more pointer", @declarator.get_identifier)
     elsif ptr_level > max_level
       # note: 構文解析段階で実行のため get_current 可
-      if Signature.get_current == nil || Signature.get_current.is_deviate? == false
+      if Signature.get_current.nil? || Signature.get_current.is_deviate? == false
         cdl_warning("W3003 $1 pointer level mismatch", @declarator.get_identifier)
       end
     end
@@ -1025,7 +1025,7 @@ class ParamList < BDNode
   end
 
   def add_param(paramdecl)
-    return if paramdecl == nil # 既にエラー
+    return if paramdecl.nil? # 既にエラー
 
     @param_list.add_item(paramdecl)
     paramdecl.set_owner self # ParamDecl
@@ -1039,7 +1039,7 @@ class ParamList < BDNode
   # 変数は前方参照可能なため、関数頭部の構文解釈が終わった後にチェックする
   def check_param
     @param_list.get_items.each {|i|
-      next if i == nil # i == nil : エラー時
+      next if i.nil? # i == nil : エラー時
 
       if i.get_type.class == VoidType
         # 単一の void 型はここにはこない
@@ -1049,7 +1049,7 @@ class ParamList < BDNode
       size = i.get_size # Expression
       if size
         val = size.eval_const(@param_list)
-        if val == nil # 定数式でないか？
+        if val.nil? # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = size.get_type(@param_list)
           unless type.kind_of?(IntType)
@@ -1069,7 +1069,7 @@ class ParamList < BDNode
       max = i.get_max
       if max
         val2 = max.eval_const(@param_list)
-        if val2 == nil
+        if val2.nil?
           cdl_error("S2028 '$1' max (size_is 2nd parameter) not constant", i.get_name)
         elsif val2 != Integer(val2) || val2 <= 0
           cdl_error("S2029 '$1' max (size_is 2nd parameter) negative or zero, or not integer", i.get_name)
@@ -1088,7 +1088,7 @@ class ParamList < BDNode
       count = i.get_count # Expression
       if count
         val = count.eval_const(@param_list)
-        if val == nil # 定数式でないか？
+        if val.nil? # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = count.get_type(@param_list)
           unless type.kind_of?(IntType)
@@ -1108,7 +1108,7 @@ class ParamList < BDNode
       string = i.get_string # Expression
       if string != -1 && string
         val = string.eval_const(@param_list)
-        if val == nil # 定数式でないか？
+        if val.nil? # 定数式でないか？
           # mikan 変数を含む式：単一の変数のみ OK
           type = string.get_type(@param_list)
           unless type.kind_of?(IntType)

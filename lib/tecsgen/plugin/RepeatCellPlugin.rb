@@ -155,7 +155,7 @@ class RepeatCellPlugin < CellPlugin
       nsp = NamespacePath.new(rhs.to_sym, true)
       expr = Expression.create_single_identifier(nsp, nil)
       res = expr.eval_const(nil)
-      if res == nil
+      if res.nil?
         cdl_error("count value ($1): not single identifier or integer number", rhs.to_s)
         @count = 0
       else

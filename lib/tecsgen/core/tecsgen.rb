@@ -43,7 +43,7 @@ class TECSGEN
   #=== import パス (-I) を末尾に追加
   # 既に登録済みであれば、追加しない
   def self.add_import_path(path)
-    if $import_path.index(path) == nil
+    if $import_path.index(path).nil?
       dbgPrint "add_import_path: '#{path}'\n"
       $import_path << path
     end

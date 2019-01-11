@@ -73,7 +73,7 @@ module PluginModule
         dbgPrint "pluginClass=#{plClass}\n"
         plugin_object = plClass.get_plugin superClass
         dbgPrint "pluginClass=#{plugin_object}\n"
-        if plugin_object == nil
+        if plugin_object.nil?
           cdl_error("P9999 '$1': MultiPlugin not support '$2'", plugin_name, superClass.name)
         end
         @@loaded_plugin_list[plugin_name.to_sym] = :MultiPlugin
@@ -96,14 +96,14 @@ module PluginModule
 
   #=== プラグインの gen_cdl_file を呼びして cdl ファイルを生成させ、解釈を行う
   def generate_and_parse(plugin_object)
-    if plugin_object == nil # プラグインのロードに失敗している（既にエラー）
+    if plugin_object.nil? # プラグインのロードに失敗している（既にエラー）
       return
     end
     plugin_name = plugin_object.class.name.to_sym
     if @@loaded_plugin_list[plugin_name] == :MultiPlugin
       p "#{plugin_name}: MultiPlugin"
       return
-    elsif @@loaded_plugin_list[plugin_name] == nil
+    elsif @@loaded_plugin_list[plugin_name].nil?
       # raise "#{plugin_name} might have different name "
       ## プラグインのファイル名と、プラグインのクラス名が相違する場合
       # MultiPlugin の get_plugin で返されたケースでは nil になっている

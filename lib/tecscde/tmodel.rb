@@ -299,7 +299,7 @@ module TECSCDE
       ct_nsp = NamespacePath.analyze(ct_namespace_path)
       ct_nsp.append! celltype_name.to_sym
       ct = Namespace.find ct_nsp
-      if ct == nil
+      if ct.nil?
         TECSCDE.error("TM9999 celltype #{ct_nsp}: not found for cell #{@name}")
         return
       end
@@ -603,7 +603,7 @@ module TECSCDE
           # p "celltype:#{@celltype.get_name} port:#{port_def.get_name}"
           if port_def.get_port_type == :ENTRY
             # if ! port_def.is_reverse_required? then
-            if port_def.get_array_size == nil
+            if port_def.get_array_size.nil?
               @eports[port_def.get_name] = TmEPort.new(self, port_def)
             else
               @eports[port_def.get_name] = TmEPortArray.new(self, port_def)
@@ -611,7 +611,7 @@ module TECSCDE
             # end
           else
             if !port_def.is_require?
-              if port_def.get_array_size == nil
+              if port_def.get_array_size.nil?
                 @cports[port_def.get_name] = TmCPort.new(self, port_def)
               else
                 @cports[port_def.get_name] = TmCPortArray.new(self, port_def)
@@ -898,11 +898,11 @@ module TECSCDE
       #=== TmCell#get_cport_for_new_join
       def get_cport_for_new_join(cport_name, cport_subscript)
         cp = @cports[cport_name]
-        if cp == nil
+        if cp.nil?
           TECSCDE.error("TM9999 cell #{@name} not have call port #{cport_name}")
         end
 
-        if cport_subscript == nil
+        if cport_subscript.nil?
           if !cp.is_array?
             return cp
           else
@@ -922,11 +922,11 @@ module TECSCDE
       #=== TmCell#get_eport_for_new_join
       def get_eport_for_new_join(eport_name, eport_subscript)
         ep = @eports[eport_name]
-        if ep == nil
+        if ep.nil?
           TECSCDE.error("TM9999 cell #{@name} not have entry port #{eport_name}")
         end
 
-        if eport_subscript == nil
+        if eport_subscript.nil?
           if !ep.is_array?
             return ep
           else
@@ -949,7 +949,7 @@ module TECSCDE
       def set_attr(name, init)
         modified {
 
-          if init == nil
+          if init.nil?
             @attr_list.delete name
           else
             @attr_list[name] = init
@@ -964,8 +964,8 @@ module TECSCDE
       #=== TmCell#complete?
       def complete?
         @celltype.get_attribute_list.each{|attr|
-          if attr.get_initializer == nil
-            if @attr_list[attr.get_name] == nil
+          if attr.get_initializer.nil?
+            if @attr_list[attr.get_name].nil?
               return false
             end
           end
@@ -1054,7 +1054,7 @@ module TECSCDE
       end
 
       def get_region(name)
-        if @sub_region[name] == nil
+        if @sub_region[name].nil?
           modified {
 
             parent = self
@@ -1089,7 +1089,7 @@ module TECSCDE
       # TmPortArray#get_port_for_new_join
       # this method is for load
       def get_port_for_new_join(subscript)
-        if @subscript1 == nil
+        if @subscript1.nil?
           # 1st element of this entry array
           @subscript1 = subscript
         elsif (@subscript1 >= 0 && subscript < 0) || (@subscript1 < 0 && subscript >= 0)
@@ -1107,7 +1107,7 @@ module TECSCDE
               if @port_def.get_array_size == "[]"
                 # extend array size
                 (0..subscript).each{|subsc|
-                  if @ports[subsc] == nil
+                  if @ports[subsc].nil?
                     port = new_port subsc
                     @ports[subsc] = port
                   end
@@ -1134,7 +1134,7 @@ module TECSCDE
             found = false
             found_port = nil
             @ports.each{|port|
-              if port.get_join == nil
+              if port.get_join.nil?
                 found = true
                 found_port = port
                 break
@@ -1222,7 +1222,7 @@ EOT
           modified {
             p "delete #### subscript=#{port.get_subscript}"
             port.delete
-            if @ports.delete(port) == nil
+            if @ports.delete(port).nil?
               p "delete: not found"
             end
             index = 0
@@ -1321,7 +1321,7 @@ EOT
       end
 
       def get_join(subscript)
-        if subscript == nil
+        if subscript.nil?
           return nil
         elsif 0 <= subscript && subscript < @actual_size
           return @ports[subscript]

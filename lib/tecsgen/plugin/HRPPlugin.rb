@@ -278,7 +278,7 @@ class HRPPlugin < DomainPlugin
     rhs_cell = join.get_cell
     dbgPrint "--------- add_inter_domain:#{join.get_owner.get_namespace_path} => #{join.get_cell.get_namespace_path}-----\n"
     domain_root = join.get_owner.get_region.get_domain_root # lhs cell's domain root
-    if @@inter_domain_join_set[rhs_cell] == nil
+    if @@inter_domain_join_set[rhs_cell].nil?
       @@inter_domain_join_set[rhs_cell] = []
     end
     # 左辺のドメインルートを記録

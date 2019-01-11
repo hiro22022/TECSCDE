@@ -253,7 +253,7 @@ class DefinedType < Type
 #    if @type.class != Typedef then
 #      raise NotTypedef
     #    end
-    if @typedef == nil
+    if @typedef.nil?
       cdl_error("T1005 \'$1\' not defined", type_name)
     elsif @typedef.class != Typedef
       cdl_error("T1006 \'$1\' not type name. expecting type name here", type_name)
@@ -332,7 +332,7 @@ class DefinedType < Type
 
   def show_tree(indent)
     indent.times { print "  " }
-    if @typedef == nil
+    if @typedef.nil?
       puts "DefinedType: #{@type_name} is missing, const=#{@b_const} volatile=#{@b_volatile} #{locale_str}"
     else
       puts "DefinedType: #{@type_name}, const=#{@b_const} volatile=#{@b_volatile}"
@@ -443,7 +443,7 @@ class IntType < Type
     elsif val.instance_of? Array
       cdl_error2(locale, "T1017 $1: unsuitable initializer for scalar type", ident)
       return
-    elsif val == nil
+    elsif val.nil?
       cdl_error2(locale, "T1010 $1: initializer is not constant", ident)
       return
     end
@@ -460,7 +460,7 @@ class IntType < Type
 
     if !max.nil?
       if val > max
-        if @sign == :SIGNED || @sign == nil
+        if @sign == :SIGNED || @sign.nil?
           cdl_error2(locale, "T1013 $1: too large (max=$2)", ident, max)
         else
           cdl_error2(locale, "T1016 $1: too large (max=$2)", ident, max)
@@ -470,7 +470,7 @@ class IntType < Type
 
     if !min.nil?
       if val < min
-        if @sign == :SIGNED || @sign == nil
+        if @sign == :SIGNED || @sign.nil?
           cdl_error2(locale, "T1014 $1: too large negative value (min=$2)", ident, min)
         else
           cdl_error2(locale, "T1015 $1: negative value for unsigned", ident)
@@ -502,7 +502,7 @@ class IntType < Type
       else
         rval = get_min
       end
-      if @sign == :SIGNED || @sign == nil
+      if @sign == :SIGNED || @sign.nil?
         cdl_warning("W2004 $1: too small to cast to $2, clipped($3)", in_val, get_type_str, rval)
       else # @sign == :UNSIGNED || @sign == nil (char の場合)
         cdl_warning("W2005 $1: negative value for unsigned: convert to $2", in_val, rval)
@@ -514,7 +514,7 @@ class IntType < Type
   end
 
   def get_min
-    if @sign == :SIGNED || @sign == nil
+    if @sign == :SIGNED || @sign.nil?
       if @bit_size == -1
         bit_sz = 8 # char_t は、有符号に扱う
       else
@@ -533,7 +533,7 @@ class IntType < Type
 
   def get_max
     if @bit_size == -1
-      if @sign == nil
+      if @sign.nil?
         return 255 # char_t は、無符号に扱う
       else
         bit_sz = 8
@@ -541,7 +541,7 @@ class IntType < Type
     else
       bit_sz = @bit_size
     end
-    if @sign == :SIGNED || @sign == nil
+    if @sign == :SIGNED || @sign.nil?
       case bit_sz
       when 8, 16, 32, 64, 128
         return (1 << (bit_sz - 1)) - 1
@@ -654,7 +654,7 @@ class FloatType < Type
       return
     elsif val.instance_of? C_EXP
       return
-    elsif val == nil
+    elsif val.nil?
       cdl_error2(locale, "T1019 $1: initializer is not constant", ident)
       return
     elsif !val.kind_of?(IntegerVal) && !val.kind_of?(FloatVal)
@@ -804,12 +804,12 @@ class StructType < Type
   #  declarator の時点でチェックする
   # kind:: Decl の @kind を参照
   def check_struct_tag(kind)
-    if @tag == nil
+    if @tag.nil?
       return
     end
 
     st = Namespace.find_tag(@tag)
-    if st == nil
+    if st.nil?
       cdl_error("T1022 struct $1: not defined", @tag)
     end
   end
@@ -817,7 +817,7 @@ class StructType < Type
   # mikan Float 型の C_EXP 対応 (generate.rb にも変更必要)
   def check_init(locale, ident, initializer, kind, attribute = nil)
     st = Namespace.find_tag(@tag)
-    if st == nil
+    if st.nil?
       cdl_error2(locale, "T1023 struct $1: not defined", @tag)
       return
     end
@@ -858,14 +858,14 @@ class StructType < Type
   end
 
   def end_of_parse()
-    if @members_decl == nil # @b_define = false またはメンバーのない構造体（エラー）
+    if @members_decl.nil? # @b_define = false またはメンバーのない構造体（エラー）
       return
     end
     @members_decl.get_items.each{|md|
       size = md.get_size_is
       if size
         val = size.eval_const(@members_decl)
-        if val == nil
+        if val.nil?
           type = size.get_type(@members_decl)
           if !type.kind_of?(IntType)
             cdl_error("T1025 size_is argument is not integer type")
@@ -875,7 +875,7 @@ class StructType < Type
       count = md.get_count_is
       if count
         val = count.eval_const(@members_decl)
-        if val == nil
+        if val.nil?
           type = count.get_type(@members_decl)
           if !type.kind_of?(IntType)
             cdl_error("T1026 count_is argument is not integer type")
@@ -887,7 +887,7 @@ class StructType < Type
         # 長さ指定なし
       elsif string
         val = string.eval_const(@members_decl)
-        if val == nil
+        if val.nil?
           type = string.get_type(@members_decl)
           if !type.kind_of?(IntType)
             cdl_error("T1027 string argument is not integer type")
@@ -896,7 +896,7 @@ class StructType < Type
       end
     }
 
-    if @tag == nil
+    if @tag.nil?
       @member_types_symbol = get_member_types_symbol
       # print "member_types_symbol = #{get_member_types_symbol}\n"
       if @@no_tag_struct_list[@member_types_symbol]
@@ -983,7 +983,7 @@ class StructType < Type
   # すべてのメンバの名前と型が一致することを確認する
   def same?(another)
     md = another.get_members_decl
-    if @members_decl == nil || md == nil
+    if @members_decl.nil? || md.nil?
       return false
     end
 
@@ -1367,7 +1367,7 @@ class PtrType < Type
   end
 
   def check # 意味的誤りがあれば、文字列を返す
-    return nil if @type == nil
+    return nil if @type.nil?
     @type.check
   end
 
@@ -1417,7 +1417,7 @@ class PtrType < Type
         cdl_error2(locale, "T1035 $1: unsuitable initializer for pointer", ident)
       end
     elsif initializer.instance_of?(Array)
-      if @size == nil && @count == nil
+      if @size.nil? && @count.nil?
         cdl_error2(locale, "T9999 $1: non-size_is pointer cannot have array initializer", ident)
       end
 

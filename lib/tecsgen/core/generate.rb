@@ -144,7 +144,7 @@ class Namespace
       if (instance_of? Region) && !get_domain_type.nil?
         # p "*******************  domain_type: #{get_domain_type.get_name}  ****************"
         domain_type = get_domain_type
-        if @@domain_gen_factory_list[domain_type] == nil
+        if @@domain_gen_factory_list[domain_type].nil?
           @@domain_gen_factory_list[domain_type] = self
           domain_type.gen_factory
         end
@@ -592,7 +592,7 @@ EOT
       domain_regions = regions
       domain_type = dt
     }
-    if domain_regions == nil
+    if domain_regions.nil?
       # in case no 'domain' specified at region
       domain_regions = [ Region.get_root ]
     end
@@ -1259,7 +1259,7 @@ class Celltype
     }
 
     # in case that domain_roots does not include root region
-    if f == nil
+    if f.nil?
       regions = nil
       @domain_roots.each{|domain_type_name, regions_|
         regions = regions_ # domain_type_name is unique
@@ -1465,7 +1465,7 @@ EOT
     @port.each {|p|
       next if p.get_port_type != :CALL
       next if p.is_omit?
-      next if p.get_array_size == nil
+      next if p.get_array_size.nil?
 
       if !b_comment
         f.printf(TECSMsg.get(:NCPA_comment), "#_NCPA_#")
@@ -1506,7 +1506,7 @@ EOT
     @port.each {|p|
       next if p.get_port_type != :ENTRY
       # next if p.is_omit?                       # 受け口配列の個数は省略しない
-      next if p.get_array_size == nil
+      next if p.get_array_size.nil?
 
       if !b_comment
         f.printf(TECSMsg.get(:NEPA_comment), "#_NEPA_#")
@@ -1595,7 +1595,7 @@ EOT
         end
 
         # 標準コード
-        if p.get_array_size == nil
+        if p.get_array_size.nil?
           if @singleton
             f.print("\t  (#{@global_name}_SINGLE_CELL_#{inib_tmp}.#{p.get_name}!=0)\n")
           else
@@ -1653,7 +1653,7 @@ EOT
         delim = ","
       end
 
-      if p.get_array_size == nil
+      if p.get_array_size.nil?
         subscript = ""
       else
         subscript = "subscript"
@@ -1888,7 +1888,7 @@ EOT
           else
             inib = "CB"
           end
-          if p.is_dynamic? && p.get_array_size == nil
+          if p.is_dynamic? && p.get_array_size.nil?
             # dynamic call port (not array)
             inib = "CB"
           end
@@ -1898,7 +1898,7 @@ EOT
           else
             inib = ""
           end
-          if p.is_dynamic? && p.get_array_size == nil
+          if p.is_dynamic? && p.get_array_size.nil?
             # dynamic call port (not array)
             inib = ""
           end
@@ -2572,7 +2572,7 @@ EOT
     }
     @var.each {|v|
       next if v.is_omit?
-      next if v.get_size_is == nil
+      next if v.get_size_is.nil?
       next if $rom && inib_cb == :CB # size_is 指定されたものは INIB にのみ出力する
 
       f.print "    "
@@ -2612,7 +2612,7 @@ EOT
     @port.each{|p|
       next if p.get_port_type != :CALL
       next if p.is_omit?
-      next if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && !$ram_initializer
+      next if inib_cb == :INIB && p.is_dynamic? && p.get_array_size.nil? && !$ram_initializer
       next if inib_cb == :CB_DYNAMIC && (!p.is_dynamic? || !p.get_array_size.nil?)
       # bprint "cb_type #{inib_cb} #{p.get_name} dynamic=#{p.is_dynamic?}\n"
 
@@ -2620,7 +2620,7 @@ EOT
 
       if !p.is_cell_unique?
         const = p.is_dynamic? ? "" : "const"
-        if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && $ram_initializer
+        if inib_cb == :INIB && p.is_dynamic? && p.get_array_size.nil? && $ram_initializer
           init = "_init_"
           const2 = "const"
         else
@@ -2790,7 +2790,7 @@ EOT
       f.print "#define INITIALIZE_CB#{arg}"
       @var.each {|v|
         init = v.get_initializer
-        next if init == nil
+        next if init.nil?
 
         b_var_init = true
         type = v.get_type.get_original_type
@@ -2828,7 +2828,7 @@ EOT
       @port.each{|p|
         next if p.get_port_type != :CALL
         if p.is_dynamic? && $ram_initializer
-          if p.get_array_size == nil
+          if p.get_array_size.nil?
             f.print "\\\n\t#{that}#{p.get_name} = #{that}_inib->#{p.get_name}_init_;"
           else
             if @singleton || p.get_array_size != "[]"
@@ -3231,7 +3231,7 @@ EOT
             # am.each { |j|
             i = 0
             while i < length
-              if am == nil
+              if am.nil?
                 f.print("    0,\n")
                 i += 1
                 next
@@ -3354,7 +3354,7 @@ EOT
             init = a.get_initializer
           end
 
-          if a.is_type?(PtrType) && ((init && init.instance_of?(Array)) || init == nil)
+          if a.is_type?(PtrType) && ((init && init.instance_of?(Array)) || init.nil?)
             ptr_type = a.get_type
             size = ptr_type.get_size
 
@@ -3752,7 +3752,7 @@ EOT
     }
     @var.each{|v|
       next if v.is_omit?
-      next if v.get_size_is == nil # size_is 指定がある場合 attribute の一部として出力
+      next if v.get_size_is.nil? # size_is 指定がある場合 attribute の一部として出力
 
       if v.get_initializer && $ram_initializer == false
         gen_cell_cb_init(f, cell, name_array, v.get_type, v.get_initializer, v.get_identifier, indent + 1)
@@ -3806,14 +3806,14 @@ EOT
         next if p.get_port_type != :CALL
         next if p.is_omit?
         next if p.is_cell_unique? # 最適化（単一セルで呼び口マクロに埋め込まれる）
-        next if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && !$ram_initializer
+        next if inib_cb == :INIB && p.is_dynamic? && p.get_array_size.nil? && !$ram_initializer
         next if inib_cb == :CB_DYNAMIC && (!p.is_dynamic? || !p.get_array_size.nil?)
 
         j = jl.get_item(p.get_name)
         print_indent(f, indent + 1)
 
         # debug
-        if j == nil
+        if j.nil?
           dbgPrint "cell_cb_call_port: #{p.get_name} array size=#{p.get_array_size}\n"
           # optional 呼び口
           # cdl_error( "H1003 internal error: cell \'$1\' port \'$2\': initializer not found\n" , cell.get_name, p.get_name )
@@ -3933,7 +3933,7 @@ EOT
       type = type.get_type
     end
 
-    if init == nil
+    if init.nil?
 
       if f_get_str
         # 初期値未指定

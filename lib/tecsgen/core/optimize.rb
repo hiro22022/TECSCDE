@@ -333,7 +333,7 @@ class Celltype
         if port_cells.length == 1
 
           # 呼び口は optional で初期化されていない、または受け口は配列ではないか？
-          if port_ports[0] == nil || port_ports[0].get_array_size == nil
+          if port_ports[0].nil? || port_ports[0].get_array_size.nil?
 
             @n_call_port_omitted_in_CB += 1               # CB で省略する呼び口
             port.set_cell_unique                          # セル一つだけ最適化
@@ -354,7 +354,7 @@ class Celltype
         else # 呼び先が複数のセル（単一のポート）
 
           # 呼び口は optional で初期化されていない、または受け口は配列ではないか？
-          if port_ports[0] == nil || port_ports[0].get_array_size == nil
+          if port_ports[0].nil? || port_ports[0].get_array_size.nil?
             if !@singleton
               port.set_skelton_useless                    # スケルトン関数不要最適化
               port.set_VMT_useless                        # VMT 不要最適化 (スケルトン関数 or 受け口関数を呼出す)
@@ -446,7 +446,7 @@ class Celltype
   # #_ISH_#, #_ICT_# でヘッダが取り込まれているかチェックする
   # false が返った場合、hname は登録されて、次回の呼び出しでは true が返る
   def header_included?(hname)
-    if @included_header[hname] == nil
+    if @included_header[hname].nil?
       @included_header[hname] = true
       return false
     else

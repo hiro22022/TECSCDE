@@ -96,7 +96,7 @@ class TECS_LANG
       cs = charset
     end
 
-    if SUITABLE_CHARSET[ln] == nil || SUITABLE_CHARSET[ln].index(cs) == nil
+    if SUITABLE_CHARSET[ln].nil? || SUITABLE_CHARSET[ln].index(cs).nil?
       res = false
     else
       res = true
@@ -134,7 +134,7 @@ class TECS_LANG
   #   ・TECSGEN_FILE_LANG 環境変数 (ファイルの文字コードのみ)
   #   ・-k オプション (ファイルの文字コードのみ)
   def self.set_lang_var
-    if $IN_EXERB && (ENV["TERM"] == nil || ENV["TERM"] == "cygwin")
+    if $IN_EXERB && (ENV["TERM"].nil? || ENV["TERM"] == "cygwin")
       # exerb 版で端末 cygwin の時は codepage のみを見る
       cp = get_win_codepage
       lang = codepage_to_lang cp
@@ -166,14 +166,14 @@ class TECS_LANG
 
   #=== -k オプションからファイル用の言語、文字コード変数を設定
   def self.set_lang_by_option
-    if $kcode == nil
+    if $kcode.nil?
       return
     end
 
     code = $kcode
     found = false
     res = $CODE_TYPE_ARRAY.index(code)
-    if res == nil
+    if res.nil?
       print "-k: illegal kcode type #{code}. (#{$CODE_TYPE_ARRAY.join(", ")})\n"
       exit 1
     end

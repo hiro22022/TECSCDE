@@ -132,7 +132,7 @@ class TOOL_INFO
     #=== VALIDATOR#validate
     def validate
       info = TOOL_INFO.get_tool_info @name
-      if info == nil
+      if info.nil?
         error("\"#{@name}\" not found\n")
         return @b_ok
       end
@@ -147,7 +147,7 @@ class TOOL_INFO
       obj_type.each{|name, val_type|
         val = object[name]
         path2 = path.to_s + "." + name.to_s
-        if val == nil
+        if val.nil?
           error("#{path}: required property not found '#{name}'\n")
           next
         end
@@ -165,7 +165,7 @@ class TOOL_INFO
         optional.each{|name, val_type|
           val = object[name]
           path2 = path.to_s + "." + name.to_s
-          if val == nil
+          if val.nil?
             # no need to occur error
             # error( "#{path}: required property not found '#{name}'\n" )
             next
@@ -188,12 +188,12 @@ class TOOL_INFO
       array.each{|member|
         type = get_object_type member
         i = val_types.find_index type
-        if i == nil
+        if i.nil?
           if type == :integer
             i = val_types.find_index :number
           end
         end
-        if i == nil
+        if i.nil?
           error("#{path}: array member type mismatch, #{type} for #{val_types}\n")
           next
         end

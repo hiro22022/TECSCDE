@@ -76,7 +76,7 @@ class HRPRPCPlugin < ThroughPlugin
     end
 
     if @signature.need_PPAllocator?(true)
-      if @PPAllocatorSize == nil
+      if @PPAllocatorSize.nil?
         cdl_error("HRP9999 PPAllocatorSize must be speicified for pointer argments")
         # @PPAllocatorSize = 0   # 仮に 0 としておく (cdl の構文エラーを避けるため)
       end
@@ -114,7 +114,7 @@ class HRPRPCPlugin < ThroughPlugin
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ct_name] == nil
+    if @@generated_celltype[ct_name].nil?
       @@generated_celltype[ct_name] = [ self ]
     else
       @@generated_celltype[ct_name] << self

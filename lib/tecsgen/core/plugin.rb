@@ -251,7 +251,7 @@ class Plugin < Node
     if @plugin_arg_check_proc_tab
       proc = @plugin_arg_check_proc_tab[ident.to_s]
     end
-    if proc == nil
+    if proc.nil?
       proc = PluginArgProc[ident.to_s]
     end
     if proc.instance_of? Proc
@@ -278,7 +278,7 @@ class Plugin < Node
 
   #=== プラグイン引数 silent
   def set_silent(rhs)
-    if rhs == "true" || rhs == nil
+    if rhs == "true" || rhs.nil?
       @b_silent = true
     end
   end

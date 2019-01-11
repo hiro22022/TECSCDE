@@ -1075,7 +1075,7 @@ class NotifierPlugin < CelltypePlugin
                SendErrorCodeToDataqueueHandlerType
             if option == "OutOfDomain"
               cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 cannot be placed out of domain", cell.get_name)
-            elsif call_join.get_cell.get_region.get_domain_root == nil ||
+            elsif call_join.get_cell.get_region.get_domain_root.nil? ||
                   call_join.get_cell.get_region.get_domain_root != domain_root
               cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 and $2 must be placed in same domain", cell.get_name, call_join.get_cell.get_name)
             end
@@ -1083,7 +1083,7 @@ class NotifierPlugin < CelltypePlugin
           when UserHandlerType
             if option != "kernel"
               cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 can be placed in kernel domain only, because notify target is handler", cell.get_name)
-            elsif call_join.get_cell.get_region.get_domain_root == nil ||
+            elsif call_join.get_cell.get_region.get_domain_root.nil? ||
                   call_join.get_cell.get_region.get_domain_root != domain_root
               cdl_error2(cell.get_locale, "NTF9999: NotifierPlugin: $1 and $2 must be placed in same domain", cell.get_name, call_join.get_cell.get_name)
             end

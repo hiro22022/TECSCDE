@@ -64,7 +64,7 @@ class TECSMsg
     else
       msg = nil
     end
-    if msg == nil
+    if msg.nil?
       m = body
     else
       m = num + " " + msg
@@ -78,7 +78,7 @@ class TECSMsg
     body =~ /^[A-Z0-9]+/ # ウォーニング番号を取り出す
     num = $&
     msg = @@warning_message[num.to_sym]
-    if msg == nil
+    if msg.nil?
       m = body
     else
       m = num + " " + msg
@@ -92,7 +92,7 @@ class TECSMsg
     body =~ /^[A-Z0-9]+/ # 情報番号を取り出す
     num = $&
     msg = @@info_message[num.to_sym]
-    if msg == nil
+    if msg.nil?
       m = body
     else
       m = num + " " + msg

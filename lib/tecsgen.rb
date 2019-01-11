@@ -324,7 +324,7 @@ class TECSGEN
       $rom       = false     # bool:   ROM support : generate CB separately
     end
     $b_cpp_specified = false
-    if $cpp == nil
+    if $cpp.nil?
       $cpp       = "gcc -E -DTECSGEN"
     end
     if ENV["TECS_CPP"]

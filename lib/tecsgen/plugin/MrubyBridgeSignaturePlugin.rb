@@ -162,7 +162,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       cdl_error("MRB1011 both include && exclude are specified")
     end
 
-    if signature.get_function_head_array == nil
+    if signature.get_function_head_array.nil?
       return # 以前に文法エラー発生
     end
 
@@ -175,7 +175,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
           dbgPrint "MrubyBridgePlugin: #{func_head.get_name} NOT included\n"
         end
       elsif @excludes.length > 0
-        if @excludes.index(func_head.get_name) == nil
+        if @excludes.index(func_head.get_name).nil?
           dbgPrint "MrubyBridgePlugin: #{func_head.get_name} NOT excluded\n"
           fh_array << func_head
         else
@@ -190,7 +190,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     check_parameter_type fh_array
 
     fh_array.each{|fh|
-      if @auto_exclude_list[fh.get_name] == nil
+      if @auto_exclude_list[fh.get_name].nil?
         @func_head_array << fh
       else
         dbgPrint "MrubyBridgePlugin: auto_exclude #{fh.get_name}\n"
@@ -322,7 +322,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
     # p "tag name:#{struct_type.get_name}"
     # sttype = Namespace.find_tag( struct_type.get_name )
     sttype = struct_type.get_original_type
-    if sttype.get_name == nil
+    if sttype.get_name.nil?
       if @b_auto_exclude
         cdl_info("MRI9999 tagless-struct cannot be handled, $1 automatcally excluded", fh.get_name)
         @auto_exclude_list[fh.get_name] = fh
@@ -347,7 +347,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
       end
     }
     st_name = :"t{}"
-    if @struct_list[sttype.get_name] == nil
+    if @struct_list[sttype.get_name].nil?
       # print_msg "  MrubyBridgePlugin: [struct]   #{struct_type.get_type_str} => class TECS::Struct#{sttype.get_name}\n"
       print "  MrubyBridgePlugin: [struct]   #{struct_type.get_type_str} => class TECS::Struct#{sttype.get_name}\n"
       @struct_list[sttype.get_name] = sttype
@@ -357,17 +357,17 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   def register_ptr_type(ttype, fh)
     t_org = ttype.get_original_type
     tment = get_type_map_ent t_org
-    if tment == nil
+    if tment.nil?
       return
       # cdl_error( "MRB1008 unknown pointer type '$1'", ttype.get_type_str )
     end
     ptr_celltype_name = :"t#{tment[1]}Pointer"
-    if @@ptr_list[ptr_celltype_name] == nil
+    if @@ptr_list[ptr_celltype_name].nil?
       # print_msg "  MrubyBridgePlugin: [pointer]  #{ttype.get_type_str}* => class TECS::#{tment[1]}Pointer\n"
       print "  MrubyBridgePlugin: [pointer]  #{ttype.get_type_str}* => class TECS::#{tment[1]}Pointer\n"
       @@ptr_list[ptr_celltype_name] = tment
     end
-    if @ptr_list[ptr_celltype_name] == nil
+    if @ptr_list[ptr_celltype_name].nil?
       @ptr_list[ptr_celltype_name] = tment
     end
   end
@@ -392,7 +392,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   # file::        FILE       生成するファイル
   def gen_cdl_file(file)
     # ブリッジセルタイプの生成
-    if @@celltypes[@celltype_name] == nil
+    if @@celltypes[@celltype_name].nil?
       @@celltypes[@celltype_name] = [ self ]
       @@init_celltypes[@init_celltype_name] = true
       print_msg <<EOT
@@ -436,7 +436,7 @@ EOT
 
       # 構造体セルタイプの生成
       @struct_list.each{|name, sttype|
-        if @@struct_list[name] == nil
+        if @@struct_list[name].nil?
           file.print <<EOT
 namespace nMruby{
     [singleton]
@@ -469,7 +469,7 @@ EOT
       vm_name = :VM
     end
 
-    if @@VM_list[vm_name] == nil
+    if @@VM_list[vm_name].nil?
       @@VM_list[vm_name] = true
 
       initializer_celltype_cdl = "#{$gen}/#{cell.get_name}Initializer.cdl"
@@ -593,7 +593,7 @@ EOT
 EOT
     }
 
-    if @@VM_celltypes == nil
+    if @@VM_celltypes.nil?
       raise "MrubyBridgeSignaturePlugin: are0"
     end
     @@VM_celltypes.each{|vm_name, instance_list|
@@ -836,7 +836,7 @@ EOT
       if cell.is_generate?
         join_list = cell.get_join_list
         join = join_list.get_item(:bridgeName)
-        if join == nil
+        if join.nil?
           name = "\"#{cell.get_name}\""
         else
           rhs = join.get_rhs
@@ -1255,7 +1255,7 @@ EOT
 
   #=== プラグイン引数 ignoreUnsigned
   def set_ignoreUnsigned(rhs)
-    if rhs == "true" || rhs == nil
+    if rhs == "true" || rhs.nil?
       @b_ignoreUnsigned = true
     end
   end

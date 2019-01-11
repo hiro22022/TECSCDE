@@ -80,7 +80,7 @@ EOT
     Import.new fn
 
     # セルに cTECSInfo の結合があるか？
-    if cell.get_join_list.get_item(:cTECSInfo) == nil
+    if cell.get_join_list.get_item(:cTECSInfo).nil?
       # cTECSInfo = rTECSInfo::TECSInfosub.eTECSInfo; の追加
       nsp = NamespacePath.new(:rTECSInfo, false)
       nsp.append! :TECSInfoSub

@@ -316,7 +316,7 @@ EOT
       cell.get_celltype.get_port_list.each{|port|
         next if port.get_port_type != :ENTRY
 
-        if signatures[port.get_signature] == nil
+        if signatures[port.get_signature].nil?
           f.print "#include \"#{port.get_signature.get_global_name}_tecsgen.h\"\n"
         end
         if cell.get_celltype.get_global_name == :nTECSInfo_tRawEntryDescriptorInfo
@@ -517,7 +517,7 @@ EOT
       array_size = port.get_array_size
       if array_size == "[]"
         array_size = "0xffffffff"
-      elsif array_size == nil
+      elsif array_size.nil?
         array_size = "0"
       end
 
@@ -536,7 +536,7 @@ EOT
       array_size = port.get_array_size
       if array_size == "[]"
         array_size = "0xffffffff"
-      elsif array_size == nil
+      elsif array_size.nil?
         array_size = "0"
       end
 
@@ -547,7 +547,7 @@ end
 
 class Port
   def print_info(f, ct_global, indent)
-    return if @signature == nil # signature not found error in cdl
+    return if @signature.nil? # signature not found error in cdl
     if @port_type == :ENTRY
       f.print <<EOT
 #{indent}cell nTECSInfo::tEntryInfo #{ct_global}_#{@name}EntryInfo{
@@ -609,7 +609,7 @@ EOT
       next if port.get_port_type != :ENTRY
 
       size = port.get_array_size
-      if size == nil
+      if size.nil?
         size = 1
       elsif size == "[]"
         size = @entry_array_max_subscript[port]
@@ -632,7 +632,7 @@ EOT
 
   def exclude_info?
     # print "exclude_info?: name=" + get_name.to_s
-    if @celltype == nil ||
+    if @celltype.nil? ||
        is_of_composite? ||
        @celltype.get_global_name == :nTECSInfo_tTECSInfoSub ||
        post_code_generated? ||
@@ -647,7 +647,7 @@ EOT
 
   def exclude_info_factory?
     # print "exclude_info_factory?: name=" + get_name.to_s
-    if @celltype == nil ||
+    if @celltype.nil? ||
        is_of_composite? ||
        @celltype.get_global_name == :nTECSInfo_tTECSInfoSub ||
        !@celltype.need_generate?

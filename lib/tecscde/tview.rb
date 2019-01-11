@@ -745,8 +745,8 @@ module TECSCDE
       if eport.get_joins[0] == join
         # draw only 1st entry port join
 
-        if (eport.get_subscript == nil || eport.get_subscript == 0) &&
-            (join.get_cport.get_subscript == nil || join.get_cport.get_subscript == 0)
+        if (eport.get_subscript.nil? || eport.get_subscript == 0) &&
+            (join.get_cport.get_subscript.nil? || join.get_cport.get_subscript == 0)
 
           if bars[2].instance_of? TECSModel::VBar
             xm = mm2dot((bars[1].get_position + bars[3].get_position) / 2)
@@ -1190,7 +1190,7 @@ module TECSCDE
         obj = region
       else
         tecsgen_cell = cell.get_tecsgen_cell
-        if tecsgen_cell == nil || cell.is_editable?
+        if tecsgen_cell.nil? || cell.is_editable?
           return @@colors[Color_editable_cell]
         end
         file = tecsgen_cell.get_locale[0]

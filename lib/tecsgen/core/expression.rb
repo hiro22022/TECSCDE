@@ -363,13 +363,13 @@ class Expression < Node
           object = name_list.get_item(nsp.get_name)
         end
 
-        if object == nil && name_list2
+        if object.nil? && name_list2
           object = name_list2.get_item(nsp.get_name)
         end
       end
 
       # 見つからなければ定数定義から探す
-      if object == nil
+      if object.nil?
         object = Namespace.find(nsp)# mikan namespace の対応 #1
       end
 
@@ -380,7 +380,7 @@ class Expression < Node
 # 以下のエラーチェックでは、これらがごっちゃになって誤りを検出しようとしている
 
       # IDENTIFIER は見つからなかった？
-      if object == nil
+      if object.nil?
         cdl_error("E1001 $1: not found", nsp.get_path_str)
         # raise  "E1001"  # bug trap
         return nil
@@ -405,7 +405,7 @@ class Expression < Node
         return nil
       else # Decl
         object.referenced
-        if object.get_initializer == nil
+        if object.get_initializer.nil?
           # 初期化子の存在しない変数   # mikan ここへくるのは、通常ありえないはず（未検証）
           return IntegerVal.new(0)
         else

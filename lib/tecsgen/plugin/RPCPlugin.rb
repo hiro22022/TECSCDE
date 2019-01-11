@@ -76,7 +76,7 @@ class RPCPlugin < ThroughPlugin
     @rpc_channel_celltype_file_name = "#{$gen}/#{@rpc_channel_celltype_name}.cdl"
 
     if @signature.need_PPAllocator?
-      if @PPAllocatorSize == nil
+      if @PPAllocatorSize.nil?
         cdl_error("PPAllocatorSize must be speicified for oneway [in] array")
         # @PPAllocatorSize = 0   # 仮に 0 としておく (cdl の構文エラーを避けるため)
       end
@@ -98,7 +98,7 @@ class RPCPlugin < ThroughPlugin
     ct_name = "#{@ct_name}_#{@channelCelltype}"
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[ct_name] == nil
+    if @@generated_celltype[ct_name].nil?
       @@generated_celltype[ct_name] = [ self ]
     else
       @@generated_celltype[ct_name] << self

@@ -81,7 +81,7 @@ class MrubyBridgeCellPlugin < CellPlugin
 
     @port_list = {}         # set @port_list before return
     ct = @cell.get_celltype
-    return if ct == nil     # error case
+    return if ct.nil?     # error case
 
     port_list = ct.get_port_list
     if @exclude_port.length > 0
@@ -136,7 +136,7 @@ EOT
     @@cell_list[@cell] = @cell
 
     @port_list.each{|port, opt_str|
-      next if port.get_signature == nil
+      next if port.get_signature.nil?
 
       case port.get_signature.get_context
       when "task", "any"
@@ -146,7 +146,7 @@ EOT
 
       if port.get_port_type == :ENTRY
         print "  MrubyBridgeCellPlugin: [cell.port] #{@cell.get_name}.#{port.get_name} => [mruby instance] TECS::T#{port.get_signature.get_name}.new( '#{@cell.get_name}#{port.get_name}Bridge' ) \n"
-        if @@signature_list[port.get_signature] == nil
+        if @@signature_list[port.get_signature].nil?
           opt_str = "ignoreUnsigned=#{@b_ignoreUnsigned}, auto_exclude=#{@b_auto_exclude}, " + opt_str
           # p "opt_str=#{opt_str}"
 
@@ -198,7 +198,7 @@ EOT
 
   #=== プラグイン引数 ignoreUnsigned
   def set_ignoreUnsigned(rhs)
-    if rhs == "true" || rhs == nil
+    if rhs == "true" || rhs.nil?
       @b_ignoreUnsigned = true
     end
   end
@@ -207,7 +207,7 @@ EOT
   def set_exclude_port(rhs)
     ports = rhs.split ","
     ct = @cell.get_celltype
-    return if ct == nil # error case
+    return if ct.nil? # error case
     ports.each{|rhs_port|
       obj = ct.find(rhs_port.to_sym)
       if (!obj.instance_of? Port) || obj.get_port_type != :ENTRY
@@ -223,7 +223,7 @@ EOT
   def set_exclude_port_func(rhs)
     port_funcs = rhs.split ","
     ct = @cell.get_celltype
-    return if ct == nil # error case
+    return if ct.nil? # error case
     port_funcs.each{|rhs_port_func|
       port_func = rhs_port_func.split "."
       if port_func.length != 2
@@ -234,7 +234,7 @@ EOT
         cdl_error("MRB9999 exclude_port_func: port '$1' not found in celltype '$2'", rhs_port, ct.get_name)
       else
         signature = obj.get_signature
-        next if signature == nil # error case
+        next if signature.nil? # error case
         if signature.get_function_head port_func[1].to_sym
           # print "MRBBridgeCellPlugin: #{port_func[0]}.#{port_func[1]} exclude\n"
           if @exclude_port_func[port_func[0]]

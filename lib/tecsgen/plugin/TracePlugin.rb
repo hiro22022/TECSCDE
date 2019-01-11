@@ -78,7 +78,7 @@ class TracePlugin < ThroughPlugin
   # file::        FILE       生成するファイル
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@ct_name] == nil
+    if @@generated_celltype[@ct_name].nil?
       @@generated_celltype[@ct_name] = [ self ]
     else
       @@generated_celltype[@ct_name] << self
@@ -318,7 +318,7 @@ EOT
         file.print"#{indent0}if( #{outer}#{name}#{outer2} ){\n"
       end
 
-      if loop_count == nil
+      if loop_count.nil?
         case type
         when StructType
           members = type.get_members_decl

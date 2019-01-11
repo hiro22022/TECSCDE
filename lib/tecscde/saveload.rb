@@ -147,7 +147,7 @@ module TECSCDE
           if @cell_hash[cell.get_name] # duplicate cell in cdl file
             next
           end
-          if cell.get_celltype == nil # celltype not found error in cdl (tecsgen)
+          if cell.get_celltype.nil? # celltype not found error in cdl (tecsgen)
             p "add_cell: celltype not found: #{cell.get_name} #{cell.get_owner.get_namespace_path}"
             next
           end
@@ -195,7 +195,7 @@ module TECSCDE
         p "=== create join ==="
         tecsgen_cell_list2.each{|cell|
           cell.get_join_list.get_items.each{|join|
-            if join.get_array_member2 == nil
+            if join.get_array_member2.nil?
               create_join_from_tecsgen(cell, join, cell_list)
             else
               join.get_array_member2.each{|j|
@@ -242,12 +242,12 @@ module TECSCDE
           if !object.is_require?
             lhs_cell = cell_list[cell]
             cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
-            if cport == nil
+            if cport.nil?
               TECSCDE.error("#{@name}.#{join.get_name} not found")
               return
             end
             rhs_cell = cell_list[join.get_cell]
-            if rhs_cell == nil # not joined in cdl (tecsgen)
+            if rhs_cell.nil? # not joined in cdl (tecsgen)
               return
             end
             # eport = rhs_cell.get_eports[ join.get_port_name ]
@@ -264,7 +264,7 @@ module TECSCDE
 
     def set_paper_from_tecsgen
       info = TOOL_INFO.get_tool_info(:tecscde)
-      if info == nil || info[:paper] == nil
+      if info.nil? || info[:paper].nil?
         return
       end
 
@@ -286,7 +286,7 @@ module TECSCDE
 
     def set_cell_location_from_tecsgen
       info = TOOL_INFO.get_tool_info(:tecscde)
-      if info == nil || info[:cell_list] == nil
+      if info.nil? || info[:cell_list].nil?
         return
       end
 
@@ -312,10 +312,10 @@ module TECSCDE
             offset = port_location[:offset]
             subscript = port_location[:subscript]
             port = cell.get_cports[port_name]
-            if port == nil
+            if port.nil?
               port = cell.get_eports[port_name]
             end
-            if port == nil
+            if port.nil?
               p "port '#{port_name}' not found"
               next
             end
@@ -330,7 +330,7 @@ module TECSCDE
               end
               p0 = port
               port = port.get_ports[subscript] # array
-              if port == nil
+              if port.nil?
                 p "port '#{port_name}' : 'subscript=#{subscript}' out of range"
                 next
               end
@@ -352,7 +352,7 @@ module TECSCDE
 
     def set_join_location_from_tecsgen
       info = TOOL_INFO.get_tool_info(:tecscde)
-      if info == nil
+      if info.nil?
         return
       end
 
@@ -381,7 +381,7 @@ module TECSCDE
         if !cp_cell.nil? && !ep_cell.nil?
           cport = cp_cell.get_cports[cp_name]
           if cport.kind_of? TmCPortArray
-            if cp_subscript == nil
+            if cp_subscript.nil?
               TECSCDE.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
               next
             end
@@ -393,7 +393,7 @@ module TECSCDE
           end
           eport = ep_cell.get_eports[ep_name]
           if eport.kind_of? TmEPortArray
-            if ep_subscript == nil
+            if ep_subscript.nil?
               TECSCDE.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
               next
             end

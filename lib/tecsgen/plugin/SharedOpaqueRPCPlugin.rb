@@ -81,13 +81,13 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
     @shared_channel_server_ct_name = :"#{@shared_channel_ct_name}_Server"
     @shared_channel_client_ct_name = :"#{@shared_channel_ct_name}_Client"
     @shared_channel_ct_file_name = "#{$gen}/#{@shared_channel_ct_name}.cdl"
-    if @sharedChannelName == nil
+    if @sharedChannelName.nil?
       cdl_error("'sharedChannelName' option: mandatory")
     else
       @shared_channel_cell = @sharedChannelName
     end
 
-    if @@shared_channel_list[@shared_channel_cell] == nil
+    if @@shared_channel_list[@shared_channel_cell].nil?
       @@shared_channel_list[@shared_channel_cell] = [ self ]
     else
       @@shared_channel_list[@shared_channel_cell] << self
@@ -123,7 +123,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
 
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
-    if @@generated_celltype[@shared_channel_server_ct_name] == nil
+    if @@generated_celltype[@shared_channel_server_ct_name].nil?
       @@generated_celltype[@shared_channel_server_ct_name] = [ self ]
     else
       @@generated_celltype[@shared_channel_server_ct_name] << self
