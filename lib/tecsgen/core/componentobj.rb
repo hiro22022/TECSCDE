@@ -262,7 +262,8 @@ class Signature < NSBDNode # < Nestable
       return false
     end
 
-    found_alloc = false; found_dealloc = false
+    found_alloc = false
+    found_dealloc = false
     fha.each{|fh| # fh: FuncHead                      # 関数配列中の各関数頭部
       fd = fh.get_declarator # fd: Decl  (関数頭部からDeclarotorを得る)
       if fd.is_function? # fd が関数でなければ、すでにエラー
@@ -4267,7 +4268,9 @@ end
           cdl_error("S1176 rhs not in 'call_port.func.param' form for for $1_$2", ai[1], ai[2]) # S1086
           next
         end
-        func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
+        func_name = ele[1][2]
+        cp_name = ele[1][1][1].get_name
+        param_name = ele[2].to_sym
         cp = @owner.find cp_name # リレーする先の呼び口
         if cp
 # mikan cp が呼び口であることのチェック（属性の場合もある）

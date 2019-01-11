@@ -120,7 +120,8 @@ Structure of Palette Window
 
     #----- operations for palette -----#
     def on_save
-      flush_print "save\n"; @model.save(@model.get_file_editing)
+      flush_print "save\n"
+      @model.save(@model.get_file_editing)
     end
 
     def on_export
@@ -404,13 +405,17 @@ EOT
       when 0x51, 0x52, 0x53, 0x54
         case keyval
         when 0x51     # left arrow
-          x_inc = - TECSModel.get_alignment; y_inc = 0
+          x_inc = - TECSModel.get_alignment
+          y_inc = 0
         when 0x52     # up arrow
-          x_inc = 0.0; y_inc = - TECSModel.get_alignment
+          x_inc = 0.0
+          y_inc = - TECSModel.get_alignment
         when 0x53     # right arrow
-          x_inc = TECSModel.get_alignment; y_inc = 0
+          x_inc = TECSModel.get_alignment
+          y_inc = 0
         when 0x54     # down arrow
-          x_inc = 0.0; y_inc = TECSModel.get_alignment
+          x_inc = 0.0
+          y_inc = TECSModel.get_alignment
         end
         @hilite_objs.each{|obj|
           obj.move(x_inc, y_inc)

@@ -57,7 +57,9 @@ class RepeatJoinPlugin < CellPlugin
       if ret.nil?
         next
       end
-      rhs_nsp = ret[0]; rhs_subscript = ret[1]; rhs_port_name = ret[2]
+      rhs_nsp = ret[0]
+      rhs_subscript = ret[1]
+      rhs_port_name = ret[2]
 
       # 呼び口配列で、添数が 0 の場合にのみカウントアップさせる
       if j.get_subscript == 0

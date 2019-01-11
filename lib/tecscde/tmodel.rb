@@ -707,10 +707,12 @@ module TECSCDE
         modified {
 
           dbgPrint "cell move #{@name}\n"
-          x0 = @x; y0 = @y
+          x0 = @x
+          y0 = @y
           @x = get_model.clip_x(TECSModel.round_length_val(@x + x_inc))
           @y = get_model.clip_y(TECSModel.round_length_val(@y + y_inc))
-          x_inc2 = @x - x0; y_inc2 = @y - y0
+          x_inc2 = @x - x0
+          y_inc2 = @y - y0
 
           @cports.each{|name, cport|
             cport.moved(x_inc2, y_inc2)
@@ -1870,7 +1872,8 @@ EOT
       #=== TmJoin#get_near_bar ***
       def get_near_bar(xm, ym)
         xs, ys = @cport.get_position
-        xe = xs; ye = ys
+        xe = xs
+        ye = ys
         min_dist = 999999999
         min_bar = nil
         @bars.each{|bar|
@@ -1893,7 +1896,8 @@ EOT
               end
             end
           end
-          xs = xe; ys = ye
+          xs = xe
+          ys = ye
         }
         return [min_bar, min_dist]
       end

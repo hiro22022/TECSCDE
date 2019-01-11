@@ -501,7 +501,9 @@ EOT
     if func_type.has_send?
       file.print "	/* dealloc send parameter while executing */\n"
       file.print "	SET_RPC_STATE( state_, RPCSTATE_CLIENT_EXEC );\n"
-      dir = :SEND; nest = 1; dealloc_cp = "eClientEntry_#{func_name}"
+      dir = :SEND
+      nest = 1
+      dealloc_cp = "eClientEntry_#{func_name}"
       dealloc_for_params(params, file, nest, dir, dealloc_cp)
       file.print "\n"
     end
@@ -566,7 +568,9 @@ EOT
     if func_type.has_send?
       file.print "	/* dealloc send parameter */\n"
       file.print "	if( state_ < RPCSTATE_CLIENT_EXEC ){\n"
-      dir = :SEND; nest = 2; dealloc_cp = "eClientEntry_#{func_name}"
+      dir = :SEND
+      nest = 2
+      dealloc_cp = "eClientEntry_#{func_name}"
       dealloc_for_params(params, file, nest, dir, dealloc_cp)
       file.print "	}\n"
     end
@@ -574,7 +578,9 @@ EOT
     # receive のメモリをデアロケート
     if func_type.has_receive?
       file.print("	/* receive parameter */\n")
-      dir = :RECEIVE; nest = 1; dealloc_cp = "eClientEntry_#{func_name}"
+      dir = :RECEIVE
+      nest = 1
+      dealloc_cp = "eClientEntry_#{func_name}"
       dealloc_for_params(params, file, nest, dir, dealloc_cp, true)
     end
 
@@ -808,7 +814,10 @@ EOT
       file.print "		goto error_reset;\n\n"
 
       # out のメモリをアロケート
-      dir = :OUT; alloc_cp = "cPPAllocator_alloc"; alloc_cp_extra = nil; nest = 1
+      dir = :OUT
+      alloc_cp = "cPPAllocator_alloc"
+      alloc_cp_extra = nil
+      nest = 1
       alloc_for_out_params(params, file, nest, dir, alloc_cp, alloc_cp_extra)
 
       # 対象関数を呼出す
@@ -865,7 +874,8 @@ EOT
           # receive のメモリをデアロケート
           if f_type.has_receive?
             file.print "#{indent}/* dealloc receive parameter */\n"
-            dir = :RECEIVE; dealloc_cp = "cServerCall_#{f_name}"
+            dir = :RECEIVE
+            dealloc_cp = "cServerCall_#{f_name}"
             dealloc_for_params(params, file, indent_level, dir, dealloc_cp)
           end
 
@@ -889,7 +899,9 @@ EOT
       if f_type.has_send?
         file.print "	/* dealloc send parameter */\n"
         file.print "	if( *state_ < RPCSTATE_SERVER_EXEC ){\n"
-        dir = :SEND; indent_level = 2; dealloc_cp = "cServerCall_#{f_name}"
+        dir = :SEND
+        indent_level = 2
+        dealloc_cp = "cServerCall_#{f_name}"
         dealloc_for_params(params, file, indent_level, dir, dealloc_cp, true)
         file.print "	}\n"
       end
@@ -898,7 +910,9 @@ EOT
       if f_type.has_receive? && b_ret_er
         file.print "	/* dealloc receive parameter */\n"
         file.print "	if( MERCD( retval_ ) != E_RPC ){\n"
-        dir = :RECEIVE; indent_level = 2; dealloc_cp = "cServerCall_#{f_name}"
+        dir = :RECEIVE
+        indent_level = 2
+        dealloc_cp = "cServerCall_#{f_name}"
         dealloc_for_params(params, file, indent_level, dir, dealloc_cp)
         file.print "	}\n"
       end
@@ -980,7 +994,9 @@ EOT
     case org_type
     when PtrType
       indent = "\t" * nest
-      count = type.get_count; size = type.get_size; string = type.get_string
+      count = type.get_count
+      size = type.get_size
+      string = type.get_string
       if count || size || string
         loop_counter_type = IntType.new(16) # mikan 方を size_is, count_is の引数の型とする
         if count
@@ -1054,7 +1070,8 @@ EOT
             aster = "*"
           end
         end
-        count = type.get_count; size = type.get_size
+        count = type.get_count
+        size = type.get_size
         if (size || count) && type.get_type.has_pointer?
           if count
             len = ", #{type.get_count}"

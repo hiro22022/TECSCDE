@@ -90,7 +90,8 @@ class TECSGEN
   # path:: String   :
   # '/' または '$' で始まる場合、絶対パスと判定する
   def self.is_absolute_path?(path)
-    pa = path[0..0]; pa2 = path[0..1]
+    pa = path[0..0]
+    pa2 = path[0..1]
     if pa == "/" || pa == "$" || pa2 =~ /[A-Za-z]:/
       res = true
     else

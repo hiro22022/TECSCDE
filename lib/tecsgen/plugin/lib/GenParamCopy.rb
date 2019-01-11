@@ -135,7 +135,9 @@ EOT
 
     when PtrType
 
-      count = type.get_count; size = type.get_size; string = type.get_string
+      count = type.get_count
+      size = type.get_size
+      string = type.get_string
       if count || size || string
         nest = print_nullable_pre(name, type, file, nest, dir, outer, outer2, b_marshal, b_get)
         indent = "\t" * nest

@@ -845,7 +845,9 @@ class Expression < Node
           !ele[1][2].instance_of?(Token) || !ele[2].instance_of?(Token) # 1
         cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s) # S1086
       end
-      func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
+      func_name = ele[1][2]
+      cp_name = ele[1][1][1].get_name
+      param_name = ele[2].to_sym
       return [cp_name, func_name, param_name]
     end
     return nil

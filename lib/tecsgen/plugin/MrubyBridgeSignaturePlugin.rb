@@ -204,7 +204,8 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
 
   #=== check function name & return type
   def check_name_and_return_type(func_head_array)
-    b_init = false; b_init_cell = false
+    b_init = false
+    b_init_cell = false
     func_head_array.each{|func_head|
       if func_head.get_name == :initialize
         cdl_warning("MRW2001 initialize: internally defined. change to initialize_cell in ruby")

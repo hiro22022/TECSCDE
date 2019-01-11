@@ -127,7 +127,7 @@ EOT
  * even if TOPPERS_CB_TYPE_ONLY is defined.
  * To avoid redefinition warning, undef these macros.
  */
-#{ str = ""; undefs.each{|u| str += "#undef #{u}\n" }; str }
+#{undefs.map {|u| "#undef #{u}\n"}.join}
 EOT
     if $ram_initializer
       undefs2.each{|u|
@@ -213,7 +213,7 @@ EOT
  * even if TOPPERS_CB_TYPE_ONLY is defined.
  * To avoid redefinition warning, undef these macros.
  */
-#{ str = ""; undefs.each{|u| str += "#undef #{u}\n" }; str }
+#{undefs.map{|u| "#undef #{u}\n"}.join}
 EOT
     if $ram_initializer
       undefs2.each{|u|
