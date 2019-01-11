@@ -197,6 +197,10 @@ module TECSCDE
           @change_set_list[@change_no].apply
         end
       end
+
+      def modified?
+        @change_no > 1
+      end
     end # class ChangeSetManger
 
     #----- ChangeSetControl methods -----#
@@ -221,6 +225,10 @@ module TECSCDE
 
     def redo
       @change_set_manager.redo
+    end
+
+    def modified?
+      @change_set_manager.modified?
     end
   end
 

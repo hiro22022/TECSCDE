@@ -201,10 +201,9 @@ module TECSCDE
       @mainWindow.title = "TECSCDE - TECS Component Diagram Editor"
       @mainWindow.set_default_size(width, height)
       @mainWindow.sensitive = true
-      @mainWindow.signal_connect("delete-event"){|window, *args|
-        dbgPrint "delete" + args.to_s + "\n"
-        Gtk.main_quit
-      }
+      @mainWindow.signal_connect("delete-event") do |window, *args|
+        TECSCDE.quit(@model, @mainWindow)
+      end
       # KEY-PRESS event action
       @mainWindow.signal_connect("key-press-event"){|win, event|
         if @entryWin.visible?

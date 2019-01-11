@@ -155,7 +155,7 @@ Structure of Palette Window
     end
 
     def on_quit
-      flush_print "quit\n";Gtk.main_quit
+      TECSCDE.quit(@model)
     end
 
     def on_cell_name_entry_active(entry)

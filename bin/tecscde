@@ -113,6 +113,30 @@ module TECSCDE
     res
   end
 
+  def self.confirm?(message, parent = nil)
+    dialog = Gtk::Dialog.new(
+      "Confirm",
+      parent,
+      Gtk::Dialog::Flags::MODAL | Gtk::Dialog::Flags::DESTROY_WITH_PARENT,
+      [Gtk::Stock::OK, Gtk::ResponseType::OK],
+      [Gtk::Stock::CANCEL, Gtk::ResponseType::CANCEL])
+    dialog.vbox.add(Gtk::Label.new(message))
+    dialog.show_all
+    response = dialog.run
+    dialog.destroy
+    response == Gtk::ResponseType::OK
+  end
+
+  def self.quit(model, parent = nil)
+    if model.modified?
+      if TECSCDE.confirm?("変更を保存せずに終了しますか？")
+        Gtk.main_quit
+      end
+    else
+      Gtk.main_quit
+    end
+  end
+
   def self.main(tecsgen)
     begin
       aSet = MainViewAndModel.new tecsgen
