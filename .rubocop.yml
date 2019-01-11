@@ -39,6 +39,8 @@ Style/HashSyntax:
     - "Rakefile"
 Style/FrozenStringLiteralComment:
   Enabled: false
+Style/NumericLiterals:
+  Enabled: false
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/TrailingCommaInArrayLiteral:
