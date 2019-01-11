@@ -86,19 +86,19 @@ class ATK1ISRPlugin < CelltypePlugin
       # CATEGORY
       join = cell.get_join_list.get_item(:category)
       if join
-        file2.print "\t\tCATEGORY = #{join.get_rhs.to_s};\n"
+        file2.print "\t\tCATEGORY = #{join.get_rhs};\n"
       end
 
       # PRIORITY
       join = cell.get_join_list.get_item(:priority)
       if join
-        file2.print "\t\tPRIORITY = #{join.get_rhs.to_s};\n"
+        file2.print "\t\tPRIORITY = #{join.get_rhs};\n"
       end
 
       # ENTRY (entryはtecsgenの予約語のためNumberを付加)
       join = cell.get_join_list.get_item(:entryNumber)
       if join
-        file2.print "\t\tENTRY = #{join.get_rhs.to_s};\n"
+        file2.print "\t\tENTRY = #{join.get_rhs};\n"
       end
 
       # RESOURCE

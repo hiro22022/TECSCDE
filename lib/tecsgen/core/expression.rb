@@ -50,7 +50,7 @@ class Expression < Node
 
   def print
     # puts "expr: #{@elements}"
-    puts "expr_string: #{to_s}"
+    puts "expr_string: #{self}"
   end
 
   #=== Expression# to_s
@@ -134,7 +134,7 @@ class Expression < Node
     # mikan override してしまった print を呼出す方法がわからないのでこうした
     str = ""
     indent.times { str += "  " }
-    puts "#{str}#{to_s}"
+    puts "#{str}#{self}"
   end
 
 ## private
@@ -161,7 +161,7 @@ class Expression < Node
     when :PARENTHESES
       return "(#{elements_to_s(elements[1], name_list, pre, post)})"
     when :OP_SUBSC
-      return "#{elements_to_s(elements[1], name_list, pre, post)}[#{elements[2].to_s}]"
+      return "#{elements_to_s(elements[1], name_list, pre, post)}[#{elements[2]}]"
     when :OP_DOT
       return "#{elements_to_s(elements[1], name_list, pre, post)}.#{elements_to_s(elements[2], name_list, pre, post)}"
     when :OP_REF
@@ -238,7 +238,7 @@ class Expression < Node
   # name_list:: ParamlList  関数の引数リスト
   def elements_rpn(elements, name_list = nil, name_list2 = nil)
     if elements.instance_of? Token
-      print "rpn: #{elements.to_s}\n"
+      print "rpn: #{elements}\n"
       return elements.to_s # OP_DOT, OP_REF の右辺
     end
 
@@ -950,7 +950,7 @@ class Expression < Node
   # nsp:: NamespacePath :  参照するもの識別子
   def self.create_single_identifier(nsp, locale)
     if !nsp.instance_of?(NamespacePath)
-      raise "create_single_identifier: not NamespacePath: #{nsp.to_s}"
+      raise "create_single_identifier: not NamespacePath: #{nsp}"
     end
     Expression.new([ :IDENTIFIER, nsp ])
   end
@@ -1023,7 +1023,7 @@ class C_EXP < Node
   end
 
   def to_CDL_str
-    return "C_EXP( \"#{to_s}\" )"
+    return "C_EXP( \"#{self}\" )"
   end
 
   def show_tree(indent)

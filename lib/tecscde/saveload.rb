@@ -471,7 +471,7 @@ module TECSCDE
         save_info f
         f.close
       rescue => evar
-        TECSCDE.message_box("fail to save #{fname}\n#{evar.to_s}", :OK)
+        TECSCDE.message_box("fail to save #{fname}\n#{evar}", :OK)
       end
     end
 
@@ -630,7 +630,7 @@ EOT
             "type"     : "cell_location",
             "name"     : "#{cell.get_name}",
             "location" : [ #{x}, #{y}, #{w}, #{h} ],
-            "region"   : "#{cell.get_region.get_namespace_path.to_s}",
+            "region"   : "#{cell.get_region.get_namespace_path}",
             "port_location" : [
 EOT
         delim_2 = ""
@@ -692,10 +692,10 @@ EOT
 #{delim_1}        {       /** join_list[ #{index} ] **/
             "type"        : "join_location",
             "call_cell"   : "#{cport.get_cell.get_name}",
-            "call_region" : "#{cport.get_cell.get_region.get_namespace_path.to_s}",
+            "call_region" : "#{cport.get_cell.get_region.get_namespace_path}",
             "call_port"   : "#{cport.get_name}",
 #{cp_subsc}            "entry_cell"  : "#{eport.get_cell.get_name}",
-            "entry_region": "#{eport.get_cell.get_region.get_namespace_path.to_s}",
+            "entry_region": "#{eport.get_cell.get_region.get_namespace_path}",
             "entry_port"  : "#{eport.get_name}",
 #{ep_subsc}            "bar_list"    : [
 EOT

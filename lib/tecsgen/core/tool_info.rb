@@ -160,7 +160,7 @@ class TOOL_INFO
 
       optional = @schema[("__" + require_type.to_s).to_sym]
       if optional
-        dbgPrint "#{require_type.to_s} has optional\n"
+        dbgPrint "#{require_type} has optional\n"
 
         optional.each{|name, val_type|
           val = object[name]

@@ -67,7 +67,7 @@ class HRP2Plugin < DomainPlugin
     print "HRP2Plugin: add_through_plugin: #{current_region.get_name}=>#{next_region.get_name}, #{join.get_owner.get_name}.#{join.get_definition.get_name}=>#{join.get_cell.get_name}.#{join.get_port_name}, #{through_type}\n"
 
     puts "=====Join Check Start====="
-    puts "caller: #{join.get_owner.get_name.to_s}, callee: #{join.get_cell.get_name.to_s}"
+    puts "caller: #{join.get_owner.get_name}, callee: #{join.get_cell.get_name}"
     puts "=====Join Check param====="
     current_domain = current_region.get_domain_root.get_domain_type
     next_domain = next_region.get_domain_root.get_domain_type

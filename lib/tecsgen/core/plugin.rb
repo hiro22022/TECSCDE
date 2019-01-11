@@ -255,7 +255,7 @@ class Plugin < Node
       proc = PluginArgProc[ident.to_s]
     end
     if proc.instance_of? Proc
-      dbgPrint "calling: #{self.class.name}.#{proc.to_s}\n"
+      dbgPrint "calling: #{self.class.name}.#{proc}\n"
       proc.call(self, rhs)
     else
       params = ""

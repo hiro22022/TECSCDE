@@ -1099,7 +1099,7 @@ class NotifierPlugin < CelltypePlugin
           post_text = "}\n"
           indent    = "\t"
         elsif option != "OutOfDomain"
-          pre_text  = "DOMAIN(#{domain_root.get_name.to_s}){\n"
+          pre_text  = "DOMAIN(#{domain_root.get_name}){\n"
           post_text = "}\n"
           indent    = "\t"
         end

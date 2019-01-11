@@ -318,7 +318,7 @@ EOT
         SVCManage.set_func_id("#{@ct_name_body}_#{func_name}")
         svcid = SVCManage.get_func_id("#{@ct_name_body}_#{func_name}")
         # file.print( "cal_svc( #{@ct_name_body}_#{func_name}" )
-        file.print("cal_svc( TFN_TECSGEN_ORIGIN + #{svcid.to_s}")
+        file.print("cal_svc( TFN_TECSGEN_ORIGIN + #{svcid}")
 
         #    if ( ! b_singleton ) then
         #      file.print( " tecs_this" )
@@ -532,7 +532,7 @@ eot
             file2.print <<EOT
 /* HRPSVC0009 */
 KERNEL_DOMAIN{
-    DEF_SVC( TFN_TECSGEN_ORIGIN + #{svcid.to_s}, { TA_NULL, #{@ct_name_body}_#{func_name}, SSZ_#{func_global_name} } );
+    DEF_SVC( TFN_TECSGEN_ORIGIN + #{svcid}, { TA_NULL, #{@ct_name_body}_#{func_name}, SSZ_#{func_global_name} } );
 }
 EOT
             file2.close

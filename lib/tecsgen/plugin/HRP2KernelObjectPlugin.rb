@@ -164,7 +164,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
   end
 
   def gen_factory(file)
-    puts "===== begin #{@celltype.get_name.to_s} plugin ====="
+    puts "===== begin #{@celltype.get_name} plugin ====="
 
       # 対象となるすべてのセルについて、受け口に結合されている
       # セルの所属ドメインを解析
@@ -231,27 +231,27 @@ class HRP2KernelObjectPlugin < CelltypePlugin
               if !HRP2KernelObjectPlugin.include_region(cell_domain_root.get_name.to_s)
                   # その保護ドメインの.cfgが生成されていない場合
                 HRP2KernelObjectPlugin.set_region_list(cell_domain_root.get_name.to_s)
-                  puts "~~~~~ #{cell_domain_root.get_name.to_s} is registered!"
+                  puts "~~~~~ #{cell_domain_root.get_name} is registered!"
 
                   # if cell.get_region.get_param == :KERNEL_DOMAIN
                   if cell_domain_type.get_option.to_s == "trusted"
                       # file2.print "#{cell.get_region.get_name.to_s}{\n"
                     file2.print "KERNEL_DOMAIN{\n"
                   else
-                    file2.print "DOMAIN(#{cell_domain_root.get_name.to_s}){\n"
+                    file2.print "DOMAIN(#{cell_domain_root.get_name}){\n"
                   end
-                  file2.puts "\tINCLUDE(\"#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg\");"
+                  file2.puts "\tINCLUDE(\"#{$gen}/tecsgen_#{cell_domain_root.get_name}.cfg\");"
                   file2.puts "}\n"
               else
-                dbgPrint "~~~~~ #{cell.get_region.get_name.to_s} is included in"
+                dbgPrint "~~~~~ #{cell.get_region.get_name} is included in"
                   # p @@region_list
               end
-                file3 = AppFile.open("#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg")
+                file3 = AppFile.open("#{$gen}/tecsgen_#{cell_domain_root.get_name}.cfg")
                 print_cfg_cre(file3, cell, val, "")
                 file3.close
             else
                 # 無所属の場合
-              puts "~~~~~ #{cell_domain_root.get_name.to_s} is OutOfDomain"
+              puts "~~~~~ #{cell_domain_root.get_name} is OutOfDomain"
                 print_cfg_cre(file2, cell, val, "")
             end
 
@@ -277,7 +277,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
                     acv << "TACP_KERNEL"
                       # p acv[i]
                   elsif cell_domain_type.get_option.to_s != "OutOfDomain"
-                    acv << "TACP(#{cell_domain_root.get_name.to_s})"
+                    acv << "TACP(#{cell_domain_root.get_name})"
                   else
                     acv << "TACP_SHARED"
                   end
@@ -293,7 +293,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
                 # if cell.get_region.get_region_type == :DOMAIN
                 if domainOption != "OutOfDomain"
                     # 保護ドメインに属する場合
-                  file3 = AppFile.open("#{$gen}/tecsgen_#{cell.get_region.get_name.to_s}.cfg")
+                  file3 = AppFile.open("#{$gen}/tecsgen_#{cell.get_region.get_name}.cfg")
                     print_cfg_sac(file3, val, acv)
                     file3.close
                 else
@@ -306,7 +306,7 @@ class HRP2KernelObjectPlugin < CelltypePlugin
         end
       }
 
-      puts "===== end #{@celltype.get_name.to_s} plugin ====="
+      puts "===== end #{@celltype.get_name} plugin ====="
       file2.close
   end
 

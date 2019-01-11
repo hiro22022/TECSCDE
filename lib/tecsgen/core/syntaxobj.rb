@@ -693,7 +693,7 @@ class Decl < BDNode
       puts "initializer: no"
     end
     (indent+1).times { print "  " }
-    puts "size_is: #{@size_is.to_s}, count_is: #{@count_is.to_s}, string: #{@string.to_s} referenced: #{@b_referenced} "
+    puts "size_is: #{@size_is}, count_is: #{@count_is}, string: #{@string} referenced: #{@b_referenced} "
   end
 end
 

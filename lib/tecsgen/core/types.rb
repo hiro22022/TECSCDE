@@ -1525,23 +1525,23 @@ class PtrType < Type
     super(indent + 1)
     (indent+1).times { print "  " }
     if @size
-      print "size=#{@size.to_s}, "
+      print "size=#{@size}, "
     else
       print "size=nil, "
     end
     if @max
-      print "max=#{@size.to_s}, "
+      print "max=#{@size}, "
     else
       print "max=nil, "
     end
     if @count
-      print "count=#{@count.to_s}, "
+      print "count=#{@count}, "
     else
       print "count=nil, "
     end
     if @string
       if @string.instance_of?(Expression)
-        print "string=#{@string.to_s}\n"
+        print "string=#{@string}\n"
       else
         print "string=yes\n"
       end

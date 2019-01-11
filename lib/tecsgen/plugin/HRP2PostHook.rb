@@ -64,7 +64,7 @@ class HRP2PostHook
           if rlist.length == 0
             file = AppFile.open("#{$gen}/tecsgen.cfg")
           else
-            file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param.to_s}.cfg")
+            file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param}.cfg")
           end
           # セル管理ブロックとスケルトンのメモリ保護
           file.print "ATT_MOD(\"#{@celltype.get_global_name}_tecsgen.o\");\n"
@@ -84,7 +84,7 @@ class HRP2PostHook
               (@celltype.get_n_cell_gen == @celltype.get_n_cell_gen_r(rlist[0]))
               # 所属する保護ドメインが1つの場合
             puts "<private celltype>"
-              file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param.to_s}.cfg")
+              file = AppFile.open("#{$gen}/tecsgen_#{rlist[0].get_param}.cfg")
           else
               # 無所属 or 所属する保護ドメインが複数の場合
             puts "<shared celltype>"
@@ -101,8 +101,8 @@ class HRP2PostHook
 
           # セル管理ブロックの保護
           rlist.each {|reg|
-            file = AppFile.open("#{$gen}/tecsgen_#{reg.get_param.to_s}.cfg")
-              file.print "ATT_MOD(\"#{@celltype.get_global_name}_#{reg.get_name.to_s}_tecsgen.o\");\n"
+            file = AppFile.open("#{$gen}/tecsgen_#{reg.get_param}.cfg")
+              file.print "ATT_MOD(\"#{@celltype.get_global_name}_#{reg.get_name}_tecsgen.o\");\n"
               file.close
           }
 

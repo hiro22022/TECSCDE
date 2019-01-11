@@ -120,13 +120,13 @@ class ATK1TaskPlugin < CelltypePlugin
       # PRIORITY
       join = cell.get_join_list.get_item(:priority)
       if join
-        file2.print "\t\tPRIORITY = #{join.get_rhs.to_s};\n"
+        file2.print "\t\tPRIORITY = #{join.get_rhs};\n"
       end
 
       # ACTIVATION
       join = cell.get_join_list.get_item(:activation)
       if join
-        file2.print "\t\tACTIVATION = #{join.get_rhs.to_s};\n"
+        file2.print "\t\tACTIVATION = #{join.get_rhs};\n"
       end
 
       # SCHEDULE
@@ -186,7 +186,7 @@ class ATK1TaskPlugin < CelltypePlugin
       # STACKSIZE
       join = cell.get_join_list.get_item(:stackSize)
       if join
-        file2.print "\t\tSTACKSIZE = #{join.get_rhs.to_s};\n"
+        file2.print "\t\tSTACKSIZE = #{join.get_rhs};\n"
       end
 
       file2.print "\t};\n"

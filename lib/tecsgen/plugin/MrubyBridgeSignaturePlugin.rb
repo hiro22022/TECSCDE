@@ -419,7 +419,7 @@ namespace nMruby{
     // bridge celltype
     [idx_is_id,active]   // not actually active, to avoid warning W1002, W1007
     celltype #{@celltype_name} {
-        call #{@signature.get_namespace_path.to_s} cTECS;
+        call #{@signature.get_namespace_path} cTECS;
         attr {
             [omit]
             char_t *VMname = "VM";

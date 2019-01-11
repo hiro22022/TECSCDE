@@ -62,7 +62,7 @@ class HRPTaskPlugin < HRPKernelObjectPlugin
     #  tab :: string: タブ
     #
   def print_cfg_cre(file, cell, val, tab)
-    val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name.to_s}_#{cell.get_name.to_s}")
+    val[:id] = val[:id].gsub(/(^|[^\$])\$id\$/, "\\1#{@celltype.get_name}_#{cell.get_name}")
       # $cbp$の代わり
       cell_IDX = @celltype.get_name_array(cell)[7]
       # CRE_TSKの生成

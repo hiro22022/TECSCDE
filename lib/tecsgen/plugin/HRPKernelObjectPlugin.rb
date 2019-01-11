@@ -80,7 +80,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
     #  file:: FILE:     出力先ファイル
     #
   def gen_factory(file)
-    dbgPrint "===== begin #{@celltype.get_name.to_s} plugin =====\n"
+    dbgPrint "===== begin #{@celltype.get_name} plugin =====\n"
 
       #
       # 対象となるすべてのセルについて、受け口に結合されている
@@ -149,7 +149,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
               if !HRPKernelObjectPlugin.include_region(cell_domain_root.get_name.to_s)
                   # その保護ドメインの.cfgが生成されていない場合
                 HRPKernelObjectPlugin.set_region_list(cell_domain_root.get_name.to_s)
-                  dbgPrint "~~~~~ #{cell_domain_root.get_name.to_s} is registered!\n"
+                  dbgPrint "~~~~~ #{cell_domain_root.get_name} is registered!\n"
 
 #                        # if cell.get_region.get_param == :KERNEL_DOMAIN
 #                        if cell_domain_type.get_option.to_s == "kernel"
@@ -179,7 +179,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
 #                        HRPKernelObjectPlugin.set_region_list(cell_domain_root.get_name.to_s)
 #                        file2.puts "INCLUDE(\"#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg\");\n"
 #                      end
-                  file3 = AppFile.open("#{$gen}/tecsgen_#{cell_domain_root.get_name.to_s}.cfg")
+                  file3 = AppFile.open("#{$gen}/tecsgen_#{cell_domain_root.get_name}.cfg")
                   print_cfg_cre(file3, cell, val, "")
                   file3.close
                 end
@@ -275,7 +275,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                 # p "domain_root ", cell.get_region.get_domain_root.get_name
                 if domainOption != "OutOfDomain" || cell.get_region.get_domain_root.get_name != "::"
                     # 保護ドメインに属する場合
-                  file3 = AppFile.open("#{$gen}/tecsgen_#{cell.get_region.get_name.to_s}.cfg")
+                  file3 = AppFile.open("#{$gen}/tecsgen_#{cell.get_region.get_name}.cfg")
                     print_cfg_sac(file3, val, acv)
                     file3.close
                 else
@@ -287,7 +287,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
             end
         end
       }
-      dbgPrint "===== end #{@celltype.get_name.to_s} plugin =====\n"
+      dbgPrint "===== end #{@celltype.get_name} plugin =====\n"
       file2.close
   end
 

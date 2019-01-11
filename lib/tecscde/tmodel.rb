@@ -300,7 +300,7 @@ module TECSCDE
       ct_nsp.append! celltype_name.to_sym
       ct = Namespace.find ct_nsp
       if ct == nil
-        TECSCDE.error("TM9999 celltype #{ct_nsp.to_s}: not found for cell #{@name}")
+        TECSCDE.error("TM9999 celltype #{ct_nsp}: not found for cell #{@name}")
         return
       end
 

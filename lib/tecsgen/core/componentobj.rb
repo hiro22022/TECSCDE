@@ -3678,7 +3678,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
           # debug
           if j
-            dbgPrint "  REWRITE_EX parent cell: #{name} child cell: #{c.get_name}:  parent's export port: #{cj.get_name}  join: #{j.get_name}=>#{j.get_rhs.to_s}\n"
+            dbgPrint "  REWRITE_EX parent cell: #{name} child cell: #{c.get_name}:  parent's export port: #{cj.get_name}  join: #{j.get_name}=>#{j.get_rhs}\n"
           else
             dbgPrint "expand : parent cell: #{name} child cell: #{c.get_name}:  parent's export port: #{cj.get_name}  join: nil\n"
           end
@@ -5570,7 +5570,7 @@ class Join < BDNode
     # print "'#{get_rhs_region.get_link_root.get_name}'  (callee #{@cell_name})\n"
 
     if get_rhs_region
-      dbgPrint "check_region2 #{lhs_cell.get_name} => #{get_rhs_region.get_path_string}#{@rhs.to_s}\n"
+      dbgPrint "check_region2 #{lhs_cell.get_name} => #{get_rhs_region.get_path_string}#{@rhs}\n"
 
       # if get_rhs_region.is_generate? != true then  #3
       if @owner.get_region.get_link_root != get_rhs_region.get_link_root
@@ -7624,7 +7624,7 @@ class Generate < Node
     @option = option
     @plugin_object = nil
 
-    dbgPrint "generate: #{plugin_name} #{object_nsp.to_s} option=#{option}\n"
+    dbgPrint "generate: #{plugin_name} #{object_nsp} option=#{option}\n"
 
     object = Namespace.find(object_nsp)
     if object.kind_of?(Signature) ||

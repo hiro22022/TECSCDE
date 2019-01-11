@@ -132,7 +132,7 @@ class ATK1EventPlugin < CelltypePlugin
             new_rhs = Expression.create_integer_constant(current_mask, @locale)
             join.change_rhs new_rhs
           end
-          file2.print "\t\tMASK = #{mask_place.to_s};\n"
+          file2.print "\t\tMASK = #{mask_place};\n"
         end
 
         file2.print "\t};\n"

@@ -1057,9 +1057,9 @@ EOT
         count = type.get_count; size = type.get_size
         if (size || count) && type.get_type.has_pointer?
           if count
-            len = ", #{type.get_count.to_s}"
+            len = ", #{type.get_count}"
           elsif size
-            len = ", #{type.get_size.to_s}"
+            len = ", #{type.get_size}"
           end
         else
           len = ""

@@ -1217,7 +1217,7 @@ module TECSCDE
           File.unlink fname
         end
       rescue => evar
-        TECSCDE.message_box("fail to remove #{fname}\n#{evar.to_s}", :OK)
+        TECSCDE.message_box("fail to remove #{fname}\n#{evar}", :OK)
         return
       end
 
@@ -1261,7 +1261,7 @@ module TECSCDE
         # @cairo_context_target.restore   # (* pair *)
       rescue => evar
         p evar
-        TECSCDE.message_box("fail to writ to #{fname}\n#{evar.to_s}", :OK)
+        TECSCDE.message_box("fail to writ to #{fname}\n#{evar}", :OK)
       ensure
         @cairo_context_target = target_bak
         @cairo_matrix.set_base_shift(0, 0)

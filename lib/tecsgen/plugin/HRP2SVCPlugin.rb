@@ -322,7 +322,7 @@ EOT
         end
         svcid = SVCManage.get_func_id("#{@ct_name_body}_#{func_name}")
         # file.print( "cal_svc( #{@ct_name_body}_#{func_name}" )
-        file.print("cal_svc( #{svcid.to_s}")
+        file.print("cal_svc( #{svcid}")
 
         #    if ( ! b_singleton ) then
         #      file.print( " tecs_this" )
@@ -409,14 +409,14 @@ EOT
               if param.get_declarator.get_ptr_level > 0
                 if param.get_direction == :IN
                   file2.print <<EOT
-    if(prb_mem((void *)par#{num.to_s}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_READ) != E_OK){
+    if(prb_mem((void *)par#{num}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_READ) != E_OK){
         return E_MACV;
     }
 EOT
 
                 elsif param.get_direction == :OUT
                   file2.print <<EOT
-    if(prb_mem((void *)par#{num.to_s}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_WRITE) != E_OK){
+    if(prb_mem((void *)par#{num}, sizeof(#{param.get_type.get_type_str}), TSK_SELF, TPM_WRITE) != E_OK){
         return E_MACV;
     }
 EOT
@@ -453,7 +453,7 @@ EOT
             # TODO: スタックサイズは適当
             file2.print <<EOT
 KERNEL_DOMAIN{
-    DEF_SVC( #{svcid.to_s}, { TA_NULL, #{@ct_name_body}_#{func_name}, 256 } );
+    DEF_SVC( #{svcid}, { TA_NULL, #{@ct_name_body}_#{func_name}, 256 } );
 }
 EOT
             file2.close
