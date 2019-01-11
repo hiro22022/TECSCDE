@@ -819,7 +819,7 @@ module TECSCDE
         # rect2 = plo.get_pixel_extents[1]
         # return [ dot2mm(rect2.rbearing), dot2mm(rect2.descent) ]
         rect2 = plo.pixel_extents[1]
-        return [ dot2mm(rect2.x + rect2.width), dot2mm(rect2.y + rect2.height) ]
+        return [dot2mm(rect2.x + rect2.width), dot2mm(rect2.y + rect2.height)]
       else
         pc = @pango_context
         plo = @pango_layout
@@ -832,7 +832,7 @@ module TECSCDE
         plo.alignment = alignment
         # plo.context_changed
         rect2 = plo.get_pixel_extents[1]
-        return [ dot2mm(rect2.descent), dot2mm(rect2.rbearing) ]
+        return [dot2mm(rect2.descent), dot2mm(rect2.rbearing)]
       end
     end
 
@@ -1089,7 +1089,7 @@ module TECSCDE
       w = mm2dot wmn
       h = mm2dot hmn
 
-      return [ x, y, w, h ]
+      return [x, y, w, h]
     end
 
     #------ Convert Unit  ------#
@@ -1150,16 +1150,16 @@ module TECSCDE
       @@colors = {}
       @@colormap = Gdk::Colormap.system
 
-      [ :black, :white, :gray, :yellow, :orange, :skyblue, :magenta, :red, :blue, :green,
+      [:black, :white, :gray, :yellow, :orange, :skyblue, :magenta, :red, :blue, :green,
         :cyan, :brown, :violet, :lavender, :MistyRose, :lightyellow, :LightCyan, :Beige,
-        :PapayaWhip, :Violet, :pink ].each{|color_name|
+        :PapayaWhip, :Violet, :pink].each{|color_name|
         setup_colormap_1 color_name
       }
       setup_colormap_2 :ultraLightGreen, Gdk::Color.new(0xE000, 0xFF00, 0xE000)
       setup_colormap_1 Color_editable_cell
 
-      @@cell_paint_colors = [ :MistyRose, :lightyellow, :LightCyan, :ultraLightGreen, :lavender, :Beige,
-                              :PapayaWhip, :Violet, :pink ]
+      @@cell_paint_colors = [:MistyRose, :lightyellow, :LightCyan, :ultraLightGreen, :lavender, :Beige,
+                              :PapayaWhip, :Violet, :pink]
       # plum: light purble (pastel)
       # pink: light magenta (pastel)
       # lavender: light blue (pastel)
@@ -1279,7 +1279,7 @@ module TECSCDE
     def divString(str)
       len = str.length
       if len <= 4
-        return [ str, "" ]
+        return [str, ""]
       end
 
       center = len / 2
@@ -1301,9 +1301,9 @@ module TECSCDE
         i += 1
       end
       if n > 0
-        return [ str[0, n], str[n, len] ]
+        return [str[0, n], str[n, len]]
       else
-        return [ str[0, len / 2], str[len / 2, len] ]
+        return [str[0, len / 2], str[len / 2, len]]
       end
     end
   end # class MainView
