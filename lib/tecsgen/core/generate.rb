@@ -1873,7 +1873,7 @@ EOT
   end
 
   def gen_ph_cp_fun_macro(f)
-    if @n_call_port >0
+    if @n_call_port > 0
       f.printf(TECSMsg.get(:CPM_comment), "#_CPM_#")
     end
 
@@ -2016,7 +2016,7 @@ EOT
 
   #=== ref_desc 指定された呼び口に対するディスクリプタ参照関数の生成
   def gen_ph_ref_desc_func(f)
-    if @n_call_port_ref_desc >0
+    if @n_call_port_ref_desc > 0
       f.printf(TECSMsg.get(:CRD_comment), "#_CRD_#")
     end
 
@@ -2071,7 +2071,7 @@ EOT
 
   #=== dynamic 指定された呼び口に対するディスクリプタ設定関数の生成
   def gen_ph_set_desc_func(f)
-    if @n_call_port_dynamic >0
+    if @n_call_port_dynamic > 0
       f.printf(TECSMsg.get(:SDF_comment), "#_SDF_#")
     end
 
@@ -2200,7 +2200,7 @@ EOT
   end
 
   def gen_ph_cp_fun_macro_abbrev(f)
-    if @n_call_port >0
+    if @n_call_port > 0
       f.printf(TECSMsg.get(:CPMA_comment), "#_CPMA_#")
     end
 
@@ -2270,7 +2270,7 @@ EOT
   end
 
   def gen_ph_ref_desc_macro_abbrev(f)
-    if @n_call_port_ref_desc >0
+    if @n_call_port_ref_desc > 0
       f.printf(TECSMsg.get(:CRDA_comment), "#_CRDA_#")
     end
 
@@ -2305,7 +2305,7 @@ EOT
   end
 
   def gen_ph_set_desc_macro_abbrev(f)
-    if @n_call_port_dynamic >0
+    if @n_call_port_dynamic > 0
       f.printf(TECSMsg.get(:SDMA_comment), "#_SDMA_#")
     end
 
@@ -2340,7 +2340,7 @@ EOT
   end
 
   def gen_ph_ep_fun_macro(f)
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.printf(TECSMsg.get(:EPM_comment), "#_EPM_#")
     end
 
@@ -2388,7 +2388,7 @@ EOT
   end
 
   def gen_ph_ep_fun_prototype(f)
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.printf(TECSMsg.get(:EPP_comment), "#_EPP_#")
     end
 
@@ -2444,7 +2444,7 @@ EOT
 
   def gen_ph_ep_skel_prototype(f)
     # 受け口スケルトン関数のプロトタイプ宣言を出力
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.printf(TECSMsg.get(:EPSP_comment), "#_EPSP_#")
     end
     @port.each {|p|
@@ -2605,7 +2605,7 @@ EOT
 
   def gen_cell_cb_type_call_port(f, inib_cb)
     # 呼び口
-    if @n_call_port >0
+    if @n_call_port > 0
       f.print "    /* call port #_TCP_# */\n"
     end
 
@@ -2619,7 +2619,7 @@ EOT
       ptr = p.get_array_size ? "*" : ""
 
       if !p.is_cell_unique?
-        const = p.is_dynamic?  ? "" : "const"
+        const = p.is_dynamic? ? "" : "const"
         if inib_cb == :INIB && p.is_dynamic? && p.get_array_size == nil && $ram_initializer
           init = "_init_"
           const2 = "const"
@@ -2663,7 +2663,7 @@ EOT
   #=== Celltype#受け口配列添数を記憶する変数の定義
   def gen_cell_cb_type_entry_port(f, inib_cb)
     # 呼び口
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.print "    /* call port #_NEP_# */ \n"
     end
 
@@ -2954,7 +2954,7 @@ EOT
   end
 
   def gen_cell_skel_fun(f)
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.printf(TECSMsg.get(:EPSF_comment), "#_EPSF_#")
     end
 
@@ -3032,13 +3032,13 @@ EOT
         f.print "}\n"
       }
     }
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.print("\n")
     end
   end
 
   def gen_cell_fun_table(f)
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.printf(TECSMsg.get(:EPSFT_comment), "#_EPSFT_#")
     end
 
@@ -3066,7 +3066,7 @@ EOT
   end
 
   def gen_cell_ep_vdes(fs)
-    if @n_cell_gen >0
+    if @n_cell_gen > 0
       fs.each{|r, f| f.printf(TECSMsg.get(:CPEPD_comment), "#_CPEPD_#") }
     end
 
@@ -3162,7 +3162,7 @@ EOT
   end
 
   def gen_cell_ep_vdes_array(fs)
-    if @n_cell_gen >0
+    if @n_cell_gen > 0
       fs.each{|r, f| f.printf(TECSMsg.get(:CPA_comment), "#_CPA_#") } # mikan 呼び口配列が無い場合も出てしまう
     end
 
@@ -3502,7 +3502,7 @@ EOT
     end # has_INIB?
 
     if has_CB?
-      if @n_cell_gen >0
+      if @n_cell_gen > 0
         fs.each{|r, f| f.printf(TECSMsg.get(:CB_comment), "#_CB_#") }
       end
 
@@ -3797,7 +3797,7 @@ EOT
 
     port = get_port_list
     if inib_cb == :INIB && (@n_call_port - @n_call_port_omitted_in_CB -
-                             ($ram_initializer ? 0 : (@n_call_port_dynamic-@n_call_port_array_dynamic)) > 0) ||
+                             ($ram_initializer ? 0 : (@n_call_port_dynamic - @n_call_port_array_dynamic)) > 0) ||
        inib_cb == :CB_ALL && @n_call_port > 0 ||
        inib_cb == :CB_DYNAMIC && (@n_call_port_dynamic - @n_call_port_array_dynamic) > 0
       print_indent(f, indent + 1)
@@ -3912,7 +3912,7 @@ EOT
         # next if p.is_omit?  # 受け口配列の個数は省略しない
         if p.get_port_type == :ENTRY && p.get_array_size == "[]"
           print_indent(f, indent + 1)
-          f.printf("%-40s /*  #_EEP_# */\n", "#{cell.get_entry_port_max_subscript(p)+1},")
+          f.printf("%-40s /*  #_EEP_# */\n", "#{cell.get_entry_port_max_subscript(p) + 1},")
         end
       }
     end
@@ -4160,7 +4160,7 @@ EOT
 
   #=== 受け口ディスクリプタの定義を生成
   def gen_cell_ep_des(fs)
-    if @n_cell_gen >0
+    if @n_cell_gen > 0
       fs.each{|r, f| f.printf(TECSMsg.get(:EPD_comment), "#_EPD_#") }
     end
 
@@ -4353,7 +4353,7 @@ EOT
   end
 
   def gen_template_cp_fun(f)
-    if @n_call_port >0
+    if @n_call_port > 0
       f.print " *\n"
       f.printf(TECSMsg.get(:TCPF_comment), "#_TCPF_#")
     end
@@ -4478,7 +4478,7 @@ EOT
   end
 
   def gen_template_ep_fun(f, b_inline = false)
-    if @n_entry_port >0
+    if @n_entry_port > 0
       f.printf(TECSMsg.get(:TEPF_comment), "#_TEPF_#")
     end
 
@@ -4853,7 +4853,7 @@ EOT
   # このメソッドでは、行を出力する直前に " \\\n" を出力し、行末で改行文字を出力しない
   def gen_dealloc_code_for_type(f, type, dealloc_func_name, pre, name, post, level, b_reset, count_str = nil)
     type = type.get_original_type
-    indent = "	" + "  " * (level+1)
+    indent = "	" + "  " * (level + 1)
     if !type.has_pointer?
       return
     elsif type.kind_of?(ArrayType)
@@ -4865,7 +4865,7 @@ EOT
         f.print " \\\n"
         f.print "#{indent}  for( #{loop_str} = 0; #{loop_str} < #{count_str}; #{loop_str}++ ){ "
 
-        gen_dealloc_code_for_type(f, type.get_type, dealloc_func_name, pre, name, "#{post}[#{loop_str}]", level+2, b_reset)
+        gen_dealloc_code_for_type(f, type.get_type, dealloc_func_name, pre, name, "#{post}[#{loop_str}]", level + 2, b_reset)
 
         f.print " \\\n"
         f.print "#{indent}  }"
@@ -4917,7 +4917,7 @@ EOT
           f.print " \\\n"
           f.print "#{indent2}  for( #{loop_str} = 0; #{loop_str} < #{count_str}; #{loop_str}++ ){ "
 
-          gen_dealloc_code_for_type(f, type.get_type, dealloc_func_name, pre, name, "#{post}[#{loop_str}]", level2+2, b_reset)
+          gen_dealloc_code_for_type(f, type.get_type, dealloc_func_name, pre, name, "#{post}[#{loop_str}]", level2 + 2, b_reset)
 
           f.print " \\\n"
           f.print "#{indent2}  }"
@@ -5030,7 +5030,7 @@ class AppFile
     if $force_overwrite
       real_name = name
     else
-      real_name = name+".tmp"
+      real_name = name + ".tmp"
     end
 
 # 2.0
@@ -5086,12 +5086,12 @@ class AppFile
           print "#{name} updated\n"
           print "renaming '#{name}.tmp' => '#{name}'\n"
         end
-        File.rename name+".tmp", name
+        File.rename name + ".tmp", name
       else
         if $verbose
           print "#{name} not updated\n"
         end
-        File.delete name+".tmp"
+        File.delete name + ".tmp"
       end
     }
   end
@@ -5115,7 +5115,7 @@ class Region
   def gen_region_str_pre(f)
     nest = 1
     while nest < @family_line.length
-      f.print "  " * (nest-1)
+      f.print "  " * (nest - 1)
       f.print "region #{@family_line[nest].get_name}{\n"
       nest += 1
     end
@@ -5125,7 +5125,7 @@ class Region
   def gen_region_str_post(f)
     nest = @family_line.length - 1
     while nest >= 1
-      f.print "  " * (nest-1)
+      f.print "  " * (nest - 1)
       f.print "};\n"
       nest -= 1
     end

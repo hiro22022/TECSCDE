@@ -238,7 +238,7 @@ class NamedList
         return self
       end
 
-      @names[name]=item
+      @names[name] = item
       @items << item
     end
 
@@ -250,7 +250,7 @@ class NamedList
     name = item.get_name
 
     prev_one = @names[name]
-    @names[name]=item
+    @names[name] = item
 
     @items = @items - [ prev_one ]
     @items << item
@@ -357,7 +357,7 @@ end
 
 #== 関数頭部
 # signature に登録される関数
-class FuncHead <BDNode
+class FuncHead < BDNode
 #  @declarator:: Decl
 
   def initialize(declarator, type, b_oneway)
@@ -465,7 +465,7 @@ class Decl < BDNode
     @count_is = nil
     @string = nil
     @choice_list = nil
-    @b_referenced  = false
+    @b_referenced = false
   end
 
   def set_initializer(initializer)
@@ -681,18 +681,18 @@ class Decl < BDNode
   def show_tree(indent)
     indent.times { print "  " }
     puts "Declarator: name: #{@identifier} kind: #{@kind} global_name: #{@global_name} #{locale_str}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "type:"
     @type.show_tree(indent + 2)
     if @initializer
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "initializer:"
       @initializer.show_tree(indent + 2)
     else
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "initializer: no"
     end
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "size_is: #{@size_is}, count_is: #{@count_is}, string: #{@string} referenced: #{@b_referenced} "
   end
 end
@@ -807,9 +807,9 @@ class ParamDecl < BDNode
     # p @declarator
 
     #----  set req_level, min_level & max_level  ----#
-    if !(@size||@count||@string) # (4)
+    if !(@size || @count || @string) # (4)
       req_level = 1
-    elsif (@size||@count)&&@string
+    elsif (@size || @count) && @string
       req_level = 2
     else
       req_level = 1
@@ -822,7 +822,7 @@ class ParamDecl < BDNode
     max_level = req_level
 
     # IN without pointer specifier can be non-pointer type
-    if @direction == :IN && !(@size||@count||@string)
+    if @direction == :IN && !(@size || @count || @string)
       min_level = 0
     end
 
@@ -986,27 +986,27 @@ class ParamDecl < BDNode
     puts "ParamDecl: direction: #{@direction} #{locale_str}"
     @declarator.show_tree(indent + 1)
     if @size
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "size:"
       @size.show_tree(indent + 2)
     end
     if @count
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "count:"
       @count.show_tree(indent + 2)
     end
     if @string
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "string:"
       if @string == -1
-        (indent+2).times { print "  " }
+        (indent + 2).times { print "  " }
         puts "size is not specified"
       else
         @string.show_tree(indent + 2)
       end
     end
     if @allocator
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "allocator: signature: #{@allocator.get_name}"
     end
   end

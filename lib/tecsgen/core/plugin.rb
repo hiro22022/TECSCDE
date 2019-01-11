@@ -42,7 +42,7 @@ class Plugin < Node
 # @error_backlog:: [msg1, msg2, ... ]   @locale が設定される前に発生したエラー
 
   PluginArgProc = {
-    "silent"  => Proc.new {|obj, rhs| obj.set_silent rhs },
+    "silent" => Proc.new {|obj, rhs| obj.set_silent rhs },
   }
 
   def initialize

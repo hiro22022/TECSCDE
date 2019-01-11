@@ -47,16 +47,16 @@ class TOOL_INFO
 
   # tool_info schema for tecsgen
   @@TECSGEN_schema = {
-    :tecsgen        => { # require
+    :tecsgen => { # require
       :base_dir       => [ :string ],             # dir where the cde created initially
       :direct_import  => [ :string ],             # .cdl (sometimes .cde) specified in argments
       :import_path    => [ :string ],             # -I of tecsgen
       :define_macro   => [ :string ],             # -D of tecsgen
-      :tecscde_version=> :string,                 # TECSCDE version
-      :cde_format_version=> :string,              # CDE format version
+      :tecscde_version => :string,                 # TECSCDE version
+      :cde_format_version => :string,              # CDE format version
       :save_date      => :string,                 # last save date & time
     },
-    :__tecsgen      => { # optioanl
+    :__tecsgen => { # optioanl
       :cpp            => :string # -c or TECS_CPP environment variable
     }
   }
@@ -184,7 +184,7 @@ class TOOL_INFO
         error("#{path2}: array required as value\n")
         return
       end
-      index=0
+      index = 0
       array.each{|member|
         type = get_object_type member
         i = val_types.find_index type

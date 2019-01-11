@@ -452,7 +452,7 @@ EOT
     if has_CB?
       size_CB = "(sizeof(#{@global_name}_CB))"
     else
-      size_CB   = "(0)"
+      size_CB = "(0)"
     end
 
     if @n_cell_gen > 0

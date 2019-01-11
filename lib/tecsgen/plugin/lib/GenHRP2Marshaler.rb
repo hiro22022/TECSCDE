@@ -588,7 +588,7 @@ EOT
       end
 
     when StructType
-      members_decl =type.get_members_decl
+      members_decl = type.get_members_decl
       members_decl.get_items.each {|m|
         if m.is_referenced?
           print_param_nc(m.get_name, m.get_type, file, nest, b_marshal, "#{outer}#{name}#{outer2}.", nil, b_get)

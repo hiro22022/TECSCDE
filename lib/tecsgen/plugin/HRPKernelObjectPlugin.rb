@@ -137,7 +137,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
             # $id$を置換
             if val[:id].nil? != true
               name_array = @celltype.get_name_array(cell)
-                val[:id]   = @celltype.subst_name(val[:id], name_array)
+                val[:id] = @celltype.subst_name(val[:id], name_array)
             end
             # $cbp$の代わり
             cell_domain_root = cell.get_region.get_domain_root

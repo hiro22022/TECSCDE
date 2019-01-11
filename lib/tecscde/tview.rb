@@ -476,7 +476,7 @@ module TECSCDE
       #----- draw cell rect -----#
 #      @drawTarget.draw_rectangle( @canvasGc, false, x1, y1, w1, h1 )
 #      @cairo_context_target.rectangle(x1, y1, w1, h1)
-      @cairo_context_target.rectangle(x1+0.5, y1+0.5, w1, h1)
+      @cairo_context_target.rectangle(x1 + 0.5, y1 + 0.5, w1, h1)
       @cairo_context_target.set_line_width(1)
       @cairo_context_target.stroke
 
@@ -523,15 +523,15 @@ module TECSCDE
         wmn, hmn = get_text_extent(cell_name.to_s, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
         if wmn > w
           s1, s2 = div_string cell_name.to_s
-          draw_text(x1 + w1/2, y1+  h1/2 - mm2dot(hmn)/2, s1, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
-          draw_text(x1 + w1/2, y1+  h1/2 + mm2dot(hmn)/2, s2, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
+          draw_text(x1 + w1 / 2, y1 + h1 / 2 - mm2dot(hmn) / 2, s1, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
+          draw_text(x1 + w1 / 2, y1 + h1 / 2 + mm2dot(hmn) / 2, s2, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
         else
-          draw_text(x1 + w1/2, y1+h1/2, cell_name.to_s, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
+          draw_text(x1 + w1 / 2, y1 + h1 / 2, cell_name.to_s, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
         end
       else
         wmn, hmn = get_text_extent(cell_name.to_s, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
-        draw_text(x1 + w1/2, y1+h1/2 + mm2dot(hmn)/2, cell_name.to_s, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
-        draw_text(x1 + w1/2, y1+h1/2 - mm2dot(hmn)/2, ct_name.to_s,   CELLTYPE_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
+        draw_text(x1 + w1 / 2, y1 + h1 / 2 + mm2dot(hmn) / 2, cell_name.to_s, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
+        draw_text(x1 + w1 / 2, y1 + h1 / 2 - mm2dot(hmn) / 2, ct_name.to_s,   CELLTYPE_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
       end
 
       #----- draw port name -----#
@@ -578,13 +578,13 @@ module TECSCDE
       ye = mm2dot y1
       case eport.get_edge_side
       when TECSModel::EDGE_TOP
-        points = [[xe-triangle_1_2, ye], [xe+triangle_1_2, ye], [xe, ye+triangle_hi]]
+        points = [[xe - triangle_1_2, ye], [xe + triangle_1_2, ye], [xe, ye + triangle_hi]]
       when TECSModel::EDGE_BOTTOM
-        points = [[xe-triangle_1_2, ye], [xe+triangle_1_2, ye], [xe, ye-triangle_hi]]
+        points = [[xe - triangle_1_2, ye], [xe + triangle_1_2, ye], [xe, ye - triangle_hi]]
       when TECSModel::EDGE_LEFT
-        points = [[xe, ye-triangle_1_2], [xe, ye+triangle_1_2], [xe+triangle_hi, ye]]
+        points = [[xe, ye - triangle_1_2], [xe, ye + triangle_1_2], [xe + triangle_hi, ye]]
       when TECSModel::EDGE_RIGHT
-        points = [[xe, ye-triangle_1_2], [xe, ye+triangle_1_2], [xe-triangle_hi, ye]]
+        points = [[xe, ye - triangle_1_2], [xe, ye + triangle_1_2], [xe - triangle_hi, ye]]
       end
 #      fill = true
 #      @drawTarget.draw_polygon( @canvasGc, fill, points )
@@ -749,10 +749,10 @@ module TECSCDE
             (join.get_cport.get_subscript == nil || join.get_cport.get_subscript == 0)
 
           if bars[2].instance_of? TECSModel::VBar
-            xm = mm2dot((bars[1].get_position + bars[3].get_position)/2)
+            xm = mm2dot((bars[1].get_position + bars[3].get_position) / 2)
             ym = mm2dot(bars[2].get_position + 2)
           else
-            xm = mm2dot((bars[0].get_position + bars[2].get_position)/2)
+            xm = mm2dot((bars[0].get_position + bars[2].get_position) / 2)
             ym = mm2dot(bars[1].get_position + 2)
           end
           draw_text(xm, ym, join.get_signature.get_name.to_s, SIGNATURE_NAME, ALIGN_CENTER, TEXT_HORIZONTAL)
@@ -1189,7 +1189,7 @@ module TECSCDE
         end
         obj = region
       else
-        tecsgen_cell= cell.get_tecsgen_cell
+        tecsgen_cell = cell.get_tecsgen_cell
         if tecsgen_cell == nil || cell.is_editable?
           return @@colors[Color_editable_cell]
         end

@@ -459,9 +459,9 @@ end
   def show_tree(indent)
     indent.times { print "  " }
     puts "Signature: name: #{@name} context: #{@context} deviate : #{@b_deviate} PPAllocator: #{@b_PPAllocator} #{self}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "namespace_path: #{@NamespacePath}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "function head list:"
     @function_head_list.show_tree(indent + 2)
   end
@@ -773,7 +773,7 @@ class Celltype < NSBDNode # < Nestable
   # このメソッドは celltype のパースが完了した時点で呼出される．
   def check_attribute
     # attribute の size_is 指定が妥当かチェック
-    (@attribute+@var).each{|a|
+    (@attribute + @var).each{|a|
       if a.get_size_is
         if !a.get_type.kind_of?(PtrType)
           # size_is がポインタ型以外に指定された
@@ -1162,7 +1162,7 @@ class Celltype < NSBDNode # < Nestable
     result = $rom &&
              (@n_attribute_ro > 0 ||
               @n_var_size_is > 0 ||
-              (@n_call_port - @n_call_port_omitted_in_CB - (@n_call_port_dynamic-@n_call_port_array_dynamic)) > 0 ||
+              (@n_call_port - @n_call_port_omitted_in_CB - (@n_call_port_dynamic - @n_call_port_array_dynamic)) > 0 ||
               $ram_initializer && @n_call_port_dynamic > 0 ||
               @n_entry_port_array_ns > 0)
     # print "name=#{@name} n_attribute_ro=#{@n_attribute_ro}  n_var_size_is=#{@n_var_size_is} n_call_port=#{@n_call_port} n_call_port_omitted_in_CB=#{@n_call_port_omitted_in_CB} n_call_port_dynamic=#{@n_call_port_dynamic} n_call_port_array_dynamic=#{@n_call_port_array_dynamic} n_entry_port_array_ns=#{@n_entry_port_array_ns} has_INIB?=#{result}\n"
@@ -1180,10 +1180,10 @@ class Celltype < NSBDNode # < Nestable
   #   呼び口（ただし、最適化で不要となるものは除く）
   def has_CB?
     if $rom
-      return @n_attribute_rw > 0 || (@n_var-@n_var_size_is) > 0 || (@n_call_port_dynamic - @n_call_port_array_dynamic) > 0
+      return @n_attribute_rw > 0 || (@n_var - @n_var_size_is) > 0 || (@n_call_port_dynamic - @n_call_port_array_dynamic) > 0
       # return @n_attribute_rw > 0 || @n_var > 0
     else
-      return @n_attribute_rw > 0 || @n_attribute_ro > 0 || @n_var > 0 || (@n_call_port-@n_call_port_omitted_in_CB) > 0 || @n_entry_port_array_ns > 0
+      return @n_attribute_rw > 0 || @n_attribute_ro > 0 || @n_var > 0 || (@n_call_port - @n_call_port_omitted_in_CB) > 0 || @n_entry_port_array_ns > 0
     end
   end
 
@@ -1311,28 +1311,28 @@ class Celltype < NSBDNode # < Nestable
   def show_tree(indent)
     indent.times { print "  " }
     puts "Celltype: name=#{@name} global_name=#{@global_name}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "active=#{@active}, singleton=#{@singleton}, idx_is_id=#{@idx_is_id} plugin=#{@plugin.class} reuse=#{@b_reuse}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "namespace_path: #{@NamespacePath}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "port:"
     @port.each {|i| i.show_tree(indent + 2) }
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "attribute:"
     @attribute.each {|i| i.show_tree(indent + 2) }
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "var:"
     @var.each {|i| i.show_tree(indent + 2) }
 #    (indent+1).times { print "  " }
 #    puts "require:"   mikan
 #    @require.each { |i| i.show_tree( indent + 2 ) }
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "factory:"
     @factory_list.each {|i| i.show_tree(indent + 2) }
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "@n_attribute_ro #{@n_attribute_ro}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "@n_attribute_rw #{@n_attribute_rw}"
 # @n_attribute_omit : int >= 0  # of [omit] specified cells
 # @n_var:: int >= 0
@@ -1343,7 +1343,7 @@ class Celltype < NSBDNode # < Nestable
 # @n_call_port_omitted_in_CB:: int >= 0   最適化で省略される呼び口
 # @n_entry_port:: int >= 0
 # @n_entry_port_array:: int >= 0
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "@n_entry_port_inline #{@n_entry_port_inline}"
 # @n_cell:: int >= 0  コード生成の頭で算出する．意味解析段階では参照不可
 # @id_base:: Integer : cell の ID の最小値(最大値は @id_base + @n_cell)
@@ -1598,7 +1598,7 @@ class Cell < NSBDNode # < Nestable
           rhs = join.get_rhs
           if rhs.instance_of? Expression
             ele = rhs.get_elements
-            if(ele[0]==:IDENTIFIER) #  attr = attr_ext （右辺単項）か？ #1
+            if(ele[0] == :IDENTIFIER) #  attr = attr_ext （右辺単項）か？ #1
               if(CompositeCelltype.has_attribute?(ele[1].get_name)) # mikan a::b.ePort がエラーにならないかも
                 ident = ele[1].get_name # 右辺は attribute．
               else
@@ -1879,17 +1879,17 @@ class Cell < NSBDNode # < Nestable
       case s[0]             # statement_specifier
       when :ALLOCATOR       # [allocator(ePort.func.param=allocCell.eA,ePort.func2.param=allocCell.eA)]
         s[1].each {|a|     # alloc_list : allocator の内部の ',' で区切られた部分の配列
-          cp_name = :"#{a[0+1]}_#{a[2+1]}_#{a[3+1]}" # アロケータ呼び口の名前：'=' の左辺を '.' に変えて '_' で連結
+          cp_name = :"#{a[0 + 1]}_#{a[2 + 1]}_#{a[3 + 1]}" # アロケータ呼び口の名前：'=' の左辺を '.' に変えて '_' で連結
           # p "#{a[0]} #{a[0+1]} #{a[2+1]} #{a[3+1]} #{cp_name}"
-          if a[1+1]
-            subscript = a[1+1].eval_const nil
-            a[1+1] = subscript
+          if a[1 + 1]
+            subscript = a[1 + 1].eval_const nil
+            a[1 + 1] = subscript
           else
             subscript = nil
           end
           # アロケータ呼び口の結合を生成
-          join = Join.new(cp_name, subscript, a[4+1]) # 構文解析段階なので locale 不要
-          dbgPrint("new allocator join #{cp_name} #{subscript} #{a[4+1]}\n")
+          join = Join.new(cp_name, subscript, a[4 + 1]) # 構文解析段階なので locale 不要
+          dbgPrint("new allocator join #{cp_name} #{subscript} #{a[4 + 1]}\n")
           Cell.new_join(join)
           @alloc_list << a
         }
@@ -2283,7 +2283,7 @@ class Cell < NSBDNode # < Nestable
       # セルタイプ内で port_name の CompositeCelltypeJoin を探す（コード生成段階では必ず見つかる）
       cj = @celltype.find_export(port.get_name)
 
-      dbgPrint " port_referenced: #{@celltype.get_name} #{@name} cj=#{cj&&(cj.get_name)||"nil"}\n"
+      dbgPrint " port_referenced: #{@celltype.get_name} #{@name} cj=#{cj && (cj.get_name) || "nil"}\n"
 
       if cj # 既にエラー
         # composite の内部のセルに対し再帰的に get_real_port を適用
@@ -2720,7 +2720,7 @@ class Cell < NSBDNode # < Nestable
     }
 
     # ポインタ型が配列で初期化される場合のチェック
-    (@celltype.get_attribute_list+@celltype.get_var_list).each {|a|
+    (@celltype.get_attribute_list + @celltype.get_var_list).each {|a|
       if a.get_size_is
 
         if a.instance_of? CompositeCelltypeJoin
@@ -2847,7 +2847,7 @@ class Cell < NSBDNode # < Nestable
               inner_to_export.each{|arg_name, exp_name|
                 ### p "changing #{arg_name}=>#{exp_name}"
                 # exprs.gsub!( Regexp.new("#{arg_name}[^0-9A-Za-z_]"), exp_name.to_s )
-                exprs.gsub!(Regexp.new("#{arg_name}(\\W)"), exp_name.to_s+"\\1")  # 文字列末尾にないケース
+                exprs.gsub!(Regexp.new("#{arg_name}(\\W)"), exp_name.to_s + "\\1")  # 文字列末尾にないケース
                 exprs.gsub!(Regexp.new("#{arg_name}\\Z"), exp_name.to_s)          # 文字列末尾にあるケース
               }
               ### p "changed: #{exprs} #{cj_size_is.to_s}"
@@ -3022,7 +3022,7 @@ class Cell < NSBDNode # < Nestable
         @restrict_list[entry_name][func_name].each{|rn|
           if region_name_list.include? rn
             # p func_name
-            name = func_name ? entry_name : entry_name+"."+func_name
+            name = func_name ? entry_name : entry_name + "." + func_name
             cdl_warning("W9999 $1 restrict region duplicate $2", name, rn)
           end
         }
@@ -3091,53 +3091,53 @@ class Cell < NSBDNode # < Nestable
   def show_tree(indent)
     indent.times { print "  " }
     puts "Cell: name: #{@name} in_composite: #{@in_composite} def: #{@b_defined} ref: #{@f_ref} cloned: #{@f_cloned}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "Cell locale: #{@name}@#{@locale[0]}##{@locale[1]}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "id: #{@id}  global_name: #{@global_name}  region: #{@region.get_name} plugin: #{@plugin.class.name} #{self}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "namespace_path: #{@NamespacePath}"
 
     if @celltype
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "celltype: #{@celltype.get_name}"
     end
     @join_list.show_tree(indent + 1)
     @entry_array_max_subscript.each{|port, num|
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "entry array #{port.get_name}: max subscript=#{num}"
     }
     if @cell_list # ここで @cell_list が nil なのは Bug
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "cloned cell list:"
       @cell_list.each {|n, c|
-        (indent+2).times { print "  " }
+        (indent + 2).times { print "  " }
         puts "inner cell : #{n} = #{c.get_name}"
       }
     end
     if @compositecelltypejoin_list
       @compositecelltypejoin_list.get_items.each{|cj|
-        cj.show_tree(indent+1)
+        cj.show_tree(indent + 1)
       }
     end
     if @alloc_list.length > 0
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "allocator list: "
       @alloc_list.each {|a|
-        cp_name = :"#{a[0+1]}_#{a[2+1]}_#{a[3+1]}"
-        if a[1+1]
+        cp_name = :"#{a[0 + 1]}_#{a[2 + 1]}_#{a[3 + 1]}"
+        if a[1 + 1]
           # subscript = "[#{a[1+1].eval_const nil}]"
-          subscript = "[#{a[1+1]}]"
+          subscript = "[#{a[1 + 1]}]"
         else
           subscript = ""
         end
         # アロケータ呼び口の結合を生成
-        (indent+2).times { print "  " }
-        puts "#{cp_name}#{subscript} = #{a[4+1]}"
+        (indent + 2).times { print "  " }
+        puts "#{cp_name}#{subscript} = #{a[4 + 1]}"
       }
     end
     @referenced_port_list.each{|port, count|
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts("#{port.get_name} : #{count} times referenced")
     }
   end
@@ -3665,7 +3665,7 @@ class CompositeCelltype < NSBDNode # < Nestable
       # CompositeCelltype が export する呼び口、受け口、属性のリストについて
       # @export_name_list.get_items.each{ |cj|  # cj: CompositeCelltypeJoin
       # 新仕様では、@export_name_list に入っていない attr がありうる
-      (@port_list+@attr_list).each{|cj| # cj: CompositeCelltypeJoin
+      (@port_list + @attr_list).each{|cj| # cj: CompositeCelltypeJoin
 
         # debug
         dbgPrint "        cj : #{cj.get_name}\n"
@@ -3830,20 +3830,20 @@ class CompositeCelltype < NSBDNode # < Nestable
   def show_tree(indent)
     indent.times { print "  " }
     puts "CompositeCelltype: name: #{@name}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "active: #{@b_active}, singleton: #{@b_singleton}"
     @cell_list_in_composite.show_tree(indent + 1)
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "name_list"
     @name_list.show_tree(indent + 2)
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "export_name_list"
     @export_name_list.show_tree(indent + 2)
     if @internal_allocator_list.length > 0
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "internal_allocator_list:"
       @internal_allocator_list.each{|a|
-        (indent+1).times { print "  " }
+        (indent + 1).times { print "  " }
         puts "  #{a[0].get_name} #{a[1]} #{a[2]} #{a[3]} #{a[4]}"
       }
     end
@@ -4471,29 +4471,29 @@ end
   def show_tree(indent)
     indent.times { print "  " }
     puts "Port: name:#{@name} port_type:#{@port_type} require:#{@b_require} inline:#{@b_inline} omit:#{@b_omit} optional:#{@b_optional} ref_desc:#{@b_ref_desc} dynamic:#{@b_dynamic}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     if @signature
       puts "signature: #{@signature.get_name} #{@signature}"
     else
       puts "signature: NOT defined"
     end
     if @array_size == "[]"
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "array_size: not specified"
     elsif @array_size
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "array_size: #{@array_size}"
     end
     if @allocator_instance
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "allocator instance:"
       @allocator_instance.each {|b, a|
-        (indent+2).times { print "  " }
+        (indent + 2).times { print "  " }
         puts "#{a[0]} #{a[1]} #{b} "
         # a[3].show_tree( indent+3 )
       }
     end
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     if @port_type == :CALL
       puts "VMT_useless : #{@b_VMT_useless}  skelton_useless : #{@b_skelton_useless}  cell_unique : #{@b_cell_unique}"
     else
@@ -4642,7 +4642,7 @@ class Namespace < NSBDNode
     path = @@namespace_stack[1].get_name.to_s
     i = 2
     while i <= @@namespace_sp
-      path = path+"_"+@@namespace_stack[i].get_name.to_s
+      path = path + "_" + @@namespace_stack[i].get_name.to_s
       i += 1
     end
 
@@ -5384,18 +5384,18 @@ class Join < BDNode
 
       cell.get_allocator_list.each {|a|
 
-        if(a[0+1] == port && a[1+1] == @rhs_subscript)
+        if(a[0 + 1] == port && a[1 + 1] == @rhs_subscript)
           # 名前の一致するものの結合を生成する
           # 過不足は、別途チェックされる
-          cp_name = :"#{@name}_#{a[2+1]}_#{a[3+1]}"
+          cp_name = :"#{@name}_#{a[2 + 1]}_#{a[3 + 1]}"
           # p "creating allocator join #{cp_name} #{@subscript} #{a[1+1]}"
-          join = Join.new(cp_name, @subscript, a[4+1], @locale)
+          join = Join.new(cp_name, @subscript, a[4 + 1], @locale)
 
           # debug
           dbgPrint "create_allocator_join: #{@owner.get_name}.#{cp_name} [#{@subscript}] #{@name}\n"
           @owner.new_join join
         else
-          dbgPrint "create_allocator_join:3 not #{@owner.get_name}.#{a[0+1]} #{@name}\n"
+          dbgPrint "create_allocator_join:3 not #{@owner.get_name}.#{a[0 + 1]} #{@name}\n"
         end
       }
     end
@@ -5453,7 +5453,7 @@ class Join < BDNode
 
 
       # 呼び側について呼び元のレベルから兄弟レベルまで（out_through をチェックおよび挿入）
-      i = len1 -1
+      i = len1 - 1
       if b_to_through
         end_level = sibling_level
       else
@@ -5467,7 +5467,7 @@ class Join < BDNode
         out_through_list = f1[i].get_out_through_list # [ plugin_name, plugin_arg ]
         domain = f1[i].get_domain_type
         if domain
-          domain_through = f1[i].get_domain_type.add_through_plugin(self, f1[i], f1[i-1], :OUT_THROUGH)
+          domain_through = f1[i].get_domain_type.add_through_plugin(self, f1[i], f1[i - 1], :OUT_THROUGH)
           if domain_through == nil
             cdl_error("S9999 $1: going out from regin '$2' not permitted by domain '$3'", @name, f1[i].get_name, f1[i].get_domain_type.get_name)
           end
@@ -5478,12 +5478,12 @@ class Join < BDNode
         out_through_list.each {|ol|
           if ol[0] # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote ol[1]
-            through = [ ol[0], :Join_out_through_, plugin_arg, f1[i], f1[i-1], :OUT_THROUGH, region_count]
+            through = [ ol[0], :Join_out_through_, plugin_arg, f1[i], f1[i - 1], :OUT_THROUGH, region_count]
             @region_through_list << through
           end
         }
         if domain_through && domain_through.length > 0
-          through = [ domain_through[0], :Join_domain_out_through_, domain_through[1], f1[i], f1[i-1], :OUT_THROUGH, region_count ]
+          through = [ domain_through[0], :Join_domain_out_through_, domain_through[1], f1[i], f1[i - 1], :OUT_THROUGH, region_count ]
           @region_through_list << through
         end
         i -= 1
@@ -5531,13 +5531,13 @@ class Join < BDNode
         in_through_list = f2[i].get_in_through_list # [ plugin_name, plugin_arg ]
         domain = f2[i].get_domain_type
         if domain
-          domain_through = f2[i].get_domain_type.add_through_plugin(self, f2[i-1], f2[i], :IN_THROUGH)
+          domain_through = f2[i].get_domain_type.add_through_plugin(self, f2[i - 1], f2[i], :IN_THROUGH)
           if domain_through == nil
             cdl_error("S9999 $1: going in from regin '$2' to '$3' not permitted by domain '$4'",
-                        @name, f2[i-1].get_name, f2[i].get_name, f2[i].get_domain_type.get_name)
+                        @name, f2[i - 1].get_name, f2[i].get_name, f2[i].get_domain_type.get_name)
           end
           if domain_through && domain_through.length > 0
-            through = [ domain_through[0], :Join_domain_in_through_, domain_through[1], f2[i-1], f2[i], :IN_THROUGH, region_count ]
+            through = [ domain_through[0], :Join_domain_in_through_, domain_through[1], f2[i - 1], f2[i], :IN_THROUGH, region_count ]
             @region_through_list << through
           end
         elsif in_through_list.length == 0
@@ -5546,7 +5546,7 @@ class Join < BDNode
         in_through_list.each {|il|
           if il[0] # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote il[1]
-            through = [ il[0], :Join_in_through_, plugin_arg, f2[i-1], f2[i], :IN_THROUGH, region_count ]
+            through = [ il[0], :Join_in_through_, plugin_arg, f2[i - 1], f2[i], :IN_THROUGH, region_count ]
             @region_through_list << through
           end
         }
@@ -6253,13 +6253,13 @@ class Join < BDNode
     puts "Join: name: #{@name} owner: #{@owner.get_name} id: #{self}"
     if @subscript == nil
     elsif @subscript >= 0
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "subscript: #{@subscript}"
     else
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "subscript: not specified"
     end
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "rhs: "
     if @rhs.instance_of?(Array)
       @rhs.each{|i|
@@ -6268,7 +6268,7 @@ class Join < BDNode
             j.show_tree(indent + 3)
           }
         elsif i.instance_of? Symbol
-          (indent+2).times { print "  " }
+          (indent + 2).times { print "  " }
           print i
           print "\n"
         else
@@ -6277,7 +6277,7 @@ class Join < BDNode
       }
     else
       @rhs.show_tree(indent + 2)
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       if @definition
         puts "definition:"
         @definition.show_tree(indent + 2)
@@ -6286,7 +6286,7 @@ class Join < BDNode
       end
     end
     if @definition.instance_of?(Port)
-      (indent+2).times { print "  " }
+      (indent + 2).times { print "  " }
       if @cell
         puts "cell: #{@cell_name} #{@cell}  port: #{@port_name}  cell_global_name: #{@cell.get_global_name}"
       else
@@ -6296,23 +6296,23 @@ class Join < BDNode
     if @through_list
       i = 0
       @through_list.each {|t|
-        (indent+2).times { print "  " }
+        (indent + 2).times { print "  " }
         puts "through: plugin name :  '#{t[0]}' arg : '#{t[2]}'"
         if @through_generated_list[i]
-          @through_generated_list[i].show_tree(indent+3)
+          @through_generated_list[i].show_tree(indent + 3)
         end
         i += 1
       }
     end
     if @array_member2
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "array member:"
       i = 0
       @array_member2.each {|j|
         if j
-          (indent+2).times { print "  " }
+          (indent + 2).times { print "  " }
           puts "[#{i}]: #{j.get_name}  id: #{j} owner=#{j.get_owner.get_name}"
-          j.get_rhs.show_tree(indent+3)
+          j.get_rhs.show_tree(indent + 3)
 #          (indent+3).times { print "  " }
 #          puts "cell global name: #{j.get_cell_global_name}"
 #          puts "cell global name: #{j.get_rhs_cell.get_global_name}"
@@ -6320,7 +6320,7 @@ class Join < BDNode
 #          puts "port global name: #{j.get_port_global_name}"
 #          puts "port global name: #{j.get_rhs_port.get_name}"
         else
-          (indent+2).times { print "  " }
+          (indent + 2).times { print "  " }
           puts "[#{i}]: [optional]  id: #{j}"
         end
         i += 1
@@ -6518,9 +6518,9 @@ class CompositeCelltypeJoin < BDNode
   def show_tree(indent)
     indent.times { print "  " }
     puts "CompositeCelltypeJoin: export_name: #{@export_name} #{self}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "internal_cell_name: #{@internal_cell_name}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "internal_cell_elem_name: #{@internal_cell_elem_name}"
     if @port_decl
       @port_decl.show_tree(indent + 1)
@@ -6629,10 +6629,10 @@ class Factory < BDNode
     indent.times { print "  " }
     puts "Factory: name: #{@name}"
     if @arg_list
-      (indent+1).times { print "  " }
+      (indent + 1).times { print "  " }
       puts "argument(s):"
       @arg_list.each {|l|
-        (indent+2).times { print "  " }
+        (indent + 2).times { print "  " }
         print "\"#{l}\"\n"
       }
     end
@@ -6717,7 +6717,7 @@ class DomainType < Node
   end
 
   def show_tree(indent)
-    (indent+1).times { print("  ") }
+    (indent + 1).times { print("  ") }
     puts "domain: name=#{@name} plugin=#{@plugin_name} option=#{@option}"
   end
 end
@@ -7106,14 +7106,14 @@ class Region < Namespace
       # p "to: #{f2[i].get_name}" if f2[i]
 
       # 呼び側について呼び元のレベルから兄弟レベルまで（out_through をチェックおよび挿入）
-      i = len1 -1
+      i = len1 - 1
       while i >= sibling_level
         dbgPrint "going out from #{f1[i].get_name} level=#{i}\n"
         # print "DOMAIN: going out from #{f1[i].get_name} level=#{i}\n"
         domain = f1[i].get_domain_type
         domain_ok = false
         if domain
-          if !f1[i].get_domain_type.joinable?(f1[i], f1[i-1], :OUT_THROUGH)
+          if !f1[i].get_domain_type.joinable?(f1[i], f1[i - 1], :OUT_THROUGH)
             return nil
           end
           domain_ok = true
@@ -7135,7 +7135,7 @@ class Region < Namespace
         domain = f1[sibling_level].get_domain_type
         domain_ok = false
         if domain
-          if !f1[i].get_domain_type.joinable?(f1[i], f1[i-1], :TO_THROUGH)
+          if !f1[i].get_domain_type.joinable?(f1[i], f1[i - 1], :TO_THROUGH)
             return nil
           end
           domain_ok = true
@@ -7162,7 +7162,7 @@ class Region < Namespace
         domain = f2[i].get_domain_type
         domain_ok = false
         if domain
-          if !f2[i].get_domain_type.joinable?(f2[i-1], f2[i], :IN_THROUGH)
+          if !f2[i].get_domain_type.joinable?(f2[i - 1], f2[i], :IN_THROUGH)
             return nil
           end
           domain_ok = true
@@ -7185,12 +7185,12 @@ class Region < Namespace
 
   def show_tree(indent)
     super
-    (indent+1).times { print("  ") }
+    (indent + 1).times { print("  ") }
     puts "path: #{get_path_string}"
-    (indent+1).times { print("  ") }
+    (indent + 1).times { print("  ") }
     puts "namespace: #{@namespace ? @namespace.get_name : "nil"}  owner: #{@owner.class}.#{@owner ? @owner.get_name : "nil"}"
     if @domain
-      @domain.show_tree(indent+1)
+      @domain.show_tree(indent + 1)
     end
   end
 end
@@ -7532,7 +7532,7 @@ class Import < Node
     @b_reuse = b_reuse
     @b_reuse_real = @b_reuse || Generator.is_reuse?
 
-    if(Generator.get_plugin) &&(File.exist? "#{$gen}/#{@cdl}")
+    if(Generator.get_plugin) && (File.exist? "#{$gen}/#{@cdl}")
       @cdl_path = "#{$gen}/#{@cdl}"
       found = true
     else

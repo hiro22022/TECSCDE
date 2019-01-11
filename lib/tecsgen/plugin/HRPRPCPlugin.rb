@@ -254,7 +254,7 @@ EOT
         alloc_str = alloc.to_s
         subst = @substituteAllocator[alloc_str.to_sym]
         if subst
-          alloc_str = subst[2]+"."+subst[3]
+          alloc_str = subst[2] + "." + subst[3]
         end
 
         file.print delim
@@ -307,7 +307,7 @@ EOT
 
     # サーバー側チャンネル (tMessageBufferCEP)
     if @PPAllocatorSize
-      alloc_cell =<<EOT
+      alloc_cell = <<EOT
 
 #{nest_str}  cell tPPAllocator #{@serverChannelCell}_PPAllocator {
 #{nest_str}    heapSize = #{@PPAllocatorSize};

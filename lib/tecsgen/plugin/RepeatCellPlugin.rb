@@ -130,7 +130,7 @@ class RepeatCellPlugin < CellPlugin
         if port_name
           # 右辺は セルの結合
           if subscript
-            file.print "#{indent_str}  #{j.get_name} = #{nsp.get_path_str}.#{port_name}[#{(count+subscript)}];\n"
+            file.print "#{indent_str}  #{j.get_name} = #{nsp.get_path_str}.#{port_name}[#{(count + subscript)}];\n"
           else
             file.print "#{indent_str}  #{j.get_name} = #{nsp.get_path_str}.#{port_name};\n"
           end

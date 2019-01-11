@@ -167,7 +167,7 @@ class Celltype
         print("#{c.get_name}: id=#{c.get_id}\n")
       end
     }
-    if @n_cell_gen >0 && i >= @n_cell_gen
+    if @n_cell_gen > 0 && i >= @n_cell_gen
       raise "id over id=#{i} N=#{@n_cell_gen}"
     end
   end

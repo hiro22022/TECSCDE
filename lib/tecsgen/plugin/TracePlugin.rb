@@ -90,7 +90,7 @@ class TracePlugin < ThroughPlugin
     send_receive = []
     if !@signature.nil?
       @signature.each_param{|fd, param|
-        dir =param.get_direction
+        dir = param.get_direction
         case dir
         when :SEND, :RECEIVE
           send_receive << [ dir, fd, param ]
@@ -271,7 +271,7 @@ EOT
     when EnumType  # mikan EnumType
 
     when StructType
-      members_decl =type.get_members_decl
+      members_decl = type.get_members_decl
       if outer || outer2
         outer = "(#{outer}#{name}#{outer2})."
       else

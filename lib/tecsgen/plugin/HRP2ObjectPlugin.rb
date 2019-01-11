@@ -43,13 +43,13 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 class HRP2ObjectPlugin < HRP2KernelObjectPlugin
     # @@ep = [:eSignalSemaphore, :eWaitSemaphore, :eManageSemaphore, :eReferSemaphore ]
   @@api = {
-      "SEMAPHORE"=>["SEM", :id, :attribute, :count, :max],
-      "EVENTFLAG"=>["FLG", :id, :attribute, :flagPattern],
-      "DATAQUEUE"=>["DTQ", :id, :attribute, :count, :dtqmb],
-      "PRIORITY_DATAQUEUE"=>["PDQ", :id, :attribute, :count, :maxDataPriority, :pdqmb],
-      "FIXED_SIZE_MEMORYPOOL"=>["MPF", :id, :attribute, :blockCount, :blockSize, :mpf, :mpfmb],
-      "KERNEL"=>["SYS"],
-      "MESSAGE_BUFFER"=>["MBF", :id, :attribute, :maxSize, :bufferSize, :mbfmb],
+      "SEMAPHORE" => ["SEM", :id, :attribute, :count, :max],
+      "EVENTFLAG" => ["FLG", :id, :attribute, :flagPattern],
+      "DATAQUEUE" => ["DTQ", :id, :attribute, :count, :dtqmb],
+      "PRIORITY_DATAQUEUE" => ["PDQ", :id, :attribute, :count, :maxDataPriority, :pdqmb],
+      "FIXED_SIZE_MEMORYPOOL" => ["MPF", :id, :attribute, :blockCount, :blockSize, :mpf, :mpfmb],
+      "KERNEL" => ["SYS"],
+      "MESSAGE_BUFFER" => ["MBF", :id, :attribute, :maxSize, :bufferSize, :mbfmb],
   }
 
     #=== HRP2SemaphorePlugin#print_cfg_cre

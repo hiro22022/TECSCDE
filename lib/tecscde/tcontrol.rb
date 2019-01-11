@@ -548,7 +548,7 @@ EOT
     # @view::MainView
     # @treeView::Gtk::TreeView
 
-    COL_NAME   = 0
+    COL_NAME = 0
     COL_TYPE = 1
     COL_VALUE = 2
 

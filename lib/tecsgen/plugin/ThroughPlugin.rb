@@ -162,7 +162,7 @@ class ThroughPlugin < Plugin
     send_receive = []
     if !@signature.nil?
       @signature.each_param{|fd, param|
-        dir =param.get_direction
+        dir = param.get_direction
         case dir
         when :SEND, :RECEIVE
           send_receive << [ dir, fd, param ]
@@ -327,7 +327,7 @@ EOT
   def show_tree(indent)
     indent.times { print "  " }
     puts "Plugin: celltype: #{@ct_name} cell: #{@cell_name}"
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "next: signature: #{@signature.get_namespace_path} call = #{@next_cell.get_name}.#{@next_cell_port_name}"
   end
 end

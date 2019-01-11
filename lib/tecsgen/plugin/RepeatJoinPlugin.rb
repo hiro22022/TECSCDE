@@ -80,7 +80,7 @@ class RepeatJoinPlugin < CellPlugin
 
         count = 1
         while count < @count
-          count_str = (count+rhs_count_base).to_s
+          count_str = (count + rhs_count_base).to_s
 
           if b_rhs_subscript_count
             rhs_subscript = count

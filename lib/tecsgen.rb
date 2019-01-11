@@ -79,7 +79,7 @@ class Array
     indent.times{ print "  " }
     print("Array\n")
     self.each{|m|
-      m.show_tree(indent+1)
+      m.show_tree(indent + 1)
     }
   end
 end
@@ -101,7 +101,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
 
     # -L 、 $RUBYLIB で指定されたパスおよびシステムのパスからサーチ
     #   exerb では $LOAD_PATH は ["."] のみ入っているようだ
-    ($library_path+$LOAD_PATH).each{|path|
+    ($library_path + $LOAD_PATH).each{|path|
       [ "", "tecslib/plugin/" ].each {|lp|
         lib = File.expand_path(path) + "/" + lp + fname
 
@@ -281,7 +281,7 @@ class TECSGEN
     ARGV.each {|a| $arguments += " " + a }
 
     $unopt = false # bool:   disable optimizing both call and entry port
-    $unopt_entry= false    # bool:   disable optimizing entry port
+    $unopt_entry = false    # bool:   disable optimizing entry port
     $gen_base  = "gen"     # string: folder path to place generated files
     $gen       = $gen_base # string: folder path to place generated files
     $generate_all_template = false   # bool:   generarete template files for all celltypes (if non cell exist or system celltypes)
@@ -558,11 +558,11 @@ class TECSGEN
     $target = ARGV[0]
     pos = $target.rindex(/[:\\\/]/)
     if pos
-      $target = $target[pos+1..-1]  # ディレクトリ区切りを除いた文字列
+      $target = $target[pos + 1..-1]  # ディレクトリ区切りを除いた文字列
     end
     pos = $target.rindex(/\./)
     if pos
-      $target = $target[0..pos-1]   # 拡張子を取り除いた文字列
+      $target = $target[0..pos - 1]   # 拡張子を取り除いた文字列
     end
 
     # gen ディレクトリの作成

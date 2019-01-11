@@ -491,14 +491,14 @@ class IntType < Type
     val = in_val.to_i
     if get_max && val > get_max
       if from_type == :IntType
-        rval = ((1 << bit_size)-1) & val # bit 数でクリップ
+        rval = ((1 << bit_size) - 1) & val # bit 数でクリップ
       else
         rval = get_max # 最大値でクリップ (FloatType)
       end
       cdl_warning("W2003 $1: too large to cast to $2, clipped($3)", in_val, get_type_str, rval)
     elsif get_min && val < get_min
       if from_type == :IntType
-        rval = ((1 << bit_size)-1) & val
+        rval = ((1 << bit_size) - 1) & val
       else
         rval = get_min
       end
@@ -544,7 +544,7 @@ class IntType < Type
     if @sign == :SIGNED || @sign == nil
       case bit_sz
       when 8, 16, 32, 64, 128
-        return (1 << (bit_sz - 1)) -1
+        return (1 << (bit_sz - 1)) - 1
       else # -1, -2, -3, -4, -5, -11
         return nil
       end
@@ -1192,7 +1192,7 @@ class FuncType < Type
     if @paramlist
       @paramlist.show_tree(indent + 1)
     end
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "return type:"
     @type.show_tree(indent + 2)
   end
@@ -1309,15 +1309,15 @@ class ArrayType < Type
     indent.times { print "  " }
     puts "ArrayType: #{locale_str}"
     super(indent + 1)
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "type:"
     @type.show_tree(indent + 2)
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "subscript:"
     if @subscript
       @subscript.show_tree(indent + 2)
     else
-      (indent+2).times { print "  " }
+      (indent + 2).times { print "  " }
       puts "no subscript"
     end
   end
@@ -1388,7 +1388,7 @@ class PtrType < Type
           t1 = t1.get_type
           t2 = t2.get_type
           if (t1.class == t2.class) && (t1.get_bit_size == t2.get_bit_size)
-          elsif (t1.kind_of?(CDefinedType) || t2.kind_of?(CDefinedType))&& t1.get_type_str == t2.get_type_str && t1.get_type_str_post && t2.get_type_str_post
+          elsif (t1.kind_of?(CDefinedType) || t2.kind_of?(CDefinedType)) && t1.get_type_str == t2.get_type_str && t1.get_type_str_post && t2.get_type_str_post
             # int8_t などが、一方は .h に定義されているケース
           else
             cdl_error2(locale, "T1032 $1: incompatible pointer type", ident)
@@ -1523,7 +1523,7 @@ class PtrType < Type
     indent.times { print "  " }
     puts "PtrType: qualifier=#{@qualifier}, nullable=#{@b_nullable} #{locale_str}"
     super(indent + 1)
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     if @size
       print "size=#{@size}, "
     else
@@ -1549,7 +1549,7 @@ class PtrType < Type
       print "string=nil\n"
     end
 
-    (indent+1).times { print "  " }
+    (indent + 1).times { print "  " }
     puts "type:"
     @type.show_tree(indent + 2)
   end

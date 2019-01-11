@@ -63,7 +63,7 @@ module TECSCDE
       :__tecscde => {
         :paper        => :paper                   # paper
       },
-      :paper  => {
+      :paper => {
         :type         => "paper",                 # fixed string (type name)
         :size         => :string,                 # "A4", "A3", "A2"
         :orientation  => :string,                 # "LANDSCAPE", "PORTRAIT"
@@ -163,7 +163,7 @@ module TECSCDE
           if x >= @paper[:width] - 30
             x = 10
             y += 30
-            if y >= @paper[:height] -15
+            if y >= @paper[:height] - 15
               y = 10
             end
           end
@@ -324,7 +324,7 @@ module TECSCDE
                 p "port '#{port_name}' : 'subscript' specified but not array"
                 next
               end
-              if subscript <0
+              if subscript < 0
                 p "port '#{port_name}' : 'subscript' negative valude specified"
                 next
               end
@@ -415,8 +415,8 @@ module TECSCDE
               # p "3"
               len = bar_list.length
 
-              normal_pos = bar_list[len-1][1]
-              tan_pos = bar_list[len-2][1]
+              normal_pos = bar_list[len - 1][1]
+              tan_pos = bar_list[len - 2][1]
               # p "normal_pos=#{normal_pos}, eport_normal=#{eport.get_position_in_normal_dir}"
               # p "tan_pos=#{tan_pos}, eport_tan=#{eport.get_position_in_tangential_dir}"
               # check if normal_pos & tan_pos can be evaluated and the position of bars goal
@@ -761,8 +761,8 @@ EOT
               # p "3"
               len = bar_list.length
               # bar_list: [ [:HBar, pos]
-              normal_pos = bar_list[len-1][1].eval_const(nil)
-              tan_pos = bar_list[len-2][1].eval_const(nil)
+              normal_pos = bar_list[len - 1][1].eval_const(nil)
+              tan_pos = bar_list[len - 2][1].eval_const(nil)
               # p "normal_pos=#{normal_pos}, eport_normal=#{eport.get_position_in_normal_dir}"
               # p "tan_pos=#{tan_pos}, eport_tan=#{eport.get_position_in_tangential_dir}"
               # check if normal_pos & tan_pos can be evaluated and the position of bars goal

@@ -54,11 +54,11 @@ module GenOpaqueMarshaler
     "serverErrorHandler" => Proc.new {|obj, rhs| obj.set_serverErrorHandler rhs },
     "TDRCelltype"     => Proc.new {|obj, rhs| obj.set_TDRCelltype rhs },
     "PPAllocatorSize" => Proc.new {|obj, rhs| obj.set_PPAllocatorSize rhs },
-    "substituteAllocator"  => Proc.new {|obj, rhs| obj.set_substituteAllocator rhs },
-    "noServerChannelOpenerCode"  => Proc.new {|obj, rhs| obj.set_noServerChannelOpenerCode rhs },
+    "substituteAllocator" => Proc.new {|obj, rhs| obj.set_substituteAllocator rhs },
+    "noServerChannelOpenerCode" => Proc.new {|obj, rhs| obj.set_noServerChannelOpenerCode rhs },
     "taskCelltype"    => Proc.new {|obj, rhs| obj.set_taskCelltype rhs },
     "taskPriority"    => Proc.new {|obj, rhs| obj.set_taskPriority rhs },
-    "stackSize"      => Proc.new {|obj, rhs| obj.set_stackSize rhs },
+    "stackSize" => Proc.new {|obj, rhs| obj.set_stackSize rhs },
   }
 
   ##### プラグイン引数チェック関数

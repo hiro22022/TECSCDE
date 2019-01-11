@@ -88,7 +88,7 @@ EOT
       kind = n.instance_of?(Namespace) ? "namespace" : "region"
       file.print <<EOT
 #{XML_INDENT * nest}<#{kind}>
-#{XML_INDENT * (nest+1)}<name> #{n.get_name} </name>
+#{XML_INDENT * (nest + 1)}<name> #{n.get_name} </name>
 EOT
       n.gen_XML(file, nest + 1)
       file.print <<EOT

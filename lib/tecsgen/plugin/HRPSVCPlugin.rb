@@ -337,7 +337,7 @@ EOT
         while(i < NUM_SVC_ARG_MAX) do
           delim = ","
             file.printf("#{delim} 0")
-            passed_param[i] = "par#{i+1}"
+            passed_param[i] = "par#{i + 1}"
             i += 1
         end
 
@@ -632,7 +632,7 @@ EOT
 
       if caller_unrestricted
           # pp "caller_unrestricted: #{@ct_name_body}"
-        return {"check_code"=>"", "user_cannot_callable"=>false}
+        return {"check_code" => "", "user_cannot_callable" => false}
       end
 
       #
@@ -703,7 +703,7 @@ EOT
 EOS
       end
 
-      return {"check_code"=>check_code, "user_cannot_callable"=>user_cannot_callable}
+      return {"check_code" => check_code, "user_cannot_callable" => user_cannot_callable}
   end
 
   #---------------------------------------------------------#
@@ -732,7 +732,7 @@ EOS
       cdl_warning("HSW0001 $1.$2: $3 return type cannot get access violation error", signature.get_name, fh.get_name, type.get_type_str.downcase)
       check_intptr "#{signature.get_name}.#{fh.get_name} return type", type
     else
-      cdl_error("HSV0001 $1.$2 return type $3 cannot be used", signature.get_name, fh.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
+      cdl_error("HSV0001 $1.$2 return type $3 cannot be used", signature.get_name, fh.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
     end
   end
 
@@ -749,7 +749,7 @@ EOS
       elsif ot.kind_of? PtrType
         check_ptr signature, fh, param, dir
       else
-        cdl_error("HSV0002 $1.$2.$3 $4 param type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
+        cdl_error("HSV0002 $1.$2.$3 $4 param type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
       end
     when :OUT, :INOUT
       if ot.kind_of? PtrType
@@ -769,11 +769,11 @@ EOS
       # OK!
       check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}", type
     elsif ot.kind_of? PtrType
-      cdl_error("HSV0003 $1.$2.$3 multi-pointer type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
+      cdl_error("HSV0003 $1.$2.$3 multi-pointer type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
     elsif ot.kind_of? StructType
       check_struct signature, fh, param
     else
-      cdl_error("HSV0004 $1.$2.$3 $4 type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
+      cdl_error("HSV0004 $1.$2.$3 $4 type cannot be used", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
     end
     if (dir == :OUT || dir == :INOUT) && param.get_string == -1
       cdl_error("HSV0009 $1.$2.$3 string argment is necessary for out/inout parameter", signature.get_name, fh.get_name, param.get_name)
@@ -795,7 +795,7 @@ EOS
           dbgPrint "member array type #{decl.get_type.get_original_type.get_type} #{decl.get_type.get_original_type.get_type.get_original_type}\n"
           check_struct_member_array signature, fh, param, decl
         else
-          cdl_error("HSV0006 $1.$2.$3 $4 type cannot be used as struct member", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post.to_s)
+          cdl_error("HSV0006 $1.$2.$3 $4 type cannot be used as struct member", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post.to_s)
         end
       end
     }
@@ -809,7 +809,7 @@ EOS
       # OK!
       check_intptr "#{signature.get_name}.#{fh.get_name}.#{param.get_name}.#{member_decl.get_name} member", type
     else
-      cdl_error("HSV0007 $1.$2.$3 $4 type cannot be used as struct member", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s+type.get_type_str_post)
+      cdl_error("HSV0007 $1.$2.$3 $4 type cannot be used as struct member", signature.get_name, fh.get_name, param.get_name, type.get_type_str.to_s + type.get_type_str_post)
     end
   end
 

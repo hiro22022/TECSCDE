@@ -171,7 +171,7 @@ module TECSCDE
             flush_print "truncate undo buffer #{@change_set_list.length} to #{@change_no}\n"
             # print( "range: #{(@change_no)..(@change_set_list.length)-1}\n" )
             # p "length0=#{@change_set_list.length}"
-            @change_set_list.slice!((@change_no)..(@change_set_list.length-1))
+            @change_set_list.slice!((@change_no)..(@change_set_list.length - 1))
             # p "length1=#{@change_set_list.length}"
           end
         else
@@ -322,7 +322,7 @@ module TECSCDE
         if @cell_hash[name]
           count = 0
           while @cell_hash[(name.to_s + count.to_s).to_sym]
-            count +=1
+            count += 1
           end
           name = (name.to_s + count.to_s).to_sym
         end
@@ -724,7 +724,7 @@ module TECSCDE
       #=== TmCell::is_near?( x, y )  ***
       def is_near?(x, y)
         # p "is_near? @x=#{@x} @width=#{@width} @y=#{@y} @height=#{@height} x=#{x} y=#{y}"
-        if(@x < x) &&(x < (@x+@width))&&(@y < y)&&(y < (@y+@height))
+        if(@x < x) && (x < (@x + @width)) && (@y < y) && (y < (@y + @height))
           true
         else
           false
@@ -744,7 +744,7 @@ module TECSCDE
             next
           end
           # p "get_near_port x=#{x} y=#{y} xp=#{xp} yp=#{yp}"
-          if((xp-x).abs < NEAR_DIST) && ((yp-y).abs < NEAR_DIST)
+          if((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
             # p "near port: found"
             return port
           end
@@ -758,20 +758,20 @@ module TECSCDE
         when  EDGE_TOP
           @y
         when  EDGE_BOTTOM
-          @y+@height
+          @y + @height
         when  EDGE_LEFT
           @x
         when  EDGE_RIGHT
-          @x+@width
+          @x + @width
         end
       end
 
       #=== TmCell#get_right_angle_edges_position
       def get_right_angle_edges_position(edge_side)
         if TECSModel.is_vertical?(edge_side)
-          [@y, @y+@height]
+          [@y, @y + @height]
         else
-          [@x, @x+@width]
+          [@x, @x + @width]
          end
       end
 
@@ -845,7 +845,7 @@ module TECSCDE
           nearest_port
         }
         nearest_port = nil
-        (@eports.values+@cports.values).each{|port|
+        (@eports.values + @cports.values).each{|port|
           if port.kind_of? TmPortArray
             port.get_ports.each{|pt|
               nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
@@ -874,7 +874,7 @@ module TECSCDE
             end
           end
         }
-        (@eports.values+@cports.values).each{|port|
+        (@eports.values + @cports.values).each{|port|
           if port.kind_of? TmPortArray
             port.get_ports.each{|pt|
               proc_adjust.call(pt, offs, edge_side, move_offs)
@@ -985,7 +985,7 @@ module TECSCDE
       def get_min_wh
         h_min = 0
         w_min = 0
-        (@cports.values+@eports.values).each{|port|
+        (@cports.values + @eports.values).each{|port|
           if port.kind_of? TmPortArray
             port.get_ports.each{|pt|
               offs = pt.get_offset
@@ -1117,7 +1117,7 @@ module TECSCDE
                 return @ports[subscript]
               end
 
-              TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size-1})")
+              TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size - 1})")
               return nil
             else
               port = @ports[subscript]
@@ -1166,7 +1166,7 @@ module TECSCDE
         @ports.each{|port|
           xp, yp = port.get_position
           # p "get_near_port x=#{x} y=#{y} xp=#{xp} yp=#{yp}"
-          if((xp-x).abs < NEAR_DIST) && ((yp-y).abs < NEAR_DIST)
+          if((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
             # p "near port: found"
             return port
           end
@@ -1255,7 +1255,7 @@ EOT
           i = @ports.length - 1
           while i > subsc
             @ports[i].set_subscript(@ports[i].get_subscript + 1)
-            @ports[i+1] = @ports[i]
+            @ports[i + 1] = @ports[i]
             i -= 1
           end
           new_port = new_port(subsc + 1)
@@ -1313,7 +1313,7 @@ EOT
         end
 
         @ports = []
-        (0..(@actual_size-1)).each{|subscript|
+        (0..(@actual_size - 1)).each{|subscript|
           # p "TmCPortArray: length=#{@ports.length}  subscript=#{subscript}"
           @ports << TmCPort.new(self, port_def, subscript)
         }
@@ -1363,7 +1363,7 @@ EOT
         end
 
         @ports = []
-        (0..(@actual_size-1)).each{|subscript|
+        (0..(@actual_size - 1)).each{|subscript|
           @ports << TmEPort.new(self, port_def, subscript)
         }
         modified {}
@@ -1480,13 +1480,13 @@ EOT
         x, y, w, h = get_cell.get_geometry
         case @edge_side
         when EDGE_TOP
-          [x+@offs, y]
+          [x + @offs, y]
         when EDGE_BOTTOM
-          [x+@offs, y+h]
+          [x + @offs, y + h]
         when EDGE_LEFT
-          [x, y+@offs]
+          [x, y + @offs]
         when EDGE_RIGHT
-          [x+w, y+@offs]
+          [x + w, y + @offs]
         end
       end
 
@@ -1837,33 +1837,33 @@ EOT
         len = @bars.length
 
         if len >= 5
-          if @bars[len-4].instance_of? VBar
-            @bars[len-4].moved y_inc
+          if @bars[len - 4].instance_of? VBar
+            @bars[len - 4].moved y_inc
           else
-            @bars[len-4].moved x_inc
+            @bars[len - 4].moved x_inc
           end
         end
 
         if len >= 4
-          if @bars[len-3].instance_of? VBar
-            @bars[len-3].moved y_inc
+          if @bars[len - 3].instance_of? VBar
+            @bars[len - 3].moved y_inc
           else
-            @bars[len-3].moved x_inc
+            @bars[len - 3].moved x_inc
           end
         end
 
         if len >= 3
-          if @bars[len-2].instance_of? VBar
-            @bars[len-2].moved y_inc
+          if @bars[len - 2].instance_of? VBar
+            @bars[len - 2].moved y_inc
           else
-            @bars[len-2].moved x_inc
+            @bars[len - 2].moved x_inc
           end
         end
 
-        if @bars[len-1].instance_of? VBar
-          @bars[len-1].moved y_inc
+        if @bars[len - 1].instance_of? VBar
+          @bars[len - 1].moved y_inc
         else
-          @bars[len-1].moved x_inc
+          @bars[len - 1].moved x_inc
         end
       end
 
@@ -1877,7 +1877,7 @@ EOT
           if bar.instance_of? HBar
             xe = bar.get_position
             if is_between?(xm, xs, xe) && is_near?(ym, ys)
-              dist = (ym-ys).abs
+              dist = (ym - ys).abs
               if dist < min_dist
                 min_dist = dist
                 min_bar = bar
@@ -1886,7 +1886,7 @@ EOT
           else # VBar
             ye = bar.get_position
             if is_between?(ym, ys, ye) && is_near?(xm, xs)
-              dist = (xm-xs).abs
+              dist = (xm - xs).abs
               if dist < min_dist
                 min_dist = dist
                 min_bar = bar
@@ -1918,7 +1918,7 @@ EOT
 
       #=== TmJoin#is_near
       def is_near?(x, a)
-        (x-a).abs < NEAR_DIST
+        (x - a).abs < NEAR_DIST
       end
 
       #=== TmJoin#change_bars bars

@@ -41,14 +41,14 @@ require_tecsgen_lib "HRPKernelObjectPlugin.rb"
 
 class HRPObjectPlugin < HRPKernelObjectPlugin
   @@api = {
-      "SEMAPHORE"=>["SEM", :id, :attribute, :initialCount, :maxCount],
-      "EVENTFLAG"=>["FLG", :id, :attribute, :flagPattern],
-      "DATAQUEUE"=>["DTQ", :id, :attribute, :dataCount, :dataqueueManagementBuffer],
-      "PRIORITY_DATAQUEUE"=>["PDQ", :id, :attribute, :dataCount, :maxDataPriority, :priorityDataqueueManagementBuffer],
-      "FIXED_SIZE_MEMORYPOOL"=>["MPF", :id, :attribute, :blockCount, :blockSize, :memoryPool, :memoryPoolManagementBuffer],
-      "KERNEL"=>["SYS"],
-      "MESSAGE_BUFFER"=>["MBF", :id, :attribute, :maxMessageSize, :bufferSize, :mbfmb],
-      "MUTEX"=>["MTX", :id, :attribute, :ceilingPriority]
+      "SEMAPHORE" => ["SEM", :id, :attribute, :initialCount, :maxCount],
+      "EVENTFLAG" => ["FLG", :id, :attribute, :flagPattern],
+      "DATAQUEUE" => ["DTQ", :id, :attribute, :dataCount, :dataqueueManagementBuffer],
+      "PRIORITY_DATAQUEUE" => ["PDQ", :id, :attribute, :dataCount, :maxDataPriority, :priorityDataqueueManagementBuffer],
+      "FIXED_SIZE_MEMORYPOOL" => ["MPF", :id, :attribute, :blockCount, :blockSize, :memoryPool, :memoryPoolManagementBuffer],
+      "KERNEL" => ["SYS"],
+      "MESSAGE_BUFFER" => ["MBF", :id, :attribute, :maxMessageSize, :bufferSize, :mbfmb],
+      "MUTEX" => ["MTX", :id, :attribute, :ceilingPriority]
   }
 
     #=== HRPObjectPlugin#print_cfg_cre
@@ -62,7 +62,7 @@ class HRPObjectPlugin < HRPKernelObjectPlugin
     elsif @plugin_arg_str != "KERNEL"
       arg_list = []
         params = @@api[@plugin_arg_str]
-        if @plugin_arg_str == "MUTEX" && ((val[:attribute] =~ /\bTA_CEILING\b/)==nil)
+        if @plugin_arg_str == "MUTEX" && ((val[:attribute] =~ /\bTA_CEILING\b/) == nil)
           slice_end = -2 # :ceilingPriority を外す
         else
           slice_end = -1
