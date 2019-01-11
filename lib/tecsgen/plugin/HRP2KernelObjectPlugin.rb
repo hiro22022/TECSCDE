@@ -168,8 +168,8 @@ class HRP2KernelObjectPlugin < CelltypePlugin
 
       # 対象となるすべてのセルについて、受け口に結合されている
       # セルの所属ドメインを解析
-      if !HRP2KernelObjectPlugin.isChecked()
-        HRP2KernelObjectPlugin.check_referenced_cells()
+      if !HRP2KernelObjectPlugin.isChecked
+        HRP2KernelObjectPlugin.check_referenced_cells
       else
         puts "***** already checked"
       end

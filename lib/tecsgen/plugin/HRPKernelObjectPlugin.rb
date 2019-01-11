@@ -87,8 +87,8 @@ class HRPKernelObjectPlugin < CelltypePlugin
       # セルの所属ドメインを解析
       #  - 生成すべきcfgファイル名を取得するために必要
       #
-      if !HRPKernelObjectPlugin.isChecked()
-        HRPKernelObjectPlugin.check_referenced_cells()
+      if !HRPKernelObjectPlugin.isChecked
+        HRPKernelObjectPlugin.check_referenced_cells
       else
         dbgPrint "***** already checked\n"
       end

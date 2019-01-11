@@ -264,7 +264,7 @@ module TECSCDE
 
     #=== create canvas
     def createCanvas
-      @canvas = Canvas.new()
+      @canvas = Canvas.new
       resize_canvas
       dbgPrint("canvas width=#{@canvas_width}, height=#{@canvas_height}\n")
 

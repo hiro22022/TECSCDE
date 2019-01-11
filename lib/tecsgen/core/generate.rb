@@ -4688,7 +4688,7 @@ EOT
           fmt = CDLString.escape format
           cfg_file.print(fmt)
           cfg_file.puts("\n")
-          cfg_file.close()
+          cfg_file.close
         rescue => evar
           cdl_error("H1004 \'$1\' : write error while writing factory (specify -t to get more info)", file_name)
           print_exception(evar)
@@ -4774,7 +4774,7 @@ EOT
             fmt = CDLString.escape format
             cfg_file.printf(fmt, *na)
             cfg_file.puts("\n")
-            cfg_file.close()
+            cfg_file.close
           rescue => evar
             cdl_error("H1005 \'$1\' : write error while writing factory (specify -t to get more info)", file_name)
             print_exception(evar)
