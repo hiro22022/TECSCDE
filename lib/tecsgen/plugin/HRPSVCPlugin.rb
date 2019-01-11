@@ -56,7 +56,7 @@ class SVCManage
     #
   @@id = 0
   @@func_ids = {}
-  def initialize()
+  def initialize
       #
     #  本クラスはインスタンスを持たない仮想的なクラスである
       #

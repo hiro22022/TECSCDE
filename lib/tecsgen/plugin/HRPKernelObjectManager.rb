@@ -59,7 +59,7 @@ class HRPKernelObjectManager
     :tMessageBuffer, \
   ]
 
-  def initialize()
+  def initialize
       #
       #  本クラスはインスタンスを持たない仮想的なクラスである
       #

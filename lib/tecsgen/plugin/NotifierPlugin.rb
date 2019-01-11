@@ -462,7 +462,7 @@ class NotifierPlugin < CelltypePlugin
   # ------ ハンドラタイプの定義 -------
 
   class BaseHandlerType
-    def initialize()
+    def initialize
       super
 
       # HandlerAttribute[]
@@ -601,7 +601,7 @@ class NotifierPlugin < CelltypePlugin
     end
   end
   class SetVariableHandlerType < BaseHandlerType
-    def initialize()
+    def initialize
       super
       @required_attributes = [
         SETVAR_ADDR_ATTR,
@@ -635,7 +635,7 @@ class NotifierPlugin < CelltypePlugin
     end
   end
   class SetVariableToErrorCodeHandlerType < BaseHandlerType
-    def initialize()
+    def initialize
       super
       @required_attributes = [
         SETVAR_ADDR_ATTR
@@ -666,7 +666,7 @@ class NotifierPlugin < CelltypePlugin
     end
   end
   class IncrementVariableHandlerType < BaseHandlerType
-    def initialize()
+    def initialize
       super
       @required_attributes = [
         INCVAR_ADDR_ATTR
@@ -734,7 +734,7 @@ class NotifierPlugin < CelltypePlugin
     end
   end
   class SetEventflagHandlerType < BaseHandlerType
-    def initialize()
+    def initialize
       super
       @required_attributes = [
         SETFLG_FLAG_ATTR
@@ -782,7 +782,7 @@ class NotifierPlugin < CelltypePlugin
     end
   end
   class DataqueueHandlerType < BaseHandlerType
-    def initialize()
+    def initialize
       super
     end
 
@@ -817,7 +817,7 @@ class NotifierPlugin < CelltypePlugin
     end
   end
   class SendToDataqueueHandlerType < DataqueueHandlerType
-    def initialize()
+    def initialize
       super
       @required_attributes = [
         SNDDTQ_VALUE_ATTR
@@ -850,7 +850,7 @@ class NotifierPlugin < CelltypePlugin
     end
   end
   class SendErrorCodeToDataqueueHandlerType < DataqueueHandlerType
-    def initialize()
+    def initialize
       super
     end
 

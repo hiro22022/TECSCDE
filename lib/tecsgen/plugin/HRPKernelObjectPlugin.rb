@@ -297,11 +297,11 @@ class HRPKernelObjectPlugin < CelltypePlugin
   @@celltype_list = []
   @@region_list = []
 
-  def self.isChecked()
+  def self.isChecked
     return @@checked
   end
 
-  def self.check_referenced_cells()
+  def self.check_referenced_cells
     dbgPrint "===== begin check registered celltype =====\n"
       self.get_celltype_list.each {|ct|
         dbgPrint(ct.get_name.to_s + "\n")

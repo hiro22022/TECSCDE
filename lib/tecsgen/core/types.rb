@@ -852,12 +852,12 @@ class StructType < Type
     end
   end
 
-  def self.end_of_parse()
+  def self.end_of_parse
     @@structtype_current_stack[@@structtype_current_sp].end_of_parse
     @@structtype_current_sp -= 1
   end
 
-  def end_of_parse()
+  def end_of_parse
     if @members_decl.nil? # @b_define = false またはメンバーのない構造体（エラー）
       return
     end

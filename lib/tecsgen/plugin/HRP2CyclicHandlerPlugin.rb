@@ -69,7 +69,7 @@ EOT
   end
 
     # tCyclicHandlerの受け口リスト
-  def get_entry_ports_name_list()
+  def get_entry_ports_name_list
     @@ep
   end
 end
