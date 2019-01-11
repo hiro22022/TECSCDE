@@ -151,7 +151,7 @@ class ThroughPlugin < Plugin
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name].nil?
-      @@generated_celltype[@ct_name] = [ self ]
+      @@generated_celltype[@ct_name] = [self]
     else
       @@generated_celltype[@ct_name] << self
       return
@@ -165,7 +165,7 @@ class ThroughPlugin < Plugin
         dir = param.get_direction
         case dir
         when :SEND, :RECEIVE
-          send_receive << [ dir, fd, param ]
+          send_receive << [dir, fd, param]
         end
       }
     end

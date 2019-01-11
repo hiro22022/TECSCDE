@@ -109,13 +109,13 @@ EOT
 EOT
     }
 
-    undefs2 = [ :INITIALIZE_CB, :FOREACH_CELL, :END_FOREACH_CELL ]
+    undefs2 = [:INITIALIZE_CB, :FOREACH_CELL, :END_FOREACH_CELL]
     f = AppFile.open("#{$gen}/nTECSInfo_tVarDeclInfo_factory.h")
     Namespace.get_root.print_struct_define f
 
-    undefs = [ :VALID_IDX, :GET_CELLCB, :CELLCB, :CELLIDX,
+    undefs = [:VALID_IDX, :GET_CELLCB, :CELLCB, :CELLIDX,
                :tVarDeclInfo_IDX, :ATTR_name, :ATTR_sizeIsExpr,
-               :ATTR_declType, :ATTR_offset ]
+               :ATTR_declType, :ATTR_offset]
 
     f.print <<EOT
 
@@ -151,7 +151,7 @@ EOT
     end
     f.close
 
-    undefs = [ :N_CP_cEntryInfo, :NCP_cEntryInfo, :N_CP_cCallInfo, :NCP_cCallInfo,
+    undefs = [:N_CP_cEntryInfo, :NCP_cEntryInfo, :N_CP_cCallInfo, :NCP_cCallInfo,
                :N_CP_cAttrInfo, :NCP_cAttrInfo, :N_CP_cVarInfo, :NCP_cVarInfo,
                :VALID_IDX, :GET_CELLCB, :CELLCB, :CELLIDX, :ATTR_name, :ATTR_b_singleton,
                :ATTR_b_IDX_is_ID_act, :ATTR_sizeOfCB, :ATTR_sizeOfINIB, :ATTR_n_cellInLinUnit,
@@ -171,7 +171,7 @@ EOT
                :eCelltypeInfo_getNVar, :eCelltypeInfo_getVarInfo, :eCelltypeInfo_getNCall,
                :eCelltypeInfo_getCallInfo, :eCelltypeInfo_getNEntry, :eCelltypeInfo_getEntryInfo,
                :eCelltypeInfo_isSingleton, :eCelltypeInfo_isIDX_is_ID, :eCelltypeInfo_hasCB,
-               :eCelltypeInfo_hasINIB, :FOREACH_CELL, :END_FOREACH_CELL ]
+               :eCelltypeInfo_hasINIB, :FOREACH_CELL, :END_FOREACH_CELL]
 
     f = AppFile.open("#{$gen}/nTECSInfo_tCelltypeInfo_factory.h")
     undefs.each{|u|
@@ -180,13 +180,13 @@ EOT
     f.print "#define TOPPERS_CB_TYPE_ONLY\n"
     Namespace.get_root.print_celltype_define f
     # FOREACH_CELL を出しなおす
-    ct = Namespace.find [ "::", :nTECSInfo, :tCelltypeInfo ]
+    ct = Namespace.find ["::", :nTECSInfo, :tCelltypeInfo]
     ct.gen_ph_foreach_cell f
     ct.gen_ph_cb_initialize_macro f
     f.print "\n"
     f.close
 
-    undefs = [ :VALID_IDX, :GET_CELLCB, :CELLCB, :CELLIDX,
+    undefs = [:VALID_IDX, :GET_CELLCB, :CELLCB, :CELLIDX,
                :tCallInfo_IDX, :ATTR_name, :ATTR_offset, :ATTR_b_inCB,
                :ATTR_b_optional, :ATTR_b_omit, :ATTR_b_dynamic,
                :ATTR_b_ref_desc, :ATTR_b_allocator_port,
@@ -200,7 +200,7 @@ EOT
                :eCallInfo_getNameLength, :eCallInfo_getSignatureInfo,
                :eCallInfo_getArraySize, :eCallInfo_isOptional,
                :eCallInfo_isDynamic, :eCallInfo_isRefDesc,
-               :eCallInfo_isOmit ]
+               :eCallInfo_isOmit]
 
     f = AppFile.open("#{$gen}/nTECSInfo_tCallInfo_factory.h")
     f.print <<EOT
@@ -243,14 +243,14 @@ EOT
     Namespace.get_root.print_entry_define f
     f.close
 
-    undefs = [ :GET_CELLCB, :CELLCB, :CELLIDX, :ATTR_name, :INITIALIZE_CB, :FOREACH_CELL ]
+    undefs = [:GET_CELLCB, :CELLCB, :CELLIDX, :ATTR_name, :INITIALIZE_CB, :FOREACH_CELL]
     f = AppFile.open("#{$gen}/nTECSInfo_tCellInfo_factory.h")
     undefs.each{|u|
       f.print "#undef #{u}\n"
     }
     Region.get_root.print_cell_define f
     # FOREACH_CELL を出しなおす
-    ct = Namespace.find [ "::", :nTECSInfo, :tCellInfo ]
+    ct = Namespace.find ["::", :nTECSInfo, :tCellInfo]
     ct.gen_ph_foreach_cell f
     ct.gen_ph_cb_initialize_macro f
     f.close

@@ -594,7 +594,7 @@ EOT
     }
     if domain_regions.nil?
       # in case no 'domain' specified at region
-      domain_regions = [ Region.get_root ]
+      domain_regions = [Region.get_root]
     end
 
     hasDomainProc = Proc.new{
@@ -4815,7 +4815,7 @@ EOT
   end
 
   def generate_makefile_depend
-    headers = [ "$(GEN_DIR)/#{@global_name}_tecsgen.#{$h_suffix}", "$(GEN_DIR)/#{@global_name}_factory.#{$h_suffix}", "$(GEN_DIR)/global_tecsgen.#{$h_suffix}" ]
+    headers = ["$(GEN_DIR)/#{@global_name}_tecsgen.#{$h_suffix}", "$(GEN_DIR)/#{@global_name}_factory.#{$h_suffix}", "$(GEN_DIR)/global_tecsgen.#{$h_suffix}"]
 
     # inline 受け口を持つか？
     if @n_entry_port_inline > 0

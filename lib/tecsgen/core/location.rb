@@ -83,7 +83,7 @@ class TECSGEN
     end
 
     def get_location
-      [ @cell_nspath, @x, @y, @w, @h, @port_location_list ]
+      [@cell_nspath, @x, @y, @w, @h, @port_location_list]
     end
   end # Cell_location
 

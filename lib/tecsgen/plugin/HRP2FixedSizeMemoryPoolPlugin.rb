@@ -41,7 +41,7 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
 class HRP2FixedSizeMemoryPoolPlugin < HRP2KernelObjectPlugin
-  @@ep = [:eSendFixedSizeMemoryPool, :eReceiveFixedSizeMemoryPool, :eManageFixedSizeMemoryPool, :eReferFixedSizeMemoryPool ]
+  @@ep = [:eSendFixedSizeMemoryPool, :eReceiveFixedSizeMemoryPool, :eManageFixedSizeMemoryPool, :eReferFixedSizeMemoryPool]
     #=== HRP2FixedSizeMemoryPoolPlugin#print_cfg_cre
     # CRE_MPFの出力
     # file:: FILE:     出力先ファイル

@@ -57,8 +57,8 @@ module TECSCDE
     # tool_info schema for tecscde
     @@TECSCDE_schema = {
       :tecscde => {
-        :cell_list    => [ :cell_location ],      # array
-        :join_list    => [ :join_location ]       # array
+        :cell_list    => [:cell_location],        # array
+        :join_list    => [:join_location]         # array
       },
       :__tecscde => {
         :paper        => :paper                   # paper
@@ -72,8 +72,8 @@ module TECSCDE
         :type         => "cell_location",         # fixed string (type name)
         :region       => :string,                 # "rRegion::rReg"
         :name         => :string,                 # "CellName"
-        :location     => [ :number ],             # [ x, y, w, h ]
-        :port_location => [ :port_location ]      # array
+        :location     => [:number],               # [ x, y, w, h ]
+        :port_location => [:port_location]        # array
       },
       :port_location => {
         :type         => "port_location",         # fixed string (type name)
@@ -370,7 +370,7 @@ module TECSCDE
         bl = jl[:bar_list]
         bar_list = []
         bl.each{|bar|
-          bar_list << [ bar[:type], bar[:position] ]
+          bar_list << [bar[:type], bar[:position]]
         }
 
         # cp_cell_nspath, cp_name, ep_cell_nspath, ep_name, bar_list = jl.get_location

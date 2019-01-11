@@ -252,7 +252,7 @@ class NamedList
     prev_one = @names[name]
     @names[name] = item
 
-    @items = @items - [ prev_one ]
+    @items = @items - [prev_one]
     @items << item
   end
 
@@ -261,7 +261,7 @@ class NamedList
     name = item.get_name
     @names.delete name
 
-    @items = @items - [ item ]
+    @items = @items - [item]
   end
 
   def get_item(name)

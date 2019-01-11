@@ -240,7 +240,7 @@ EOT
           if @exclude_port_func[port_func[0]]
             @exclude_port_func[port_func[0]] <<  port_func[1]
           else
-            @exclude_port_func[port_func[0]] = [ port_func[1] ]
+            @exclude_port_func[port_func[0]] = [port_func[1]]
           end
         else
           cdl_error("MRB9999 exclude_port_func: func '$1' not found in port '$2' celltype $3",

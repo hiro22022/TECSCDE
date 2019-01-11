@@ -185,12 +185,12 @@ class Celltype
         if @domain_roots[dn]
           @domain_roots[dn] << dr
         else
-          @domain_roots[dn] = [ dr ]
+          @domain_roots[dn] = [dr]
         end
         if domain_cells[dr]
           domain_cells[dr] << c
         else
-          domain_cells[dr] = [ c ]
+          domain_cells[dr] = [c]
         end
       end
     }

@@ -186,7 +186,7 @@ class Signature < NSBDNode # < Nestable
         if @generate
           cdl_error("S9999 generate specifier duplicate")
         end
-        @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
+        @generate = [s[1], s[2]] # [ PluginName, "option" ]
       else
         cdl_error("S1002 \'$1\': unknown specifier for signature", s[0])
       end
@@ -494,7 +494,7 @@ module CelltypePluginModule
 
     begin
       plugin_object = plClass.new(self, option)
-      @generate_list << [ plugin_name, option, plugin_object ]
+      @generate_list << [plugin_name, option, plugin_object]
       plugin_object.set_locale @locale
       generate_and_parse plugin_object
     rescue Exception => evar
@@ -897,7 +897,7 @@ class Celltype < NSBDNode # < Nestable
         if @generate
           cdl_error("S1014 generate specifier duplicate")
         end
-        @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
+        @generate = [s[1], s[2]] # [ PluginName, "option" ]
       else
         cdl_error("S1015 $1 cannot be specified for composite", s[0])
       end
@@ -980,7 +980,7 @@ class Celltype < NSBDNode # < Nestable
       b_has_name = true
     end
     # require を追加
-    @require << [ cp_name, obj, obj2 ] # [ lhs:cp_name, rhs:Celltype, rhs:Port ]
+    @require << [cp_name, obj, obj2] # [ lhs:cp_name, rhs:Celltype, rhs:Port ]
 
     # require port を追加 (呼び口として追加する。ただし require をセットしておく)
     port = Port.new(cp_name, obj2.get_signature.get_namespace_path, :CALL)
@@ -1540,7 +1540,7 @@ class Cell < NSBDNode # < Nestable
     if @celltype.instance_of? CompositeCelltype
       @celltype.get_internal_allocator_list.each{|cell, cp_internal_name, port_name, fd_name, par_name, ext_alloc_ent|
         nsp = NamespacePath.new(@name, false)
-        rhs = Expression.new([:OP_DOT, [:IDENTIFIER, nsp], Token.new(ext_alloc_ent.to_s.to_sym, nil, nil, nil) ]) # 1 構文解析段階なので locale 不要
+        rhs = Expression.new([:OP_DOT, [:IDENTIFIER, nsp], Token.new(ext_alloc_ent.to_s.to_sym, nil, nil, nil)]) # 1 構文解析段階なので locale 不要
 
         @alloc_list << [:NORMAL_ALLOC, port_name, nil, fd_name, par_name, rhs]
 # print "add alloc_list: #{port_name}.#{fd_name}.#{par_name}=#{rhs.to_s}\n"
@@ -1721,7 +1721,7 @@ class Cell < NSBDNode # < Nestable
     end
     if @reverse_join_list.nil?
 #      @reverse_join_list = NamedList.new( reverse_join, "in cell '#{@name}'" )
-      @reverse_join_list = [ reverse_join ]
+      @reverse_join_list = [reverse_join]
     else
 #      @reverse_join_list.add_item( reverse_join )
       @reverse_join_list << reverse_join
@@ -1910,7 +1910,7 @@ class Cell < NSBDNode # < Nestable
         if @generate
           cdl_error("S1163 generate specifier duplicate")
         end
-        @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
+        @generate = [s[1], s[2]] # [ PluginName, "option" ]
         b_generate = true
       when :PROTOTYPE     # [prototype]
         @b_prototype = true
@@ -2474,7 +2474,7 @@ class Cell < NSBDNode # < Nestable
                   join.set_definition(@celltype.find(join.get_name))
                   # mikan relay mismatch チェックができていない（下方を参照）
                 end
-                @alloc_list << [ :NORMAL_ALLOC, p.get_name, subscript, ai2[1], ai2[2], rhs ]
+                @alloc_list << [:NORMAL_ALLOC, p.get_name, subscript, ai2[1], ai2[2], rhs]
               }
             else
               if b_export == false
@@ -2494,7 +2494,7 @@ class Cell < NSBDNode # < Nestable
                   end
                 end
               end
-              @alloc_list << [ :NORMAL_ALLOC, p.get_name, nil, ai2[1], ai2[2], ja.get_rhs ]
+              @alloc_list << [:NORMAL_ALLOC, p.get_name, nil, ai2[1], ai2[2], ja.get_rhs]
             end
             dbgPrint "create_relay_allocator_join: #{p.get_name}_#{ai2[1]}_#{ai2[2]} #{ai2[3]}_#{ai2[4]}_#{ai2[5]}\n"
           end
@@ -2924,8 +2924,8 @@ class Cell < NSBDNode # < Nestable
 #      rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, Token.new( cell.get_name, nil, nil, nil ) ],
       nsp = NamespacePath.new(cell.get_name, false, cell.get_namespace)
       nsp.set_locale @locale
-      rhs = Expression.new([ :OP_DOT, [ :IDENTIFIER, nsp ],
-                              Token.new(port.get_name, nil, nil, nil) ], @locale) # 1
+      rhs = Expression.new([:OP_DOT, [:IDENTIFIER, nsp],
+                              Token.new(port.get_name, nil, nil, nil)], @locale) # 1
       join = Join.new(cp_name, nil, rhs, @locale)
       self.new_join(join)
 
@@ -3042,7 +3042,7 @@ class Cell < NSBDNode # < Nestable
     @restrict_list.each{|entry_name, func_hash|
       func_hash.each{|func_name, region_list|
         region_list.each{|rn|
-          obj = Namespace.find [ rn ]
+          obj = Namespace.find [rn]
           if obj.kind_of? Region
             if obj.get_domain_root != @region.get_domain_root
             else
@@ -3496,7 +3496,7 @@ class CompositeCelltype < NSBDNode # < Nestable
 
                 if s[0] == :INTERNAL_ALLOC
                   # 内部アロケータの場合    # mikan これは内部のセルに直結する。外部のポートに改めるべき
-                  @internal_allocator_list << [ cell, cp_internal_name, port.get_name, fd.get_name, par.get_name, s[3] ]
+                  @internal_allocator_list << [cell, cp_internal_name, port.get_name, fd.get_name, par.get_name, s[3]]
                 end
               end
             }
@@ -3557,7 +3557,7 @@ class CompositeCelltype < NSBDNode # < Nestable
         if par.get_allocator
           cp_name = :"#{port.get_name}_#{fd.get_name}_#{par.get_name}" # アロケータ呼び口の名前
           #           ポート名          関数名         パラメータ名
-          alloc_sig_path = [ par.get_allocator.get_name ] # mikan Namespace アロケータ呼び口のシグニチャ
+          alloc_sig_path = [par.get_allocator.get_name] # mikan Namespace アロケータ呼び口のシグニチャ
           array_size = port.get_array_size # 呼び口または受け口配列のサイズ
           created_port = Port.new(cp_name, alloc_sig_path, :CALL, array_size) # 呼び口を生成
           created_port.set_allocator_port(port, fd, par)
@@ -3729,7 +3729,7 @@ class CompositeCelltype < NSBDNode # < Nestable
     clone_cell_list2.each {|c|
       c.expand_inner
     }
-    return [ clone_cell_list, clone_cell_list2 ]
+    return [clone_cell_list, clone_cell_list2]
   end
 
   #=== CompositeCelltype 指定子リストの設定
@@ -3748,7 +3748,7 @@ class CompositeCelltype < NSBDNode # < Nestable
         if @generate
           cdl_error("S9999 generate specifier duplicate")
         end
-        @generate = [ s[1], s[2] ] # [ PluginName, "option" ]
+        @generate = [s[1], s[2]] # [ PluginName, "option" ]
       else
         cdl_error("S1071 $1 cannot be specified for composite", s[0])
       end
@@ -4252,7 +4252,7 @@ end
         end
         # 右辺チェック終わり
         # ai2 = [ :INTERNAL_ALLOC, func_name, param_name, rhs_ep_name ]
-        ai2 = [ ai[0], ai[1], ai[2], ep_name ]
+        ai2 = [ai[0], ai[1], ai[2], ep_name]
 
       when :RELAY_ALLOC
         ele = ai[3].get_elements
@@ -4313,7 +4313,7 @@ end
         end
         # 右辺チェック終わり
         # ai2 = [ :RELAY_ALLOC, func_name, param_name, rhs_cp_name, rhs_func_name, rhs_param_name ]
-        ai2 = [ ai[0], ai[1], ai[2], cp_name, func_name, param_name ]
+        ai2 = [ai[0], ai[1], ai[2], cp_name, func_name, param_name]
       end # case alloc_type
 
       @allocator_instance["#{@name}_#{ai[1]}_#{ai[2]}"] = ai2
@@ -4425,8 +4425,8 @@ end
     dbgPrint "create_reverse_require_join #{cell2.get_name}.#{@reverse_require_entry_port_name}[] = #{cell.get_name}.#{@name}"
     nsp = NamespacePath.new(cell.get_name, false, cell.get_namespace)
 #    rhs = Expression.new( [ :OP_DOT, [ :IDENTIFIER, Token.new( cell.get_name, nil, nil, nil ) ],
-    rhs = Expression.new([ :OP_DOT, [ :IDENTIFIER, nsp ],
-                            Token.new(@name, nil, nil, nil) ], cell.get_locale) # 1
+    rhs = Expression.new([:OP_DOT, [:IDENTIFIER, nsp],
+                            Token.new(@name, nil, nil, nil)], cell.get_locale) # 1
     join = Join.new(@reverse_require_entry_port_name, -1, rhs, cell.get_locale)
     cell2.new_join(join)
     join.set_definition(ct.find(join.get_name))
@@ -4541,7 +4541,7 @@ class Namespace < NSBDNode
   def self.push
     dbgPrint "push Namespace\n"
     @@nest_stack_index += 1
-    @@nest_stack[@@nest_stack_index] = [ @@namespace_stack, @@namespace_sp ]
+    @@nest_stack[@@nest_stack_index] = [@@namespace_stack, @@namespace_sp]
     if @@root_namespace
       @@namespace_sp = 0
       @@namespace_stack[@@namespace_sp] = @@root_namespace
@@ -5478,12 +5478,12 @@ class Join < BDNode
         out_through_list.each {|ol|
           if ol[0] # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote ol[1]
-            through = [ ol[0], :Join_out_through_, plugin_arg, f1[i], f1[i - 1], :OUT_THROUGH, region_count]
+            through = [ol[0], :Join_out_through_, plugin_arg, f1[i], f1[i - 1], :OUT_THROUGH, region_count]
             @region_through_list << through
           end
         }
         if domain_through && domain_through.length > 0
-          through = [ domain_through[0], :Join_domain_out_through_, domain_through[1], f1[i], f1[i - 1], :OUT_THROUGH, region_count ]
+          through = [domain_through[0], :Join_domain_out_through_, domain_through[1], f1[i], f1[i - 1], :OUT_THROUGH, region_count]
           @region_through_list << through
         end
         i -= 1
@@ -5498,7 +5498,7 @@ class Join < BDNode
           if t[0][0] == f2[sibling_level].get_name # region 名が一致するか ?
             if t[1] # plugin_name が指定されていなければ登録しない
               plugin_arg = CDLString.remove_dquote t[2]
-              through = [ t[1], :Join_to_through__, plugin_arg, f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count ]
+              through = [t[1], :Join_to_through__, plugin_arg, f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count]
               @region_through_list << through
             end
             found = 1
@@ -5511,7 +5511,7 @@ class Join < BDNode
             cdl_error("S9999 $1: going from regin '$2' not permitted by domain'$3'", @name, f1[sibling_level].get_name, f2[sibling_level].get_domain_type.get_name)
           end
           if domain_through && domain_through.length > 0
-            through = [ domain_through[0], :Join_domain_to_through_, domain_through[1], f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count ]
+            through = [domain_through[0], :Join_domain_to_through_, domain_through[1], f1[sibling_level], f2[sibling_level], :TO_THROUGH, region_count]
             @region_through_list << through
           end
         elsif found == 0
@@ -5537,7 +5537,7 @@ class Join < BDNode
                         @name, f2[i - 1].get_name, f2[i].get_name, f2[i].get_domain_type.get_name)
           end
           if domain_through && domain_through.length > 0
-            through = [ domain_through[0], :Join_domain_in_through_, domain_through[1], f2[i - 1], f2[i], :IN_THROUGH, region_count ]
+            through = [domain_through[0], :Join_domain_in_through_, domain_through[1], f2[i - 1], f2[i], :IN_THROUGH, region_count]
             @region_through_list << through
           end
         elsif in_through_list.length == 0
@@ -5546,7 +5546,7 @@ class Join < BDNode
         in_through_list.each {|il|
           if il[0] # plugin_name が指定されていなければ登録しない
             plugin_arg = CDLString.remove_dquote il[1]
-            through = [ il[0], :Join_in_through_, plugin_arg, f2[i - 1], f2[i], :IN_THROUGH, region_count ]
+            through = [il[0], :Join_in_through_, plugin_arg, f2[i - 1], f2[i], :IN_THROUGH, region_count]
             @region_through_list << through
           end
         }
@@ -5606,7 +5606,7 @@ class Join < BDNode
         # plugin_arg = s[2].to_s.gsub( /\A"(.*)/, '\1' )   # 前後の "" を取り除く
         # plugin_arg.sub!( /(.*)"\z/, '\1' )
 
-        @cp_through_list << [ plugin_name, cell_name, plugin_arg ]
+        @cp_through_list << [plugin_name, cell_name, plugin_arg]
       end
     }
   end
@@ -6350,7 +6350,7 @@ class ReverseJoin < BDNode
   end
 
   def get_rhs_cell_and_port
-    [ @ep_subscript, @cell_nsp, @cp_name, @cp_subscript ]
+    [@ep_subscript, @cell_nsp, @cp_name, @cp_subscript]
   end
 end
 
@@ -6669,7 +6669,7 @@ class DomainType < Node
         @@domain_regions[name] << region
       end
     else
-      @@domain_regions[name] = [ region ]
+      @@domain_regions[name] = [region]
     end
   end
 
@@ -6852,16 +6852,16 @@ class Region < Namespace
   end
 
   def self.new_in_through(plugin_name = nil, plugin_arg = nil)
-    @@in_through_list << [ plugin_name, plugin_arg ]
+    @@in_through_list << [plugin_name, plugin_arg]
   end
 
   def self.new_out_through(plugin_name = nil, plugin_arg = nil)
-    @@out_through_list << [ plugin_name, plugin_arg ]
+    @@out_through_list << [plugin_name, plugin_arg]
   end
 
   def self.new_to_through(dst_region, plugin_name, plugin_arg)
     # p "New to_through #{dst_region}"
-    @@to_through_list  << [ dst_region, plugin_name, plugin_arg ]
+    @@to_through_list  << [dst_region, plugin_name, plugin_arg]
   end
 
   def self.set_type(type, param = nil)
@@ -6914,7 +6914,7 @@ class Region < Namespace
     if @owner
       @family_line = @owner.get_family_line.dup << self
     else
-      @family_line = [ self ] # root region
+      @family_line = [self] # root region
     end
 
 =begin
@@ -7660,7 +7660,7 @@ class NamespacePath < Node
       @path = []
       @b_absolute = true
     else
-      @path = [ ident ]
+      @path = [ident]
       @b_absolute = b_absolute
     end
 

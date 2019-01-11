@@ -109,7 +109,7 @@ class HRP2SVCPlugin < ThroughPlugin
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
       if @@generated_celltype[@ct_name_body].nil?
-        @@generated_celltype[@ct_name_body] = [ self ]
+        @@generated_celltype[@ct_name_body] = [self]
           file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
           file2.print <<EOT
 [active]
@@ -126,7 +126,7 @@ EOT
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name].nil?
-      @@generated_celltype[@ct_name] = [ self ]
+      @@generated_celltype[@ct_name] = [self]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         if !HRP2KernelObjectPlugin.include_celltype?(@next_cell.get_celltype)
           file2.print <<EOT

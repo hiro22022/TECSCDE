@@ -217,7 +217,7 @@ module GenOpaqueMarshaler
 #      end
 
       @substituteAllocator[ "#{lhs_alloc_cell}.#{lhs_alloc_ent}".to_sym ] =
-        [ lhs_alloc_cell, lhs_alloc_ent, rhs_alloc_cell, rhs_alloc_ent ]
+        [lhs_alloc_cell, lhs_alloc_ent, rhs_alloc_cell, rhs_alloc_ent]
 
 # p "substituteAllocator: #{lhs_alloc_cell}.#{lhs_alloc_ent}=>#{rhs_alloc_cell}.#{rhs_alloc_ent}"
 

@@ -828,11 +828,11 @@ class Expression < Node
       end
       cell_nsp  = elements[1][1]
       port_name = elements[2].val
-      return [ cell_nsp, port_name ]
+      return [cell_nsp, port_name]
     when :INTERNAL_ALLOC
       if ele[0] == :IDENTIFIER
         if ele[1].is_name_only?
-          return [ ele[1].get_path[0] ] # mikan a::b
+          return [ele[1].get_path[0]] # mikan a::b
         else
           cdl_error("E1018 $1: namespace cannot be specified", ele[1].to_s)
         end
@@ -846,7 +846,7 @@ class Expression < Node
         cdl_error("E1020 rhs not in 'call_port.func.param' form ($1)", ele[0].to_s) # S1086
       end
       func_name = ele[1][2]; cp_name = ele[1][1][1].get_name; param_name = ele[2].to_sym
-      return [ cp_name, func_name, param_name ]
+      return [cp_name, func_name, param_name]
     end
     return nil
   end
@@ -901,7 +901,7 @@ class Expression < Node
     nsp = elements[1][1] # NamespacePath
     port_name = elements[2].val
 
-    return [ nsp, subscript, port_name]
+    return [nsp, subscript, port_name]
   end
 
   #=== Expression# セルへの結合の式を生成する
@@ -915,11 +915,11 @@ class Expression < Node
     end
 
     if subscript
-      elements = [ :OP_SUBSC, [ :OP_DOT, [ :IDENTIFIER, nsp ],
-                                Token.new(port_name, nil, nil, nil) ],
-                   Expression.create_integer_constant(subscript, @locale) ]
+      elements = [:OP_SUBSC, [:OP_DOT, [:IDENTIFIER, nsp],
+                                Token.new(port_name, nil, nil, nil)],
+                   Expression.create_integer_constant(subscript, @locale)]
     else
-      elements = [ :OP_DOT, [ :IDENTIFIER, nsp ], Token.new(port_name, nil, nil, nil) ]
+      elements = [:OP_DOT, [:IDENTIFIER, nsp], Token.new(port_name, nil, nil, nil)]
     end
     return Expression.new(elements, locale)
   end
@@ -930,7 +930,7 @@ class Expression < Node
     if val != Integer(val) || val < 0
       raise "create_integer_constant: not integer or negative: #{val}"
     end
-    Expression.new([ :INTEGER_CONSTANT, Token.new(val, nil, nil, nil) ], locale)
+    Expression.new([:INTEGER_CONSTANT, Token.new(val, nil, nil, nil)], locale)
   end
 
   #=== Expression#単一の識別子の式を解析する
@@ -952,7 +952,7 @@ class Expression < Node
     if !nsp.instance_of?(NamespacePath)
       raise "create_single_identifier: not NamespacePath: #{nsp}"
     end
-    Expression.new([ :IDENTIFIER, nsp ])
+    Expression.new([:IDENTIFIER, nsp])
   end
 
   #=== 評価可能かチェックする

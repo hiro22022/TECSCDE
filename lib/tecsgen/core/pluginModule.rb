@@ -135,7 +135,7 @@ module PluginModule
 
     generator = Generator.new
     generator.set_plugin(plugin_object)
-    generator.parse([ tmp_file_name ])
+    generator.parse([tmp_file_name])
     generator.finalize
   end
 

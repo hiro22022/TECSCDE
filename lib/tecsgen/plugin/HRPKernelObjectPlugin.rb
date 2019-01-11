@@ -222,7 +222,7 @@ class HRPKernelObjectPlugin < CelltypePlugin
                 acv_tmp.uniq!
                 if acv_tmp.length == 0
                   # 呼び先セルが無所属かつ、呼び元も無所属のみ、または結合無しの場合
-                  acv_tmp = [ "TACP_SHARED" ]
+                  acv_tmp = ["TACP_SHARED"]
                 end
                 b_info = false
                 b_warn = false

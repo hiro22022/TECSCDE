@@ -56,8 +56,8 @@ class TECS_LANG
     "JA_JP" => :ja_JP
   }
   SUITABLE_CHARSET = {
-    :ja_JP => [ :eucJP, :sjis, :utf8 ],
-    :en_US => [ :"iso8859-1", :utf8, nil ]
+    :ja_JP => [:eucJP, :sjis, :utf8],
+    :en_US => [:"iso8859-1", :utf8, nil]
   }
 
   #=== LANG のパース
@@ -75,7 +75,7 @@ class TECS_LANG
       codeset = $3.to_sym if !$3.nil? && $3 != ""
       modifier = $5.to_sym if !$5.nil? && $5 != ""
     # end
-    [ lang_terri, codeset, modifier ]
+    [lang_terri, codeset, modifier]
   end
 
   #=== lang, charset の別明解決および妥当性のチェック
@@ -103,7 +103,7 @@ class TECS_LANG
     end
 
     # p ln, cs, res
-    [ ln, cs, res ]
+    [ln, cs, res]
   end
 
   #=== codepage を取り出す
@@ -276,7 +276,7 @@ class TECS_LANG
   $CHARSET_CONSOLE = $CHARSET_CONSOLE_DEFAULT
 
   # -k で指定可能なコード
-  $CODE_TYPE_ARRAY = [ "euc", "sjis", "none", "utf8" ]
+  $CODE_TYPE_ARRAY = ["euc", "sjis", "none", "utf8"]
 
   # 言語を決定する
   self.set_lang_var

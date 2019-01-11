@@ -82,7 +82,7 @@ class SharedRPCPlugin < ThroughPlugin
 
     if @@shared_channel_list[@shared_channel_cell].nil?
       # 初出
-      @@shared_channel_list[@shared_channel_cell] = [ self ]
+      @@shared_channel_list[@shared_channel_cell] = [self]
     else
       # 二番目以降
       @@shared_channel_list[@shared_channel_cell] << self
@@ -111,13 +111,13 @@ class SharedRPCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@shared_channel_ct_name].nil?
-      @@generated_celltype[@shared_channel_ct_name] = [ self ]
+      @@generated_celltype[@shared_channel_ct_name] = [self]
     else
       @@generated_celltype[@shared_channel_ct_name] << self
     end
 
     if @@generated_celltype[@ct_name].nil?
-      @@generated_celltype[@ct_name] = [ self ]
+      @@generated_celltype[@ct_name] = [self]
     else
       @@generated_celltype[@ct_name] << self
     end

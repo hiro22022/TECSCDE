@@ -88,7 +88,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
     end
 
     if @@shared_channel_list[@shared_channel_cell].nil?
-      @@shared_channel_list[@shared_channel_cell] = [ self ]
+      @@shared_channel_list[@shared_channel_cell] = [self]
     else
       @@shared_channel_list[@shared_channel_cell] << self
     end
@@ -124,7 +124,7 @@ class SharedOpaqueRPCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@shared_channel_server_ct_name].nil?
-      @@generated_celltype[@shared_channel_server_ct_name] = [ self ]
+      @@generated_celltype[@shared_channel_server_ct_name] = [self]
     else
       @@generated_celltype[@shared_channel_server_ct_name] << self
     end

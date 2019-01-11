@@ -248,7 +248,7 @@ class DefinedType < Type
     @type_name = type_name
 
     # mikan type_name が path になっていないため暫定
-    @typedef = Namespace.find([ type_name ]) # 1
+    @typedef = Namespace.find([type_name]) # 1
 
 #    if @type.class != Typedef then
 #      raise NotTypedef
@@ -1623,7 +1623,7 @@ end
 # 以下単体テストコード
 if $unit_test
   puts("===== Unit Test: IntType ===== (types.rb)")
-  sizes = [ 8, 16, 32, 64 ]
+  sizes = [8, 16, 32, 64]
   sizes.each{|n|
     int = IntType.new n
     printf("%8s  max: %d  min:%d\n", "int#{n}_t", int.get_max, int.get_min)

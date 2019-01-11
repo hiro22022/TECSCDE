@@ -41,7 +41,7 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 #== celltype プラグインの共通の親クラス
 class HRP2CyclicHandlerPlugin < HRP2KernelObjectPlugin
-  @@ep = [:eStartCyclic, :eStopCyclic, :eManageCyclic, :eReferCyclic ]
+  @@ep = [:eStartCyclic, :eStopCyclic, :eManageCyclic, :eReferCyclic]
     ##
     #
     # file : output file (ex.tecsgen.cfg)

@@ -40,7 +40,7 @@
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 class HRP2SemaphorePlugin < HRP2KernelObjectPlugin
-  @@ep = [:eSignalSemaphore, :eWaitSemaphore, :eManageSemaphore, :eReferSemaphore ]
+  @@ep = [:eSignalSemaphore, :eWaitSemaphore, :eManageSemaphore, :eReferSemaphore]
     #=== HRP2SemaphorePlugin#print_cfg_cre
     # CRE_SEMの出力
     # file:: FILE:     出力先ファイル

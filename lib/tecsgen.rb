@@ -102,7 +102,7 @@ def require_tecsgen_lib(fname, b_fatal = true)
     # -L 、 $RUBYLIB で指定されたパスおよびシステムのパスからサーチ
     #   exerb では $LOAD_PATH は ["."] のみ入っているようだ
     ($library_path + $LOAD_PATH).each{|path|
-      [ "", "tecslib/plugin/" ].each {|lp|
+      ["", "tecslib/plugin/"].each {|lp|
         lib = File.expand_path(path) + "/" + lp + fname
 
         if File.exist? lib # ファイル存否と他のエラーを区別するため存在確認をする
@@ -295,10 +295,10 @@ class TECSGEN
     $yydebug   = false     # bool:   yydebug: parser debug mode (need bnf-deb.tab.rb)
     $run_dir   = Dir.pwd   # string: tecsgen/tecscde start up directory
     $base_dir  = { } # string=>bool: base dir for import_path (key:base_dir, val:actually used or specified directly)
-    $import_path = [ "." ] # string array : import/import_C path
+    $import_path = ["."] # string array : import/import_C path
     $import_path_opt = []  # [String]
-    $library_path = [ $tecsgen_base_path ] # string array : path to dir where tecsgen.rb placed
-    $define = [ ] # string array : define
+    $library_path = [$tecsgen_base_path] # string array : path to dir where tecsgen.rb placed
+    $define = [] # string array : define
     $ram_initializer = false # bool: generate ram initializer
     $region_list = {} # string array : region path which is generated
     $generating_region = nil # Region:  Region to optimisze & generate code   # コマンドラインオプションではない

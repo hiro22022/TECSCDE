@@ -41,7 +41,7 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
 class HRP2EventflagPlugin < HRP2KernelObjectPlugin
-  @@ep = [:eSetEventflag, :eWaitEventflag, :eManageEventflag, :eReferEventflag ]
+  @@ep = [:eSetEventflag, :eWaitEventflag, :eManageEventflag, :eReferEventflag]
     #=== HRP2EventflagPlugin#print_cfg_cre
     # CRE_FLGの出力
     # file:: FILE:     出力先ファイル

@@ -115,7 +115,7 @@ class HRPRPCPlugin < ThroughPlugin
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[ct_name].nil?
-      @@generated_celltype[ct_name] = [ self ]
+      @@generated_celltype[ct_name] = [self]
     else
       @@generated_celltype[ct_name] << self
       return

@@ -48,10 +48,10 @@ class TOOL_INFO
   # tool_info schema for tecsgen
   @@TECSGEN_schema = {
     :tecsgen => { # require
-      :base_dir       => [ :string ],             # dir where the cde created initially
-      :direct_import  => [ :string ],             # .cdl (sometimes .cde) specified in argments
-      :import_path    => [ :string ],             # -I of tecsgen
-      :define_macro   => [ :string ],             # -D of tecsgen
+      :base_dir       => [:string],             # dir where the cde created initially
+      :direct_import  => [:string],             # .cdl (sometimes .cde) specified in argments
+      :import_path    => [:string],             # -I of tecsgen
+      :define_macro   => [:string],             # -D of tecsgen
       :tecscde_version => :string,                 # TECSCDE version
       :cde_format_version => :string,              # CDE format version
       :save_date      => :string,                 # last save date & time
@@ -309,7 +309,7 @@ class TECSGEN
     end
 
     def get_location
-      [ @cell_nspath, @x, @y, @w, @h, @port_location_list ]
+      [@cell_nspath, @x, @y, @w, @h, @port_location_list]
     end
   end # Cell_location
 

@@ -41,7 +41,7 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 
 class HRP2DataqueuePlugin < HRP2KernelObjectPlugin
-  @@ep = [:eSendDataqueue, :eReceiveDataqueue, :eManageDataqueue, :eReferDataqueue ]
+  @@ep = [:eSendDataqueue, :eReceiveDataqueue, :eManageDataqueue, :eReferDataqueue]
     #=== HRP2DataqueuePlugin#print_cfg_cre
     # CRE_DTQの出力
     # file:: FILE:     出力先ファイル

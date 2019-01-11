@@ -147,7 +147,7 @@ module TECSCDE
     class ChangeSetManager
       def initialize
         @change_no = 0
-        @change_set_list = [ ]
+        @change_set_list = []
         @change_set_next = ChangeSet.new(@change_no)
       end
 
@@ -668,7 +668,7 @@ module TECSCDE
 
       #=== TmCell#get_geometry ***
       def get_geometry
-        [ @x, @y, @width, @height ]
+        [@x, @y, @width, @height]
       end
 
       #=== TmCell#get_name ***
@@ -793,17 +793,17 @@ module TECSCDE
 
       def get_new_cport_position(port_def)
         if $b_tate
-          return [ EDGE_BOTTOM, DIST_PORT * (inc_n_cport + 1) ]
+          return [EDGE_BOTTOM, DIST_PORT * (inc_n_cport + 1)]
         else
-          return [ EDGE_RIGHT, DIST_PORT * (inc_n_cport + 1) ]
+          return [EDGE_RIGHT, DIST_PORT * (inc_n_cport + 1)]
         end
       end
 
       def get_new_eport_position(port_def)
         if $b_tate
-          return [ EDGE_TOP, DIST_PORT * (inc_n_eport + 1) ]
+          return [EDGE_TOP, DIST_PORT * (inc_n_eport + 1)]
         else
-          return [ EDGE_LEFT, DIST_PORT * (inc_n_eport + 1) ]
+          return [EDGE_LEFT, DIST_PORT * (inc_n_eport + 1)]
         end
       end
 
@@ -1006,7 +1006,7 @@ module TECSCDE
             end
           end
         }
-        [ w_min + DIST_PORT, h_min + DIST_PORT ]
+        [w_min + DIST_PORT, h_min + DIST_PORT]
       end
 
       #=== TmCell#get_tecsgen_cell

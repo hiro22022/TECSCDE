@@ -96,7 +96,7 @@ module TECSCDE
     dialog = Gtk::Dialog.new("Message",
                              nil,
                              nil,
-                             [ Gtk::Stock::OK, Gtk::Dialog::RESPONSE_OK ])
+                             [Gtk::Stock::OK, Gtk::Dialog::RESPONSE_OK])
 
     # Ensure that the dialog box is destroyed when the user responds.
     # dialog.signal_connect('response') { dialog.destroy }

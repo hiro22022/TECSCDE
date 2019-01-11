@@ -71,7 +71,7 @@ class C2TECSBridgePlugin < SignaturePlugin
       return
     end
 
-    @@signature_list[@signature.get_global_name] = [ self ]
+    @@signature_list[@signature.get_global_name] = [self]
     print_msg "  C2TECSBridgePlugin: [celltype] C2TECS::#{@celltype_name}. Create cell then join the call port 'cCall' to the target cell\n"
     file.print <<EOT
 namespace nC2TECS{

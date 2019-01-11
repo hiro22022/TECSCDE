@@ -39,7 +39,7 @@
 require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 class HRP2PriorityDataqueuePlugin < HRP2KernelObjectPlugin
-  @@ep = [:eSendPriorityDataqueue, :eReceivePriorityDataqueue, :eManagePriorityDataqueue, :eReferPriorityDataqueue ]
+  @@ep = [:eSendPriorityDataqueue, :eReceivePriorityDataqueue, :eManagePriorityDataqueue, :eReferPriorityDataqueue]
     #=== HRP2PriorityDataqueuePlugin#print_cfg_cre
     # CRE_PDQの出力
     # file:: FILE:     出力先ファイル

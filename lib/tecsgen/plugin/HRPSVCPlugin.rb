@@ -134,7 +134,7 @@ class HRPSVCPlugin < ThroughPlugin
   def gen_plugin_decl_code(file)
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name_body].nil?
-      @@generated_celltype[@ct_name_body] = [ self ]
+      @@generated_celltype[@ct_name_body] = [self]
         file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
         file2.print <<EOT
 /* HRPSVC0001 */
@@ -154,7 +154,7 @@ EOT
 
     # このセルタイプ（同じシグニチャ）は既に生成されているか？
     if @@generated_celltype[@ct_name].nil?
-      @@generated_celltype[@ct_name] = [ self ]
+      @@generated_celltype[@ct_name] = [self]
         file2 = CFile.open("#{$gen}/#{@ct_name}.cdl", "w")
         file2.print <<EOT
 /* HRPSVC0002 */

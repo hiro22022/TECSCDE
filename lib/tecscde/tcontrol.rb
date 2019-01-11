@@ -95,10 +95,10 @@ Structure of Palette Window
     # @attrTreeView::AttrTreeView
     # @prev_time::Integer: event time (milli second)
 
-    ModeList    = [ :MODE_NONE, :MODE_NEW_CELL, :MODE_POINTER ]
-    SubmodeList = [ :SM_NONE,   :SM_JOINING,    :SM_SURROUNDING_CELLS,
+    ModeList    = [:MODE_NONE, :MODE_NEW_CELL, :MODE_POINTER]
+    SubmodeList = [:SM_NONE,   :SM_JOINING,    :SM_SURROUNDING_CELLS,
                     :SM_MOVING_CELL_BAR, :SM_MOVING_CPORT, :SM_MOVING_EPORT, :SM_MOVING_CELL_EDGE,
-                    :SM_EDIT_CELL_NAME ]
+                    :SM_EDIT_CELL_NAME]
 
     def initialize(model)
       @nest = -1
@@ -518,9 +518,9 @@ EOT
     def selected
       iter = @treeView.selection.selected
       if iter
-        [iter[COL_NAME], iter[COL_NSPATH] ]
+        [iter[COL_NAME], iter[COL_NSPATH]]
       else
-        [ nil, nil ]
+        [nil, nil]
       end
     end
 

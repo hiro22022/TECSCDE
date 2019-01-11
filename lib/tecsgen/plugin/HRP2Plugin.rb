@@ -100,12 +100,12 @@ class HRP2Plugin < DomainPlugin
         # ユーザドメインからカーネルドメインへの結合
         # @plugin_body = HRP2SVCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
       puts "***** svc"
-        return [ :HRP2SVCPlugin, "" ]
+        return [:HRP2SVCPlugin, ""]
     elsif current_domain != next_domain
         # ユーザドメインから別のユーザドメインへの結合
         # @plugin_body = HRP2RPCPlugin.new(cell_name, plugin_arg, next_cell, next_cell_port_name, signature, celltype, caller_cell)
       puts "***** rpc"
-        return [ :HRP2RPCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true" ]
+        return [:HRP2RPCPlugin, "channelCelltype=tMessagebufferChannel,noClientSemaphore=true"]
     else
         # その他
         # 何もしないthrough

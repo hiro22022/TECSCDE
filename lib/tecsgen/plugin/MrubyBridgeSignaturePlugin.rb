@@ -83,39 +83,39 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   @@VM_struct_list = { }           # {name=>StructType}
   @@VM_ptr_list = { }              # { VM_name => {name=> @@TYPE_MAP の対応するもの} }
   @@TYPE_MAP = { # type_str   class             GET_SET
-    :char_t            => [:char_t,    "Char",     :Char,  :INT   ],
-    :uchar_t           => [:uchar_t,   "UChar",    :Char,  :INT   ],
-    :schar_t           => [:schar_t,   "SChar",    :Char,  :INT   ],
+    :char_t            => [:char_t,    "Char",     :Char,  :INT],
+    :uchar_t           => [:uchar_t,   "UChar",    :Char,  :INT],
+    :schar_t           => [:schar_t,   "SChar",    :Char,  :INT],
 
-    :bool_t            => [:bool_t,    "Bool",     :Bool,  :BOOL  ],
-    :int8_t            => [:int8_t,    "Int8",     :Int,   :INT   ],
-    :int16_t           => [:int16_t,   "Int16",    :Int,   :INT   ],
-    :int32_t           => [:int32_t,   "Int32",    :Int,   :INT   ],
-    :int64_t           => [:int64_t,   "Int64",    :Int,   :INT   ],
-    :uint8_t           => [:uint8_t,   "UInt8",    :Int,   :INT   ],
-    :uint16_t          => [:uint16_t,  "UInt16",   :Int,   :INT   ],
-    :uint32_t          => [:uint32_t,  "UInt32",   :Int,   :INT   ],
-    :uint64_t          => [:uint64_t,  "UInt64",   :Int,   :INT   ],
+    :bool_t            => [:bool_t,    "Bool",     :Bool,  :BOOL],
+    :int8_t            => [:int8_t,    "Int8",     :Int,   :INT],
+    :int16_t           => [:int16_t,   "Int16",    :Int,   :INT],
+    :int32_t           => [:int32_t,   "Int32",    :Int,   :INT],
+    :int64_t           => [:int64_t,   "Int64",    :Int,   :INT],
+    :uint8_t           => [:uint8_t,   "UInt8",    :Int,   :INT],
+    :uint16_t          => [:uint16_t,  "UInt16",   :Int,   :INT],
+    :uint32_t          => [:uint32_t,  "UInt32",   :Int,   :INT],
+    :uint64_t          => [:uint64_t,  "UInt64",   :Int,   :INT],
 
-    :int               => [:int,       "Int",      :Int,  :INT   ],
-    :char              => [:char,      "Char",     :Char, :INT   ], # char は char_t として扱う
-    :short             => [:short,     "Short",    :Int,  :INT   ],
-    :long              => [:long,      "Long",     :Int,  :INT   ],
+    :int               => [:int,       "Int",      :Int,  :INT],
+    :char              => [:char,      "Char",     :Char, :INT], # char は char_t として扱う
+    :short             => [:short,     "Short",    :Int,  :INT],
+    :long              => [:long,      "Long",     :Int,  :INT],
 
-    :"unsigned char"   => [:uchar_t,   "UChar",         :Char, :INT   ],
-    :"unsigned int"    => [:"unsigned int",   "UInt",   :Int,  :INT   ],
-    :"unsigned short"  => [:"unsigned short", "UShort", :Int,  :INT   ],
-    :"unsigned long"   => [:"unsigned long",  "ULong",  :Int,  :INT   ],
-    :"signed char"     => [:schar_t,   "SChar",    :Char,  :INT   ],
-    :"signed int"      => [:int,       "Int",      :Int,   :INT   ],
-    :"signed short"    => [:short,     "Short",    :Int,   :INT   ],
-    :"signed long"     => [:long,      "Long",     :Int,   :INT   ],
+    :"unsigned char"   => [:uchar_t,   "UChar",         :Char, :INT],
+    :"unsigned int"    => [:"unsigned int",   "UInt",   :Int,  :INT],
+    :"unsigned short"  => [:"unsigned short", "UShort", :Int,  :INT],
+    :"unsigned long"   => [:"unsigned long",  "ULong",  :Int,  :INT],
+    :"signed char"     => [:schar_t,   "SChar",    :Char,  :INT],
+    :"signed int"      => [:int,       "Int",      :Int,   :INT],
+    :"signed short"    => [:short,     "Short",    :Int,   :INT],
+    :"signed long"     => [:long,      "Long",     :Int,   :INT],
 
-    :float32_t         => [:float32_t, "Float32",  :Float, :FLOAT ],
-    :double64_t        => [:double64_t, "Double64", :Float, :FLOAT ],
+    :float32_t         => [:float32_t, "Float32",  :Float, :FLOAT],
+    :double64_t        => [:double64_t, "Double64", :Float, :FLOAT],
 
-    :float             => [:float,     "Float32",  :Float, :FLOAT ],
-    :double            => [:double,    "Double64", :Float, :FLOAT ]
+    :float             => [:float,     "Float32",  :Float, :FLOAT],
+    :double            => [:double,    "Double64", :Float, :FLOAT]
   }
 
   # included  or excluded functions
@@ -393,7 +393,7 @@ class MrubyBridgeSignaturePlugin < SignaturePlugin
   def gen_cdl_file(file)
     # ブリッジセルタイプの生成
     if @@celltypes[@celltype_name].nil?
-      @@celltypes[@celltype_name] = [ self ]
+      @@celltypes[@celltype_name] = [self]
       @@init_celltypes[@init_celltype_name] = true
       print_msg <<EOT
   MrubyBridgePlugin: [signature] #{@signature.get_namespace_path} => [celltype] nMruby::#{@celltype_name} => [class] TECS::#{@class_name}

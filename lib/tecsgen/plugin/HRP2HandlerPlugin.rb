@@ -41,7 +41,7 @@ require_tecsgen_lib "HRP2KernelObjectPlugin.rb"
 
 #== celltype プラグインの共通の親クラス
 class HRP2HandlerPlugin < HRP2KernelObjectPlugin
-  @@ep = [:eStartAlarm, :eStopAlarm, :eManageAlarm, :eReferAlarm ]
+  @@ep = [:eStartAlarm, :eStopAlarm, :eManageAlarm, :eReferAlarm]
     ##
     #
     # file : output file (ex.tecsgen.cfg)
