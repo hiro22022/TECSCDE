@@ -1342,6 +1342,5 @@ module TECSCDE
       @base_y = y
       set_rotate0
     end
-
   end
 end
