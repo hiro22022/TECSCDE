@@ -73,6 +73,8 @@ module TECSCDE
 #      @window.type = ( Gtk::Window::TOPLEVEL )
       @window.window.set_functions(Gdk::Window::FUNC_RESIZE | Gdk::Window::FUNC_MOVE)
 
+      setup_menubar
+
       #----- save BUTTON -----#
       @button_save = @builder["button_save"]
       @button_save.signal_connect("clicked") { @control.on_save }
@@ -140,11 +142,21 @@ module TECSCDE
       @treeview_cell_attribute = @builder["treeview_cell_attribute"]
       @attrTreeView = AttrTreeView.new @treeview_cell_attribute
 
-      #----- quit BUTTON -----#
-      # @button_quit = @builder["button_quit"]
-      # @button_quit.signal_connect("clicked") { @control.on_quit }
-
       @control.set_attrOperationWidgets @window, @celltypeTreeView, @attrTreeView, @entry_cell_name, @entry_cell_region, @frame_cell
+    end
+
+    def setup_menubar
+      @builder["menuitem-save"].signal_connect("activate") do
+        @control.on_save
+      end
+
+      @builder["menuitem-export"].signal_connect("activate") do
+        @control.on_export
+      end
+
+      @builder["menuitem-quit"].signal_connect("activate") do
+        @control.on_quit
+      end
     end
 
     def set_view(view)
