@@ -75,14 +75,6 @@ module TECSCDE
 
       setup_menubar
 
-      #----- save BUTTON -----#
-      @button_save = @builder["button_save"]
-      @button_save.signal_connect("clicked") { @control.on_save }
-
-      #----- export BUTTON -----#
-      @button_export = @builder["button_export"]
-      @button_export.signal_connect("clicked") { @control.on_export }
-
       #----- pointer BUTTON -----#
       @button_pointer = @builder["togglebutton_pointer"]
       @button_pointer.signal_connect("clicked") {
