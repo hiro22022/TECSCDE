@@ -149,6 +149,16 @@ module TECSCDE
       @builder["menuitem-quit"].signal_connect("activate") do
         @control.on_quit
       end
+
+      @builder["menuitem-undo"].signal_connect("activate") do
+        @control.on_undo
+      end
+
+      @builder["menuitem-redo"].signal_connect("activate") do
+        @control.on_redo
+      end
+      # currently redo doesn't work well
+      @builder["menuitem-redo"].sensitive = false
     end
 
     def set_view(view)
