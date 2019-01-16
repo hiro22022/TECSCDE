@@ -141,8 +141,8 @@ module TECSCDE
       @attrTreeView = AttrTreeView.new @treeview_cell_attribute
 
       #----- quit BUTTON -----#
-      @button_quit = @builder["button_quit"]
-      @button_quit.signal_connect("clicked") { @control.on_quit }
+      # @button_quit = @builder["button_quit"]
+      # @button_quit.signal_connect("clicked") { @control.on_quit }
 
       @control.set_attrOperationWidgets @window, @celltypeTreeView, @attrTreeView, @entry_cell_name, @entry_cell_region, @frame_cell
     end
