@@ -448,6 +448,10 @@ module TECSCDE
       @paper
     end
 
+    def paper=(name)
+      @paper = Paper[name]
+    end
+
     #=== TECSModel#set_view ***
     def set_view(view)
       @view = view
