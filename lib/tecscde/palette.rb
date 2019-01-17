@@ -51,6 +51,8 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
 =end
 
+require "tecscde/preferences"
+
 module TECSCDE
   class Palette
     # control::TECSCDE::Control
@@ -144,6 +146,11 @@ module TECSCDE
 
       @builder["menuitem-export"].signal_connect("activate") do
         @control.on_export
+      end
+
+      @builder["menuitem-preferences"].signal_connect("activate") do
+        preferences = TECSCDE::Preferences.new(@control)
+        preferences.run
       end
 
       @builder["menuitem-quit"].signal_connect("activate") do

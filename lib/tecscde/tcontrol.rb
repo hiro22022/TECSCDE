@@ -196,6 +196,16 @@ Structure of Palette Window
       @hilite_objs.set_attrTreeView @attrTreeView, @cell_name_entry, @cell_region_etnry, @cell_frame
     end
 
+    def preferences
+      {
+        paper: @model.paper
+      }
+    end
+
+    def change_preferences(paper: nil)
+      @model.paper = paper.to_sym
+    end
+
     #----- palette -----#
     def create_new_operation_window
       @palette = TECSCDE::Palette.new self
