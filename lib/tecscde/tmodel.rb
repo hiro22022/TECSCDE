@@ -255,15 +255,15 @@ module TECSCDE
     DIST_PORT = 4 # (mm)
 
     # Paper Size w/o margin (10 mm each side)
-    PaperSpec = Struct.new(:size, :key, :orientation, :name, :height, :width, keyword_init: true) do
+    PaperSpec = Struct.new(:index, :size, :key, :orientation, :name, :height, :width, keyword_init: true) do
       def cairo_paper_class
         Cairo::Paper.const_get(@name)
       end
     end
     PAPERS = {
-      A4L: PaperSpec.new(size: "A4", key: :A4L, orientation: "LANDSCAPE", name: "A4_LANDSCAPE", height: 190, width: 277),
-      A3L: PaperSpec.new(size: "A3", key: :A3L, orientation: "LANDSCAPE", name: "A3_LANDSCAPE", height: 277, width: 400),
-      A2L: PaperSpec.new(size: "A2", key: :A2L, orientation: "LANDSCAPE", name: "A2_LANDSCAPE", height: 400, width: 574),
+      A4L: PaperSpec.new(index: 0, size: "A4", key: :A4L, orientation: "LANDSCAPE", name: "A4_LANDSCAPE", height: 190, width: 277),
+      A3L: PaperSpec.new(index: 1, size: "A3", key: :A3L, orientation: "LANDSCAPE", name: "A3_LANDSCAPE", height: 277, width: 400),
+      A2L: PaperSpec.new(index: 2, size: "A2", key: :A2L, orientation: "LANDSCAPE", name: "A2_LANDSCAPE", height: 400, width: 574),
     }
     # name must be found in Cairo::Paper.constants
 
