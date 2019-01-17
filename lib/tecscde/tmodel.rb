@@ -255,17 +255,25 @@ module TECSCDE
     DIST_PORT = 4 # (mm)
 
     # Paper Size w/o margin (10 mm each side)
-    Paper = { :A4L => { :size => "A4", :orientation => "LANDSCAPE", :name => "A4_LANDSCAPE", :height => 190, :width => 277 },
-              :A3L => { :size => "A3", :orientation => "LANDSCAPE", :name => "A3_LANDSCAPE", :height => 277, :width => 400 },
-              :A2L => { :size => "A2", :orientation => "LANDSCAPE", :name => "A2_LANDSCAPE", :height => 400, :width => 574 } }
-    # name must  be found in Cairo::Paper
+    PaperSpec = Struct.new(:size, :key, :orientation, :name, :height, :width, keyword_init: true) do
+      def cairo_paper_class
+        Cairo::Paper.const_get(@name)
+      end
+    end
+    PAPERS = {
+      A4L: PaperSpec.new(size: "A4", key: :A4L, orientation: "LANDSCAPE", name: "A4_LANDSCAPE", height: 190, width: 277),
+      A3L: PaperSpec.new(size: "A3", key: :A3L, orientation: "LANDSCAPE", name: "A3_LANDSCAPE", height: 277, width: 400),
+      A2L: PaperSpec.new(size: "A2", key: :A2L, orientation: "LANDSCAPE", name: "A2_LANDSCAPE", height: 400, width: 574),
+    }
+    # name must be found in Cairo::Paper.constants
 
-    #
     NEAR_DIST = 2 # (mm)
 
     IDENTIFIER_RE = /[A-Za-z_][0-9A-Za-z_]*/
 
-    # @paper::Hash : See Paper
+    attr_reader :paper
+
+    # @paper::PaperSpec : See PaperSpec
     # @cell_list::[TmCell]
     # @cell_hash::{ Symbole(namespace_path) => TmCell }
     # @join_list::[TmJoin]
@@ -278,8 +286,7 @@ module TECSCDE
       @cell_hash = {}
       @join_list = []
       @tecsgen = tecsgen
-      @paper = Paper[:A3L]
-#      @paper = Paper[ :A2L ]
+      @paper = PAPERS[:A3L]
 
       # __tool_info__( "tecsgen" )
       @direct_import = []
@@ -449,7 +456,7 @@ module TECSCDE
     end
 
     def paper=(name)
-      @paper = Paper[name]
+      @paper = PAPERS[name]
     end
 
     #=== TECSModel#set_view ***
@@ -506,7 +513,7 @@ module TECSCDE
     end
 
     def clip_x(x)
-      max = @paper[:width] - 2
+      max = @paper.width - 2
       if x < 2
         x = 2
       elsif x > max
@@ -516,7 +523,7 @@ module TECSCDE
     end
 
     def clip_y(y)
-      max = @paper[:height] - 2
+      max = @paper.height - 2
       if y < 2
         y = 2
       elsif y > max

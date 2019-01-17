@@ -274,10 +274,10 @@ module TECSCDE
         size = paper_info[:size]
         orientation = paper_info[:orientation]
         paper = nil
-        Paper.each{|name, val|
-          if val[:size] == size && val[:orientation] == orientation
-            p "paper found #{val[:name]}"
-            paper = val
+        PAPERS.each{|name, spec|
+          if spec.size == size && spec.orientation == orientation
+            p "paper found #{spec.name}"
+            paper = spec
           end
         }
         @paper = paper if paper

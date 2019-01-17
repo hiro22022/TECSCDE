@@ -364,8 +364,8 @@ module TECSCDE
     end
 
     def resize_canvas
-      @canvas_height = Integer(mm2dot @model.get_paper[:height])
-      @canvas_width  = Integer(mm2dot @model.get_paper[:width])
+      @canvas_height = Integer(mm2dot @model.paper.height)
+      @canvas_width  = Integer(mm2dot @model.paper.width)
       @canvas.set_size_request(@canvas_width, @canvas_height)
       # @scrolledWindow.queue_draw
     end
@@ -1225,7 +1225,7 @@ module TECSCDE
       @scale_val = 72.0 / TECSCDE::DPI * 100 # PDF surface = 72 DPI,  mm2dot assume 100 DPI by default
       target_bak = @cairo_context_target
 
-      paper = Cairo::Paper.const_get(@model.get_paper[:name])
+      paper = @model.paper.cairo_paper_class
       paper_width = paper.width("pt") - mm2dot(PAPER_MARGIN * 2)
       paper_height = paper.height("pt") - mm2dot(PAPER_MARGIN * 2)
       begin
