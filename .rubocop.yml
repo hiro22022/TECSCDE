@@ -4,6 +4,8 @@ AllCops:
   Exclude:
     - "vendor/**/*"
     - "lib/**/*.tab.rb"
+    - "lib/tecsgen.rb"
+    - "lib/tecsgen/**/*.rb"
 
 Layout/ExtraSpacing:
   AllowForAlignment: true
