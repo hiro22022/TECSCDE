@@ -203,6 +203,7 @@ module TECSCDE
       @main_window.sensitive = true
       @main_window.signal_connect("delete-event") do |window, *args|
         TECSCDE.quit(@model, @main_window)
+        true
       end
       # KEY-PRESS event action
       @main_window.signal_connect("key-press-event"){|win, event|
