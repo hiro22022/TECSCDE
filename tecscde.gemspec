@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "gtk2", ">= 3.3.0"
 
-  spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "racc"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rubocop", "~> 0.61.1"
