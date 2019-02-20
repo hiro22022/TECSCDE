@@ -6,6 +6,7 @@ AllCops:
     - "lib/**/*.tab.rb"
     - "lib/tecsgen.rb"
     - "lib/tecsgen/**/*.rb"
+    - "glade/*.rb"
 
 Layout/ExtraSpacing:
   AllowForAlignment: true
