@@ -69,6 +69,8 @@ module TECSCDE
       # @pango_layout::Pango::Layout
       # @pango_matrix::Pango::Matrix
 
+      include TECSCDE::View::Constants
+
       # colors
       @@colors = nil
       @@colormap = nil
@@ -220,7 +222,7 @@ module TECSCDE
         # @cairo_context_win = @gdkWindow.create_cairo_context
         # @cairo_context_win.save
         @cairo_context_target = @cairo_context_pixmap
-        @cairo_matrix = MyCairoMatrix.new
+        @cairo_matrix = TECSCDE::View::CairoMatrix.new
    
         # prepare text renderer
         @pango_context = Gdk::Pango.context

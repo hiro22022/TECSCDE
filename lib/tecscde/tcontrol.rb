@@ -560,7 +560,7 @@ EOT
     # @choice_list::{name=>ListStore}
     # @cell::TmCell
     # @ct_attr_list::{ String(attr_name) => String(initializer) }
-    # @view::MainView
+    # @view::TECSCDE::View::MainView
     # @treeView::Gtk::TreeView
 
     COL_NAME = 0
@@ -755,7 +755,7 @@ EOT
     end
 
     #=== AttrTreeView#set_view
-    # view::MainView
+    # view::TECSCDE::View::MainView
     def set_view(view)
       @view = view
     end

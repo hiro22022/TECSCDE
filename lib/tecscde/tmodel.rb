@@ -56,6 +56,8 @@ Copyright (C) 2014-2015 by TOPPERS Project
 # don't call unmarked methods other than TECSModel.
 #
 
+require "tecscde/view/constants"
+
 module TECSCDE
 
   def self.error(msg)
@@ -234,6 +236,7 @@ module TECSCDE
 
   class TECSModel < TmObject
     include ChangeSetControl
+    include TECSCDE::View::Constants
 
     # edges for join (connected by Bars from TmCPort to TmEPort)
     EDGE_TOP    = 0b00
