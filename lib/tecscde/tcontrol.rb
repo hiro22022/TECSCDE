@@ -51,6 +51,8 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
 =end
 
+require "tecscde/highlighted_objects"
+
 module TECSCDE
 
 =begin
@@ -103,7 +105,7 @@ Structure of Palette Window
     def initialize(model)
       @nest = -1
       @model = model
-      @hilite_objs = Hilite_objs.new
+      @hilite_objs = TECSCDE::HighlightedObjects.new
       @mode     = :MODE_NONE
       @sub_mode = :SM_NONE
       @cport_joining = nil
@@ -277,7 +279,7 @@ Structure of Palette Window
             @sub_mode = :SM_JOINING
             @hilite_objs.reset
             @cport_joining = object
-            @view.set_cursor CURSOR_JOINING
+            @view.set_cursor TECSCDE::CURSOR_JOINING
           else
             TECSCDE.message_box(<<EOT, :OK)
 Call port has already been joined.
@@ -347,7 +349,7 @@ EOT
         object = find_near xm, ym
         if object.is_a? TECSModel::TmEPort
           if object.get_signature == @cport_joining.get_signature
-            @view.set_cursor CURSOR_JOIN_OK
+            @view.set_cursor TECSCDE::CURSOR_JOIN_OK
           end
          # update
         end
@@ -355,9 +357,9 @@ EOT
       when :SM_NONE
         object = find_near xm, ym
         if object.is_a? TECSModel::TmCPort
-          @view.set_cursor CURSOR_PORT
+          @view.set_cursor TECSCDE::CURSOR_PORT
         else
-          @view.set_cursor CURSOR_NORMAL
+          @view.set_cursor TECSCDE::CURSOR_NORMAL
         end
       end
     end
@@ -381,7 +383,7 @@ EOT
          # update
         end
       end
-      @view.set_cursor CURSOR_NORMAL
+      @view.set_cursor TECSCDE::CURSOR_NORMAL
       if @sub_mode != :SM_EDIT_CELL_NAME
         update
         @sub_mode = :SM_NONE
@@ -766,136 +768,4 @@ EOT
       @treeView
     end
   end # class AttrTreeView
-
-  #== manage hilited objects
-  class Hilite_objs
-    # @hilite_objs::[TmCell|TmJoinBar]
-    def initialize
-      @hilite_objs = []
-    end
-
-    def add(obj)
-      reset_if_ncessary obj
-      @hilite_objs << obj
-      @hilite_objs.uniq!
-      update_attrTreeView
-    end
-
-    #=== hilite_objs#add_del
-    # add if not include, delete if include
-    def add_del(obj)
-      reset_if_ncessary obj
-      if @hilite_objs.include? obj
-        @hilite_objs.delete obj
-      else
-        @hilite_objs << obj
-      end
-      update_attrTreeView
-    end
-
-    def reset(obj = nil)
-      @hilite_objs = []
-      if obj
-        @hilite_objs << obj
-      end
-      update_attrTreeView
-    end
-
-    #=== hilite_objs#reset_if_ncessary
-    # Port and ( Cell or Bar ) cannot be hilited simultaneously.
-    # Ports belonging to diferent Cell cannot be hilited simultaneously.
-    # obj::TmCell | TmBar | TmPort: new object to be hilited
-    def reset_if_ncessary(obj)
-      if @hilite_objs.length > 0
-        if @hilite_objs[0].is_a? TECSModel::TmPort
-          if obj.is_a? TECSModel::TmPort
-            if obj.get_owner_cell != @hilite_objs[0].get_owner_cell
-              reset
-            end
-          else
-            reset
-          end
-        else
-          if obj.is_a? TECSModel::TmPort
-            reset
-          end
-        end
-      end
-    end
-
-    def each # proc
-      proc = Proc.new
-      @hilite_objs.each{|obj|
-        proc.call obj
-      }
-    end
-
-    def empty?
-      @hilite_objs.empty?
-    end
-
-    def include?(object)
-      @hilite_objs.include? object
-    end
-
-    def set_attrTreeView(treeview, name_entry, region_entry, frame)
-      @cell_property_frame = frame
-      @cell_name_entry = name_entry
-      @cell_region_entry = region_entry
-      @attrTreeView = treeview
-    end
-
-    def change_cell_name(name)
-      if @hilite_objs.length == 1 && @hilite_objs[0].is_a?(TECSModel::TmCell)
-        @hilite_objs[0].change_name name.to_sym
-        @hilite_objs[0].get_model.set_undo_point
-      end
-    end
-
-    def cell_plugin_dialog
-      if @hilite_objs.length == 1 && @hilite_objs[0].is_a?(TECSModel::TmCell)
-        dialog = CellPluginDialog.new @hilite_objs[0]
-        dialog.run
-      end
-    end
-
-    def update_attrTreeView
-      cell = nil
-      n_cell = 0
-      each{|obj|
-        if obj.is_a? TECSModel::TmCell
-          cell = obj
-          n_cell += 1
-        end
-      }
-      if n_cell == 1
-        @cell_name_entry.text = cell.get_name.to_s
-        @cell_region_entry.text = cell.get_region.get_namespace_path.to_s
-
-        # this doesn't work!  I don't know how to change the color of Entry text
-        if cell.is_editable?
-          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("black")
-          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("black")
-          @cell_property_frame.set_label "cell property"
-        else
-          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("blue")
-          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("blue")
-          @cell_property_frame.set_label "cell property (read only)"
-        end
-
-        @cell_name_entry.set_editable cell.is_editable?
-        @cell_region_entry.set_editable cell.is_editable?
-
-        @attrTreeView.set_cell cell
-      else
-        @cell_name_entry.text = "(unselected)"
-        @cell_name_entry.set_editable false
-        @cell_name_entry.text = "(unselected)"
-        @cell_name_entry.set_editable false
-        @cell_property_frame.set_label "cell property (unselected)"
-
-        @attrTreeView.clear
-      end
-    end
-  end # class hilite_objs
 end
