@@ -58,15 +58,13 @@ module TECSCDE
     # control::TECSCDE::Control
     def initialize(control)
       @control = control
-      Dir.chdir("#{$tecsgen_base_path}/../glade"){
-        setup
-      }
+      setup
       @window.show_all
     end
 
     def setup
       @builder = Gtk::Builder.new
-      @builder.add_from_file "tecscde-palette.glade"
+      @builder.add_from_file(File.join(__dir__, "palette.glade"))
 
       #----- window -----#
       @window = @builder["window_palette"]
