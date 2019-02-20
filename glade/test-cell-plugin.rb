@@ -2,7 +2,7 @@
 require "gtk2"
 
 builder = Gtk::Builder.new
-builder.add_from_file("tecscde-cell-plugin.glade") # 読み込むgladeファイルを指定
+builder.add_from_file(File.expand_path(File.join(__dir__, "../lib/tecscde/cell_plugin_dialog.glade"))) # 読み込むgladeファイルを指定
 
 # p builder
 # p builder.objects
