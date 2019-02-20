@@ -51,6 +51,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 
 =end
 
+require "tecscde/attr_tree_view"
 require "tecscde/preferences"
 
 module TECSCDE
