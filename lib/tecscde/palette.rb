@@ -66,7 +66,6 @@ module TECSCDE
 
     def setup
       @builder = Gtk::Builder.new
-#      @builder.add get_ui_definition
       @builder.add_from_file "tecscde-palette.glade"
 
       #----- window -----#
