@@ -57,10 +57,7 @@ module TECSCDE
     # cell::TmCell
     def initialize(cell)
       @cell = cell
-
-      Dir.chdir("#{$tecsgen_base_path}/../glade"){
-        setup
-      }
+      setup
     end
 
     def run
@@ -73,7 +70,7 @@ module TECSCDE
 
     def setup
       @builder = Gtk::Builder.new
-      @builder.add_from_file "tecscde-cell-plugin.glade"
+      @builder.add_from_file(File.join(__dir__, "cell_plugin_dialog.glade"))
 
       @dialog = @builder["dialog_cell_plugin"]
 
