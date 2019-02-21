@@ -58,7 +58,7 @@ module TECSCDE
     # @cell::TmCell
     # @ct_attr_list::{ String(attr_name) => String(initializer) }
     # @view::TECSCDE::View::MainView
-    # @treeView::Gtk::TreeView
+    # @tree_view::Gtk::TreeView
 
     COL_NAME = 0
     COL_TYPE = 1
@@ -66,7 +66,7 @@ module TECSCDE
 
     #=== initialize
     def initialize(tv)
-      @treeView = tv
+      @tree_view = tv
 
       combo_list = Gtk::ListStore.new(String)
       iter = combo_list.append
@@ -97,7 +97,7 @@ module TECSCDE
       liststore = Gtk::ListStore.new(String, String, String)
 
       # set data model to tree view(self)
-      @treeView.set_model(liststore)
+      @tree_view.set_model(liststore)
 
       # create renderer for text
       renderer = Gtk::CellRendererText.new
@@ -115,7 +115,7 @@ module TECSCDE
           renderer.foreground = "blue"
         end
       }
-      @treeView.append_column(col)
+      @tree_view.append_column(col)
 
       # TYPE column
       col = Gtk::TreeViewColumn.new("type", renderer, :text => COL_TYPE)
@@ -126,7 +126,7 @@ module TECSCDE
           renderer.foreground = "blue"
         end
       }
-      @treeView.append_column(col)
+      @tree_view.append_column(col)
 
       # VALUE column
       renderer = Gtk::CellRendererCombo.new
@@ -185,7 +185,7 @@ module TECSCDE
         # after selection is changed, before sending signal, many rows are redrawn
 
         # p "new_text='#{new_text}'"
-        if (iter = @treeView.model.get_iter(path))
+        if (iter = @tree_view.model.get_iter(path))
           if new_text.nil? || new_text == ""
             if @ct_attr_list[iter[COL_NAME]]
               iter[COL_VALUE] = @ct_attr_list[iter[COL_NAME]]
@@ -203,7 +203,7 @@ module TECSCDE
           @view.paint_canvas
         end
       }
-      @treeView.append_column(col)
+      @tree_view.append_column(col)
     end
 
     #=== AttrTreeView#set_cell
@@ -219,7 +219,7 @@ module TECSCDE
       if ct
         #----- register attributes and initializer to tree view model -----#
         ct.get_attribute_list.each{|attr|
-          iter = @treeView.model.append
+          iter = @tree_view.model.append
           name = attr.get_name.to_s
           if attr.get_initializer
             @ct_attr_list[name] = attr.get_initializer.to_CDL_str
@@ -248,7 +248,7 @@ module TECSCDE
     end
 
     def clear
-      @treeView.model.clear
+      @tree_view.model.clear
     end
 
     #=== AttrTreeView#set_view
@@ -260,7 +260,7 @@ module TECSCDE
     #=== AttrTreeView#get_treeView
     # RETURN::Gtk::TreeView
     def get_treeView
-      @treeView
+      @tree_view
     end
   end
 end
