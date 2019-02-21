@@ -122,7 +122,7 @@ Structure of Palette Window
       add_celltype_list
 
       @highlighted_objects.set_attr_tree_view(@attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame)
-      @highlighted_objects.update_attrTreeView
+      @highlighted_objects.update_attr_tree_view
 
       @last_xm = @last_ym = 0
     end
@@ -492,7 +492,7 @@ EOT
 
     # Control#update
     def update
-      @highlighted_objects.update_attrTreeView
+      @highlighted_objects.update_attr_tree_view
       @view.paint_canvas
     end
   end

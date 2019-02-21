@@ -61,7 +61,7 @@ module TECSCDE
       reset_if_ncessary obj
       @objects << obj
       @objects.uniq!
-      update_attrTreeView
+      update_attr_tree_view
     end
 
     #=== objects#add_del
@@ -73,7 +73,7 @@ module TECSCDE
       else
         @objects << obj
       end
-      update_attrTreeView
+      update_attr_tree_view
     end
 
     def reset(obj = nil)
@@ -81,7 +81,7 @@ module TECSCDE
       if obj
         @objects << obj
       end
-      update_attrTreeView
+      update_attr_tree_view
     end
 
     #=== objects#reset_if_ncessary
@@ -142,7 +142,7 @@ module TECSCDE
       end
     end
 
-    def update_attrTreeView
+    def update_attr_tree_view
       cell = nil
       n_cell = 0
       each{|obj|
