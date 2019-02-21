@@ -198,9 +198,9 @@ Structure of Palette Window
       # end
     end
 
-    def set_attr_operation_widgets(window, ctv, attr_tree_view, cell_name_entry, cell_region_entry, cell_frame)
+    def set_attr_operation_widgets(window, celltype_tree_view, attr_tree_view, cell_name_entry, cell_region_entry, cell_frame)
       @window = window
-      @celltype_tree_view = ctv
+      @celltype_tree_view = celltype_tree_view
       @attr_tree_view, @cell_name_entry, @cell_region_entry, @cell_frame = attr_tree_view, cell_name_entry, cell_region_entry, cell_frame
       @highlighted_objects.set_attr_tree_view(@attr_tree_view, @cell_name_entry, @cell_region_etnry, @cell_frame)
     end
