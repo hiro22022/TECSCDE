@@ -91,7 +91,7 @@ Structure of Palette Window
     # @view::View
     # @mode::Symbol: :NEW_CELL, :POINTER
     # @cport_joining::TmCPort   # :SM_JOINING starting cell
-    # @celltypeTreeView::CelltypeTreeView
+    # @celltype_tree_view::CelltypeTreeView
     # @attrTreeView::AttrTreeView
     # @prev_time::Integer: event time (milli second)
 
@@ -200,7 +200,7 @@ Structure of Palette Window
 
     def set_attr_operation_widgets(window, ctv, attrTreeView, cell_name_entry, cell_region_entry, cell_frame)
       @window = window
-      @celltypeTreeView = ctv
+      @celltype_tree_view = ctv
       @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame = attrTreeView, cell_name_entry, cell_region_entry, cell_frame
       @highlighted_objects.set_attr_tree_view(@attrTreeView, @cell_name_entry, @cell_region_etnry, @cell_frame)
     end
@@ -309,7 +309,7 @@ EOT
         else
           # p "NOT FOUND"
           if @mode == :MODE_NEW_CELL
-            ctn, nsp = @celltypeTreeView.selected
+            ctn, nsp = @celltype_tree_view.selected
             if ctn
               cell = @model.new_cell(xm, ym, ctn, nsp)
               @model.set_undo_point
@@ -485,7 +485,7 @@ EOT
       ctl = @model.get_celltype_list
       if ctl
         ctl.each{|ct|
-          @celltypeTreeView.add ct
+          @celltype_tree_view.add ct
         }
       end
     end
