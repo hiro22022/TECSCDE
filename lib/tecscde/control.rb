@@ -95,8 +95,8 @@ Structure of Palette Window
     # @attr_tree_view::AttrTreeView
     # @prev_time::Integer: event time (milli second)
 
-    ModeList    = [:MODE_NONE, :MODE_NEW_CELL, :MODE_POINTER]
-    SubmodeList = [
+    MODE_LIST    = [:MODE_NONE, :MODE_NEW_CELL, :MODE_POINTER]
+    SUBMODE_LIST = [
       :SM_NONE,
       :SM_JOINING,
       :SM_SURROUNDING_CELLS,
