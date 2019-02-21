@@ -57,6 +57,8 @@ module TECSCDE
     COL_NAME   = 0
     COL_NSPATH = 1
 
+    attr_reader :tree_view # Gtk::TreeView
+
     #=== initialize
     def initialize(tree_view)
       @tree_view = tree_view
@@ -100,12 +102,6 @@ module TECSCDE
 
     def clear
       @tree_view.model.clear
-    end
-
-    #=== CelltypeTreeView#get_treeView
-    # RETURN::Gtk::TreeView
-    def get_treeView
-      @tree_view
     end
   end
 end

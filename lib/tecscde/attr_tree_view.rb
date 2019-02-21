@@ -64,6 +64,8 @@ module TECSCDE
     COL_TYPE = 1
     COL_VALUE = 2
 
+    attr_reader :tree_view # Gtk::TreeView
+
     #=== initialize
     def initialize(tv)
       @tree_view = tv
@@ -255,12 +257,6 @@ module TECSCDE
     # view::TECSCDE::View::MainView
     def set_view(view)
       @view = view
-    end
-
-    #=== AttrTreeView#get_treeView
-    # RETURN::Gtk::TreeView
-    def get_treeView
-      @tree_view
     end
   end
 end
