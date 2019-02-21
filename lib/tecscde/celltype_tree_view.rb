@@ -58,36 +58,36 @@ module TECSCDE
     COL_NSPATH = 1
 
     #=== initialize
-    def initialize(treeView)
-      @treeView = treeView
+    def initialize(tree_view)
+      @tree_view = tree_view
 
       # create data model
       liststore = Gtk::ListStore.new(String, String)
 
       # set data model to tree view(self)
-      @treeView.set_model(liststore)
+      @tree_view.set_model(liststore)
 
       # create renderer for text
       renderer = Gtk::CellRendererText.new
 
       # set column information
       col = Gtk::TreeViewColumn.new("name", renderer, :text => COL_NAME)
-      @treeView.append_column(col)
+      @tree_view.append_column(col)
 
       col = Gtk::TreeViewColumn.new("namespace", renderer, :text => COL_NSPATH)
-      @treeView.append_column(col)
+      @tree_view.append_column(col)
 
       liststore.set_sort_column_id(COL_NAME)
     end
 
     def add(celltype)
-      iter = @treeView.model.append
+      iter = @tree_view.model.append
       iter[COL_NAME] = celltype.get_name
       iter[COL_NSPATH] = celltype.get_owner.get_namespace_path.to_s
     end
 
     def selected
-      iter = @treeView.selection.selected
+      iter = @tree_view.selection.selected
       if iter
         [iter[COL_NAME], iter[COL_NSPATH]]
       else
@@ -99,13 +99,13 @@ module TECSCDE
     end
 
     def clear
-      @treeView.model.clear
+      @tree_view.model.clear
     end
 
     #=== CelltypeTreeView#get_treeView
     # RETURN::Gtk::TreeView
     def get_treeView
-      @treeView
+      @tree_view
     end
   end
 end
