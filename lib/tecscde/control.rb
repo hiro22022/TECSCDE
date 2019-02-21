@@ -96,15 +96,22 @@ Structure of Palette Window
     # @prev_time::Integer: event time (milli second)
 
     ModeList    = [:MODE_NONE, :MODE_NEW_CELL, :MODE_POINTER]
-    SubmodeList = [:SM_NONE,   :SM_JOINING,    :SM_SURROUNDING_CELLS,
-                    :SM_MOVING_CELL_BAR, :SM_MOVING_CPORT, :SM_MOVING_EPORT, :SM_MOVING_CELL_EDGE,
-                    :SM_EDIT_CELL_NAME]
+    SubmodeList = [
+      :SM_NONE,
+      :SM_JOINING,
+      :SM_SURROUNDING_CELLS,
+      :SM_MOVING_CELL_BAR,
+      :SM_MOVING_CPORT,
+      :SM_MOVING_EPORT,
+      :SM_MOVING_CELL_EDGE,
+      :SM_EDIT_CELL_NAME
+    ]
 
     def initialize(model)
       @nest = -1
       @model = model
       @hilite_objs = TECSCDE::HighlightedObjects.new
-      @mode     = :MODE_NONE
+      @mode = :MODE_NONE
       @sub_mode = :SM_NONE
       @cport_joining = nil
       @prev_time = 0
