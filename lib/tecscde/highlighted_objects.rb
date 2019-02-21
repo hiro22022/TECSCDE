@@ -58,7 +58,7 @@ module TECSCDE
     end
 
     def add(obj)
-      reset_if_ncessary obj
+      reset_if_ncessary(obj)
       @objects << obj
       @objects.uniq!
       update_attr_tree_view
@@ -67,9 +67,9 @@ module TECSCDE
     #=== objects#add_del
     # add if not include, delete if include
     def add_del(obj)
-      reset_if_ncessary obj
-      if @objects.include? obj
-        @objects.delete obj
+      reset_if_ncessary(obj)
+      if @objects.include?(obj)
+        @objects.delete(obj)
       else
         @objects << obj
       end
@@ -90,8 +90,8 @@ module TECSCDE
     # obj::TmCell | TmBar | TmPort: new object to be hilited
     def reset_if_ncessary(obj)
       if @objects.length > 0
-        if @objects[0].is_a? TECSModel::TmPort
-          if obj.is_a? TECSModel::TmPort
+        if @objects[0].is_a?(TECSModel::TmPort)
+          if obj.is_a?(TECSModel::TmPort)
             if obj.get_owner_cell != @objects[0].get_owner_cell
               reset
             end
@@ -99,7 +99,7 @@ module TECSCDE
             reset
           end
         else
-          if obj.is_a? TECSModel::TmPort
+          if obj.is_a?(TECSModel::TmPort)
             reset
           end
         end
@@ -109,7 +109,7 @@ module TECSCDE
     def each # proc
       proc = Proc.new
       @objects.each{|obj|
-        proc.call obj
+        proc.call(obj)
       }
     end
 
@@ -118,7 +118,7 @@ module TECSCDE
     end
 
     def include?(object)
-      @objects.include? object
+      @objects.include?(object)
     end
 
     def set_attr_tree_view(tree_view, name_entry, region_entry, frame)
@@ -130,14 +130,14 @@ module TECSCDE
 
     def change_cell_name(name)
       if @objects.length == 1 && @objects[0].is_a?(TECSModel::TmCell)
-        @objects[0].change_name name.to_sym
+        @objects[0].change_name(name.to_sym)
         @objects[0].get_model.set_undo_point
       end
     end
 
     def cell_plugin_dialog
       if @objects.length == 1 && @objects[0].is_a?(TECSModel::TmCell)
-        dialog = CellPluginDialog.new @objects[0]
+        dialog = CellPluginDialog.new(@objects[0])
         dialog.run
       end
     end
@@ -146,7 +146,7 @@ module TECSCDE
       cell = nil
       n_cell = 0
       each{|obj|
-        if obj.is_a? TECSModel::TmCell
+        if obj.is_a?(TECSModel::TmCell)
           cell = obj
           n_cell += 1
         end
@@ -157,25 +157,25 @@ module TECSCDE
 
         # this doesn't work!  I don't know how to change the color of Entry text
         if cell.is_editable?
-          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("black")
-          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("black")
-          @cell_property_frame.set_label "cell property"
+          @cell_name_entry.modify_fg(Gtk::STATE_NORMAL, Gdk::Color.parse("black"))
+          @cell_region_entry.modify_fg(Gtk::STATE_NORMAL, Gdk::Color.parse("black"))
+          @cell_property_frame.set_label("cell property")
         else
-          @cell_name_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("blue")
-          @cell_region_entry.modify_fg Gtk::STATE_NORMAL, Gdk::Color.parse("blue")
-          @cell_property_frame.set_label "cell property (read only)"
+          @cell_name_entry.modify_fg(Gtk::STATE_NORMAL, Gdk::Color.parse("blue"))
+          @cell_region_entry.modify_fg(Gtk::STATE_NORMAL, Gdk::Color.parse("blue"))
+          @cell_property_frame.set_label("cell property (read only)")
         end
 
-        @cell_name_entry.set_editable cell.is_editable?
-        @cell_region_entry.set_editable cell.is_editable?
+        @cell_name_entry.set_editable(cell.is_editable?)
+        @cell_region_entry.set_editable(cell.is_editable?)
 
-        @attr_tree_view.set_cell cell
+        @attr_tree_view.set_cell(cell)
       else
         @cell_name_entry.text = "(unselected)"
-        @cell_name_entry.set_editable false
+        @cell_name_entry.set_editable(false)
         @cell_name_entry.text = "(unselected)"
-        @cell_name_entry.set_editable false
-        @cell_property_frame.set_label "cell property (unselected)"
+        @cell_name_entry.set_editable(false)
+        @cell_property_frame.set_label("cell property (unselected)")
 
         @attr_tree_view.clear
       end
