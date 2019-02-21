@@ -175,18 +175,18 @@ Structure of Palette Window
     end
 
     def on_cell_region_entry_active(entry)
-#      @b_cell_renaming = true
-#      @hilite_objs.change_cell_name entry.text
-#      @b_cell_renaming = false
-#      update
+      # @b_cell_renaming = true
+      # @hilite_objs.change_cell_name entry.text
+      # @b_cell_renaming = false
+      # update
     end
 
     def on_cell_region_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
-#      if ! @b_cell_renaming
-#        @hilite_objs.change_cell_name entry.text
-#        update
-#      end
+      # if ! @b_cell_renaming
+      #   @hilite_objs.change_cell_name entry.text
+      #   update
+      # end
     end
 
     def set_attrOperationWidgets(window, ctv, attrTreeView, cell_name_entry, cell_region_entry, cell_frame)
@@ -209,8 +209,8 @@ Structure of Palette Window
     #----- palette -----#
     def create_new_operation_window
       @palette = TECSCDE::Palette.new self
-#      @palette.get_entry_cell_name
- #     @palette.get_attrTreeView
+      # @palette.get_entry_cell_name
+      # @palette.get_attrTreeView
     end
 
     #----- end of palette operations -----#
@@ -247,14 +247,14 @@ Structure of Palette Window
         object = find_near xm, ym
         if object.is_a?(TECSModel::TmCell) && click_count == 2
           if object.is_editable?
-# p "begin_edit_name"
+            # p "begin_edit_name"
             @view.begin_edit_name object, time
             @hilite_objs.reset(object)
             @sub_mode = :SM_EDIT_CELL_NAME
           end
         elsif object.is_a?(TECSModel::TmCell) ||
-#         if object.kind_of?( TECSModel::TmCell ) ||
-            object.is_a?(TECSModel::TmJoinBar)
+          # if object.kind_of?( TECSModel::TmCell ) ||
+          object.is_a?(TECSModel::TmJoinBar)
           @sub_mode = :SM_MOVING_CELL_BAR
           # p "FOUND Cell or Bar"
           if state.shift_mask?
@@ -349,7 +349,7 @@ EOT
           if object.get_signature == @cport_joining.get_signature
             @view.set_cursor TECSCDE::CURSOR_JOIN_OK
           end
-         # update
+          # update
         end
 
       when :SM_NONE
@@ -378,7 +378,7 @@ EOT
             join = @model.new_join(@cport_joining, object)
             @model.set_undo_point
           end
-         # update
+          # update
         end
       end
       @view.set_cursor TECSCDE::CURSOR_NORMAL
@@ -492,5 +492,5 @@ EOT
       @hilite_objs.update_attrTreeView
       @view.paint_canvas
     end
-  end # class Control
+  end
 end
