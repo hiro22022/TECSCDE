@@ -121,7 +121,7 @@ Structure of Palette Window
       create_new_operation_window
       add_celltype_list
 
-      @highlighted_objects.set_attrTreeView @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame
+      @highlighted_objects.set_attr_tree_view(@attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame)
       @highlighted_objects.update_attrTreeView
 
       @last_xm = @last_ym = 0
@@ -202,7 +202,7 @@ Structure of Palette Window
       @window = window
       @celltypeTreeView = ctv
       @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame = attrTreeView, cell_name_entry, cell_region_entry, cell_frame
-      @highlighted_objects.set_attrTreeView @attrTreeView, @cell_name_entry, @cell_region_etnry, @cell_frame
+      @highlighted_objects.set_attr_tree_view(@attrTreeView, @cell_name_entry, @cell_region_etnry, @cell_frame)
     end
 
     def preferences

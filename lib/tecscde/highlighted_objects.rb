@@ -121,11 +121,11 @@ module TECSCDE
       @objects.include? object
     end
 
-    def set_attrTreeView(treeview, name_entry, region_entry, frame)
+    def set_attr_tree_view(tree_view, name_entry, region_entry, frame)
       @cell_property_frame = frame
       @cell_name_entry = name_entry
       @cell_region_entry = region_entry
-      @attrTreeView = treeview
+      @attrTreeView = tree_view
     end
 
     def change_cell_name(name)
