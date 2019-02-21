@@ -92,7 +92,7 @@ Structure of Palette Window
     # @mode::Symbol: :NEW_CELL, :POINTER
     # @cport_joining::TmCPort   # :SM_JOINING starting cell
     # @celltype_tree_view::CelltypeTreeView
-    # @attrTreeView::AttrTreeView
+    # @attr_tree_view::AttrTreeView
     # @prev_time::Integer: event time (milli second)
 
     ModeList    = [:MODE_NONE, :MODE_NEW_CELL, :MODE_POINTER]
@@ -121,7 +121,7 @@ Structure of Palette Window
       create_new_operation_window
       add_celltype_list
 
-      @highlighted_objects.set_attr_tree_view(@attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame)
+      @highlighted_objects.set_attr_tree_view(@attr_tree_view, @cell_name_entry, @cell_region_entry, @cell_frame)
       @highlighted_objects.update_attr_tree_view
 
       @last_xm = @last_ym = 0
@@ -198,11 +198,11 @@ Structure of Palette Window
       # end
     end
 
-    def set_attr_operation_widgets(window, ctv, attrTreeView, cell_name_entry, cell_region_entry, cell_frame)
+    def set_attr_operation_widgets(window, ctv, attr_tree_view, cell_name_entry, cell_region_entry, cell_frame)
       @window = window
       @celltype_tree_view = ctv
-      @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame = attrTreeView, cell_name_entry, cell_region_entry, cell_frame
-      @highlighted_objects.set_attr_tree_view(@attrTreeView, @cell_name_entry, @cell_region_etnry, @cell_frame)
+      @attr_tree_view, @cell_name_entry, @cell_region_entry, @cell_frame = attr_tree_view, cell_name_entry, cell_region_entry, cell_frame
+      @highlighted_objects.set_attr_tree_view(@attr_tree_view, @cell_name_entry, @cell_region_etnry, @cell_frame)
     end
 
     def preferences
@@ -226,7 +226,7 @@ Structure of Palette Window
 
     def set_view(view)
       @view = view
-      @attrTreeView.set_view view
+      @attr_tree_view.set_view view
 
       # keep controlWindow above mainWindow
       @window.set_transient_for(@view.get_window)
