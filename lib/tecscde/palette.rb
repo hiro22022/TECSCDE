@@ -135,7 +135,7 @@ module TECSCDE
       @treeview_cell_attribute = @builder["treeview_cell_attribute"]
       @attrTreeView = AttrTreeView.new @treeview_cell_attribute
 
-      @control.set_attrOperationWidgets @window, @celltypeTreeView, @attrTreeView, @entry_cell_name, @entry_cell_region, @frame_cell
+      @control.set_attr_operation_widgets(@window, @celltypeTreeView, @attrTreeView, @entry_cell_name, @entry_cell_region, @frame_cell)
     end
 
     def setup_menubar
