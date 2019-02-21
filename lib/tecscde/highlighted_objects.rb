@@ -125,7 +125,7 @@ module TECSCDE
       @cell_property_frame = frame
       @cell_name_entry = name_entry
       @cell_region_entry = region_entry
-      @attrTreeView = tree_view
+      @attr_tree_view = tree_view
     end
 
     def change_cell_name(name)
@@ -169,7 +169,7 @@ module TECSCDE
         @cell_name_entry.set_editable cell.is_editable?
         @cell_region_entry.set_editable cell.is_editable?
 
-        @attrTreeView.set_cell cell
+        @attr_tree_view.set_cell cell
       else
         @cell_name_entry.text = "(unselected)"
         @cell_name_entry.set_editable false
@@ -177,7 +177,7 @@ module TECSCDE
         @cell_name_entry.set_editable false
         @cell_property_frame.set_label "cell property (unselected)"
 
-        @attrTreeView.clear
+        @attr_tree_view.clear
       end
     end
   end
