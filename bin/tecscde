@@ -68,7 +68,6 @@ require "tecscde/version"
 require "tecscde/tecs_model"
 require "tecscde/view"
 require "tecscde/control"
-require "tecscde/saveload"
 require "tecscde/cell_plugin_dialog"
 require "tecscde/palette.rb"
 
