@@ -1,6 +1,6 @@
 require "tecscde/tm_object"
-require "tecscde/tm_model/hbar"
-require "tecscde/tm_model/vbar"
+require "tecscde/tecs_model/hbar"
+require "tecscde/tecs_model/vbar"
 
 module TECSCDE
   class TECSModel

@@ -1,4 +1,5 @@
 require "tecscde/tecs_model/tm_c_port"
+require "tecscde/tecs_model/tm_port_array"
 
 module TECSCDE
   class TECSModel

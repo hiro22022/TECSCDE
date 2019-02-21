@@ -57,7 +57,8 @@ Copyright (C) 2014-2015 by TOPPERS Project
 #
 
 require "tecscde/view/constants"
-require "tecscd/tm_object"
+require "tecscde/tm_object"
+require "tecscde/change_set_control"
 
 module TECSCDE
 

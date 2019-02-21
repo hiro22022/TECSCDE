@@ -1,5 +1,5 @@
 require "gtk2"
-require "tecscde/tmodel"
+require "tecscde/tecs_model"
 
 module TECSCDE
   class Preferences
