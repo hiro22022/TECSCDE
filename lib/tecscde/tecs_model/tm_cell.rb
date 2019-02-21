@@ -81,10 +81,10 @@ module TECSCDE
         w = w_min if w < w_min
         h = h_min if h < h_min
 
-        @x = TECSCDE::TECSModel::TECSModel.round_length_val x
-        @y = TECSCDE::TECSModel::TECSModel.round_length_val y
-        @width = TECSCDE::TECSModel::TECSModel.round_length_val w
-        @height = TECSCDE::TECSModel::TECSModel.round_length_val h
+        @x = TECSCDE::TECSModel.round_length_val x
+        @y = TECSCDE::TECSModel.round_length_val y
+        @width = TECSCDE::TECSModel.round_length_val w
+        @height = TECSCDE::TECSModel.round_length_val h
       end
 
       #=== TmCell#delete ***
