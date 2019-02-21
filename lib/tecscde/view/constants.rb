@@ -106,7 +106,7 @@ module TECSCDE
       Color_editable_cell = :gray97
       Color_uneditable    = :blue
       Color_editable      = :black
-      Color_hilite        = :magenta
+      Color_highlight     = :magenta
       Color_incomplete    = :red
       Color_unjoin        = :magenta
       # color names are found in setup_colormap

@@ -618,8 +618,8 @@ module TECSCDE
         drawTargetDirect
 
         #----- set line width -----#
-        @canvasGc.set_foreground(@@colors[Color_hilite])
-        # @cairo_context_target.set_source_color( @@colors[ Color_hilite ] )
+        @canvasGc.set_foreground(@@colors[Color_highlight])
+        # @cairo_context_target.set_source_color( @@colors[ Color_highlight ] )
         draw_port_name port
 
         if port.is_a? TECSModel::TmEPort
@@ -717,7 +717,7 @@ module TECSCDE
 
         bars.each{|bar2|
           if @control.highlighted_objects.include? bar2
-            color = @@colors[Color_hilite]
+            color = @@colors[Color_highlight]
           elsif join.is_editable?
             color = @@colors[Color_editable]
           else
