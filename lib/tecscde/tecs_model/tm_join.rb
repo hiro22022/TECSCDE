@@ -1,12 +1,16 @@
+require "tecscde/tm_object"
+require "tecscde/tm_model/hbar"
+require "tecscde/tm_model/vbar"
+
 module TECSCDE
   class TECSModel
-    class TmJoin < TmObject
+    class TmJoin < TECSCDE::TmObject
       # @cport::TmCPort
       # @eport::TmEPort
-      # @bars::[HBar|VBar]
+      # @bars::[TECSCDE::TECSModel::HBar|TECSCDE::TECSModel::VBar]
       # @owner::TECSModel
 
-      include TmUneditable
+      include TECSCDE::TECSModel::TmUneditable
 
       def initialize(cport, eport, tmodel)
         @cport = cport
@@ -25,14 +29,22 @@ module TECSCDE
 
       #=== TmJoin#create_bars_to dest_port
       def create_bars
-        if TECSModel.is_parallel?(@cport.get_edge_side, @eport.get_edge_side)
-          if TECSModel.is_opposite?(@cport.get_edge_side, @eport.get_edge_side)
+        if TECSCDE::TECSModel.is_parallel?(@cport.get_edge_side, @eport.get_edge_side)
+          if TECSCDE::TECSModel.is_opposite?(@cport.get_edge_side, @eport.get_edge_side)
             create_bars_a
           else
             create_bars_e
           end
         else
           create_bars_c
+        end
+      end
+
+      def create_bar(bar, position)
+        if bar.instance_of?(TECSCDE::TECSModel::HBar)
+          TECSCDE::TECSModel::VBar.new(position, self)
+        else
+          TECSCDE::TECSModel::HBar.new(position, self)
         end
       end
 
@@ -47,16 +59,16 @@ module TECSCDE
         e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
         # p "posa=#{posa} e1=#{e1}, e2=#{e2}"
         pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + Gap) : (e1 - Gap)
-        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new(pos1, self) : HBar.new(pos1, self)
+        @bars[1] = create_bar(@bars[0], pos1)
 
         pos2 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
-        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new(pos2, self) : HBar.new(pos2, self)
+        @bars[2] = create_bar(@bars[1], pos2)
 
         pos3 = @eport.get_position_in_tangential_dir
-        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new(pos3, self) : HBar.new(pos3, self)
+        @bars[3] = create_bar(@bars[2], pos3)
 
         pos4 = @eport.get_position_in_normal_dir
-        @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new(pos4, self) : HBar.new(pos4, self)
+        @bars[4] = create_bar(@bars[3], pos4)
       end
 
       #=== TmJoin#create_bars_c
@@ -67,13 +79,13 @@ module TECSCDE
         @bars[0] = @cport.get_normal_bar_of_edge self
 
         pos1 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
-        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new(pos1, self) : HBar.new(pos1, self)
+        @bars[1] = create_bar(@bars[0], pos1)
 
         pos2 = @eport.get_position_in_tangential_dir
-        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new(pos2, self) : HBar.new(pos2, self)
+        @bars[2] = create_bar(@bars[1], pos2)
 
         pos3 = @eport.get_position_in_normal_dir
-        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new(pos3, self) : HBar.new(pos3, self)
+        @bars[3] = create_bar(@bars[2], pos3)
       end
 
       #=== TmJoin#create_bars_e
@@ -86,16 +98,16 @@ module TECSCDE
         posa = @cport.get_position_in_tangential_dir
         e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
         pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + Gap) : (e1 - Gap)
-        @bars[1] = (@bars[0].instance_of? HBar) ? VBar.new(pos1, self) : HBar.new(pos1, self)
+        @bars[1] = create_bar(@bars[0], pos1)
 
         pos2 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
-        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new(pos2, self) : HBar.new(pos2, self)
+        @bars[2] = create_bar(@bars[1], pos2)
 
         pos3 = @eport.get_position_in_tangential_dir
-        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new(pos3, self) : HBar.new(pos3, self)
+        @bars[3] = create_bar(@bars[2], pos3)
 
         pos4 = @eport.get_position_in_normal_dir
-        @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new(pos4, self) : HBar.new(pos4, self)
+        @bars[4] = create_bar(@bars[3], pos4)
       end
 
       #=== TmJoin#get_ports_bars ***
@@ -116,7 +128,7 @@ module TECSCDE
       end
 
       def moved_cport(x_inc, y_inc)
-        if @bars[0].instance_of? VBar
+        if @bars[0].instance_of?(TECSCDE::TECSModel::VBar)
           @bars[0].moved y_inc
         else
           @bars[0].moved x_inc
@@ -128,7 +140,7 @@ module TECSCDE
         len = @bars.length
 
         if len >= 5
-          if @bars[len - 4].instance_of? VBar
+          if @bars[len - 4].instance_of?(TECSCDE::TECSModel::VBar)
             @bars[len - 4].moved y_inc
           else
             @bars[len - 4].moved x_inc
@@ -136,7 +148,7 @@ module TECSCDE
         end
 
         if len >= 4
-          if @bars[len - 3].instance_of? VBar
+          if @bars[len - 3].instance_of?(TECSCDE::TECSModel::VBar)
             @bars[len - 3].moved y_inc
           else
             @bars[len - 3].moved x_inc
@@ -144,14 +156,14 @@ module TECSCDE
         end
 
         if len >= 3
-          if @bars[len - 2].instance_of? VBar
+          if @bars[len - 2].instance_of?(TECSCDE::TECSModel::VBar)
             @bars[len - 2].moved y_inc
           else
             @bars[len - 2].moved x_inc
           end
         end
 
-        if @bars[len - 1].instance_of? VBar
+        if @bars[len - 1].instance_of?(TECSCDE::TECSModel::VBar)
           @bars[len - 1].moved y_inc
         else
           @bars[len - 1].moved x_inc
@@ -166,7 +178,7 @@ module TECSCDE
         min_dist = 999999999
         min_bar = nil
         @bars.each{|bar|
-          if bar.instance_of? HBar
+          if bar.instance_of?(TECSCDE::TECSModel::HBar)
             xe = bar.get_position
             if is_between?(xm, xs, xe) && is_near?(ym, ys)
               dist = (ym - ys).abs

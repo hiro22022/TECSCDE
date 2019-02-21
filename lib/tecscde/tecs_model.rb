@@ -57,6 +57,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 #
 
 require "tecscde/view/constants"
+require "tecscd/tm_object"
 
 module TECSCDE
 
@@ -388,6 +389,20 @@ module TECSCDE
     end
   end
 end
+
+require "tecscde/tecs_model/tm_c_port"
+require "tecscde/tecs_model/tm_c_port_array"
+require "tecscde/tecs_model/tm_cell"
+require "tecscde/tecs_model/tm_e_port"
+require "tecscde/tecs_model/tm_e_port_array"
+require "tecscde/tecs_model/tm_join"
+require "tecscde/tecs_model/tm_join_bar"
+require "tecscde/tecs_model/tm_port"
+require "tecscde/tecs_model/tm_port_array"
+require "tecscde/tecs_model/tm_region"
+require "tecscde/tecs_model/tm_uneditable"
+require "tecscde/tecs_model/hbar"
+require "tecscde/tecs_model/vbar"
 
 =begin
 

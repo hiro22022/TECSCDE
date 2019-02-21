@@ -1,6 +1,10 @@
+require "tecscde/tm_object"
+require "tecscde/tm_model/hbar"
+require "tecscde/tm_model/vbar"
+
 module TECSCDE
   class TECSModel
-    class TmJoinBar < TmObject
+    class TmJoinBar < TECSCDE::TmObject
       # @position::Integer(mm)     # horizontal(x) or vertical(y) position
       # @owner::TmJoin (Reverse Reference)
       def initialize(position, owner_join)
@@ -17,7 +21,7 @@ module TECSCDE
       def set_position(position)
         modified {
 
-          @position = TECSModel.round_length_val position
+          @position = TECSCDE::TECSModel.round_length_val position
         }
       end
 
@@ -57,7 +61,7 @@ module TECSCDE
 
           if bar_prev # prev_bar is nil if self is 1st bar
             # p "bar_prev exist"
-            if bar_prev.instance_of? HBar
+            if bar_prev.instance_of?(TECSCDE::TECSModel::HBar)
               xm = bar_prev.get_position + x_inc
               bar_prev.set_position(get_model.clip_x xm)
             else

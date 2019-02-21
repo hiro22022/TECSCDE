@@ -1,6 +1,8 @@
+require "tecscde/tm_object"
+
 module TECSCDE
   class TECSModel
-    class TmRegion < TmObject
+    class TmRegion < TECSCDE::TmObject
       # @sub_region::{name=>TmRegion}
 
       #=== TmRegion#initialize

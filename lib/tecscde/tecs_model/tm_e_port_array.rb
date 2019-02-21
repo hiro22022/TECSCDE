@@ -1,6 +1,8 @@
+require "tecscde/tecs_model/tm_e_port"
+
 module TECSCDE
   class TECSModel
-    class TmEPortArray < TmPortArray
+    class TmEPortArray < TECSCDE::TECSModel::TmPortArray
       def initialize(cell, port_def)
         # p "TmEPortArray port_def:#{port_def}"
         @port_def = port_def
@@ -13,14 +15,14 @@ module TECSCDE
 
         @ports = []
         (0..(@actual_size - 1)).each{|subscript|
-          @ports << TmEPort.new(self, port_def, subscript)
+          @ports << TECSCDE::TECSModel::TmEPort.new(self, port_def, subscript)
         }
         modified {}
       end
 
       #=== TmEPortArray#new_port
       def new_port(subscript)
-        TmEPort.new(self, @port_def, subscript)
+        TECSCDE::TECSModel::TmEPort.new(self, @port_def, subscript)
       end
     end
   end

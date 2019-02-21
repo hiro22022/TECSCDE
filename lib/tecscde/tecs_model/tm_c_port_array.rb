@@ -1,3 +1,5 @@
+require "tecscde/tecs_model/tm_c_port"
+
 module TECSCDE
   class TECSModel
     class TmCPortArray < TECSCDE::TECSModel::TmPortArray
@@ -46,7 +48,7 @@ module TECSCDE
 
       #=== TmCPortArray#new_port
       def new_port(subscript)
-        TmCPort.new(self, @port_def, subscript)
+        TECSCDE::TECSModel::TmCPort.new(self, @port_def, subscript)
       end
     end # class TmCPortArray
   end

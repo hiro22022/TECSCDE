@@ -1,6 +1,10 @@
+require "tecscde/tm_object"
+require "tecscde/tm_model/hbar"
+require "tecscde/tm_model/vbar"
+
 module TECSCDE
   class TECSModel
-    class TmPort < TmObject
+    class TmPort < TECSCDE::TmObject
       # @edge_side::Integer()
       # @offs::Integer(mm)  # distance from top or left side
       # @owner::TmCell | TmXPortArray  (Reverse Reference)
@@ -21,7 +25,7 @@ module TECSCDE
             end
             x_inc = 0
           when EDGE_TOP, EDGE_BOTTOM
-            offs = TECSModel.round_length_val(@offs + x_inc)
+            offs = TECSCDE::TECSModel.round_length_val(@offs + x_inc)
             # p "offs=#{offs} x=#{x} w=#{w}"
             if offs < 0 || offs > w
               return
@@ -55,13 +59,17 @@ module TECSCDE
       # join::TmJoin
       def get_normal_bar_of_edge(join)
         pos = get_cell.get_edge_position_in_normal_dir(@edge_side) + CPGap * TECSModel.get_sign_of_normal(@edge_side)
-        TECSModel.is_vertical?(@edge_side) ? HBar.new(pos, join) : VBar.new(pos, join)
+        if TECSCDE::TECSModel.is_vertical?(@edge_side)
+          TECSCDE::TECSModel::HBar.new(pos, join)
+        else
+          TECSCDE::TECSModel::VBar.new(pos, join)
+        end
       end
 
       #=== TmPort#get_position_in_tangential_dir
       def get_position_in_tangential_dir
         x, y, w, h = get_cell.get_geometry
-        (TECSModel.is_vertical? @edge_side) ? y + @offs : x + @offs
+        (TECSCDE::TECSModel.is_vertical? @edge_side) ? y + @offs : x + @offs
       end
 
       def get_position_in_normal_dir
@@ -69,7 +77,7 @@ module TECSCDE
       end
 
       def get_sign_of_normal
-        TECSModel.get_sign_of_normal @edge_side
+        TECSCDE::TECSModel.get_sign_of_normal @edge_side
       end
 
       def get_edge_side
@@ -94,7 +102,7 @@ module TECSCDE
       end
 
       def get_cell
-        if @owner.is_a? TmCell
+        if @owner.is_a?(TECSCDE::TECSModel::TmCell)
           @owner
         else
           @owner.get_owner
@@ -146,7 +154,7 @@ module TECSCDE
         modified {
 
           @edge_side = edge_side
-          @offs = TECSModel.round_length_val offset
+          @offs = TECSCDE::TECSModel.round_length_val offset
         }
       end
 
@@ -156,7 +164,7 @@ module TECSCDE
         if !@owner.is_editable?
           return
         end
-        if @owner.is_a? TmPortArray
+        if @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
           @owner.delete_hilited self
         end
       end
@@ -165,7 +173,7 @@ module TECSCDE
       # before_after::Symbol: :before, :after
       # insert if this port is a member of unsubscripted array.
       def insert(before_after)
-        if @owner.is_a? TmPortArray
+        if @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
           @owner.insert self, before_after
         end
       end
@@ -177,9 +185,9 @@ module TECSCDE
 
       #=== TmPort#get_owner_cell
       def get_owner_cell
-        if @owner.is_a? TmCell
+        if @owner.is_a?(TECSCDE::TECSModel::TmCell)
           return @owner
-        elsif @owner.is_a? TmPortArray
+        elsif @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
           return @owner.get_owner
         else
           raise "unknown cell"

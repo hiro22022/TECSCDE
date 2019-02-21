@@ -65,7 +65,7 @@ $tecsgen_base_path = File.dirname(File.expand_path __FILE__)
 require "gtk2"
 require "date"
 require "tecscde/version"
-require "tecscde/tmodel"
+require "tecscde/tecs_model"
 require "tecscde/view"
 require "tecscde/control"
 require "tecscde/saveload"

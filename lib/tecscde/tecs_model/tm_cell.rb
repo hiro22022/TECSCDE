@@ -42,17 +42,17 @@ module TECSCDE
           if port_def.get_port_type == :ENTRY
             # if ! port_def.is_reverse_required? then
             if port_def.get_array_size.nil?
-              @eports[port_def.get_name] = TmEPort.new(self, port_def)
+              @eports[port_def.get_name] = TECSCDE::TECSModel::TmEPort.new(self, port_def)
             else
-              @eports[port_def.get_name] = TmEPortArray.new(self, port_def)
+              @eports[port_def.get_name] = TECSCDE::TECSModel::TmEPortArray.new(self, port_def)
             end
             # end
           else
             if !port_def.is_require?
               if port_def.get_array_size.nil?
-                @cports[port_def.get_name] = TmCPort.new(self, port_def)
+                @cports[port_def.get_name] = TECSCDE::TECSModel::TmCPort.new(self, port_def)
               else
-                @cports[port_def.get_name] = TmCPortArray.new(self, port_def)
+                @cports[port_def.get_name] = TECSCDE::TECSModel::TmCPortArray.new(self, port_def)
               end
             end
           end
@@ -81,10 +81,10 @@ module TECSCDE
         w = w_min if w < w_min
         h = h_min if h < h_min
 
-        @x = TECSModel.round_length_val x
-        @y = TECSModel.round_length_val y
-        @width = TECSModel.round_length_val w
-        @height = TECSModel.round_length_val h
+        @x = TECSCDE::TECSModel::TECSModel.round_length_val x
+        @y = TECSCDE::TECSModel::TECSModel.round_length_val y
+        @width = TECSCDE::TECSModel::TECSModel.round_length_val w
+        @height = TECSCDE::TECSModel::TECSModel.round_length_val h
       end
 
       #=== TmCell#delete ***
@@ -147,8 +147,8 @@ module TECSCDE
           dbgPrint "cell move #{@name}\n"
           x0 = @x
           y0 = @y
-          @x = get_model.clip_x(TECSModel.round_length_val(@x + x_inc))
-          @y = get_model.clip_y(TECSModel.round_length_val(@y + y_inc))
+          @x = get_model.clip_x(TECSCDE::TECSModel.round_length_val(@x + x_inc))
+          @y = get_model.clip_y(TECSCDE::TECSModel.round_length_val(@y + y_inc))
           x_inc2 = @x - x0
           y_inc2 = @y - y0
 
@@ -174,7 +174,7 @@ module TECSCDE
       #=== TmCell::get_near_port ***
       def get_near_port(x, y)
         (@cports.merge @eports).each{|name, port|
-          if port.is_a? TmPort
+          if port.is_a?(TECSCDE::TECSModel::TmPort)
             xp, yp = port.get_position
           else
             pt = port.get_near_port(x, y)
@@ -208,7 +208,7 @@ module TECSCDE
 
       #=== TmCell#get_right_angle_edges_position
       def get_right_angle_edges_position(edge_side)
-        if TECSModel.is_vertical?(edge_side)
+        if TECSCDE::TECSModel.is_vertical?(edge_side)
           [@y, @y + @height]
         else
           [@x, @x + @width]
@@ -286,7 +286,7 @@ module TECSCDE
         }
         nearest_port = nil
         (@eports.values + @cports.values).each{|port|
-          if port.is_a? TmPortArray
+          if port.is_a?(TECSCDE::TECSModel::TmPortArray)
             port.get_ports.each{|pt|
               nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
@@ -315,7 +315,7 @@ module TECSCDE
           end
         }
         (@eports.values + @cports.values).each{|port|
-          if port.is_a? TmPortArray
+          if port.is_a?(TECSCDE::TECSModel::TmPortArray)
             port.get_ports.each{|pt|
               proc_adjust.call(pt, offs, edge_side, move_offs)
             }
@@ -426,7 +426,7 @@ module TECSCDE
         h_min = 0
         w_min = 0
         (@cports.values + @eports.values).each{|port|
-          if port.is_a? TmPortArray
+          if port.is_a?(TECSCDE::TECSModel::TmPortArray)
             port.get_ports.each{|pt|
               offs = pt.get_offset
               case pt.get_edge_side

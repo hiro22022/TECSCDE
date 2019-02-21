@@ -1,6 +1,8 @@
+require "tecscde/tecs_model/tm_port"
+
 module TECSCDE
   class TECSModel
-    class TmCPort < TmPort # mikan cp array
+    class TmCPort < TECSCDE::TECSModel::TmPort # mikan cp array
       # @join::TmJoin
 
       def initialize(owner, port_def, subscript = nil)
