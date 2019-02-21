@@ -68,3 +68,7 @@ Style/IfUnlessModifier:
   Enabled: false
 Style/NumericPredicate:
   Enabled: false
+Style/MutableConstant:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false
