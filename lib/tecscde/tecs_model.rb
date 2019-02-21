@@ -2,7 +2,7 @@
 
 TECSCDE - TECS Component Diagram Editor
 
-Copyright (C) 2014-2015 by TOPPERS Project
+Copyright (C) 2014-2019 by TOPPERS Project
 
  The above copyright holders grant permission gratis to use,
  duplicate, modify, or redistribute (hereafter called use) this
@@ -46,8 +46,6 @@ Copyright (C) 2014-2015 by TOPPERS Project
  PURPOSE. IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS AND THE
  TOPPERS PROJECT BE LIABLE FOR ANY TYPE OF DAMAGE DIRECTLY OR
  INDIRECTLY CAUSED FROM THE USE OF THIS SOFTWARE.
-
- $Id: tmodel.rb 2640 2017-06-03 11:27:12Z okuma-top $
 
 =end
 
