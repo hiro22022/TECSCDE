@@ -67,8 +67,8 @@ module TECSCDE
     attr_reader :tree_view # Gtk::TreeView
 
     #=== initialize
-    def initialize(tv)
-      @tree_view = tv
+    def initialize(tree_view)
+      @tree_view = tree_view
 
       combo_list = Gtk::ListStore.new(String)
       iter = combo_list.append
