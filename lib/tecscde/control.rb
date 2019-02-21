@@ -107,10 +107,12 @@ Structure of Palette Window
       :SM_EDIT_CELL_NAME
     ]
 
+    attr_reader :highlighted_objects
+
     def initialize(model)
       @nest = -1
       @model = model
-      @hilite_objs = TECSCDE::HighlightedObjects.new
+      @highlighted_objects = TECSCDE::HighlightedObjects.new
       @mode = :MODE_NONE
       @sub_mode = :SM_NONE
       @cport_joining = nil
@@ -119,8 +121,8 @@ Structure of Palette Window
       create_new_operation_window
       add_celltype_list
 
-      @hilite_objs.set_attrTreeView @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame
-      @hilite_objs.update_attrTreeView
+      @highlighted_objects.set_attrTreeView @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame
+      @highlighted_objects.update_attrTreeView
 
       @last_xm = @last_ym = 0
     end
@@ -152,13 +154,13 @@ Structure of Palette Window
 
     def on_undo
       @model.undo
-      @hilite_objs.reset
+      @highlighted_objects.reset
       update
     end
 
     def on_redo
       @model.redo
-      @hilite_objs.reset
+      @highlighted_objects.reset
       update
     end
 
@@ -168,7 +170,7 @@ Structure of Palette Window
 
     def on_cell_name_entry_active(entry)
       @b_cell_renaming = true
-      @hilite_objs.change_cell_name entry.text
+      @highlighted_objects.change_cell_name entry.text
       @b_cell_renaming = false
       update
     end
@@ -176,14 +178,14 @@ Structure of Palette Window
     def on_cell_name_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
       if !@b_cell_renaming
-        @hilite_objs.change_cell_name entry.text
+        @highlighted_objects.change_cell_name entry.text
         update
       end
     end
 
     def on_cell_region_entry_active(entry)
       # @b_cell_renaming = true
-      # @hilite_objs.change_cell_name entry.text
+      # @highlighted_objects.change_cell_name entry.text
       # @b_cell_renaming = false
       # update
     end
@@ -191,7 +193,7 @@ Structure of Palette Window
     def on_cell_region_entry_focus_out(entry)
       # to avoid nested message box dialog in error case
       # if ! @b_cell_renaming
-      #   @hilite_objs.change_cell_name entry.text
+      #   @highlighted_objects.change_cell_name entry.text
       #   update
       # end
     end
@@ -200,7 +202,7 @@ Structure of Palette Window
       @window = window
       @celltypeTreeView = ctv
       @attrTreeView, @cell_name_entry, @cell_region_entry, @cell_frame = attrTreeView, cell_name_entry, cell_region_entry, cell_frame
-      @hilite_objs.set_attrTreeView @attrTreeView, @cell_name_entry, @cell_region_etnry, @cell_frame
+      @highlighted_objects.set_attrTreeView @attrTreeView, @cell_name_entry, @cell_region_etnry, @cell_frame
     end
 
     def preferences
@@ -246,7 +248,7 @@ Structure of Palette Window
       if @sub_mode == :SM_EDIT_CELL_NAME
         name = @view.end_edit_name
         # p "end_edit_name name=#{name}"
-        @hilite_objs.change_cell_name name
+        @highlighted_objects.change_cell_name name
         @sub_mode = :SM_NONE
       end
 
@@ -256,7 +258,7 @@ Structure of Palette Window
           if object.is_editable?
             # p "begin_edit_name"
             @view.begin_edit_name object, time
-            @hilite_objs.reset(object)
+            @highlighted_objects.reset(object)
             @sub_mode = :SM_EDIT_CELL_NAME
           end
         elsif object.is_a?(TECSModel::TmCell) ||
@@ -265,24 +267,24 @@ Structure of Palette Window
           @sub_mode = :SM_MOVING_CELL_BAR
           # p "FOUND Cell or Bar"
           if state.shift_mask?
-            @hilite_objs.add(object)
+            @highlighted_objects.add(object)
           elsif state.control_mask?
-            @hilite_objs.add_del(object)
-          elsif !@hilite_objs.include? object
-            @hilite_objs.reset(object)
+            @highlighted_objects.add_del(object)
+          elsif !@highlighted_objects.include? object
+            @highlighted_objects.reset(object)
           end
-          @view.draw_hilite_objects @hilite_objs
+          @view.draw_hilite_objects @highlighted_objects
         elsif object.is_a? TECSModel::TmCPort
           # p "FOUND TmCPort"
           if state.shift_mask?
             @sub_mode = :SM_MOVING_CPORT
-            @hilite_objs.add object
+            @highlighted_objects.add object
           elsif state.control_mask?
             @sub_mode = :SM_MOVING_CPORT
-            @hilite_objs.reset(object)
+            @highlighted_objects.reset(object)
           elsif object.get_join.nil?
             @sub_mode = :SM_JOINING
-            @hilite_objs.reset
+            @highlighted_objects.reset
             @cport_joining = object
             @view.set_cursor TECSCDE::CURSOR_JOINING
           else
@@ -295,14 +297,14 @@ EOT
         elsif object.is_a? TECSModel::TmEPort
           if state.shift_mask?
             @sub_mode = :SM_MOVING_EPORT
-            @hilite_objs.add object
+            @highlighted_objects.add object
           elsif state.control_mask?
             @sub_mode = :SM_MOVING_EPORT
-            @hilite_objs.add_del(object)
+            @highlighted_objects.add_del(object)
           else
             # p "FOUND TmEPort"
             @sub_mode = :SM_MOVING_EPORT
-            @hilite_objs.reset object
+            @highlighted_objects.reset object
           end
         else
           # p "NOT FOUND"
@@ -312,9 +314,9 @@ EOT
               cell = @model.new_cell(xm, ym, ctn, nsp)
               @model.set_undo_point
             end
-            @hilite_objs.reset cell
+            @highlighted_objects.reset cell
           else
-            @hilite_objs.reset
+            @highlighted_objects.reset
           end
         end
         @last_xm, @last_ym = xm, ym
@@ -338,18 +340,18 @@ EOT
       case @sub_mode
       when :SM_MOVING_CELL_BAR
         # p "move hilite obj"
-        @hilite_objs.each{|cell_bar|
+        @highlighted_objects.each{|cell_bar|
           cell_bar.move(x_inc2, y_inc2)
         }
         @view.refresh_canvas
-        @view.draw_hilite_objects @hilite_objs
+        @view.draw_hilite_objects @highlighted_objects
       when :SM_MOVING_CPORT, :SM_MOVING_EPORT
-        @hilite_objs.each{|port|
+        @highlighted_objects.each{|port|
           port.move(x_inc2, y_inc2)
         }
         update
         @view.refresh_canvas
-        @view.draw_hilite_objects @hilite_objs
+        @view.draw_hilite_objects @highlighted_objects
       when :SM_JOINING
         object = find_near xm, ym
         if object.is_a? TECSModel::TmEPort
@@ -403,7 +405,7 @@ EOT
 
       case keyval
       when 0xff     # delete key
-        @hilite_objs.each{|object|
+        @highlighted_objects.each{|object|
           if object.is_a? TECSModel::TmJoinBar
             object.get_join.delete
           elsif object.is_a? TECSModel::TmCell
@@ -412,9 +414,9 @@ EOT
             object.delete_hilited
           end
         }
-        @hilite_objs.reset
+        @highlighted_objects.reset
       when 0x63     # Insert
-        @hilite_objs.each{|object|
+        @highlighted_objects.each{|object|
           if object.is_a? TECSModel::TmPort
             object.insert(state.shift_mask? ? :before : :after)
           end
@@ -434,7 +436,7 @@ EOT
           x_inc = 0.0
           y_inc = TECSModel.get_alignment
         end
-        @hilite_objs.each{|obj|
+        @highlighted_objects.each{|obj|
           obj.move(x_inc, y_inc)
         }
       when 0x50     # home
@@ -479,12 +481,6 @@ EOT
       return min_bar
     end
 
-    # Control#get_hilite_objs
-    # return::hilite_objs
-    def get_hilite_objs
-      @hilite_objs
-    end
-
     def add_celltype_list
       ctl = @model.get_celltype_list
       if ctl
@@ -496,7 +492,7 @@ EOT
 
     # Control#update
     def update
-      @hilite_objs.update_attrTreeView
+      @highlighted_objects.update_attrTreeView
       @view.paint_canvas
     end
   end

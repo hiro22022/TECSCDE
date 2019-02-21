@@ -300,7 +300,7 @@ module TECSCDE
    
       def refresh_canvas
         @gdkWindow.draw_drawable(@canvasGc, @canvasPixmap, 0, 0, 0, 0, @canvas_width, @canvas_height)
-        draw_hilite_objects @control.get_hilite_objs
+        draw_hilite_objects @control.highlighted_objects
       end
    
       def resize_canvas
@@ -716,7 +716,7 @@ module TECSCDE
         canvasGC_set_line_width 2
 
         bars.each{|bar2|
-          if @control.get_hilite_objs.include? bar2
+          if @control.highlighted_objects.include? bar2
             color = @@colors[Color_hilite]
           elsif join.is_editable?
             color = @@colors[Color_editable]
