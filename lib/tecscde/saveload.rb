@@ -55,7 +55,7 @@ Copyright (C) 2014-2015 by TOPPERS Project
 module TECSCDE
   class TECSModel
     # tool_info schema for tecscde
-    @@TECSCDE_schema = {
+    TECSCDE_SCHEMA = {
       :tecscde => {
         :cell_list    => [:cell_location],        # array
         :join_list    => [:join_location]         # array
@@ -457,7 +457,7 @@ module TECSCDE
     #=== TECSModel#validate
     # validate JSON format data in __tool_info__( "tecscde" )
     def validate
-      validator = TOOL_INFO::VALIDATOR.new(:tecscde, @@TECSCDE_schema)
+      validator = TOOL_INFO::VALIDATOR.new(:tecscde, TECSCDE_SCHEMA)
       return validator.validate
     end
 
