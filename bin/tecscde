@@ -156,41 +156,6 @@ module TECSCDE
       # ensure
     end
   end
-
-  class MainViewAndModel
-    # @model::TECSModel
-    # @view::TECSCDE::View::MainView
-    def initialize(tecsgen)
-      @model   = TECSModel.new tecsgen
-      @control = Control.new @model
-      @view    = TECSCDE::View::MainView.new @model, @control
-      @control.set_view @view
-      @model.set_view @view
-
-      @model.add_cell_list_from_tecsgen
-      @model.set_undo_point
-
-      @view.paint_canvas
-    end
-
-    def get_model
-      @model
-    end
-
-    def test_main
-      p "test_main"
-      cell1 = @model.new_cell(0, 0)
-      cell2 = @model.new_cell(100, 100)
-
-      cport = TECSModel::TmCPort.new cell1
-      eport = TECSModel::TmEPort.new cell2
-
-      join = @model.new_join(cport, eport)
-      # p join
-      # Gtk::main()
-    end
-  end
-
 end
 
 #--------------- begining of TECSCDE run -----------------#
