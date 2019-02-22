@@ -1,53 +1,51 @@
-=begin
-
-TECSCDE - TECS Component Diagram Editor
-
-Copyright (C) 2014-2019 by TOPPERS Project
-
- The above copyright holders grant permission gratis to use,
- duplicate, modify, or redistribute (hereafter called use) this
- software (including the one made by modifying this software),
- provided that the following four conditions (1) through (4) are
- satisfied.
-
- (1) When this software is used in the form of source code, the above
-     copyright notice, this use conditions, and the disclaimer shown
-     below must be retained in the source code without modification.
-
- (2) When this software is redistributed in the forms usable for the
-     development of other software, such as in library form, the above
-     copyright notice, this use conditions, and the disclaimer shown
-     below must be shown without modification in the document provided
-     with the redistributed software, such as the user manual.
-
- (3) When this software is redistributed in the forms unusable for the
-     development of other software, such as the case when the software
-     is embedded in a piece of equipment, either of the following two
-     conditions must be satisfied:
-
-   (a) The above copyright notice, this use conditions, and the
-       disclaimer shown below must be shown without modification in
-       the document provided with the redistributed software, such as
-       the user manual.
-
-   (b) How the software is to be redistributed must be reported to the
-       TOPPERS Project according to the procedure described
-       separately.
-
- (4) The above copyright holders and the TOPPERS Project are exempt
-     from responsibility for any type of damage directly or indirectly
-     caused from the use of this software and are indemnified by any
-     users or end users of this software from any and all causes of
-     action whatsoever.
-
- THIS SOFTWARE IS PROVIDED "AS IS." THE ABOVE COPYRIGHT HOLDERS AND
- THE TOPPERS PROJECT DISCLAIM ANY EXPRESS OR IMPLIED WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, ITS APPLICABILITY TO A PARTICULAR
- PURPOSE. IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS AND THE
- TOPPERS PROJECT BE LIABLE FOR ANY TYPE OF DAMAGE DIRECTLY OR
- INDIRECTLY CAUSED FROM THE USE OF THIS SOFTWARE.
-
-=end
+#
+# TECSCDE - TECS Component Diagram Editor
+#
+# Copyright (C) 2014-2019 by TOPPERS Project
+#
+#  The above copyright holders grant permission gratis to use,
+#  duplicate, modify, or redistribute (hereafter called use) this
+#  software (including the one made by modifying this software),
+#  provided that the following four conditions (1) through (4) are
+#  satisfied.
+#
+#  (1) When this software is used in the form of source code, the above
+#      copyright notice, this use conditions, and the disclaimer shown
+#      below must be retained in the source code without modification.
+#
+#  (2) When this software is redistributed in the forms usable for the
+#      development of other software, such as in library form, the above
+#      copyright notice, this use conditions, and the disclaimer shown
+#      below must be shown without modification in the document provided
+#      with the redistributed software, such as the user manual.
+#
+#  (3) When this software is redistributed in the forms unusable for the
+#      development of other software, such as the case when the software
+#      is embedded in a piece of equipment, either of the following two
+#      conditions must be satisfied:
+#
+#    (a) The above copyright notice, this use conditions, and the
+#        disclaimer shown below must be shown without modification in
+#        the document provided with the redistributed software, such as
+#        the user manual.
+#
+#    (b) How the software is to be redistributed must be reported to the
+#        TOPPERS Project according to the procedure described
+#        separately.
+#
+#  (4) The above copyright holders and the TOPPERS Project are exempt
+#      from responsibility for any type of damage directly or indirectly
+#      caused from the use of this software and are indemnified by any
+#      users or end users of this software from any and all causes of
+#      action whatsoever.
+#
+#  THIS SOFTWARE IS PROVIDED "AS IS." THE ABOVE COPYRIGHT HOLDERS AND
+#  THE TOPPERS PROJECT DISCLAIM ANY EXPRESS OR IMPLIED WARRANTIES,
+#  INCLUDING, BUT NOT LIMITED TO, ITS APPLICABILITY TO A PARTICULAR
+#  PURPOSE. IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS AND THE
+#  TOPPERS PROJECT BE LIABLE FOR ANY TYPE OF DAMAGE DIRECTLY OR
+#  INDIRECTLY CAUSED FROM THE USE OF THIS SOFTWARE.
+#
 
 #
 # methods marked *** can be called externally.
@@ -461,10 +459,8 @@ module TECSCDE
       tecsgen_cell_list2 = []
       x = 10
       y = 10
-=begin
-         x = @paper[ :width ] - 60
-         y = @paper[ :height ] -30
-=end
+#          x = @paper[ :width ] - 60
+#          y = @paper[ :height ] -30
 
       cell_list = { } # ::Cell => TmCell
       if tecsgen_cell_list
@@ -495,16 +491,14 @@ module TECSCDE
               y = 10
             end
           end
-=begin
-          x -= 55
-          if x <= 10
-            x =   @paper[ :width ] - 60
-            y -= 30
-            if y <= 50
-              y = @paper[ :height ] -30
-            end
-          end
-=end
+#           x -= 55
+#           if x <= 10
+#             x =   @paper[ :width ] - 60
+#             y -= 30
+#             if y <= 50
+#               y = @paper[ :height ] -30
+#             end
+#           end
         }
 
         set_location_from_tecsgen_old
@@ -1218,142 +1212,140 @@ require "tecscde/tecs_model/tm_uneditable"
 require "tecscde/tecs_model/hbar"
 require "tecscde/tecs_model/vbar"
 
-=begin
-
-Software Design Memo
-
-pattern of lines between cells
-
-(a) parallel opposite side generic
-(b) parallel opposite side abbreviated
-(c) right angle generic
-(d) right angle  abbreviated
-(e) parallel same side generic
-(f) parallel same side abbreviated
-
-applying abbrviated patterns, there is conditions.
-
-   +-------------+
-   |          (f)|---------------------------1+
-   |          (d)|-------------------1+       |
-   |          (e)|----1+              |       |
-   |          (c)|---1+|              |       |
-   |          (a)|--1+||              |       |
-   |          (b)|-1+|||              |       |
-   |         (c)'|-+||||              |       |
-   +-------------+ |||||              |       |
-                   ||||+2-------------------3+|
-                   |||+2---------3+   |      ||
-                   ||+2---3+      |   |      ||
-                   ||      | +-------------+ ||
-                   ||      4 |    V   V    | 4|
-                   ||      +-|>           <|-+|
-                   |+2-------|>           <|-2+
-                   |         |    ^        |
-                   |         +-------------+
-                   |              |
-                   +--------------+
-
- edge_side
-   horizontal
-     EDGE_TOP    = 0b00
-     EDGE_BOTTOM = 0b01
-   vertical
-     EDGE_LEFT   = 0b10
-     EDGE_RIGHT  = 0b11
-
-
-  bit0: 1 if normal direction is positive, 0 negative
-  bit1: 1 if vertical, 0 if horizontal
-
-  TECSModel class method
-    get_sign_of_normal( edge_side ) = (edge_side & 0b01) ? 1 : -1
-    is_vertical?( edge_side )   = (edge_side & 0b10) ? true : false
-    is_parallel?( edge_side1, edge_side2 ) = ( edge_side1 ^ edge_side2 ) < 0b10
-    is_opposite?( edge_side1, edge_side2 ) = ( ( edge_side1 ^ edge_side2 ) & 0b01 ) ? true : false
-        this function can be applicable only when edge_side1, edge_side2 are parallel
-
-  TmCell#get_edge_position_in_normal_dir( edge_side )
-      case edge_side
-      when  EDGE_TOP     y
-      when  EDGE_BOTTOM  y+height
-      when  EDGE_LEFT    x
-      when  EDGE_RIGHT   x+width
-
-  #=== (1)  (6) bar from call port. this indicate A position.
-  TmCPort#get_normal_bar_of_edge
-      pos = @cell.get_edge_position_in_normal_dir( @edge_side ) + Gap * TECSModel.get_sign_of_normal( @edge_side )
-      TECSModel.is_vertical?( @edge_side ) ? HBar.new( pos ) : VBar.new( pos )
-
-  TmCPort#tangential_position
-      ( TECSModel.is_vertical? @edge_side ) ? @cell.get_y + @offs : @cell.get_x + @offs
-
-  TmJoin#create_bars
-      if TECSModel.is_parallel?( @edge_side, dest_port.get_edge_side )
-          if TECSModel.is_opposite?( @edge_side, dest_port.get_edge_side )
-              create_bars_a
-          else
-              create_bars_e
-      else
-          create_bars_c
-
-  TmJoin#create_bars_a
-       @bars = []
-
-       @bars[0] = @cport.get_normal_bar_of_edge
-
-       posa = @cport.get_position_in_tangential_dir
-       e1, e2 = @eport.get_cell.get_right_angle_edges_position( @cport.get_edge_side )
-       pos2 = ( posa - e1 ).abs > ( posa - e2 ).abs ? e2 : e1
-       @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
-
-       pos3 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
-       @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
-
-       pos4 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
-       @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new( pos4 ) : HBar.new( pos4 )
-
-       pos5 = @eport.get_position_in_tangential_dir
-       @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new( pos5 ) : HBar.new( pos5 )
-
-       pos6 = @eport.get_position_in_normal_dir
-       @bars[5] = (@bars[4].instance_of? HBar) ? VBar.new( pos6 ) : HBar.new( pos6 )
-
-  TmJoin#create_bars_c
-       @bars = []
-
-       @bars[0] = @cport.get_normal_bar_of_edge
-
-       pos1 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
-       @bars[1] = (bar[0].instance_of? HBar) ? VBar.new( pos1 ) : HBar.new( pos1 )
-
-       pos2 = @eport.get_position_in_tangential_dir
-       @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
-
-       pos3 = @eport.get_position_in_normal_dir
-       @bars[3] = (bar[2].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
-
-  TmJoin#create_bars_e
-       @bars = []
-
-       @bars[0] = @cport.get_normal_bar_of_edge
-
-       pos1 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
-       @bars[1] = (bar[0].instance_of? HBar) ? VBar.new( pos1 ) : HBar.new( pos1 )
-
-       posa = @cport.get_position_in_tangential_dir
-       e1, e2 = @eport.get_cell.get_right_angle_edges_position( @cport.get_edge_side )
-       pos2 = ( posa - e1 ).abs > ( posa - e2 ).abs ? e2 : e1
-       @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
-
-       pos3 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
-       @bars[3] = (bar[2].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
-
-       pos4 = @eport.get_position_in_normal_dir
-       @bars[4] = (bar[3].instance_of? HBar) ? VBar.new( pos4 ) : HBar.new( pos4 )
-
-
-
+# 
+# Software Design Memo
+#
+# pattern of lines between cells
+#
+# (a) parallel opposite side generic
+# (b) parallel opposite side abbreviated
+# (c) right angle generic
+# (d) right angle  abbreviated
+# (e) parallel same side generic
+# (f) parallel same side abbreviated
+#
+# applying abbrviated patterns, there is conditions.
+#
+#    +-------------+
+#    |          (f)|---------------------------1+
+#    |          (d)|-------------------1+       |
+#    |          (e)|----1+              |       |
+#    |          (c)|---1+|              |       |
+#    |          (a)|--1+||              |       |
+#    |          (b)|-1+|||              |       |
+#    |         (c)'|-+||||              |       |
+#    +-------------+ |||||              |       |
+#                    ||||+2-------------------3+|
+#                    |||+2---------3+   |      ||
+#                    ||+2---3+      |   |      ||
+#                    ||      | +-------------+ ||
+#                    ||      4 |    V   V    | 4|
+#                    ||      +-|>           <|-+|
+#                    |+2-------|>           <|-2+
+#                    |         |    ^        |
+#                    |         +-------------+
+#                    |              |
+#                    +--------------+
+#
+#  edge_side
+#    horizontal
+#      EDGE_TOP    = 0b00
+#      EDGE_BOTTOM = 0b01
+#    vertical
+#      EDGE_LEFT   = 0b10
+#      EDGE_RIGHT  = 0b11
+#
+# 
+#   bit0: 1 if normal direction is positive, 0 negative
+#   bit1: 1 if vertical, 0 if horizontal
+#
+#   TECSModel class method
+#     get_sign_of_normal( edge_side ) = (edge_side & 0b01) ? 1 : -1
+#     is_vertical?( edge_side )   = (edge_side & 0b10) ? true : false
+#     is_parallel?( edge_side1, edge_side2 ) = ( edge_side1 ^ edge_side2 ) < 0b10
+#     is_opposite?( edge_side1, edge_side2 ) = ( ( edge_side1 ^ edge_side2 ) & 0b01 ) ? true : false
+#         this function can be applicable only when edge_side1, edge_side2 are parallel
+#
+#   TmCell#get_edge_position_in_normal_dir( edge_side )
+#       case edge_side
+#       when  EDGE_TOP     y
+#       when  EDGE_BOTTOM  y+height
+#       when  EDGE_LEFT    x
+#       when  EDGE_RIGHT   x+width
+#
+#   #=== (1)  (6) bar from call port. this indicate A position.
+#   TmCPort#get_normal_bar_of_edge
+#       pos = @cell.get_edge_position_in_normal_dir( @edge_side ) + Gap * TECSModel.get_sign_of_normal( @edge_side )
+#       TECSModel.is_vertical?( @edge_side ) ? HBar.new( pos ) : VBar.new( pos )
+#
+#   TmCPort#tangential_position
+#       ( TECSModel.is_vertical? @edge_side ) ? @cell.get_y + @offs : @cell.get_x + @offs
+#
+#   TmJoin#create_bars
+#       if TECSModel.is_parallel?( @edge_side, dest_port.get_edge_side )
+#           if TECSModel.is_opposite?( @edge_side, dest_port.get_edge_side )
+#               create_bars_a
+#           else
+#               create_bars_e
+#       else
+#           create_bars_c
+#
+#   TmJoin#create_bars_a
+#        @bars = []
+#
+#        @bars[0] = @cport.get_normal_bar_of_edge
+#
+#        posa = @cport.get_position_in_tangential_dir
+#        e1, e2 = @eport.get_cell.get_right_angle_edges_position( @cport.get_edge_side )
+#        pos2 = ( posa - e1 ).abs > ( posa - e2 ).abs ? e2 : e1
+#        @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
+#
+#        pos3 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
+#
+#        pos4 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new( pos4 ) : HBar.new( pos4 )
+#
+#        pos5 = @eport.get_position_in_tangential_dir
+#        @bars[4] = (@bars[3].instance_of? HBar) ? VBar.new( pos5 ) : HBar.new( pos5 )
+#
+#        pos6 = @eport.get_position_in_normal_dir
+#        @bars[5] = (@bars[4].instance_of? HBar) ? VBar.new( pos6 ) : HBar.new( pos6 )
+#
+#   TmJoin#create_bars_c
+#        @bars = []
+#
+#        @bars[0] = @cport.get_normal_bar_of_edge
+#
+#        pos1 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        @bars[1] = (bar[0].instance_of? HBar) ? VBar.new( pos1 ) : HBar.new( pos1 )
+#
+#        pos2 = @eport.get_position_in_tangential_dir
+#        @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
+#
+#        pos3 = @eport.get_position_in_normal_dir
+#        @bars[3] = (bar[2].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
+#
+#   TmJoin#create_bars_e
+#        @bars = []
+#
+#        @bars[0] = @cport.get_normal_bar_of_edge
+#
+#        pos1 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        @bars[1] = (bar[0].instance_of? HBar) ? VBar.new( pos1 ) : HBar.new( pos1 )
+#
+#        posa = @cport.get_position_in_tangential_dir
+#        e1, e2 = @eport.get_cell.get_right_angle_edges_position( @cport.get_edge_side )
+#        pos2 = ( posa - e1 ).abs > ( posa - e2 ).abs ? e2 : e1
+#        @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
+#
+#        pos3 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        @bars[3] = (bar[2].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
+#
+#        pos4 = @eport.get_position_in_normal_dir
+#        @bars[4] = (bar[3].instance_of? HBar) ? VBar.new( pos4 ) : HBar.new( pos4 )
+#
+# 
+#
 #----- JSON schema (likely) -----#
-
-=end
+#
