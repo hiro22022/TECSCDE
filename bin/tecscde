@@ -62,14 +62,8 @@ Copyright (C) 2014-2015 by TOPPERS Project
 # tecsgen.rb, tecscde.rb, tecslib & cdelib must be in the same directory
 $tecsgen_base_path = File.dirname(File.expand_path __FILE__)
 
-require "gtk2"
-require "date"
-require "tecscde/version"
-require "tecscde/tecs_model"
-require "tecscde/view"
-require "tecscde/control"
-require "tecscde/cell_plugin_dialog"
-require "tecscde/palette.rb"
+require "tecscde"
+require "tecscde/command"
 
 def dbgPrint(message, *args)
   printf(message, *args)
@@ -82,118 +76,4 @@ def flush_print(message, *args)
   STDOUT.flush
 end
 
-module TECSCDE
-
-  #=== TECSCDE.message_box
-  # Function to open a dialog box displaying the message provided.
-  # ok_yn_okcan::
-  # RETURN
-  def self.message_box(message, ok_yn_okcan)
-    # p "message_box #{message}"
-
-    # Create the dialog
-    dialog = Gtk::Dialog.new("Message",
-                             nil,
-                             nil,
-                             [Gtk::Stock::OK, Gtk::Dialog::RESPONSE_OK])
-
-    # Ensure that the dialog box is destroyed when the user responds.
-    # dialog.signal_connect('response') { dialog.destroy }
-
-    # Add the message in a label, and show everything we've added to the dialog.
-    dialog.vbox.add(Gtk::Label.new(message))
-    dialog.show_all
-
-    res = nil
-    dialog.run do |response|
-      res = response
-    end
-    dialog.destroy
-    res
-  end
-
-  def self.confirm?(message, parent = nil)
-    dialog = Gtk::Dialog.new(
-      "Confirm",
-      parent,
-      Gtk::Dialog::Flags::MODAL | Gtk::Dialog::Flags::DESTROY_WITH_PARENT,
-      [Gtk::Stock::OK, Gtk::ResponseType::OK],
-      [Gtk::Stock::CANCEL, Gtk::ResponseType::CANCEL])
-    dialog.vbox.add(Gtk::Label.new(message))
-    dialog.show_all
-    response = dialog.run
-    dialog.destroy
-    response == Gtk::ResponseType::OK
-  end
-
-  def self.quit(model, parent = nil)
-    if model.modified?
-      if TECSCDE.confirm?("変更を保存せずに終了しますか？")
-        Gtk.main_quit
-      end
-    else
-      Gtk.main_quit
-    end
-  end
-
-  def self.main(tecsgen)
-    begin
-      aSet = MainViewAndModel.new tecsgen
-      # aSet.test_main
-      Gtk.main
-      # rescue Exception => evar
-      #  p "exception caught"
-      # ensure
-    end
-  end
-
-  def self.test
-    begin
-      aSet = MainViewAndModel.new
-      aSet.test_main
-      # rescue Exception => evar
-      #  p "exception caught"
-      # ensure
-    end
-  end
-end
-
-#--------------- begining of TECSCDE run -----------------#
-
-$TECSCDE = true
-require "tecsgen"
-
-begin
-
-  $tecscde = true    # Bool: true if tecscde
-  $b_tate = true     # Bool: true if vertical style
-  $b_force_apply_tool_info = false # Bool: force to apply tool_info
-
-  additional_option_parser = Proc.new {|parser|
-    parser.on("--base_dir=dir", "base directory (tecscde only)"){|dir|
-      $base_dir[dir] = true
-    }
-    parser.on("--force-apply-tool_info", "force to apply tool_info, even if validation failed. this might cause ruby exception and stop tecscde"){
-      $b_force_apply_tool_info = true
-    }
-    parser.on("--tate", "vertical (tate) style (tecscde only)"){
-      $b_tate = true
-    }
-    parser.on("--yoko", "horizontal (yoko) style (tecscde only)"){
-      $b_tate = false
-    }
-  }
-
-  TECSGEN.init(additional_option_parser)
-  tecsgen = TECSGEN.new
-  tecsgen.run1
-  TECSCDE.main tecsgen
-# rescue => evar
-#  STDERR << "tecsgen: exit because of unrecoverble error.\n"
-#  STDERR << "   please retry after resolve early error.\n"
-#  STDERR << "   if no error occured, please report to TOPPERS TECS WG (users@toppers.jp or com-wg@toppers.jp).\n"
-#  exit 1
-end
-
-
-# TECSCDE.test
+TECSCDE::Command.new.run(ARGV)
