@@ -67,4 +67,10 @@ module TECSCDE
       @logger = Logger.new
     end
   end
+
+  class << self
+    def logger
+      @logger ||= TECSCDE::Logger.new
+    end
+  end
 end
