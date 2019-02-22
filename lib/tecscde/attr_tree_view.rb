@@ -71,25 +71,25 @@ module TECSCDE
       combo_list = Gtk::ListStore.new(String)
       iter = combo_list.append
       iter[0] = "a0"
-#       combo_list = Gtk::ListStore.new(String, String, String)
-#       iter = combo_list.append
-#       iter[0] = "a0"
-#       iter[1] = "b0"
-#       iter[2] = "c0"
-#       iter = combo_list.append
-#       iter[0] = "a1"
-#       iter[1] = "b1"
-#       iter[2] = "c1"
-#
-#       combo_list2 = Gtk::ListStore.new(String, String, String)
-#       iter = combo_list2.append
-#       iter[0] = "A0"
-#       iter[1] = "B0"
-#       iter[2] = "C0"
-#       iter = combo_list2.append
-#       iter[0] = "A1"
-#       iter[1] = "B1"
-#       iter[2] = "C1"
+      combo_list = Gtk::ListStore.new(String, String, String)
+      # iter = combo_list.append
+      # iter[0] = "a0"
+      # iter[1] = "b0"
+      # iter[2] = "c0"
+      # iter = combo_list.append
+      # iter[0] = "a1"
+      # iter[1] = "b1"
+      # iter[2] = "c1"
+
+      # combo_list2 = Gtk::ListStore.new(String, String, String)
+      # iter = combo_list2.append
+      # iter[0] = "A0"
+      # iter[1] = "B0"
+      # iter[2] = "C0"
+      # iter = combo_list2.append
+      # iter[0] = "A1"
+      # iter[1] = "B1"
+      # iter[2] = "C1"
 
       # create data model
       liststore = Gtk::ListStore.new(String, String, String)
@@ -157,24 +157,24 @@ module TECSCDE
           renderer.has_entry = true
         end
 
-#         # if iter[2] && iter[2] != ""
-#         if iter[1] == "ID"
-#           renderer.model = combo_list
-#           renderer.has_entry = false
-#           renderer.text_column = 0
-#         elsif iter[1] == "SIZE"
-#           renderer.model = combo_list2
-#           renderer.has_entry = false
-#           renderer.text_column = 1
-#         elsif iter[1] == "PRI"
-#           renderer.model = combo_list
-#           renderer.has_entry = false
-#           renderer.text_column = 2
-#         else
-#           renderer.model = nil
-#           renderer.text_column = 0
-#           renderer.has_entry = true
-#         end
+        # if iter[2] && iter[2] != ""
+        # if iter[1] == "ID"
+        #   renderer.model = combo_list
+        #   renderer.has_entry = false
+        #   renderer.text_column = 0
+        # elsif iter[1] == "SIZE"
+        #   renderer.model = combo_list2
+        #   renderer.has_entry = false
+        #   renderer.text_column = 1
+        # elsif iter[1] == "PRI"
+        #   renderer.model = combo_list
+        #   renderer.has_entry = false
+        #   renderer.text_column = 2
+        # else
+        #   renderer.model = nil
+        #   renderer.text_column = 0
+        #   renderer.has_entry = true
+        # end
       }
       renderer.signal_connect("edited") {|w, path, new_text|
         # new_text can be wrong if 'text_column' is changed in each row
