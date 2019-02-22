@@ -50,6 +50,7 @@ Copyright (C) 2014-2019 by TOPPERS Project
 =end
 
 require "tecscde/highlighted_objects"
+require "tecscde/palette"
 
 module TECSCDE
 
