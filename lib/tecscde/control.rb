@@ -319,7 +319,8 @@ EOT
             @highlighted_objects.reset
           end
         end
-        @last_xm, @last_ym = xm, ym
+        @last_xm = xm
+        @last_ym = ym
       end # button
       @prev_time = time
     end
