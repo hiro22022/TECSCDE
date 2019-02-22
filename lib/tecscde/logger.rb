@@ -55,11 +55,11 @@ module TECSCDE
     extend Forwardable
 
     def_delegators(:@logger,
-      :debug, :debug?,
-      :info, :info?,
-      :warn, :warn?,
-      :error, :error?,
-      :fatal, :fatal?)
+                   :debug, :debug?,
+                   :info, :info?,
+                   :warn, :warn?,
+                   :error, :error?,
+                   :fatal, :fatal?)
 
     def initialize
       @logger = ::Logger.new($stdout, level: ::Logger::Severity::INFO)
