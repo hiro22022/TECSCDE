@@ -49,21 +49,23 @@ Copyright (C) 2014-2019 by TOPPERS Project
 
 =end
 
+require "tecscde/tecs_model"
+require "tecscde/control"
+require "tecscde/view"
+
 module TECSCDE
   class MainViewAndModel
-    # @model::TECSModel
-    # @view::TECSCDE::View::MainView
     def initialize(tecsgen)
-      @model   = TECSModel.new tecsgen
-      @control = Control.new @model
-      @view    = TECSCDE::View::MainView.new @model, @control
-      @control.set_view @view
-      @model.set_view @view
+      @model  = TECSCDE::TECSModel.new(tecsgen)
+      control = TECSCDE::Control.new(@model)
+      view    = TECSCDE::View::MainView.new(@model, control)
+      control.set_view(view)
+      @model.set_view(view)
 
       @model.add_cell_list_from_tecsgen
       @model.set_undo_point
 
-      @view.paint_canvas
+      view.paint_canvas
     end
 
     def get_model
@@ -75,12 +77,10 @@ module TECSCDE
       cell1 = @model.new_cell(0, 0)
       cell2 = @model.new_cell(100, 100)
 
-      cport = TECSModel::TmCPort.new cell1
-      eport = TECSModel::TmEPort.new cell2
+      cport = TECSModel::TmCPort.new(cell1)
+      eport = TECSModel::TmEPort.new(cell2)
 
-      join = @model.new_join(cport, eport)
-      # p join
-      # Gtk::main()
+      @model.new_join(cport, eport)
     end
   end
 end
