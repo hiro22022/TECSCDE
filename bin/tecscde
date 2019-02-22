@@ -196,7 +196,6 @@ end
 #--------------- begining of TECSCDE run -----------------#
 
 $TECSCDE = true
-$Title = "tecscde"
 require "tecsgen.rb"
 
 begin
