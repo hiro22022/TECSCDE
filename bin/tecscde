@@ -196,7 +196,7 @@ end
 #--------------- begining of TECSCDE run -----------------#
 
 $TECSCDE = true
-require "tecsgen.rb"
+require "tecsgen"
 
 begin
 
