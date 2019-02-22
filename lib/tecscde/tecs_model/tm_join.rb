@@ -187,7 +187,7 @@ module TECSCDE
       end
 
       def moved_eport(x_inc, y_inc)
-        dbgPrint "moved_eport=(#{x_inc} #{y_inc})\n"
+        TECSCDE.logger.debug("moved_eport=(#{x_inc} #{y_inc})")
         len = @bars.length
 
         if len >= 5

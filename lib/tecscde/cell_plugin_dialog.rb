@@ -63,7 +63,7 @@ module TECSCDE
     def run
       @dialog.show_all
       @dialog.run{|response|
-        p response
+        TECSCDE.logger.info(response)
       }
       @dialog.destroy
     end

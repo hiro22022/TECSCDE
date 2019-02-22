@@ -64,7 +64,7 @@ module TECSCDE
       :fatal, :fatal?)
 
     def initialize
-      @logger = Logger.new
+      @logger = ::Logger.new($stdout, level: ::Logger::Severity::INFO)
     end
   end
 

@@ -206,11 +206,11 @@ module TECSCDE
       def createCanvas
         @canvas = Canvas.new
         resize_canvas
-        dbgPrint("canvas width=#{@canvas_width}, height=#{@canvas_height}\n")
+        TECSCDE.logger.debug("canvas width=#{@canvas_width}, height=#{@canvas_height}")
 
         # BUTTON PRESS event action
         @canvas.signal_connect("button-press-event"){|canvas, event| # canvas = @canvas
-          dbgPrint "pressed" + event.to_s + "\n"
+          TECSCDE.logger.debug("pressed #{event}")
           xd, yd = event.coords
           xm = dot2mm xd
           ym = dot2mm yd
@@ -229,7 +229,7 @@ module TECSCDE
         }
         # BUTTON RELEASE event action
         @canvas.signal_connect("button-release-event"){|canvas, event|
-          dbgPrint "released" + event.to_s + "\n"
+          TECSCDE.logger.debug("released #{event}")
           xd, yd = event.coords
           xm = dot2mm xd
           ym = dot2mm yd
@@ -237,7 +237,7 @@ module TECSCDE
         }
         # MOTION event action
         @canvas.signal_connect("motion-notify-event"){|canvas, event|
-          dbgPrint "motion" + event.to_s + "\n"
+          TECSCDE.logger.debug("motion #{event}")
           xd, yd = event.coords
           xm = dot2mm xd
           ym = dot2mm yd
@@ -376,7 +376,7 @@ module TECSCDE
             scale_val = ScaleValMin
           end
           @scale_val = scale_val
-          dbgPrint "scale_val=#{@scale_val}\n"
+          TECSCDE.logger.debug("scale_val=#{@scale_val}")
    
           resize_canvas
           paint_canvas
@@ -1200,7 +1200,7 @@ module TECSCDE
           # @cairo_context_target.matrix = @cairo_matrix
           # @cairo_context_target.restore   # (* pair *)
         rescue => evar
-          p evar
+          TECSCDE.logger.error(evar)
           TECSCDE.message_box("fail to writ to #{fname}\n#{evar}", :OK)
         ensure
           @cairo_context_target = target_bak

@@ -73,7 +73,7 @@ module TECSCDE
     end
 
     def test_main
-      p "test_main"
+      TECSCDE.logger.degug("test_main")
       cell1 = @model.new_cell(0, 0)
       cell2 = @model.new_cell(100, 100)
 

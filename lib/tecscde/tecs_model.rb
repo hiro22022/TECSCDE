@@ -59,11 +59,6 @@ require "tecscde/tm_object"
 require "tecscde/change_set_control"
 
 module TECSCDE
-
-  def self.error(msg)
-    puts(msg)
-  end
-
   class TECSModel < TmObject
     include TECSCDE::ChangeSetControl
     include TECSCDE::View::Constants
@@ -194,7 +189,7 @@ module TECSCDE
       ct_nsp.append! celltype_name.to_sym
       ct = Namespace.find ct_nsp
       if ct.nil?
-        TECSCDE.error("TM9999 celltype #{ct_nsp}: not found for cell #{@name}")
+        TECSCDE.logger.error("TM9999 celltype #{ct_nsp}: not found for cell #{@name}")
         return
       end
 
@@ -473,7 +468,7 @@ module TECSCDE
 
       cell_list = { } # ::Cell => TmCell
       if tecsgen_cell_list
-        p "=== create cell ==="
+        TECSCDE.logger.info("=== create cell ===")
         tecsgen_cell_list.each{|cell|
           # p cell.get_owner.get_namespace
           # p cell.get_owner.get_namespace_path
@@ -481,11 +476,11 @@ module TECSCDE
             next
           end
           if cell.get_celltype.nil? # celltype not found error in cdl (tecsgen)
-            p "add_cell: celltype not found: #{cell.get_name} #{cell.get_owner.get_namespace_path}"
+            TECSCDE.logger.info("add_cell: celltype not found: #{cell.get_name} #{cell.get_owner.get_namespace_path}")
             next
           end
 
-          p "add_cell #{cell.get_name} #{cell.get_owner.get_namespace_path} #{cell.get_locale}"
+          TECSCDE.logger.info("add_cell #{cell.get_name} #{cell.get_owner.get_namespace_path} #{cell.get_locale}")
           new_cell_ = create_cell_from_tecsgen(cell, x, y)
           tecsgen_cell_list2 << cell
           cell_list[cell] = new_cell_
@@ -516,16 +511,16 @@ module TECSCDE
         #------ validate and set location info from __tool_info( "tecscde" ) ------#
         # begin
         if validate || $b_force_apply_tool_info
-          p "=== set_paper ==="
+          TECSCDE.logger.info("=== set_paper ===")
           set_paper_from_tecsgen
 
-          p "=== set_cell_location ==="
+          TECSCDE.logger.info("=== set_cell_location ===")
           set_cell_location_from_tecsgen
         else
-          TECSCDE.error("validate error in __tool_info__( \"tecscde\" )")
+          TECSCDE.logger.error("validate error in __tool_info__( \"tecscde\" )")
         end
 
-        p "=== create join ==="
+        TECSCDE.logger.info("=== create join ===")
         tecsgen_cell_list2.each{|cell|
           cell.get_join_list.get_items.each{|join|
             if join.get_array_member2.nil?
@@ -541,7 +536,7 @@ module TECSCDE
         }
 
         if validate || $b_force_apply_tool_info
-          p "=== set_join_location ==="
+          TECSCDE.logger.info("=== set_join_location ===")
           set_join_location_from_tecsgen
         end
       end
@@ -576,7 +571,7 @@ module TECSCDE
             lhs_cell = cell_list[cell]
             cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
             if cport.nil?
-              TECSCDE.error("#{@name}.#{join.get_name} not found")
+              TECSCDE.logger.error("#{@name}.#{join.get_name} not found")
               return
             end
             rhs_cell = cell_list[join.get_cell]
@@ -609,7 +604,7 @@ module TECSCDE
         paper = nil
         PAPERS.each{|name, spec|
           if spec.size == size && spec.orientation == orientation
-            p "paper found #{spec.name}"
+            TECSCDE.logger.info("paper found #{spec.name}")
             paper = spec
           end
         }
@@ -629,7 +624,7 @@ module TECSCDE
         name = cell_location[:name].to_sym
         loc = cell_location[:location]
         if loc.length != 4
-          TECSCDE.error("#{name}: cell_location.location: array length is not inconsistent, #{loc.length} for 4")
+          TECSCDE.logger.error("#{name}: cell_location.location: array length is not inconsistent, #{loc.length} for 4")
           next
         end
         cell = @cell_hash[name]
@@ -649,35 +644,37 @@ module TECSCDE
               port = cell.get_eports[port_name]
             end
             if port.nil?
-              p "port '#{port_name}' not found"
+              TECSCDE.logger.info("port '#{port_name}' not found")
               next
             end
             if subscript
               if !port.is_array?
-                p "port '#{port_name}' : 'subscript' specified but not array"
+                TECSCDE.logger.info("port '#{port_name}' : 'subscript' specified but not array")
                 next
               end
               if subscript < 0
-                p "port '#{port_name}' : 'subscript' negative valude specified"
+                TECSCDE.logger.info("port '#{port_name}' : 'subscript' negative valude specified")
                 next
               end
               p0 = port
               port = port.get_ports[subscript] # array
               if port.nil?
-                p "port '#{port_name}' : 'subscript=#{subscript}' out of range"
+                TECSCDE.logger.info("port '#{port_name}' : 'subscript=#{subscript}' out of range")
                 next
               end
             else
               if port.is_array?
-                p "port '#{port_name}' : array but no 'subscript' specified"
+                TECSCDE.logger.info("port '#{port_name}' : array but no 'subscript' specified")
                 next
               end
             end
             port.set_position edge, offset
           }
         else
-          @cell_hash.each{|a, b| p a }
-          p "not apply location: #{name}"
+          @cell_hash.each do |a, b|
+            TECSCDE.logger.info(a)
+          end
+          TECSCDE.logger.info("not apply location: #{name}")
           next
         end
       }
@@ -715,25 +712,25 @@ module TECSCDE
           cport = cp_cell.get_cports[cp_name]
           if cport.is_a? TmCPortArray
             if cp_subscript.nil?
-              TECSCDE.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
+              TECSCDE.logger.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
               next
             end
             cport = cport.get_member cp_subscript
           else
             if !cp_subscript.nil?
-              TECSCDE.error("TM9999 #{cp_name} is not array but specified subscript")
+              TECSCDE.logger.error("TM9999 #{cp_name} is not array but specified subscript")
             end
           end
           eport = ep_cell.get_eports[ep_name]
           if eport.is_a? TmEPortArray
             if ep_subscript.nil?
-              TECSCDE.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
+              TECSCDE.logger.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
               next
             end
             eport = eport.get_member ep_subscript
           else
             if !ep_subscript.nil?
-              TECSCDE.error("TM9999 #{ep_name} is not array but specified subscript")
+              TECSCDE.logger.error("TM9999 #{ep_name} is not array but specified subscript")
             end
           end
           # p "1 #{cp_name} #{cp_subscript} #{ep_name} #{ep_subscript} #{cport} #{eport}"

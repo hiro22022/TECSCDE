@@ -1,5 +1,6 @@
 $TECSCDE = true
 require "tecsgen"
+require "tecscde/logger"
 
 module TECSCDE
   class Command

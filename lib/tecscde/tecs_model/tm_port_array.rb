@@ -70,7 +70,7 @@ module TECSCDE
           # 1st element of this entry array
           @subscript1 = subscript
         elsif (@subscript1 >= 0 && subscript < 0) || (@subscript1 < 0 && subscript >= 0)
-          TECSCDE.error("TM9999 array subscript inconsistent (similar error to S1128)")
+          TECSCDE.logger.error("TM9999 array subscript inconsistent (similar error to S1128)")
           return nil
         end
 
@@ -94,14 +94,14 @@ module TECSCDE
                 return @ports[subscript]
               end
 
-              TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size - 1})")
+              TECSCDE.logger.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size - 1})")
               return nil
             else
               port = @ports[subscript]
               # p "new_join: 2 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
               if self.instance_of?(TECSCDE::TECSModel::TmCPortArray) # CPort cannot have multiple join
                 if port.get_join
-                  TECSCDE.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: duplicate join")
+                  TECSCDE.logger.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: duplicate join")
                   return nil
                 end
               end
@@ -197,10 +197,10 @@ EOT
         index = @ports.index port
         if index != 0
           modified {
-            p "delete #### subscript=#{port.get_subscript}"
+            TECSCDE.logger.info("delete #### subscript=#{port.get_subscript}")
             port.delete
             if @ports.delete(port).nil?
-              p "delete: not found"
+              TECSCDE.logger.info("delete: not found")
             end
             index = 0
             @ports.each{|port|
@@ -239,7 +239,7 @@ EOT
           new_port.set_position(port.get_edge_side, port.get_offset + DIST_PORT)
           @ports[subsc + 1] = new_port
 
-          p "insert ####"
+          TECSCDE.logger.info("insert ####")
         }
       end
 

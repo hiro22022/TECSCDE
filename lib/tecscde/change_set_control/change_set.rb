@@ -17,16 +17,15 @@ module TECSCDE
 
       def set_undo_point
         count = @set.length
-        flush_print "* set_undo_point number=#{@number}, count=#{count}\n"
+        TECSCDE.logger.info("* set_undo_point number=#{@number}, count=#{count}")
         return count
       end
 
       def apply
-        # print "applying change_no=#{@number}\n"
-        dbgPrint "applying change_no=#{@number}\n"
+        TECSCDE.logger.debug("applying change_no=#{@number}")
         @set.each_key{|tm_object|
           tm_object.copy_from @set[tm_object]
-          dbgPrint "apply #{tm_object.class}\n"
+          TECSCDE.logger.debug("apply #{tm_object.class}")
         }
       end
     end

@@ -72,7 +72,7 @@ module TECSCDE
       include TECSCDE::TECSModel::TmUneditable
 
       def initialize(name, celltype, x, y, region, tecsgen_cell = nil)
-        dbgPrint "TmCell.new\n"
+        TECSCDE.logger.debug("TmCell.new")
         @name = name
         @celltype = celltype
         @owner = region
@@ -195,7 +195,7 @@ module TECSCDE
       def move(x_inc, y_inc)
         modified {
 
-          dbgPrint "cell move #{@name}\n"
+          TECSCDE.logger.debug("cell move #{@name}")
           x0 = @x
           y0 = @y
           @x = get_model.clip_x(TECSCDE::TECSModel.round_length_val(@x + x_inc))
@@ -390,21 +390,21 @@ module TECSCDE
       def get_cport_for_new_join(cport_name, cport_subscript)
         cp = @cports[cport_name]
         if cp.nil?
-          TECSCDE.error("TM9999 cell #{@name} not have call port #{cport_name}")
+          TECSCDE.logger.error("TM9999 cell #{@name} not have call port #{cport_name}")
         end
 
         if cport_subscript.nil?
           if !cp.is_array?
             return cp
           else
-            TECSCDE.error("TM9999 cell #{@name}.#{cport_name} is call port array")
+            TECSCDE.logger.error("TM9999 cell #{@name}.#{cport_name} is call port array")
             return nil
           end
         else
           if cp.is_array?
             return cp.get_port_for_new_join(cport_subscript)
           else
-            TECSCDE.error("TM9999 cell #{@name}.#{cport_name} is not call port array")
+            TECSCDE.logger.error("TM9999 cell #{@name}.#{cport_name} is not call port array")
             return nil
           end
         end
@@ -414,21 +414,21 @@ module TECSCDE
       def get_eport_for_new_join(eport_name, eport_subscript)
         ep = @eports[eport_name]
         if ep.nil?
-          TECSCDE.error("TM9999 cell #{@name} not have entry port #{eport_name}")
+          TECSCDE.logger.error("TM9999 cell #{@name} not have entry port #{eport_name}")
         end
 
         if eport_subscript.nil?
           if !ep.is_array?
             return ep
           else
-            TECSCDE.error("TM9999 cell #{@name}.#{eport_name} is entry port array")
+            TECSCDE.logger.error("TM9999 cell #{@name}.#{eport_name} is entry port array")
             return nil
           end
         else
           if ep.is_array?
             return ep.get_port_for_new_join(eport_subscript)
           else
-            TECSCDE.error("TM9999 cell #{@name}.#{eport_name} is not entry port array")
+            TECSCDE.logger.error("TM9999 cell #{@name}.#{eport_name} is not entry port array")
             return nil
           end
         end
