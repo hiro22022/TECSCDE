@@ -104,11 +104,10 @@ module TECSCDE
       end
     end
 
-    def each # proc
-      proc = Proc.new
-      @objects.each{|obj|
-        proc.call(obj)
-      }
+    def each
+      @objects.each do |obj|
+        yield obj
+      end
     end
 
     def empty?
