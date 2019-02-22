@@ -11,18 +11,11 @@ module TECSCDE
   # ok_yn_okcan::
   # RETURN
   def self.message_box(message, ok_yn_okcan)
-    # p "message_box #{message}"
-
-    # Create the dialog
     dialog = Gtk::Dialog.new("Message",
                              nil,
                              nil,
                              [Gtk::Stock::OK, Gtk::Dialog::RESPONSE_OK])
 
-    # Ensure that the dialog box is destroyed when the user responds.
-    # dialog.signal_connect('response') { dialog.destroy }
-
-    # Add the message in a label, and show everything we've added to the dialog.
     dialog.vbox.add(Gtk::Label.new(message))
     dialog.show_all
 
@@ -59,24 +52,13 @@ module TECSCDE
   end
 
   def self.main(tecsgen)
-    begin
-      aSet = MainViewAndModel.new tecsgen
-      # aSet.test_main
-      Gtk.main
-      # rescue Exception => evar
-      #  p "exception caught"
-      # ensure
-    end
+    MainViewAndModel.new tecsgen
+    Gtk.main
   end
 
   def self.test
-    begin
-      aSet = MainViewAndModel.new
-      aSet.test_main
-      # rescue Exception => evar
-      #  p "exception caught"
-      # ensure
-    end
+    aSet = MainViewAndModel.new
+    aSet.test_main
   end
 end
 
