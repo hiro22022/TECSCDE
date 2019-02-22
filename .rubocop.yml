@@ -33,6 +33,18 @@ Metrics/MethodLength:
 
 Naming/FileName:
   Enabled: false
+Naming/UncommunicativeMethodParamName:
+  AllowedNames:
+    - x
+    - y
+    - x0
+    - y0
+    - xm
+    - ym
+    - xx
+    - xy
+    - yx
+    - yy
 
 Style/AsciiComments:
   Enabled: false
