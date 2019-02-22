@@ -51,7 +51,7 @@ module TECSCDE
   #== AttrTreeView: show cell list
   # formerly this class is sub-class of Gtk::TreeView
   # currently this class has Gtk::TreeView
-  class AttrTreeView # < Gtk::TreeView
+  class AttrTreeView
     # @choice_list::{name=>ListStore}
     # @cell::TmCell
     # @ct_attr_list::{ String(attr_name) => String(initializer) }

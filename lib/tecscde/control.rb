@@ -321,7 +321,7 @@ EOT
         end
         @last_xm = xm
         @last_ym = ym
-      end # button
+      end
       @prev_time = time
     end
 

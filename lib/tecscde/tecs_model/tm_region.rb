@@ -103,6 +103,6 @@ module TECSCDE
       def setup_clone(sub_region)
         @sub_region = sub_region.dup
       end
-    end # class TmRegion
+    end
   end
 end

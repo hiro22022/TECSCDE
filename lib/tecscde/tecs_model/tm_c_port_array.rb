@@ -100,6 +100,6 @@ module TECSCDE
       def new_port(subscript)
         TECSCDE::TECSModel::TmCPort.new(self, @port_def, subscript)
       end
-    end # class TmCPortArray
+    end
   end
 end
