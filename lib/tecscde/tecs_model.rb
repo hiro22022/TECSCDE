@@ -1209,7 +1209,7 @@ require "tecscde/tecs_model/tm_uneditable"
 require "tecscde/tecs_model/hbar"
 require "tecscde/tecs_model/vbar"
 
-# 
+#
 # Software Design Memo
 #
 # pattern of lines between cells
@@ -1252,7 +1252,7 @@ require "tecscde/tecs_model/vbar"
 #      EDGE_LEFT   = 0b10
 #      EDGE_RIGHT  = 0b11
 #
-# 
+#
 #   bit0: 1 if normal direction is positive, 0 negative
 #   bit1: 1 if vertical, 0 if horizontal
 #
@@ -1342,7 +1342,7 @@ require "tecscde/tecs_model/vbar"
 #        pos4 = @eport.get_position_in_normal_dir
 #        @bars[4] = (bar[3].instance_of? HBar) ? VBar.new( pos4 ) : HBar.new( pos4 )
 #
-# 
+#
 #
 #----- JSON schema (likely) -----#
 #

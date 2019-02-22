@@ -250,13 +250,13 @@ module TECSCDE
                             Gdk::Event::BUTTON_RELEASE_MASK |
                             Gdk::Event::PROPERTY_CHANGE_MASK |
                             Gdk::Event::KEY_PRESS_MASK)
-   
+
         @scrolledWindow.add_with_viewport @canvas
         # it seems that gdkWindow is nil before window.show or realize
         @canvas.realize
         @gdkWindow = @canvas.window
         @canvasGc = Gdk::GC.new @gdkWindow
-   
+
         # prepare pixmap (buffer for canvas)
         #  pixmap cannot be resized, so we have the largest one at initial.
         @canvasPixmap = Gdk::Pixmap.new(@gdkWindow,
@@ -270,42 +270,42 @@ module TECSCDE
         # @cairo_context_win.save
         @cairo_context_target = @cairo_context_pixmap
         @cairo_matrix = TECSCDE::View::CairoMatrix.new
-   
+
         # prepare text renderer
         @pango_context = Gdk::Pango.context
         @pango_layout = Pango::Layout.new @pango_context
         @pango_matrix = Pango::Matrix.new.rotate!(90)
       end
-   
+
       def paint_canvas
         clearCanvasPixmap
-   
+
         #----- draw cells -----#
         @model.get_cell_list.each{|cell|
           drawCell cell
         }
-   
+
         #----- draw joins -----#
         # draw linew before draw texts (if other colors are used, it is better to lay texts upper side)
         @model.get_join_list.each{|join|
           drawJoin join
         }
-   
+
         refresh_canvas
       end
-   
+
       def refresh_canvas
         @gdkWindow.draw_drawable(@canvasGc, @canvasPixmap, 0, 0, 0, 0, @canvas_width, @canvas_height)
         draw_hilite_objects @control.highlighted_objects
       end
-   
+
       def resize_canvas
         @canvas_height = Integer(mm2dot @model.paper.height)
         @canvas_width  = Integer(mm2dot @model.paper.width)
         @canvas.set_size_request(@canvas_width, @canvas_height)
         # @scrolledWindow.queue_draw
       end
-   
+
       def clearCanvasPixmap
         @canvasGc.function = Gdk::GC::SET
         @canvasGc.fill = Gdk::GC::SOLID
@@ -314,25 +314,25 @@ module TECSCDE
         canvasGC_reset
         # p "color = #{@canvasGc.foreground.red}, #{@canvasGc.foreground.green}, #{@canvasGc.foreground.blue}"
       end
-   
+
       def set_cursor(cursor)
         @canvas.window.cursor = cursor
       end
-   
+
       #=== TmView#drawTargetDirect
       # change draw target to Window
       def drawTargetDirect
         # @drawTarget = @gdkWindow
         # @cairo_context_target = @cairo_context_win
       end
-   
+
       #=== TmView#drawTargetReset
       # reset draw target to canvasPixmap
       def drawTargetReset
         # @drawTarget = @canvasPixmap
         # @cairo_context_target = @cairo_context_pixmap
       end
-   
+
       #------ HBox  ------#
       def createHBox
         @hbox = Gtk::HBox.new
@@ -343,7 +343,7 @@ module TECSCDE
           paint_canvas
         }
         @hbox.pack_start @emphasize_cell_name_button
-   
+
         #----- color by region button -----#
         # @color_by_region_button = Gtk::ToggleButton.new( "Color by Region" )
         @color_by_region_button = Gtk::CheckButton.new("Color by Region")
@@ -355,7 +355,7 @@ module TECSCDE
         @hbox.pack_start @color_by_region_button
         @hbox.pack_end @hScale
       end
-   
+
       #------ HScale  ------#
       def createHScale
         @scale_val = ScaleValIni
@@ -373,7 +373,7 @@ module TECSCDE
           end
           @scale_val = scale_val
           TECSCDE.logger.debug("scale_val=#{@scale_val}")
-   
+
           resize_canvas
           paint_canvas
         }
@@ -415,7 +415,7 @@ module TECSCDE
         @cairo_context_target.rectangle(x1 + 0.5, y1 + 0.5, w1, h1)
         @cairo_context_target.set_line_width(1)
         @cairo_context_target.stroke
-   
+
         gap = mm2dot GapActive
         gap = 2 if gap < 2 # if less than 2 dots, let gap 2 dots
         if cell.get_celltype && cell.get_celltype.is_active?
@@ -454,7 +454,7 @@ module TECSCDE
           @cairo_context_target.set_source_color @@colors[Color_incomplete]
         end
         # draw_text( x1 + w1/2, y1+h1/2, label, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
-   
+
         if @b_emphasize_cell_name
           wmn, hmn = get_text_extent(cell_name.to_s, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
           if wmn > w
@@ -483,7 +483,7 @@ module TECSCDE
             }
           end
         }
-   
+
         canvasGC_reset
       end
 
@@ -721,7 +721,7 @@ module TECSCDE
           end
           @canvasGc.foreground = color
           @cairo_context_target.set_source_color color
-   
+
           if bar2.instance_of? TECSModel::HBar
             xm2 = mm2dot(bar2.get_position)
             @gdkWindow.draw_line(@canvasGc, xm, ym, xm2, ym)
@@ -732,10 +732,10 @@ module TECSCDE
             ym = ym2
           end
         }
-   
+
         canvasGC_set_line_width 1
         canvasGC_reset
-   
+
         drawTargetReset
       end
 
@@ -901,7 +901,7 @@ module TECSCDE
         plo.alignment = alignment
         # plo.context_changed
         rect2 = plo.get_pixel_extents[1]
-   
+
         case alignment
         when ALIGN_CENTER
           # calc text draww postion
@@ -914,7 +914,7 @@ module TECSCDE
           x2 = x - rect2.descent
           y2 = y - rect2.rbearing - mm2dot(GapPort)
         end
-   
+
         @drawTarget.draw_layout(@canvasGc, x2, y2, plo)
       end
 
@@ -985,12 +985,12 @@ module TECSCDE
       def create_edit_window
         @entry = Gtk::Entry.new
         @entry.set_has_frame true
-   
+
         @entryWin = Gtk::Window.new Gtk::Window::TOPLEVEL
         @entryWin.add @entry
         @entryWin.realize
         @entryWin.window.reparent @canvas.window, 0, 0 # Gdk level operation
-   
+
         # these steps are to avoid to move ( 0, 0 ) at 1st appear
         @entryWin.show_all
         @entryWin.hide
@@ -1011,7 +1011,7 @@ module TECSCDE
         @entryWin.hide
         return name
       end
-   
+
       def get_cell_name_edit_area(cell)
         name = cell.get_name
         obj_type = CELL_NAME
@@ -1108,7 +1108,7 @@ module TECSCDE
         color = Gdk::Color.parse(name.to_s)
         self.setup_colormap_2 name, color
       end
-   
+
       def self.setup_colormap_2(name, color)
         @@colors[name] = color
         @@colormap.alloc_color(color, false, true)
