@@ -107,7 +107,7 @@ module TECSCDE
       #----- set column information -----#
 
       # ATTRIBUTE column
-      col = Gtk::TreeViewColumn.new("attribute", renderer, :text => COL_NAME)
+      col = Gtk::TreeViewColumn.new("attribute", renderer, text: COL_NAME)
       col.set_cell_data_func(renderer) {|col, renderer, model, iter|
         if iter[COL_VALUE].nil? || iter[COL_VALUE] == ""
           renderer.foreground = "red"
@@ -120,7 +120,7 @@ module TECSCDE
       @tree_view.append_column(col)
 
       # TYPE column
-      col = Gtk::TreeViewColumn.new("type", renderer, :text => COL_TYPE)
+      col = Gtk::TreeViewColumn.new("type", renderer, text: COL_TYPE)
       col.set_cell_data_func(renderer) {|col, renderer, model, iter|
         if @cell.is_editable?
           renderer.foreground = "black"
@@ -134,7 +134,7 @@ module TECSCDE
       renderer = Gtk::CellRendererCombo.new
       renderer.text_column = 0
       renderer.model = combo_list
-      col = Gtk::TreeViewColumn.new("value", renderer, :text => COL_VALUE)
+      col = Gtk::TreeViewColumn.new("value", renderer, text: COL_VALUE)
       col.set_cell_data_func(renderer) {|col, renderer, model, iter|
         # p "iter[0]=#{iter[0]}"
         if @cell.get_attr_list[iter[COL_NAME].to_sym].nil?

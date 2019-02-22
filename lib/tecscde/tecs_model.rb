@@ -70,55 +70,55 @@ module TECSCDE
 
     # tool_info schema for tecscde
     TECSCDE_SCHEMA = {
-      :tecscde => {
-        :cell_list    => [:cell_location],        # array
-        :join_list    => [:join_location]         # array
+      tecscde: {
+        cell_list: [:cell_location],    # array
+        join_list: [:join_location]     # array
       },
-      :__tecscde => {
-        :paper        => :paper                   # paper
+      __tecscde: {
+        paper: :paper                   # paper
       },
-      :paper => {
-        :type         => "paper",                 # fixed string (type name)
-        :size         => :string,                 # "A4", "A3", "A2"
-        :orientation  => :string,                 # "LANDSCAPE", "PORTRAIT"
+      paper: {
+        type: "paper",                  # fixed string (type name)
+        size: :string,                  # "A4", "A3", "A2"
+        orientation: :string,           # "LANDSCAPE", "PORTRAIT"
       },
-      :cell_location => {
-        :type         => "cell_location",         # fixed string (type name)
-        :region       => :string,                 # "rRegion::rReg"
-        :name         => :string,                 # "CellName"
-        :location     => [:number],               # [ x, y, w, h ]
-        :port_location => [:port_location]        # array
+      cell_location: {
+        type: "cell_location",          # fixed string (type name)
+        region: :string,                # "rRegion::rReg"
+        name: :string,                  # "CellName"
+        location: [:number],            # [ x, y, w, h ]
+        port_location: [:port_location] # array
       },
-      :port_location => {
-        :type         => "port_location",         # fixed string (type name)
-        :port_name    => :string,
-        :edge         => :string,                 # "EDGE_TOP" | "EDGE_BOTTOM" | "EDGE_LEFT" | "EDGE_RIGHT"
-        :offset       =>  :number                 # real number (mm) (>=0)
+      port_location: {
+        type: "port_location",          # fixed string (type name)
+        port_name: :string,
+        edge: :string,                  # "EDGE_TOP" | "EDGE_BOTTOM" | "EDGE_LEFT" | "EDGE_RIGHT"
+        offset: :number                 # real number (mm) (>=0)
       },
-      :__port_location => {                       # port_location optional
-        :subscript    => :integer
+      __port_location: {                # port_location optional
+        subscript: :integer
       },
-      :join_location => {
-        :type         => "join_location",         # fixed string (type name)
-        :call_region  => :string,                 # "rRegionParent::rRegionChild",
-        :call_cell    => :string,                 # "CellName",
-        :call_port    => :string,                 # "cPort",
-        :entry_region => :string,                 # "rERegionParent::rERegionChild",
-        :entry_cell   => :string,                 # "ECellName",
-        :entry_port   => :string,                 # "ePort",
-        :bar_list     => [:HBar, :VBar]           # mixed (HBar&VBar) array type
+      join_location: {
+        type: "join_location",          # fixed string (type name)
+        call_region: :string,           # "rRegionParent::rRegionChild",
+        call_cell: :string,             # "CellName",
+        call_port: :string,             # "cPort",
+        entry_region: :string,          # "rERegionParent::rERegionChild",
+        entry_cell: :string,            # "ECellName",
+        entry_port: :string,            # "ePort",
+        bar_list: [:HBar, :VBar]        # mixed (HBar&VBar) array type
       },
-      :__join_location => {                       # join_location optional
-        :call_port_subscript   => :integer,       # >= 0
-        :entry_port_subscript  => :integer,       # >= 0
+      __join_location: {                # join_location optional
+        call_port_subscript: :integer,  # >= 0
+        entry_port_subscript: :integer, # >= 0
       },
-      :HBar => {
-        :type         => "HBar",                  # fixed string (type name)
-        :position     => :number,                 # real number (mm), location in X-axis
+      HBar: {
+        type: "HBar",                   # fixed string (type name)
+        position: :number,              # real number (mm), location in X-axis
       },
-      :VBar => {
-        :type         => "VBar",                  # fixed string (type name)
-        :position     => :number,                 # real number (mm), location in Y-axis
+      VBar: {
+        type: "VBar",                   # fixed string (type name)
+        position: :number,              # real number (mm), location in Y-axis
       }
     }
 

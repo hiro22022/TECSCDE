@@ -73,10 +73,10 @@ module TECSCDE
       renderer = Gtk::CellRendererText.new
 
       # set column information
-      col = Gtk::TreeViewColumn.new("name", renderer, :text => COL_NAME)
+      col = Gtk::TreeViewColumn.new("name", renderer, text: COL_NAME)
       @tree_view.append_column(col)
 
-      col = Gtk::TreeViewColumn.new("namespace", renderer, :text => COL_NSPATH)
+      col = Gtk::TreeViewColumn.new("namespace", renderer, text: COL_NSPATH)
       @tree_view.append_column(col)
 
       liststore.set_sort_column_id(COL_NAME)
