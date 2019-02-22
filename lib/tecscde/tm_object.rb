@@ -80,9 +80,8 @@ module TECSCDE
     end
 
     def modified
-      get_model.add_change_set self
-      proc = Proc.new
-      proc.call
+      get_model.add_change_set(self)
+      yield
     end
 
     def copy_from(tm_object)
