@@ -795,16 +795,16 @@ module TECSCDE
     end
 
     #=== save data ***
-    def save(fname)
+    def save(filename)
       begin
         Dir.chdir $run_dir
-        f = open(fname, "w")
+        f = open(filename, "w")
         save_tecsgen f
         save_cells f
         save_info f
         f.close
       rescue => evar
-        TECSCDE.message_box("fail to save #{fname}\n#{evar}", :OK)
+        TECSCDE.message_box("fail to save #{filename}\n#{evar}", :OK)
       end
     end
 
