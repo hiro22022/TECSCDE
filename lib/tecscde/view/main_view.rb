@@ -522,8 +522,8 @@ module TECSCDE
         when TECSModel::EDGE_RIGHT
           points = [[xe, ye - triangle_1_2], [xe, ye + triangle_1_2], [xe - triangle_hi, ye]]
         end
-  #      fill = true
-  #      @drawTarget.draw_polygon( @canvasGc, fill, points )
+        # fill = true
+        # @drawTarget.draw_polygon( @canvasGc, fill, points )
         @cairo_context_target.triangle(*points[0], *points[1], *points[2])
         @cairo_context_target.fill
       end
@@ -1021,7 +1021,7 @@ module TECSCDE
         xm, ym, wm, hm = cell.get_geometry
         x = mm2dot(xm + (wm - wmn) / 2)
         y = mm2dot(ym + hm / 2 + 1)
-  #      y = mm2dot( ym + hm / 2 - hmn )
+        # y = mm2dot( ym + hm / 2 - hmn )
         w = mm2dot wmn
         h = mm2dot hmn
 

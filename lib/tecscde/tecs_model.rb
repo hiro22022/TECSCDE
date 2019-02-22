@@ -459,8 +459,8 @@ module TECSCDE
       tecsgen_cell_list2 = []
       x = 10
       y = 10
-#          x = @paper[ :width ] - 60
-#          y = @paper[ :height ] -30
+      # x = @paper[ :width ] - 60
+      # y = @paper[ :height ] -30
 
       cell_list = { } # ::Cell => TmCell
       if tecsgen_cell_list
@@ -491,14 +491,14 @@ module TECSCDE
               y = 10
             end
           end
-#           x -= 55
-#           if x <= 10
-#             x =   @paper[ :width ] - 60
-#             y -= 30
-#             if y <= 50
-#               y = @paper[ :height ] -30
-#             end
-#           end
+          # x -= 55
+          # if x <= 10
+          #   x =   @paper[ :width ] - 60
+          #   y -= 30
+          #   if y <= 50
+          #     y = @paper[ :height ] -30
+          #   end
+          # end
         }
 
         set_location_from_tecsgen_old
@@ -1010,8 +1010,8 @@ PORT_INFO
         else
           ep_subsc = ""
         end
-# :call_region :
-# :entry_region :
+        # :call_region :
+        # :entry_region :
 
         f.print <<JOIN_INFO
 #{delim_1}        {       /** join_list[ #{index} ] **/
@@ -1071,7 +1071,7 @@ BAR_INFO
         if !cp_cell.nil? && !ep_cell.nil?
           cport = cp_cell.get_cports[cp_name.to_sym]
           eport = ep_cell.get_eports[ep_name.to_sym]
-           # p "1 #{cp_name} #{ep_name} #{cport} #{eport}"
+          # p "1 #{cp_name} #{ep_name} #{cport} #{eport}"
 
           # check existance of cport & eport and direction of bar & edge (must be in right angle)
           # mikan necessary more than 2 bars

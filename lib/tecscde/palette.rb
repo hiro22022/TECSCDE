@@ -69,7 +69,7 @@ module TECSCDE
       #----- window -----#
       @window = @builder["window_palette"]
       @window.realize
-#      @window.type = ( Gtk::Window::TOPLEVEL )
+      # @window.type = ( Gtk::Window::TOPLEVEL )
       @window.window.set_functions(Gdk::Window::FUNC_RESIZE | Gdk::Window::FUNC_MOVE)
 
       setup_menubar
