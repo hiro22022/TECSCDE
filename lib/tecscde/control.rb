@@ -288,11 +288,11 @@ module TECSCDE
             @cport_joining = object
             @view.set_cursor TECSCDE::CURSOR_JOINING
           else
-            TECSCDE.message_box(<<EOT, :OK)
+            TECSCDE.message_box(<<MESSAGE, :OK)
 Call port has already been joined.
 Delete existing join before creating new join.
 If you want to hilited port, click with pressing shift key.
-EOT
+MESSAGE
           end
         elsif object.is_a? TECSModel::TmEPort
           if state.shift_mask?

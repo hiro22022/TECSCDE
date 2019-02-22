@@ -933,13 +933,13 @@ module TECSCDE
     #=== TECSModel#save_cell_info
     # output cell location information
     def save_paper_info(f)
-      f.print <<EOT
+      f.print <<PAPER_INFO
     "paper" : {
        "type" : "paper",
        "size" :  "#{@paper[:size]}",
        "orientation" :  "#{@paper[:orientation]}"
     },
-EOT
+PAPER_INFO
     end
 
     #=== TECSModel#save_cell_info
@@ -950,37 +950,37 @@ EOT
       index = 0
       @cell_list.each{|cell|
         x, y, w, h = cell.get_geometry
-        f.print <<EOT
+        f.print <<CELL_INFO
 #{delim_1}        {       /** cell_list[ #{index} ] **/
             "type"     : "cell_location",
             "name"     : "#{cell.get_name}",
             "location" : [ #{x}, #{y}, #{w}, #{h} ],
             "region"   : "#{cell.get_region.get_namespace_path}",
             "port_location" : [
-EOT
+CELL_INFO
         delim_2 = ""
         (cell.get_cports.merge cell.get_eports).each{|name, cport|
           if cport.is_array?
             cport.get_ports.each{|cp|
-              f.print <<EOT
+              f.print <<PORT_INFO
 #{delim_2}                {
                     "type"      : "port_location",
                     "port_name" : "#{cp.get_name}",
                     "subscript" : #{cp.get_subscript},
                     "edge"      : "#{cp.get_edge_side_name}",
                     "offset"    : #{cp.get_offset}
-EOT
+PORT_INFO
               f.print "                }"
               delim_2 = ",\n"
             }
           else
-            f.print <<EOT
+            f.print <<PORT_INFO
 #{delim_2}                {
                     "type"      : "port_location",
                     "port_name" : "#{cport.get_name}",
                     "edge"      : "#{cport.get_edge_side_name}",
                     "offset"    : #{cport.get_offset}
-EOT
+PORT_INFO
             f.print "                }"
           end
           delim_2 = ",\n"
@@ -1013,7 +1013,7 @@ EOT
 # :call_region :
 # :entry_region :
 
-        f.print <<EOT
+        f.print <<JOIN_INFO
 #{delim_1}        {       /** join_list[ #{index} ] **/
             "type"        : "join_location",
             "call_cell"   : "#{cport.get_cell.get_name}",
@@ -1023,21 +1023,18 @@ EOT
             "entry_region": "#{eport.get_cell.get_region.get_namespace_path}",
             "entry_port"  : "#{eport.get_name}",
 #{ep_subsc}            "bar_list"    : [
-EOT
+JOIN_INFO
         delim_2 = ""
         bars.each{|bar|
-          f.print <<EOT
+          f.print <<BAR_INFO
 #{delim_2}                {
                      "type"     : "#{(bar.instance_of? HBar) ? "HBar" : "VBar"}",
                      "position" : #{bar.get_position}
-EOT
+BAR_INFO
           f.print "                }"
           delim_2 = ","
         }
-        f.print <<EOT
-
-            ]
-EOT
+        f.print "\n            ]\n"
         f.print "        }"
         delim_1 = ",\n"
         index += 1
