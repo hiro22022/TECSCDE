@@ -797,11 +797,12 @@ module TECSCDE
     #=== save data ***
     def save(filename)
       begin
-        Dir.chdir $run_dir
-        File.open(filename, "w") do |file|
-          save_tecsgen(file)
-          save_cells(file)
-          save_info(file)
+        Dir.chdir($run_dir) do
+          File.open(filename, "w") do |file|
+            save_tecsgen(file)
+            save_cells(file)
+            save_info(file)
+          end
         end
       rescue => evar
         TECSCDE.message_box("fail to save #{filename}\n#{evar}", :OK)
