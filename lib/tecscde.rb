@@ -1,6 +1,5 @@
 require "tecscde/version"
 
-module Tecscde
+module TECSCDE
   class Error < StandardError; end
-  # Your code goes here...
 end

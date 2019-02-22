@@ -4,7 +4,7 @@ require "tecscde/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "tecscde"
-  spec.version       = Tecscde::VERSION
+  spec.version       = TECSCDE::VERSION
   spec.authors       = ["Hiroshi OYAMA", "Kenji Okimoto"]
   spec.email         = ["hiro22022@gmail.com", "okimoto@clear-code.com"]
 
