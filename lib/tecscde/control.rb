@@ -126,7 +126,7 @@ module TECSCDE
 
     #----- operations for palette -----#
     def on_save
-      flush_print "save\n"
+      TECSCDE.logger.info("save")
       @model.save(@model.get_file_editing)
     end
 
@@ -135,18 +135,18 @@ module TECSCDE
       if !(fname =~ /\.pdf\Z/)
         fname += ".pdf"
       end
-      flush_print "export to #{fname}\n"
+      TECSCDE.logger.info("export to #{fname}")
       @view.export(fname)
     end
 
     def on_pointer
-      flush_print "mode: pointer\n"
+      TECSCDE.logger.info("mode: pointer")
       @mode = :MODE_POINTER
     end
 
     def on_new_cell
       @mode = :MODE_NEW_CELL
-      flush_print "mode: new\n"
+      TECSCDE.logger.info("mode: new")
     end
 
     def on_undo
