@@ -63,15 +63,4 @@ $tecsgen_base_path = File.dirname(File.expand_path __FILE__)
 require "tecscde"
 require "tecscde/command"
 
-def dbgPrint(message, *args)
-  printf(message, *args)
-  print "\n"
-  STDOUT.flush
-end
-
-def flush_print(message, *args)
-  print(message, *args)
-  STDOUT.flush
-end
-
 TECSCDE::Command.new.run(ARGV)
