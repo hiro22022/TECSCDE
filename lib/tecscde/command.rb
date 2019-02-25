@@ -8,7 +8,6 @@ module TECSCDE
     end
 
     def run(argv)
-      $tecscde = true    # Bool: true if tecscde
       $b_tate = true     # Bool: true if vertical style
       $b_force_apply_tool_info = false # Bool: force to apply tool_info
 
