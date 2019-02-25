@@ -572,7 +572,7 @@ module TECSCDE
           elsif obj.is_a? TECSModel::TmPort
             draw_port_direct(obj)
           elsif obj.is_a? TECSModel::TmJoinBar
-            drawBarDirect obj
+            draw_bar_direct(obj)
           end
         }
       end
@@ -698,9 +698,9 @@ module TECSCDE
         canvasGC_reset
       end
 
-      #=== TView#drawBarDirect
+      #=== TView#draw_bar_direct
       # directly draw on Window
-      def drawBarDirect(bar)
+      def draw_bar_direct(bar)
         drawTargetDirect
 
         join = bar.get_join
