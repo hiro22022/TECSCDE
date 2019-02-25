@@ -479,7 +479,7 @@ MESSAGE
           min_bar = bar
         end
       }
-      return min_bar
+      min_bar
     end
 
     def add_celltype_list

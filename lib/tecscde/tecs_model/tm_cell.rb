@@ -174,7 +174,7 @@ module TECSCDE
             return true
           }
         else
-          return false
+          false
         end
       end
 
@@ -238,7 +238,7 @@ module TECSCDE
             return port
           end
         }
-        return nil
+        nil
       end
 
       #=== TmCell#get_edge_position_in_normal_dir
@@ -269,7 +269,7 @@ module TECSCDE
       def inc_n_cport
         n = @n_cport
         @n_cport += 1
-        return n
+        n
       end
 
       #=== TmCell#inc_n_eport
@@ -277,22 +277,22 @@ module TECSCDE
       def inc_n_eport
         n = @n_eport
         @n_eport += 1
-        return n
+        n
       end
 
       def get_new_cport_position(port_def)
         if $b_tate
-          return [EDGE_BOTTOM, DIST_PORT * (inc_n_cport + 1)]
+          [EDGE_BOTTOM, DIST_PORT * (inc_n_cport + 1)]
         else
-          return [EDGE_RIGHT, DIST_PORT * (inc_n_cport + 1)]
+          [EDGE_RIGHT, DIST_PORT * (inc_n_cport + 1)]
         end
       end
 
       def get_new_eport_position(port_def)
         if $b_tate
-          return [EDGE_TOP, DIST_PORT * (inc_n_eport + 1)]
+          [EDGE_TOP, DIST_PORT * (inc_n_eport + 1)]
         else
-          return [EDGE_LEFT, DIST_PORT * (inc_n_eport + 1)]
+          [EDGE_LEFT, DIST_PORT * (inc_n_eport + 1)]
         end
       end
 
@@ -346,7 +346,7 @@ module TECSCDE
           end
         }
         # p "find_nearest=#{nearest_port}"
-        return nearest_port
+        nearest_port
       end
 
       #=== TmCell#adjust_port_position_after_port port, offs
@@ -464,7 +464,7 @@ module TECSCDE
             return false
           end
         }
-        return true
+        true
       end
 
       #=== TmCell#get_min_wh
@@ -507,7 +507,7 @@ module TECSCDE
       def clone_for_undo
         bu = clone
         bu.copy_from self
-        return bu
+        bu
       end
     end
   end

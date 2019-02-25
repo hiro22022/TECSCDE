@@ -18,7 +18,7 @@ module TECSCDE
       def set_undo_point
         count = @set.length
         TECSCDE.logger.info("* set_undo_point number=#{@number}, count=#{count}")
-        return count
+        count
       end
 
       def apply

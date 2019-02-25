@@ -90,14 +90,14 @@ module TECSCDE
             @sub_region[name] = TmRegion.new(@namespace_path.append(name), parent)
           }
         end
-        return @sub_region[name]
+        @sub_region[name]
       end
 
       #=== TmRegion#clone_for_undo
       def clone_for_undo
         bu = clone
         bu.copy_from self
-        return bu
+        bu
       end
 
       def setup_clone(sub_region)

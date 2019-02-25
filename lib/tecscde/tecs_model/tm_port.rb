@@ -235,9 +235,9 @@ module TECSCDE
       #=== TmPort#get_owner_cell
       def get_owner_cell
         if @owner.is_a?(TECSCDE::TECSModel::TmCell)
-          return @owner
+          @owner
         elsif @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
-          return @owner.get_owner
+          @owner.get_owner
         else
           raise "unknown cell"
         end

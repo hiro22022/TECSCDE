@@ -126,7 +126,7 @@ module TECSCDE
       def clone_for_undo
         bu = clone
         bu.copy_from self
-        return bu
+        bu
       end
     end
   end

@@ -68,7 +68,7 @@ module TECSCDE
 
     def get_model
       if @owner
-        return @owner.get_model
+        @owner.get_model
       else
         if self.is_a? TECSModel
           raise "get_model: self is not TECSModel: #{self.class}"

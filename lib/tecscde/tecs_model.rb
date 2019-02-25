@@ -196,7 +196,7 @@ module TECSCDE
       else
         region = get_region_by_location(xm, ym)
       end
-      return new_cell2(xm, ym, ct, region, tecsgen_cell)
+      new_cell2(xm, ym, ct, region, tecsgen_cell)
     end
 
     # celltype::Celltype : in tecsgen (should be changed to TmCelltype)
@@ -354,7 +354,7 @@ module TECSCDE
     #=== TECSModel#get_region_from_tecsgen_region
     def get_region_from_tecsgen_region(tecsgen_region)
       nsp = tecsgen_region.get_namespace_path
-      return get_region_from_namespace_path nsp
+      get_region_from_namespace_path nsp
     end
 
     #=== TECSModel#get_region_from_namespace_path
@@ -366,7 +366,7 @@ module TECSCDE
         region = region.get_region path_array[i]
         i += 1
       end
-      return region
+      region
     end
 
     #=== TECSModel#get_region_by_location
@@ -399,7 +399,7 @@ module TECSCDE
       elsif x > max
         x = max
       end
-      return x
+      x
     end
 
     def clip_y(y)
@@ -409,14 +409,14 @@ module TECSCDE
       elsif y > max
         y = max
       end
-      return y
+      y
     end
 
     #=== TECSModel.clone_for_undo
     def clone_for_undo
       bu = clone
       bu.copy_from self
-      return bu
+      bu
     end
 
     #=== TECSModel.setup_clone
@@ -551,7 +551,7 @@ module TECSCDE
       w = 25 if w < 25
       h = 15 if h < 15
       new_cell_.set_geometry(x, y, w, h)
-      return new_cell_
+      new_cell_
     end
 
     #=== TECSModel#create_join_from_tecsgen
@@ -782,7 +782,7 @@ module TECSCDE
     # validate JSON format data in __tool_info__( "tecscde" )
     def validate
       validator = TOOL_INFO::VALIDATOR.new(:tecscde, TECSCDE_SCHEMA)
-      return validator.validate
+      validator.validate
     end
 
     #=== save data ***

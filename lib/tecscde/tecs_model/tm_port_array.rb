@@ -146,7 +146,7 @@ module TECSCDE
             return port
           end
         }
-        return nil
+        nil
       end
 
       #=== TmPortArray#is_array?
@@ -168,7 +168,7 @@ module TECSCDE
 
       def get_member(subscript)
         if subscript < 0 || subscript >= @actual_size
-          return nil
+          nil
         else
           @ports[subscript]
         end
@@ -247,7 +247,7 @@ MESSAGE
             return false
           end
         }
-        return true
+        true
       end
 
       #=== TmPortArray#is_editable?
@@ -258,9 +258,9 @@ MESSAGE
       #=== TmPortArray#is_unsubscripted_array?
       def is_unsubscripted_array?
         if @port_def.get_array_size == "[]"
-          return true
+          true
         else
-          return false
+          false
         end
       end
 
@@ -268,7 +268,7 @@ MESSAGE
       def clone_for_undo
         bu = clone
         bu.copy_from self
-        return bu
+        bu
       end
 
       def setup_clone(ports)

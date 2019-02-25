@@ -755,7 +755,7 @@ module TECSCDE
           # rect2 = plo.get_pixel_extents[1]
           # return [ dot2mm(rect2.rbearing), dot2mm(rect2.descent) ]
           rect2 = plo.pixel_extents[1]
-          return [dot2mm(rect2.x + rect2.width), dot2mm(rect2.y + rect2.height)]
+          [dot2mm(rect2.x + rect2.width), dot2mm(rect2.y + rect2.height)]
         else
           pc = @pango_context
           plo = @pango_layout
@@ -768,7 +768,7 @@ module TECSCDE
           plo.alignment = alignment
           # plo.context_changed
           rect2 = plo.get_pixel_extents[1]
-          return [dot2mm(rect2.descent), dot2mm(rect2.rbearing)]
+          [dot2mm(rect2.descent), dot2mm(rect2.rbearing)]
         end
       end
 
@@ -1009,7 +1009,7 @@ module TECSCDE
       def end_edit_name
         name = @entry.text
         @entryWin.hide
-        return name
+        name
       end
 
       def get_cell_name_edit_area(cell)
@@ -1025,7 +1025,7 @@ module TECSCDE
         w = mm2dot wmn
         h = mm2dot hmn
 
-        return [x, y, w, h]
+        [x, y, w, h]
       end
 
       #------ Convert Unit  ------#
@@ -1143,7 +1143,7 @@ module TECSCDE
         @@cell_file_to_color[obj] = @@colors[col_name]
         @@cell_paint_color_index += 1
         # p "col_name:#{col_name} index:#{@@cell_paint_color_index}"
-        return @@colors[col_name]
+        @@colors[col_name]
       end
 
       #------ export ------#

@@ -249,7 +249,7 @@ module TECSCDE
           xs = xe
           ys = ye
         }
-        return [min_bar, min_dist]
+        [min_bar, min_dist]
       end
 
       #=== TmJoin#is_between?
@@ -304,7 +304,7 @@ module TECSCDE
       def clone_for_undo
         bu = clone
         bu.copy_from self
-        return bu
+        bu
       end
     end
   end
