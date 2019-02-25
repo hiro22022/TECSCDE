@@ -184,7 +184,7 @@ module TECSCDE
         @vbox.pack_start @scrolled_window
         @vbox.pack_end @hbox, false # expand = false
 
-        createCanvas
+        create_canvas
         @scrolled_window.set_size_request(width, height - ScaleHeight)
 
         @main_window.show_all
@@ -199,7 +199,7 @@ module TECSCDE
       #------ CANVAS  ------#
 
       #=== create canvas
-      def createCanvas
+      def create_canvas
         @canvas = Canvas.new
         resize_canvas
         TECSCDE.logger.debug("canvas width=#{@canvas_width}, height=#{@canvas_height}")
