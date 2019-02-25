@@ -565,7 +565,7 @@ module TECSCDE
       def draw_hilite_objects(obj_list)
         obj_list.each{|obj|
           if obj.is_a? TECSModel::TmCell
-            drawCellRectDirect obj
+            draw_cell_rect_direct(obj)
             # drawTargetDirect
             # drawCell obj
             # drawTargetReset
@@ -577,9 +577,9 @@ module TECSCDE
         }
       end
 
-      #=== TView#drawCellRectDirect
+      #=== TView#draw_cell_rect_direct
       # directly draw on Window hilited cell rect
-      def drawCellRectDirect(cell)
+      def draw_cell_rect_direct(cell)
         drawTargetDirect
 
         #----- set line width -----#
