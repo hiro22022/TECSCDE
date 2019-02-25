@@ -52,7 +52,7 @@
 #
 #    +- @main_window::Window--------------------+
 #    |+-@vbox::VBox(1/2)-----------------------+|
-#    ||+-- @scrolledWindow::ScrolledWindow---+ ||
+#    ||+-- @scrolled_window::ScrolledWindow--+ ||
 #    ||| +---------------------------------+ | ||
 #    ||| | @canvas::Canvas                 | | ||
 #    ||| |                                 | | ||
@@ -77,7 +77,7 @@
 #  (2) canvasPixmap
 #
 #    +---------------------------------+
-#    | @canvasPixmap::Pixmap           |
+#    | @canvas_pixmap::Pixmap          |
 #    |                                 |
 #    |                                 |
 #    |                                 |
@@ -87,8 +87,8 @@
 #    |                                 |
 #    +---------------------------------+
 #
-#  @canvasPixmap is invisible.
-#  draw contents on @canvasPixmap then copy on @canvas, to avoid flickers and to redraw fast on expose.
+#  @canvas_pixmap is invisible.
+#  draw contents on @canvas_pixmap then copy on @canvas, to avoid flickers and to redraw fast on expose.
 #
 
 require "gtk2"
@@ -104,10 +104,10 @@ module TECSCDE
       # @canvas_height::Integer
       # @canvas_width::Integer
       # @canvas::Canvas
-      # @canvasPixmap::Gtk::Pixmap
-      # @gdkWindow::Gdk::Window  GDK window of @canvas
-      # @drawTarget::Gtk::Pixmap | Gdk::Window : @canvasPixmap or @gdkWindow
-      # @canvasGc::Gdk::GC
+      # @canvas_pixmap::Gtk::Pixmap
+      # @gdk_window::Gdk::Window  GDK window of @canvas
+      # @draw_target::Gtk::Pixmap | Gdk::Window : @canvas_pixmap or @gdk_window
+      # @canvas_gc::Gdk::GC
       # @model::Model
       # @hScale::HScale
       # @scale_val::Integer
@@ -142,9 +142,9 @@ module TECSCDE
         end
         # KEY-PRESS event action
         @main_window.signal_connect("key-press-event"){|win, event|
-          if @entryWin.visible?
+          if @entry_win.visible?
             # while cell name editing, send forward to Entry window
-            event.set_window @entryWin.window
+            event.set_window @entry_win.window
             event.put
           else
             @control.key_pressed(event.keyval & 0xff, event.state)
@@ -174,18 +174,18 @@ module TECSCDE
         # p @vbox.resize_mode
         @main_window.add @vbox
 
-        @scrolledWindow = Gtk::ScrolledWindow.new
-        # @scrolledWindow.signal_connect("expose_event") { |win, evt|
-        #   gdkWin = @scrolledWindow.window
+        @scrolled_window = Gtk::ScrolledWindow.new
+        # @scrolled_window.signal_connect("expose_event") { |win, evt|
+        #   gdkWin = @scrolled_window.window
         #   gc = Gdk::GC.new gdkWin
         #   gdkWin.draw_rectangle( gc, true, 0, 0, 10000, 10000 )
         # }
 
-        @vbox.pack_start @scrolledWindow
+        @vbox.pack_start @scrolled_window
         @vbox.pack_end @hbox, false # expand = false
 
         createCanvas
-        @scrolledWindow.set_size_request(width, height - ScaleHeight)
+        @scrolled_window.set_size_request(width, height - ScaleHeight)
 
         @main_window.show_all
 
@@ -251,22 +251,22 @@ module TECSCDE
                             Gdk::Event::PROPERTY_CHANGE_MASK |
                             Gdk::Event::KEY_PRESS_MASK)
 
-        @scrolledWindow.add_with_viewport @canvas
+        @scrolled_window.add_with_viewport @canvas
         # it seems that gdkWindow is nil before window.show or realize
         @canvas.realize
-        @gdkWindow = @canvas.window
-        @canvasGc = Gdk::GC.new @gdkWindow
+        @gdk_window = @canvas.window
+        @canvas_gc = Gdk::GC.new @gdk_window
 
         # prepare pixmap (buffer for canvas)
         #  pixmap cannot be resized, so we have the largest one at initial.
-        @canvasPixmap = Gdk::Pixmap.new(@gdkWindow,
+        @canvas_pixmap = Gdk::Pixmap.new(@gdk_window,
                                          @canvas_width  * ScaleValMax / ScaleValIni,
                                          @canvas_height * ScaleValMax / ScaleValIni,
-                                         @gdkWindow.depth)
-        # @drawTarget = @canvasPixmap
-        @cairo_context_pixmap = @canvasPixmap.create_cairo_context
+                                         @gdk_window.depth)
+        # @draw_target = @canvas_pixmap
+        @cairo_context_pixmap = @canvas_pixmap.create_cairo_context
         @cairo_context_pixmap.save
-        # @cairo_context_win = @gdkWindow.create_cairo_context
+        # @cairo_context_win = @gdk_window.create_cairo_context
         # @cairo_context_win.save
         @cairo_context_target = @cairo_context_pixmap
         @cairo_matrix = TECSCDE::View::CairoMatrix.new
@@ -295,7 +295,7 @@ module TECSCDE
       end
 
       def refresh_canvas
-        @gdkWindow.draw_drawable(@canvasGc, @canvasPixmap, 0, 0, 0, 0, @canvas_width, @canvas_height)
+        @gdk_window.draw_drawable(@canvas_gc, @canvas_pixmap, 0, 0, 0, 0, @canvas_width, @canvas_height)
         draw_hilite_objects @control.highlighted_objects
       end
 
@@ -303,16 +303,16 @@ module TECSCDE
         @canvas_height = Integer(mm2dot @model.paper.height)
         @canvas_width  = Integer(mm2dot @model.paper.width)
         @canvas.set_size_request(@canvas_width, @canvas_height)
-        # @scrolledWindow.queue_draw
+        # @scrolled_window.queue_draw
       end
 
       def clearCanvasPixmap
-        @canvasGc.function = Gdk::GC::SET
-        @canvasGc.fill = Gdk::GC::SOLID
-        @canvasGc.foreground = Gdk::Color.new(255, 255, 255)
-        @canvasPixmap.draw_rectangle(@canvasGc, true, 0, 0, @canvas_width, @canvas_height)
+        @canvas_gc.function = Gdk::GC::SET
+        @canvas_gc.fill = Gdk::GC::SOLID
+        @canvas_gc.foreground = Gdk::Color.new(255, 255, 255)
+        @canvas_pixmap.draw_rectangle(@canvas_gc, true, 0, 0, @canvas_width, @canvas_height)
         canvasGC_reset
-        # p "color = #{@canvasGc.foreground.red}, #{@canvasGc.foreground.green}, #{@canvasGc.foreground.blue}"
+        # p "color = #{@canvas_gc.foreground.red}, #{@canvas_gc.foreground.green}, #{@canvas_gc.foreground.blue}"
       end
 
       def set_cursor(cursor)
@@ -322,14 +322,14 @@ module TECSCDE
       #=== TmView#drawTargetDirect
       # change draw target to Window
       def drawTargetDirect
-        # @drawTarget = @gdkWindow
+        # @draw_target = @gdk_window
         # @cairo_context_target = @cairo_context_win
       end
 
       #=== TmView#drawTargetReset
       # reset draw target to canvasPixmap
       def drawTargetReset
-        # @drawTarget = @canvasPixmap
+        # @draw_target = @canvas_pixmap
         # @cairo_context_target = @cairo_context_pixmap
       end
 
@@ -393,8 +393,8 @@ module TECSCDE
 
         #----- paint cell -----#
         color = get_cell_paint_color cell
-        # @canvasGc.set_foreground color
-        # @drawTarget.draw_rectangle( @canvasGc, true, x1, y1, w1, h1 )
+        # @canvas_gc.set_foreground color
+        # @draw_target.draw_rectangle( @canvas_gc, true, x1, y1, w1, h1 )
 
         @cairo_context_target.rectangle(x1, y1, w1, h1)
         @cairo_context_target.set_source_color(color)
@@ -402,15 +402,15 @@ module TECSCDE
 
         #----- setup color -----#
         if !cell.is_editable?
-          # @canvasGc.set_foreground @@colors[ Color_uneditable ]
+          # @canvas_gc.set_foreground @@colors[ Color_uneditable ]
           @cairo_context_target.set_source_color @@colors[Color_uneditable]
         else
-          # @canvasGc.set_foreground @@colors[ Color_editable ]
+          # @canvas_gc.set_foreground @@colors[ Color_editable ]
           @cairo_context_target.set_source_color @@colors[Color_editable]
         end
 
         #----- draw cell rect -----#
-        # @drawTarget.draw_rectangle( @canvasGc, false, x1, y1, w1, h1 )
+        # @draw_target.draw_rectangle( @canvas_gc, false, x1, y1, w1, h1 )
         # @cairo_context_target.rectangle(x1, y1, w1, h1)
         @cairo_context_target.rectangle(x1 + 0.5, y1 + 0.5, w1, h1)
         @cairo_context_target.set_line_width(1)
@@ -419,7 +419,7 @@ module TECSCDE
         gap = mm2dot GapActive
         gap = 2 if gap < 2 # if less than 2 dots, let gap 2 dots
         if cell.get_celltype && cell.get_celltype.is_active?
-          # @drawTarget.draw_rectangle( @canvasGc, false, x1 + gap, y1 + gap, w1 - 2 * gap, h1 - 2 * gap )
+          # @draw_target.draw_rectangle( @canvas_gc, false, x1 + gap, y1 + gap, w1 - 2 * gap, h1 - 2 * gap )
           @cairo_context_target.rectangle(x1 + gap + 0.5, y1 + gap + 0.5, w1 - 2 * gap, h1 - 2 * gap)
           @cairo_context_target.set_line_width(1)
           @cairo_context_target.stroke
@@ -431,7 +431,7 @@ module TECSCDE
             draw_entry_port_triangle(eport)
           else
             if cell.is_editable? && eport.is_unsubscripted_array?
-              # @canvasGc.set_foreground @@colors[ :brown ]
+              # @canvas_gc.set_foreground @@colors[ :brown ]
               @cairo_context_target.set_source_color @@colors[:brown]
             end
             # EPortArray
@@ -439,7 +439,7 @@ module TECSCDE
               draw_entry_port_triangle(ep)
             }
             if cell.is_editable? && eport.is_unsubscripted_array?
-              # @canvasGc.set_foreground @@colors[ Color_editable ]
+              # @canvas_gc.set_foreground @@colors[ Color_editable ]
               @cairo_context_target.set_source_color @@colors[Color_editable]
             end
           end
@@ -450,7 +450,7 @@ module TECSCDE
         ct_name = cell.get_celltype.get_name
         label = cell_name.to_s + "\n" + ct_name.to_s
         if !cell.complete?
-          # @canvasGc.set_foreground @@colors[ Color_incomplete ]
+          # @canvas_gc.set_foreground @@colors[ Color_incomplete ]
           @cairo_context_target.set_source_color @@colors[Color_incomplete]
         end
         # draw_text( x1 + w1/2, y1+h1/2, label, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
@@ -502,7 +502,7 @@ module TECSCDE
             color_name = Color_unjoin
           end
         end
-        # @canvasGc.set_foreground @@colors[ color_name ]
+        # @canvas_gc.set_foreground @@colors[ color_name ]
         @cairo_context_target.set_source_color @@colors[color_name]
       end
 
@@ -523,7 +523,7 @@ module TECSCDE
           points = [[xe, ye - triangle_1_2], [xe, ye + triangle_1_2], [xe - triangle_hi, ye]]
         end
         # fill = true
-        # @drawTarget.draw_polygon( @canvasGc, fill, points )
+        # @draw_target.draw_polygon( @canvas_gc, fill, points )
         @cairo_context_target.triangle(*points[0], *points[1], *points[2])
         @cairo_context_target.fill
       end
@@ -588,7 +588,7 @@ module TECSCDE
 
         #----- if uneditable change color ------#
         if !cell.is_editable?
-          @canvasGc.set_foreground(@@colors[Color_uneditable])
+          @canvas_gc.set_foreground(@@colors[Color_uneditable])
           # @cairo_context_target.set_source_color( @@colors[ Color_uneditable ] )
         end
 
@@ -600,7 +600,7 @@ module TECSCDE
         h1 = mm2dot(h)
 
         #----- draw cell rect -----#
-        @gdkWindow.draw_rectangle(@canvasGc, false, x1, y1, w1, h1)
+        @gdk_window.draw_rectangle(@canvas_gc, false, x1, y1, w1, h1)
         # @cairo_context_target.rectangle(x1, y1, w1, h1)
         # @cairo_context_target.stroke
 
@@ -614,7 +614,7 @@ module TECSCDE
         drawTargetDirect
 
         #----- set line width -----#
-        @canvasGc.set_foreground(@@colors[Color_highlight])
+        @canvas_gc.set_foreground(@@colors[Color_highlight])
         # @cairo_context_target.set_source_color( @@colors[ Color_highlight ] )
         draw_port_name port
 
@@ -636,7 +636,7 @@ module TECSCDE
         when TECSModel::EDGE_RIGHT
           x2 += 20
         end
-        @gdkWindow.draw_line(@canvasGc, x1, y1, x2, y2)
+        @gdk_window.draw_line(@canvas_gc, x1, y1, x2, y2)
         # @cairo_context_target.move_to( x1, y1 )
         # @cairo_context_target.line_to( x2, y2 )
 
@@ -655,7 +655,7 @@ module TECSCDE
 
         #----- setup color -----#
         if !join.is_editable?
-          # @canvasGc.set_foreground @@colors[ Color_uneditable ]
+          # @canvas_gc.set_foreground @@colors[ Color_uneditable ]
           @cairo_context_target.set_source_color(@@colors[Color_uneditable])
         end
 
@@ -664,12 +664,12 @@ module TECSCDE
         bars.each{|bar|
           if bar.horizontal?
             xm2 = mm2dot(bar.get_position) + 0.5
-            # @drawTarget.draw_line( @canvasGc, xm, ym, xm2, ym )
+            # @draw_target.draw_line( @canvas_gc, xm, ym, xm2, ym )
             @cairo_context_target.line_to xm2, ym
             xm = xm2
           else # VBar
             ym2 = mm2dot(bar.get_position) + 0.5
-            # @drawTarget.draw_line( @canvasGc, xm, ym, xm, ym2 )
+            # @draw_target.draw_line( @canvas_gc, xm, ym, xm, ym2 )
             @cairo_context_target.line_to xm, ym2
             ym = ym2
           end
@@ -719,16 +719,16 @@ module TECSCDE
           else
             color = @@colors[Color_uneditable]
           end
-          @canvasGc.foreground = color
+          @canvas_gc.foreground = color
           @cairo_context_target.set_source_color color
 
           if bar2.horizontal?
             xm2 = mm2dot(bar2.get_position)
-            @gdkWindow.draw_line(@canvasGc, xm, ym, xm2, ym)
+            @gdk_window.draw_line(@canvas_gc, xm, ym, xm2, ym)
             xm = xm2
           else # VBar
             ym2 = mm2dot(bar2.get_position)
-            @gdkWindow.draw_line(@canvasGc, xm, ym, xm, ym2)
+            @gdk_window.draw_line(@canvas_gc, xm, ym, xm, ym2)
             ym = ym2
           end
         }
@@ -822,7 +822,7 @@ module TECSCDE
         # p rect.ascent, rect.descent, rect.lbearing, rect.rbearing
         # p rect2.ascent, rect2.descent, rect2.lbearing, rect2.rbearing
 
-        @drawTarget.draw_layout(@canvasGc, x2, y2, plo)
+        @draw_target.draw_layout(@canvas_gc, x2, y2, plo)
       end
 
       #----- Cairo version -----#
@@ -915,7 +915,7 @@ module TECSCDE
           y2 = y - rect2.rbearing - mm2dot(GapPort)
         end
 
-        @drawTarget.draw_layout(@canvasGc, x2, y2, plo)
+        @draw_target.draw_layout(@canvas_gc, x2, y2, plo)
       end
 
       #----- Cairo version -----#
@@ -986,14 +986,14 @@ module TECSCDE
         @entry = Gtk::Entry.new
         @entry.set_has_frame true
 
-        @entryWin = Gtk::Window.new Gtk::Window::TOPLEVEL
-        @entryWin.add @entry
-        @entryWin.realize
-        @entryWin.window.reparent @canvas.window, 0, 0 # Gdk level operation
+        @entry_win = Gtk::Window.new Gtk::Window::TOPLEVEL
+        @entry_win.add @entry
+        @entry_win.realize
+        @entry_win.window.reparent @canvas.window, 0, 0 # Gdk level operation
 
         # these steps are to avoid to move ( 0, 0 ) at 1st appear
-        @entryWin.show_all
-        @entryWin.hide
+        @entry_win.show_all
+        @entry_win.hide
       end
 
       def begin_edit_name(cell, time)
@@ -1001,14 +1001,14 @@ module TECSCDE
 
         x, y, w, h = get_cell_name_edit_area cell
         # p "x=#{x} y=#{y} w=#{w} h=#{h}"
-        @entryWin.window.move(x - 3, y - 6)    # Gdk level operation
-        @entryWin.window.resize(w + 6, h + 8)  # Gdk level operation
-        @entryWin.show_all
+        @entry_win.window.move(x - 3, y - 6)    # Gdk level operation
+        @entry_win.window.resize(w + 6, h + 8)  # Gdk level operation
+        @entry_win.show_all
       end
 
       def end_edit_name
         name = @entry.text
-        @entryWin.hide
+        @entry_win.hide
         name
       end
 
@@ -1062,9 +1062,9 @@ module TECSCDE
 
       #------ handle CanvasGC  ------#
       def canvasGC_reset
-        @canvasGc.function = Gdk::GC::COPY
-        @canvasGc.fill = Gdk::GC::SOLID
-        @canvasGc.foreground = @@colors[Color_editable]
+        @canvas_gc.function = Gdk::GC::COPY
+        @canvas_gc.fill = Gdk::GC::SOLID
+        @canvas_gc.foreground = @@colors[Color_editable]
 
         @cairo_context_target.restore
         @cairo_context_target.save # prepare for next time
@@ -1072,10 +1072,10 @@ module TECSCDE
       end
 
       def canvasGC_set_line_width(width)
-        line_attr = @canvasGc.line_attributes
+        line_attr = @canvas_gc.line_attributes
         line_width = line_attr[0]
         line_attr[0] = width
-        @canvasGc.set_line_attributes(*line_attr)
+        @canvas_gc.set_line_attributes(*line_attr)
       end
 
       def self.setup_colormap
