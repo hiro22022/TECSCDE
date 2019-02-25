@@ -662,7 +662,7 @@ module TECSCDE
         @cairo_context_target.move_to xm, ym
         #----- draw bars -----#
         bars.each{|bar|
-          if bar.instance_of? TECSModel::HBar
+          if bar.horizontal?
             xm2 = mm2dot(bar.get_position) + 0.5
             # @drawTarget.draw_line( @canvasGc, xm, ym, xm2, ym )
             @cairo_context_target.line_to xm2, ym
@@ -684,7 +684,7 @@ module TECSCDE
           if (eport.get_subscript.nil? || eport.get_subscript == 0) &&
               (join.get_cport.get_subscript.nil? || join.get_cport.get_subscript == 0)
 
-            if bars[2].instance_of? TECSModel::VBar
+            if bars[2].vertical?
               xm = mm2dot((bars[1].get_position + bars[3].get_position) / 2)
               ym = mm2dot(bars[2].get_position + 2)
             else
@@ -722,7 +722,7 @@ module TECSCDE
           @canvasGc.foreground = color
           @cairo_context_target.set_source_color color
 
-          if bar2.instance_of? TECSModel::HBar
+          if bar2.horizontal?
             xm2 = mm2dot(bar2.get_position)
             @gdkWindow.draw_line(@canvasGc, xm, ym, xm2, ym)
             xm = xm2

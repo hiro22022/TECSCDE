@@ -90,7 +90,7 @@ module TECSCDE
       end
 
       def create_bar(bar, position)
-        if bar.instance_of?(TECSCDE::TECSModel::HBar)
+        if bar.horizontal?
           TECSCDE::TECSModel::VBar.new(position, self)
         else
           TECSCDE::TECSModel::HBar.new(position, self)
@@ -227,7 +227,7 @@ module TECSCDE
         min_dist = 999999999
         min_bar = nil
         @bars.each{|bar|
-          if bar.instance_of?(TECSCDE::TECSModel::HBar)
+          if bar.horizontal?
             xe = bar.get_position
             if is_between?(xm, xs, xe) && is_near?(ym, ys)
               dist = (ym - ys).abs

@@ -52,6 +52,13 @@ require "tecscde/tecs_model/tm_join_bar"
 module TECSCDE
   class TECSModel
     class VBar < TECSCDE::TECSModel::TmJoinBar
+      def horizontal?
+        false
+      end
+
+      def vertical?
+        true
+      end
     end
   end
 end

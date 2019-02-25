@@ -108,7 +108,7 @@ module TECSCDE
 
           if bar_prev # prev_bar is nil if self is 1st bar
             # p "bar_prev exist"
-            if bar_prev.instance_of?(TECSCDE::TECSModel::HBar)
+            if bar_prev.horizontal?
               xm = bar_prev.get_position + x_inc
               bar_prev.set_position(get_model.clip_x xm)
             else
@@ -127,6 +127,14 @@ module TECSCDE
         bu = clone
         bu.copy_from self
         bu
+      end
+
+      def horizontal?
+        raise NotImplementedError
+      end
+
+      def vertical?
+        raise NotImplementedError
       end
     end
   end
