@@ -509,6 +509,7 @@ class TECSGEN
     require "tecsgen/core/tecsgen"
     require "tecsgen/core/generate"
     require "tecsgen/core/gen_xml"
+    require "tecsgen/core/location"
     require "tecsgen/core/tool_info"
     require "tecsgen/core/tecsinfo"
     require "tecsgen/plugin/CelltypePlugin"
