@@ -282,7 +282,7 @@ module TECSCDE
 
         #----- draw cells -----#
         @model.get_cell_list.each{|cell|
-          drawCell cell
+          draw_cell(cell)
         }
 
         #----- draw joins -----#
@@ -381,7 +381,7 @@ module TECSCDE
 
       #------ Draw Contents on CANVAS  ------#
 
-      def drawCell(cell)
+      def draw_cell(cell)
         #----- calc position in dot -----#
         x, y, w, h = cell.get_geometry
         x1 = mm2dot x
@@ -567,7 +567,7 @@ module TECSCDE
           if obj.is_a? TECSModel::TmCell
             draw_cell_rect_direct(obj)
             # drawTargetDirect
-            # drawCell obj
+            # draw_cell(obj)
             # drawTargetReset
           elsif obj.is_a? TECSModel::TmPort
             drawPortDirect obj
