@@ -144,7 +144,7 @@ module TECSCDE
         @main_window.signal_connect("key-press-event"){|win, event|
           if @entry_win.visible?
             # while cell name editing, send forward to Entry window
-            event.set_window @entry_win.window
+            event.set_window(@entry_win.window)
             event.put
           else
             @control.key_pressed(event.keyval & 0xff, event.state)
@@ -172,7 +172,7 @@ module TECSCDE
         @vbox = Gtk::VBox.new
         # @vbox.set_resize_mode Gtk::RESIZE_IMMEDIATE
         # p @vbox.resize_mode
-        @main_window.add @vbox
+        @main_window.add(@vbox)
 
         @scrolled_window = Gtk::ScrolledWindow.new
         # @scrolled_window.signal_connect("expose_event") { |win, evt|
@@ -181,8 +181,8 @@ module TECSCDE
         #   gdkWin.draw_rectangle( gc, true, 0, 0, 10000, 10000 )
         # }
 
-        @vbox.pack_start @scrolled_window
-        @vbox.pack_end @hbox, false # expand = false
+        @vbox.pack_start(@scrolled_window)
+        @vbox.pack_end(@hbox, false) # expand = false
 
         create_canvas
         @scrolled_window.set_size_request(width, height - ScaleHeight)
@@ -208,8 +208,8 @@ module TECSCDE
         @canvas.signal_connect("button-press-event"){|canvas, event| # canvas = @canvas
           TECSCDE.logger.debug("pressed #{event}")
           xd, yd = event.coords
-          xm = dot2mm xd
-          ym = dot2mm yd
+          xm = dot2mm(xd)
+          ym = dot2mm(yd)
 
           case event.event_type
           when Gdk::Event::BUTTON_PRESS   # single click or before ddouble, triple click
@@ -221,23 +221,23 @@ module TECSCDE
           else
             click_count = 1
           end
-          @control.pressed_on_canvas xm, ym, event.state, event.button, event.time, click_count
+          @control.pressed_on_canvas(xm, ym, event.state, event.button, event.time, click_count)
         }
         # BUTTON RELEASE event action
         @canvas.signal_connect("button-release-event"){|canvas, event|
           TECSCDE.logger.debug("released #{event}")
           xd, yd = event.coords
-          xm = dot2mm xd
-          ym = dot2mm yd
-          @control.released_on_canvas xm, ym, event.state, event.button
+          xm = dot2mm(xd)
+          ym = dot2mm(yd)
+          @control.released_on_canvas(xm, ym, event.state, event.button)
         }
         # MOTION event action
         @canvas.signal_connect("motion-notify-event"){|canvas, event|
           TECSCDE.logger.debug("motion #{event}")
           xd, yd = event.coords
-          xm = dot2mm xd
-          ym = dot2mm yd
-          @control.motion_on_canvas xm, ym, event.state
+          xm = dot2mm(xd)
+          ym = dot2mm(yd)
+          @control.motion_on_canvas(xm, ym, event.state)
         }
         # EXPOSE event action
         @canvas.signal_connect("expose_event") {|win, evt|
@@ -251,11 +251,11 @@ module TECSCDE
                             Gdk::Event::PROPERTY_CHANGE_MASK |
                             Gdk::Event::KEY_PRESS_MASK)
 
-        @scrolled_window.add_with_viewport @canvas
+        @scrolled_window.add_with_viewport(@canvas)
         # it seems that gdkWindow is nil before window.show or realize
         @canvas.realize
         @gdk_window = @canvas.window
-        @canvas_gc = Gdk::GC.new @gdk_window
+        @canvas_gc = Gdk::GC.new(@gdk_window)
 
         # prepare pixmap (buffer for canvas)
         #  pixmap cannot be resized, so we have the largest one at initial.
@@ -273,7 +273,7 @@ module TECSCDE
 
         # prepare text renderer
         @pango_context = Gdk::Pango.context
-        @pango_layout = Pango::Layout.new @pango_context
+        @pango_layout = Pango::Layout.new(@pango_context)
         @pango_matrix = Pango::Matrix.new.rotate!(90)
       end
 
@@ -296,12 +296,12 @@ module TECSCDE
 
       def refresh_canvas
         @gdk_window.draw_drawable(@canvas_gc, @canvas_pixmap, 0, 0, 0, 0, @canvas_width, @canvas_height)
-        draw_hilite_objects @control.highlighted_objects
+        draw_hilite_objects(@control.highlighted_objects)
       end
 
       def resize_canvas
-        @canvas_height = Integer(mm2dot @model.paper.height)
-        @canvas_width  = Integer(mm2dot @model.paper.width)
+        @canvas_height = Integer(mm2dot(@model.paper.height))
+        @canvas_width  = Integer(mm2dot(@model.paper.width))
         @canvas.set_size_request(@canvas_width, @canvas_height)
         # @scrolled_window.queue_draw
       end
@@ -342,7 +342,7 @@ module TECSCDE
           @b_emphasize_cell_name = button.active?
           paint_canvas
         }
-        @hbox.pack_start @emphasize_cell_name_button
+        @hbox.pack_start(@emphasize_cell_name_button)
 
         #----- color by region button -----#
         # @color_by_region_button = Gtk::ToggleButton.new( "Color by Region" )
@@ -352,16 +352,16 @@ module TECSCDE
           # @color_by_region_button.label =  button.active? ? "Color by File" : "Color by Region"
           paint_canvas
         }
-        @hbox.pack_start @color_by_region_button
-        @hbox.pack_end @hScale
+        @hbox.pack_start(@color_by_region_button)
+        @hbox.pack_end(@hScale)
       end
 
       #------ HScale  ------#
       def create_hscale
         @scale_val = ScaleValIni
         @hScale = Gtk::HScale.new(ScaleValMin, ScaleValMax, 1)
-        @hScale.set_digits 0 # 小数点以下
-        @hScale.set_value @scale_val
+        @hScale.set_digits(0) # 小数点以下
+        @hScale.set_value(@scale_val)
         @hScale.set_size_request(@main_window_width, ScaleHeight)
         @hScale.signal_connect("value-changed"){|scale_self, scroll_type|
           # set scale_val in the range [ScaleValMin..ScaleValMax]
@@ -384,15 +384,15 @@ module TECSCDE
       def draw_cell(cell)
         #----- calc position in dot -----#
         x, y, w, h = cell.get_geometry
-        x1 = mm2dot x
-        y1 = mm2dot y
+        x1 = mm2dot(x)
+        y1 = mm2dot(y)
         x2 = mm2dot(x + w)
         y2 = mm2dot(y + h)
         w1 = mm2dot(w)
         h1 = mm2dot(h)
 
         #----- paint cell -----#
-        color = get_cell_paint_color cell
+        color = get_cell_paint_color(cell)
         # @canvas_gc.set_foreground color
         # @draw_target.draw_rectangle( @canvas_gc, true, x1, y1, w1, h1 )
 
@@ -403,10 +403,10 @@ module TECSCDE
         #----- setup color -----#
         if !cell.is_editable?
           # @canvas_gc.set_foreground @@colors[ Color_uneditable ]
-          @cairo_context_target.set_source_color @@colors[Color_uneditable]
+          @cairo_context_target.set_source_color(@@colors[Color_uneditable])
         else
           # @canvas_gc.set_foreground @@colors[ Color_editable ]
-          @cairo_context_target.set_source_color @@colors[Color_editable]
+          @cairo_context_target.set_source_color(@@colors[Color_editable])
         end
 
         #----- draw cell rect -----#
@@ -416,7 +416,7 @@ module TECSCDE
         @cairo_context_target.set_line_width(1)
         @cairo_context_target.stroke
 
-        gap = mm2dot GapActive
+        gap = mm2dot(GapActive)
         gap = 2 if gap < 2 # if less than 2 dots, let gap 2 dots
         if cell.get_celltype && cell.get_celltype.is_active?
           # @draw_target.draw_rectangle( @canvas_gc, false, x1 + gap, y1 + gap, w1 - 2 * gap, h1 - 2 * gap )
@@ -432,7 +432,7 @@ module TECSCDE
           else
             if cell.is_editable? && eport.is_unsubscripted_array?
               # @canvas_gc.set_foreground @@colors[ :brown ]
-              @cairo_context_target.set_source_color @@colors[:brown]
+              @cairo_context_target.set_source_color(@@colors[:brown])
             end
             # EPortArray
             eport.get_ports.each{|ep|
@@ -440,7 +440,7 @@ module TECSCDE
             }
             if cell.is_editable? && eport.is_unsubscripted_array?
               # @canvas_gc.set_foreground @@colors[ Color_editable ]
-              @cairo_context_target.set_source_color @@colors[Color_editable]
+              @cairo_context_target.set_source_color(@@colors[Color_editable])
             end
           end
         }
@@ -451,14 +451,14 @@ module TECSCDE
         label = cell_name.to_s + "\n" + ct_name.to_s
         if !cell.complete?
           # @canvas_gc.set_foreground @@colors[ Color_incomplete ]
-          @cairo_context_target.set_source_color @@colors[Color_incomplete]
+          @cairo_context_target.set_source_color(@@colors[Color_incomplete])
         end
         # draw_text( x1 + w1/2, y1+h1/2, label, CELL_NAME, ALIGN_CENTER, TEXT_HORIZONTAL )
 
         if @b_emphasize_cell_name
           wmn, hmn = get_text_extent(cell_name.to_s, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
           if wmn > w
-            s1, s2 = div_string cell_name.to_s
+            s1, s2 = div_string(cell_name.to_s)
             draw_text(x1 + w1 / 2, y1 + h1 / 2 - mm2dot(hmn) / 2, s1, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
             draw_text(x1 + w1 / 2, y1 + h1 / 2 + mm2dot(hmn) / 2, s2, CELL_NAME_L, ALIGN_CENTER, TEXT_HORIZONTAL)
           else
@@ -471,9 +471,9 @@ module TECSCDE
         end
 
         #----- draw port name -----#
-        (cell.get_cports.merge cell.get_eports).each{|name, port|
+        (cell.get_cports.merge(cell.get_eports)).each{|name, port|
           if !port.is_array?
-            set_port_color port, cell
+            set_port_color(port, cell)
             draw_port_name(port)
           else
             #--- prot array ---#
@@ -503,15 +503,15 @@ module TECSCDE
           end
         end
         # @canvas_gc.set_foreground @@colors[ color_name ]
-        @cairo_context_target.set_source_color @@colors[color_name]
+        @cairo_context_target.set_source_color(@@colors[color_name])
       end
 
       def draw_entry_port_triangle(eport)
-        triangle_1_2 = mm2dot Triangle_Len / 2
-        triangle_hi  = mm2dot Triangle_Height
+        triangle_1_2 = mm2dot(Triangle_Len / 2)
+        triangle_hi  = mm2dot(Triangle_Height)
         x1, y1 = eport.get_position
-        xe = mm2dot x1
-        ye = mm2dot y1
+        xe = mm2dot(x1)
+        ye = mm2dot(y1)
         case eport.get_edge_side
         when TECSModel::EDGE_TOP
           points = [[xe - triangle_1_2, ye], [xe + triangle_1_2, ye], [xe, ye + triangle_hi]]
@@ -530,8 +530,8 @@ module TECSCDE
 
       def draw_port_name(port)
         x1, y1 = port.get_position
-        xp = mm2dot x1
-        yp = mm2dot y1
+        xp = mm2dot(x1)
+        yp = mm2dot(y1)
         case port.get_edge_side
         when TECSModel::EDGE_TOP
           alignment = ALIGN_LEFT
@@ -564,14 +564,14 @@ module TECSCDE
       #=== TView#draw_hilite_objects
       def draw_hilite_objects(obj_list)
         obj_list.each{|obj|
-          if obj.is_a? TECSModel::TmCell
+          if obj.is_a?(TECSModel::TmCell)
             draw_cell_rect_direct(obj)
             # drawTargetDirect
             # draw_cell(obj)
             # drawTargetReset
-          elsif obj.is_a? TECSModel::TmPort
+          elsif obj.is_a?(TECSModel::TmPort)
             draw_port_direct(obj)
-          elsif obj.is_a? TECSModel::TmJoinBar
+          elsif obj.is_a?(TECSModel::TmJoinBar)
             draw_bar_direct(obj)
           end
         }
@@ -583,7 +583,7 @@ module TECSCDE
         drawTargetDirect
 
         #----- set line width -----#
-        canvas_gc_set_line_width 2
+        canvas_gc_set_line_width(2)
         # @cairo_context_target.set_line_width(2)
 
         #----- if uneditable change color ------#
@@ -594,8 +594,8 @@ module TECSCDE
 
         #----- calc position in dot -----#
         x, y, w, h = cell.get_geometry
-        x1 = mm2dot x
-        y1 = mm2dot y
+        x1 = mm2dot(x)
+        y1 = mm2dot(y)
         w1 = mm2dot(w)
         h1 = mm2dot(h)
 
@@ -606,7 +606,7 @@ module TECSCDE
 
         #----- reset GC, line width -----#
         canvas_gc_reset
-        canvas_gc_set_line_width 1
+        canvas_gc_set_line_width(1)
         drawTargetReset
       end
 
@@ -616,16 +616,16 @@ module TECSCDE
         #----- set line width -----#
         @canvas_gc.set_foreground(@@colors[Color_highlight])
         # @cairo_context_target.set_source_color( @@colors[ Color_highlight ] )
-        draw_port_name port
+        draw_port_name(port)
 
-        if port.is_a? TECSModel::TmEPort
+        if port.is_a?(TECSModel::TmEPort)
           draw_entry_port_triangle(port)
         end
 
-        canvas_gc_set_line_width 2
+        canvas_gc_set_line_width(2)
         x, y = port.get_position
-        x1 = x2 = mm2dot x
-        y1 = y2 = mm2dot y
+        x1 = x2 = mm2dot(x)
+        y1 = y2 = mm2dot(y)
         case port.get_edge_side
         when TECSModel::EDGE_TOP
           y1 -= 20
@@ -642,7 +642,7 @@ module TECSCDE
 
         #----- reset GC, line width -----#
         canvas_gc_reset
-        canvas_gc_set_line_width 1
+        canvas_gc_set_line_width(1)
 
         drawTargetReset
       end
@@ -659,18 +659,18 @@ module TECSCDE
           @cairo_context_target.set_source_color(@@colors[Color_uneditable])
         end
 
-        @cairo_context_target.move_to xm, ym
+        @cairo_context_target.move_to(xm, ym)
         #----- draw bars -----#
         bars.each{|bar|
           if bar.horizontal?
             xm2 = mm2dot(bar.get_position) + 0.5
             # @draw_target.draw_line( @canvas_gc, xm, ym, xm2, ym )
-            @cairo_context_target.line_to xm2, ym
+            @cairo_context_target.line_to(xm2, ym)
             xm = xm2
           else # VBar
             ym2 = mm2dot(bar.get_position) + 0.5
             # @draw_target.draw_line( @canvas_gc, xm, ym, xm, ym2 )
-            @cairo_context_target.line_to xm, ym2
+            @cairo_context_target.line_to(xm, ym2)
             ym = ym2
           end
         }
@@ -706,13 +706,13 @@ module TECSCDE
         join = bar.get_join
         cport, eport, bars = join.get_ports_bars
         x, y = cport.get_position
-        xm = mm2dot x
-        ym = mm2dot y
+        xm = mm2dot(x)
+        ym = mm2dot(y)
 
-        canvas_gc_set_line_width 2
+        canvas_gc_set_line_width(2)
 
         bars.each{|bar2|
-          if @control.highlighted_objects.include? bar2
+          if @control.highlighted_objects.include?(bar2)
             color = @@colors[Color_highlight]
           elsif join.is_editable?
             color = @@colors[Color_editable]
@@ -720,7 +720,7 @@ module TECSCDE
             color = @@colors[Color_uneditable]
           end
           @canvas_gc.foreground = color
-          @cairo_context_target.set_source_color color
+          @cairo_context_target.set_source_color(color)
 
           if bar2.horizontal?
             xm2 = mm2dot(bar2.get_position)
@@ -733,7 +733,7 @@ module TECSCDE
           end
         }
 
-        canvas_gc_set_line_width 1
+        canvas_gc_set_line_width(1)
         canvas_gc_reset
 
         drawTargetReset
@@ -859,7 +859,7 @@ module TECSCDE
         plo = cr.create_pango_layout
         plo.font_description = pfd
         plo.alignment = alignment
-        plo.set_text text
+        plo.set_text(text)
         rect2 = plo.get_pixel_extents[1]
 
         case alignment
@@ -957,7 +957,7 @@ module TECSCDE
         plo = cr.create_pango_layout
         plo.font_description = pfd
         plo.alignment = alignment
-        plo.set_text text
+        plo.set_text(text)
         rect2 = plo.get_pixel_extents[1]
         # p "descent=#{rect2.descent}, rbearing=#{rect2.rbearing}"
 
@@ -984,12 +984,12 @@ module TECSCDE
       #---------- Cell name editor ---------#
       def create_edit_window
         @entry = Gtk::Entry.new
-        @entry.set_has_frame true
+        @entry.set_has_frame(true)
 
-        @entry_win = Gtk::Window.new Gtk::Window::TOPLEVEL
-        @entry_win.add @entry
+        @entry_win = Gtk::Window.new(Gtk::Window::TOPLEVEL)
+        @entry_win.add(@entry)
         @entry_win.realize
-        @entry_win.window.reparent @canvas.window, 0, 0 # Gdk level operation
+        @entry_win.window.reparent(@canvas.window, 0, 0) # Gdk level operation
 
         # these steps are to avoid to move ( 0, 0 ) at 1st appear
         @entry_win.show_all
@@ -997,9 +997,9 @@ module TECSCDE
       end
 
       def begin_edit_name(cell, time)
-        @entry.set_text cell.get_name
+        @entry.set_text(cell.get_name)
 
-        x, y, w, h = get_cell_name_edit_area cell
+        x, y, w, h = get_cell_name_edit_area(cell)
         # p "x=#{x} y=#{y} w=#{w} h=#{h}"
         @entry_win.window.move(x - 3, y - 6)    # Gdk level operation
         @entry_win.window.resize(w + 6, h + 8)  # Gdk level operation
@@ -1022,8 +1022,8 @@ module TECSCDE
         x = mm2dot(xm + (wm - wmn) / 2)
         y = mm2dot(ym + hm / 2 + 1)
         # y = mm2dot( ym + hm / 2 - hmn )
-        w = mm2dot wmn
-        h = mm2dot hmn
+        w = mm2dot(wmn)
+        h = mm2dot(hmn)
 
         [x, y, w, h]
       end
@@ -1091,8 +1091,8 @@ module TECSCDE
           :PapayaWhip, :Violet, :pink].each{|color_name|
           setup_colormap_1 color_name
         }
-        setup_colormap_2 :ultraLightGreen, Gdk::Color.new(0xE000, 0xFF00, 0xE000)
-        setup_colormap_1 Color_editable_cell
+        setup_colormap_2(:ultraLightGreen, Gdk::Color.new(0xE000, 0xFF00, 0xE000))
+        setup_colormap_1(Color_editable_cell)
 
         @@cell_paint_colors = [:MistyRose, :lightyellow, :LightCyan, :ultraLightGreen, :lavender, :Beige,
                                 :PapayaWhip, :Violet, :pink]
@@ -1106,7 +1106,7 @@ module TECSCDE
 
       def self.setup_colormap_1(name)
         color = Gdk::Color.parse(name.to_s)
-        self.setup_colormap_2 name, color
+        self.setup_colormap_2(name, color)
       end
 
       def self.setup_colormap_2(name, color)
@@ -1150,7 +1150,7 @@ module TECSCDE
       def export(fname)
         begin
           if File.exist?(fname)
-            File.unlink fname
+            File.unlink(fname)
           end
         rescue => evar
           TECSCDE.message_box("fail to remove #{fname}\n#{evar}", :OK)
@@ -1166,7 +1166,7 @@ module TECSCDE
         paper_height = paper.height("pt") - mm2dot(PAPER_MARGIN * 2)
         begin
           surface = Cairo::PDFSurface.new(fname, paper.width("pt"), paper.height("pt"))
-          @cairo_context_target = Cairo::Context.new surface
+          @cairo_context_target = Cairo::Context.new(surface)
 
           #----- set paper margin -----#
           @cairo_matrix.set_base_shift(mm2dot(PAPER_MARGIN), mm2dot(PAPER_MARGIN))
@@ -1174,7 +1174,7 @@ module TECSCDE
 
           #----- clip in rectangle frame -----#
           @cairo_context_target.rectangle(0, 0, paper_width, paper_height)
-          @cairo_context_target.clip false # preserve = false
+          @cairo_context_target.clip(false) # preserve = false
           @cairo_context_target.save # (* pair *)   # must be saved initially
 
           #----- draw contents of PDF -----#
