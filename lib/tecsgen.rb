@@ -52,12 +52,11 @@
 # Authors::    安積　卓也(ASP+TECS, EV3RT+TECS, mruby on TECS等実装)
 #  Authors list is in i-ro-ha order.
 # Version::   see version.rb
-$Copyright = "Copyright(c) 2008-2018, TOPPERS project. All rights reserved."
-$License   = "TOPPERS License"
 
 # This doesn't work as expected in exerb version (Ruby 1.8.7?)
 $tecsgen_base_path = File.dirname(File.expand_path __FILE__)
 
+require "tecsgen/version"
 
 ###
 #= Array  initializer の '{', '}' で囲まれた場合
@@ -452,7 +451,7 @@ class TECSGEN
       }
       #  parser.on(  '--include_path_opt_format',  'cpp include path option format, default: "-I %s"' ){
       #  }
-      parser.version = # {$version}
+      parser.version = # {TECSGEN::VERSION}
       parser.release = nil
       if additional_option_parser
         additional_option_parser.call(parser)
@@ -477,9 +476,9 @@ class TECSGEN
     # このファイルを誤って読み込むと、異なるバージョン名を表示してしまう
     require "tecsgen/version"
     if $tecscde_version
-      STDERR << "tecscde version #{$tecscde_version} (tecsgen version #{$version})  #{$Copyright}\n"
+      STDERR << "tecscde version #{$tecscde_version} (tecsgen version #{TECSGEN::VERSION})  #{TECSGEN::COPYRIGHT}\n"
     elsif !$no_banner || $print_version
-      STDERR << "tecsgen  version #{$version}  #{$Copyright}\n"
+      STDERR << "tecsgen  version #{TECSGEN::VERSION}  #{TECSGEN::COPYRIGHT}\n"
     end
     if $verbose
       STDERR << "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE} patchlevel #{RUBY_PATCHLEVEL}) [#{RUBY_PLATFORM}]\n"
