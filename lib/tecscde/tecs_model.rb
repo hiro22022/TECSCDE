@@ -1028,7 +1028,7 @@ JOIN_INFO
         bars.each{|bar|
           f.print <<BAR_INFO
 #{delim_2}                {
-                     "type"     : "#{(bar.instance_of? HBar) ? "HBar" : "VBar"}",
+                     "type"     : "#{bar.type}",
                      "position" : #{bar.get_position}
 BAR_INFO
           f.print "                }"
@@ -1170,7 +1170,7 @@ BAR_INFO
 
         f.print("    __join__( #{cport.get_cell.get_name}.#{cport.get_name}#{cp_subsc} => #{eport.get_cell.get_name}.#{eport.get_name}#{ep_subsc} ){\n")
         bars.each{|bar|
-          f.print("        #{(bar.instance_of? HBar) ? "HBar" : "VBar"}( #{bar.get_position} )\n")
+          f.print("        #{bar.type}( #{bar.get_position} )\n")
         }
         f.print("    }\n")
       }

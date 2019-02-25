@@ -59,6 +59,10 @@ module TECSCDE
       def vertical?
         false
       end
+
+      def type
+        "HBar"
+      end
     end
   end
 end

@@ -136,6 +136,10 @@ module TECSCDE
       def vertical?
         raise NotImplementedError
       end
+
+      def type
+        raise NotImplementedError
+      end
     end
   end
 end

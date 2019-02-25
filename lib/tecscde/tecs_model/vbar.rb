@@ -59,6 +59,10 @@ module TECSCDE
       def vertical?
         true
       end
+
+      def type
+        "VBar"
+      end
     end
   end
 end
