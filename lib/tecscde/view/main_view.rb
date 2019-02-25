@@ -311,7 +311,7 @@ module TECSCDE
         @canvas_gc.fill = Gdk::GC::SOLID
         @canvas_gc.foreground = Gdk::Color.new(255, 255, 255)
         @canvas_pixmap.draw_rectangle(@canvas_gc, true, 0, 0, @canvas_width, @canvas_height)
-        canvasGC_reset
+        canvas_gc_reset
         # p "color = #{@canvas_gc.foreground.red}, #{@canvas_gc.foreground.green}, #{@canvas_gc.foreground.blue}"
       end
 
@@ -484,7 +484,7 @@ module TECSCDE
           end
         }
 
-        canvasGC_reset
+        canvas_gc_reset
       end
 
       #=== set_port_color
@@ -583,7 +583,7 @@ module TECSCDE
         drawTargetDirect
 
         #----- set line width -----#
-        canvasGC_set_line_width 2
+        canvas_gc_set_line_width 2
         # @cairo_context_target.set_line_width(2)
 
         #----- if uneditable change color ------#
@@ -605,8 +605,8 @@ module TECSCDE
         # @cairo_context_target.stroke
 
         #----- reset GC, line width -----#
-        canvasGC_reset
-        canvasGC_set_line_width 1
+        canvas_gc_reset
+        canvas_gc_set_line_width 1
         drawTargetReset
       end
 
@@ -622,7 +622,7 @@ module TECSCDE
           draw_entry_port_triangle(port)
         end
 
-        canvasGC_set_line_width 2
+        canvas_gc_set_line_width 2
         x, y = port.get_position
         x1 = x2 = mm2dot x
         y1 = y2 = mm2dot y
@@ -641,8 +641,8 @@ module TECSCDE
         # @cairo_context_target.line_to( x2, y2 )
 
         #----- reset GC, line width -----#
-        canvasGC_reset
-        canvasGC_set_line_width 1
+        canvas_gc_reset
+        canvas_gc_set_line_width 1
 
         drawTargetReset
       end
@@ -695,7 +695,7 @@ module TECSCDE
           end
         end
 
-        canvasGC_reset
+        canvas_gc_reset
       end
 
       #=== TView#draw_bar_direct
@@ -709,7 +709,7 @@ module TECSCDE
         xm = mm2dot x
         ym = mm2dot y
 
-        canvasGC_set_line_width 2
+        canvas_gc_set_line_width 2
 
         bars.each{|bar2|
           if @control.highlighted_objects.include? bar2
@@ -733,8 +733,8 @@ module TECSCDE
           end
         }
 
-        canvasGC_set_line_width 1
-        canvasGC_reset
+        canvas_gc_set_line_width 1
+        canvas_gc_reset
 
         drawTargetReset
       end
@@ -1061,7 +1061,7 @@ module TECSCDE
       end
 
       #------ handle CanvasGC  ------#
-      def canvasGC_reset
+      def canvas_gc_reset
         @canvas_gc.function = Gdk::GC::COPY
         @canvas_gc.fill = Gdk::GC::SOLID
         @canvas_gc.foreground = @@colors[Color_editable]
@@ -1071,7 +1071,7 @@ module TECSCDE
         @cairo_context_target.matrix = @cairo_matrix
       end
 
-      def canvasGC_set_line_width(width)
+      def canvas_gc_set_line_width(width)
         line_attr = @canvas_gc.line_attributes
         line_width = line_attr[0]
         line_attr[0] = width
