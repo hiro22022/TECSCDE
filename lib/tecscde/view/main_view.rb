@@ -570,7 +570,7 @@ module TECSCDE
             # draw_cell(obj)
             # drawTargetReset
           elsif obj.is_a? TECSModel::TmPort
-            drawPortDirect obj
+            draw_port_direct(obj)
           elsif obj.is_a? TECSModel::TmJoinBar
             drawBarDirect obj
           end
@@ -610,7 +610,7 @@ module TECSCDE
         drawTargetReset
       end
 
-      def drawPortDirect(port)
+      def draw_port_direct(port)
         drawTargetDirect
 
         #----- set line width -----#
