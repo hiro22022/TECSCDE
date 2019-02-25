@@ -166,8 +166,8 @@ module TECSCDE
           # p "event:grab-notify"
         }
 
-        createHScale
-        createHBox
+        create_hscale
+        create_hbox
 
         @vbox = Gtk::VBox.new
         # @vbox.set_resize_mode Gtk::RESIZE_IMMEDIATE
@@ -334,7 +334,7 @@ module TECSCDE
       end
 
       #------ HBox  ------#
-      def createHBox
+      def create_hbox
         @hbox = Gtk::HBox.new
         #----- emphasize_cell_name button -----#
         @emphasize_cell_name_button = Gtk::ToggleButton.new("Emphasize Cell Name")
@@ -357,7 +357,7 @@ module TECSCDE
       end
 
       #------ HScale  ------#
-      def createHScale
+      def create_hscale
         @scale_val = ScaleValIni
         @hScale = Gtk::HScale.new(ScaleValMin, ScaleValMax, 1)
         @hScale.set_digits 0 # 小数点以下
