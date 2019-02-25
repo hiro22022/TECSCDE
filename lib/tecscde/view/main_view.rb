@@ -288,7 +288,7 @@ module TECSCDE
         #----- draw joins -----#
         # draw linew before draw texts (if other colors are used, it is better to lay texts upper side)
         @model.get_join_list.each{|join|
-          drawJoin join
+          draw_join(join)
         }
 
         refresh_canvas
@@ -647,7 +647,7 @@ module TECSCDE
         drawTargetReset
       end
 
-      def drawJoin(join)
+      def draw_join(join)
         cport, eport, bars = join.get_ports_bars
         x, y = cport.get_position
         xm = mm2dot(x) + 0.5
