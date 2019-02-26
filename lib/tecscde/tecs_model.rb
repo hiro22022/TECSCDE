@@ -591,7 +591,7 @@ module TECSCDE
         size = paper_info[:size]
         orientation = paper_info[:orientation]
         paper = nil
-        PAPERS.each do |name, spec|
+        PAPERS.each do |_name, spec|
           if spec.size == size && spec.orientation == orientation
             TECSCDE.logger.info("paper found #{spec.name}")
             paper = spec
@@ -660,7 +660,7 @@ module TECSCDE
             port.set_position edge, offset
           end
         else
-          @cell_hash.each do |a, b|
+          @cell_hash.each do |a, _b|
             TECSCDE.logger.info(a)
           end
           TECSCDE.logger.info("not apply location: #{name}")
@@ -836,7 +836,7 @@ module TECSCDE
 
       f.print "    \"direct_import\" : [\n"
       delim = ""
-      Import.get_list.each do |path, import|
+      Import.get_list.each do |_path, import|
         if (import.is_imported? == false) && (import.get_cdl_name != @file_editing)
           f.print "#{delim}        \"#{import.get_cdl_name}\""
           delim = ",\n"
@@ -867,7 +867,7 @@ module TECSCDE
         if cell.get_cports.length > 0
           f.print "\n    /*** call ports ***/\n"
         end
-        cell.get_cports.each do |name, cport|
+        cell.get_cports.each do |_name, cport|
           if cport.is_array?
             cport.get_ports.each do |cport|
               join = cport.get_join
@@ -954,7 +954,7 @@ PAPER_INFO
             "port_location" : [
 CELL_INFO
         delim_2 = ""
-        (cell.get_cports.merge cell.get_eports).each do |name, cport|
+        (cell.get_cports.merge cell.get_eports).each do |_name, cport|
           if cport.is_array?
             cport.get_ports.each do |cp|
               f.print <<PORT_INFO
@@ -1130,7 +1130,7 @@ BAR_INFO
       @cell_list.each do |cell|
         x, y, w, h = cell.get_geometry
         f.print("    __cell__  #{cell.get_name}( #{x}, #{y}, #{w}, #{h} ) {\n")
-        cell.get_cports.each do |name, cport|
+        cell.get_cports.each do |_name, cport|
           if cport.is_array?
             cport.get_ports.each do |cp|
               f.print "        #{cp.get_name}( #{cp.get_subscript}, #{cp.get_edge_side_name}, #{cp.get_offset} )\n"
@@ -1139,7 +1139,7 @@ BAR_INFO
             f.print "        #{cport.get_name}( #{cport.get_edge_side_name}, #{cport.get_offset} )\n"
           end
         end
-        cell.get_eports.each do |name, eport|
+        cell.get_eports.each do |_name, eport|
           if eport.is_array?
             eport.get_ports.each do |ep|
               f.print "        #{ep.get_name}( #{ep.get_subscript}, #{ep.get_edge_side_name}, #{ep.get_offset} )\n"

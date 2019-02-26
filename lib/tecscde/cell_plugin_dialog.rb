@@ -76,12 +76,12 @@ module TECSCDE
       @label_cell_name.text = @cell.get_name.to_s
 
       @button_ok = @builder["button_ok"]
-      @button_ok.signal_connect("clicked") do |me|
+      @button_ok.signal_connect("clicked") do |_me|
         @dialog.response Gtk::Dialog::RESPONSE_OK
       end
 
       @button_cancel = @builder["button_cancel"]
-      @button_cancel.signal_connect("clicked") do |me|
+      @button_cancel.signal_connect("clicked") do |_me|
         @dialog.response Gtk::Dialog::RESPONSE_CANCEL
       end
     end

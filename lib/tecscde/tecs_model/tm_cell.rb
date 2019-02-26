@@ -119,10 +119,10 @@ module TECSCDE
         x_inc_r = x + w - (@x + @width)
         y_inc_b = y + h - (@y + @height)
 
-        @cports.each do |name, cport|
+        @cports.each do |_name, cport|
           cport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         end
-        @eports.each do |name, eport|
+        @eports.each do |_name, eport|
           eport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         end
 
@@ -142,10 +142,10 @@ module TECSCDE
           return
         end
         modified do
-          @cports.each do |name, cport|
+          @cports.each do |_name, cport|
             cport.delete
           end
-          @eports.each do |name, eport|
+          @eports.each do |_name, eport|
             eport.delete
           end
           @owner.delete_cell self
@@ -199,10 +199,10 @@ module TECSCDE
           x_inc2 = @x - x0
           y_inc2 = @y - y0
 
-          @cports.each do |name, cport|
+          @cports.each do |_name, cport|
             cport.moved(x_inc2, y_inc2)
           end
-          @eports.each do |name, eport|
+          @eports.each do |_name, eport|
             eport.moved(x_inc2, y_inc2)
           end
         end
@@ -220,7 +220,7 @@ module TECSCDE
 
       #=== TmCell::get_near_port ***
       def get_near_port(x, y)
-        (@cports.merge @eports).each do |name, port|
+        (@cports.merge @eports).each do |_name, port|
           if port.is_a?(TECSCDE::TECSModel::TmPort)
             xp, yp = port.get_position
           else
@@ -456,7 +456,7 @@ module TECSCDE
             end
           end
         end
-        @cports.each do |name, cport|
+        @cports.each do |_name, cport|
           if !cport.complete? && !cport.is_optional?
             return false
           end

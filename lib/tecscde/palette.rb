@@ -115,7 +115,7 @@ module TECSCDE
         @control.on_cell_name_entry_active entry
         false
       end
-      @entry_cell_name.signal_connect("focus-out-event") do |entry, event|
+      @entry_cell_name.signal_connect("focus-out-event") do |entry, _event|
         @control.on_cell_name_entry_focus_out entry
         false
       end
@@ -125,7 +125,7 @@ module TECSCDE
         @control.on_cell_region_entry_active entry
         false
       end
-      @entry_cell_region.signal_connect("focus-out-event") do |entry, event|
+      @entry_cell_region.signal_connect("focus-out-event") do |entry, _event|
         @control.on_cell_region_entry_focus_out entry
         false
       end

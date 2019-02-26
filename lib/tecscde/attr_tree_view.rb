@@ -104,7 +104,7 @@ module TECSCDE
 
       # ATTRIBUTE column
       col = Gtk::TreeViewColumn.new("attribute", renderer, text: COL_NAME)
-      col.set_cell_data_func(renderer) do |col, renderer, model, iter|
+      col.set_cell_data_func(renderer) do |_col, renderer, _model, iter|
         if iter[COL_VALUE].nil? || iter[COL_VALUE] == ""
           renderer.foreground = "red"
         elsif @cell.is_editable?
@@ -117,7 +117,7 @@ module TECSCDE
 
       # TYPE column
       col = Gtk::TreeViewColumn.new("type", renderer, text: COL_TYPE)
-      col.set_cell_data_func(renderer) do |col, renderer, model, iter|
+      col.set_cell_data_func(renderer) do |_col, renderer, _model, _iter|
         if @cell.is_editable?
           renderer.foreground = "black"
         else
@@ -131,7 +131,7 @@ module TECSCDE
       renderer.text_column = 0
       renderer.model = combo_list
       col = Gtk::TreeViewColumn.new("value", renderer, text: COL_VALUE)
-      col.set_cell_data_func(renderer) do |col, renderer, model, iter|
+      col.set_cell_data_func(renderer) do |_col, renderer, _model, iter|
         # p "iter[0]=#{iter[0]}"
         if @cell.get_attr_list[iter[COL_NAME].to_sym].nil?
           renderer.foreground = "orange"
@@ -176,7 +176,7 @@ module TECSCDE
         #   renderer.has_entry = true
         # end
       end
-      renderer.signal_connect("edited") do |w, path, new_text|
+      renderer.signal_connect("edited") do |_w, path, new_text|
         # new_text can be wrong if 'text_column' is changed in each row
         # after selection is changed, before sending signal, many rows are redrawn
 

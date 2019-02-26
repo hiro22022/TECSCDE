@@ -136,12 +136,12 @@ module TECSCDE
         @main_window.title = "TECSCDE - TECS Component Diagram Editor"
         @main_window.set_default_size(width, height)
         @main_window.sensitive = true
-        @main_window.signal_connect("delete-event") do |window, *args|
+        @main_window.signal_connect("delete-event") do |_window, *_args|
           TECSCDE.quit(@model, @main_window)
           true
         end
         # KEY-PRESS event action
-        @main_window.signal_connect("key-press-event") do |win, event|
+        @main_window.signal_connect("key-press-event") do |_win, event|
           if @entry_win.visible?
             # while cell name editing, send forward to Entry window
             event.set_window(@entry_win.window)
@@ -205,7 +205,7 @@ module TECSCDE
         TECSCDE.logger.debug("canvas width=#{@canvas_width}, height=#{@canvas_height}")
 
         # BUTTON PRESS event action
-        @canvas.signal_connect("button-press-event") do |canvas, event| # canvas = @canvas
+        @canvas.signal_connect("button-press-event") do |_canvas, event| # canvas = @canvas
           TECSCDE.logger.debug("pressed #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
@@ -224,7 +224,7 @@ module TECSCDE
           @control.pressed_on_canvas(xm, ym, event.state, event.button, event.time, click_count)
         end
         # BUTTON RELEASE event action
-        @canvas.signal_connect("button-release-event") do |canvas, event|
+        @canvas.signal_connect("button-release-event") do |_canvas, event|
           TECSCDE.logger.debug("released #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
@@ -232,7 +232,7 @@ module TECSCDE
           @control.released_on_canvas(xm, ym, event.state, event.button)
         end
         # MOTION event action
-        @canvas.signal_connect("motion-notify-event") do |canvas, event|
+        @canvas.signal_connect("motion-notify-event") do |_canvas, event|
           TECSCDE.logger.debug("motion #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
@@ -240,7 +240,7 @@ module TECSCDE
           @control.motion_on_canvas(xm, ym, event.state)
         end
         # EXPOSE event action
-        @canvas.signal_connect("expose_event") do |win, evt|
+        @canvas.signal_connect("expose_event") do |_win, _evt|
           refresh_canvas
         end
 
@@ -363,7 +363,7 @@ module TECSCDE
         @hScale.set_digits(0) # 小数点以下
         @hScale.set_value(@scale_val)
         @hScale.set_size_request(@main_window_width, ScaleHeight)
-        @hScale.signal_connect("value-changed") do |scale_self, scroll_type|
+        @hScale.signal_connect("value-changed") do |scale_self, _scroll_type|
           # set scale_val in the range [ScaleValMin..ScaleValMax]
           scale_val = scale_self.value
           if scale_val > ScaleValMax
@@ -426,7 +426,7 @@ module TECSCDE
         end
 
         #----- draw entry ports triangle -----#
-        cell.get_eports.each do |name, eport|
+        cell.get_eports.each do |_name, eport|
           if !eport.is_array?
             draw_entry_port_triangle(eport)
           else
@@ -471,7 +471,7 @@ module TECSCDE
         end
 
         #----- draw port name -----#
-        (cell.get_cports.merge(cell.get_eports)).each do |name, port|
+        (cell.get_cports.merge(cell.get_eports)).each do |_name, port|
           if !port.is_array?
             set_port_color(port, cell)
             draw_port_name(port)
