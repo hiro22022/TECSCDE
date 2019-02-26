@@ -294,9 +294,9 @@ module TECSCDE
       ((edge_side & 0b10) != 0) ? true : false
     end
 
-    #=== TECSModel.is_parallel?
+    #=== TECSModel.parallel?
     # RETURN:: true if parallel, false if right anble
-    def self.is_parallel?(edge_side1, edge_side2)
+    def self.parallel?(edge_side1, edge_side2)
       # p "edge val", edge_side1, edge_side2, edge_side1 ^ edge_side2
       (edge_side1 ^ edge_side2) < 0b10
     end
@@ -1254,7 +1254,7 @@ require "tecscde/tecs_model/vbar"
 #   TECSModel class method
 #     get_sign_of_normal( edge_side ) = (edge_side & 0b01) ? 1 : -1
 #     vertical?( edge_side )   = (edge_side & 0b10) ? true : false
-#     is_parallel?( edge_side1, edge_side2 ) = ( edge_side1 ^ edge_side2 ) < 0b10
+#     parallel?( edge_side1, edge_side2 ) = ( edge_side1 ^ edge_side2 ) < 0b10
 #     opposite?( edge_side1, edge_side2 ) = ( ( edge_side1 ^ edge_side2 ) & 0b01 ) ? true : false
 #         this function can be applicable only when edge_side1, edge_side2 are parallel
 #
@@ -1274,7 +1274,7 @@ require "tecscde/tecs_model/vbar"
 #       ( TECSModel.vertical? @edge_side ) ? @cell.get_y + @offs : @cell.get_x + @offs
 #
 #   TmJoin#create_bars
-#       if TECSModel.is_parallel?( @edge_side, dest_port.get_edge_side )
+#       if TECSModel.parallel?( @edge_side, dest_port.get_edge_side )
 #           if TECSModel.opposite?( @edge_side, dest_port.get_edge_side )
 #               create_bars_a
 #           else
