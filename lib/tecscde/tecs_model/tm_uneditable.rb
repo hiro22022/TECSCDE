@@ -56,11 +56,7 @@ module TECSCDE
       #=== TmObject#set_editable
       # locale:: see Node in syntaxobj.rb
       def set_editable(locale)
-        if locale[0] == get_model.get_file_editing
-          @editable = true
-        else
-          @editable = false
-        end
+        @editable = locale[0] == get_model.get_file_editing
       end
 
       #=== TmObject#is_editable?  ***
