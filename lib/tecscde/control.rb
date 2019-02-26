@@ -463,7 +463,7 @@ MESSAGE
           return port
         end
 
-        if cell.is_near?(xm, ym)
+        if cell.near?(xm, ym)
           # p "found cell"
           return cell
         end
