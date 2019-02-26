@@ -79,7 +79,7 @@ module TECSCDE
       #=== TmJoin#create_bars_to dest_port
       def create_bars
         if TECSCDE::TECSModel.is_parallel?(@cport.get_edge_side, @eport.get_edge_side)
-          if TECSCDE::TECSModel.is_opposite?(@cport.get_edge_side, @eport.get_edge_side)
+          if TECSCDE::TECSModel.opposite?(@cport.get_edge_side, @eport.get_edge_side)
             create_bars_a
           else
             create_bars_e
