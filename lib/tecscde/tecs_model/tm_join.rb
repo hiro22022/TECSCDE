@@ -229,7 +229,7 @@ module TECSCDE
         @bars.each do |bar|
           if bar.horizontal?
             xe = bar.get_position
-            if is_between?(xm, xs, xe) && near?(ym, ys)
+            if between?(xm, xs, xe) && near?(ym, ys)
               dist = (ym - ys).abs
               if dist < min_dist
                 min_dist = dist
@@ -238,7 +238,7 @@ module TECSCDE
             end
           else # VBar
             ye = bar.get_position
-            if is_between?(ym, ys, ye) && near?(xm, xs)
+            if between?(ym, ys, ye) && near?(xm, xs)
               dist = (xm - xs).abs
               if dist < min_dist
                 min_dist = dist
@@ -252,9 +252,9 @@ module TECSCDE
         [min_bar, min_dist]
       end
 
-      #=== TmJoin#is_between?
+      #=== TmJoin#between?
       # RETURN:: true if x is between a & b
-      def is_between?(x, a, b)
+      def between?(x, a, b)
         if a >= b
           if b <= x && x <= a
             true
