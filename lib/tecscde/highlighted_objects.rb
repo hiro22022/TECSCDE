@@ -142,7 +142,7 @@ module TECSCDE
     def update_attr_tree_view
       cell = nil
       n_cell = 0
-      each{|obj|
+      each {|obj|
         if obj.is_a?(TECSModel::TmCell)
           cell = obj
           n_cell += 1

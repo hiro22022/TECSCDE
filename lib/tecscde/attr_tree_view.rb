@@ -214,7 +214,7 @@ module TECSCDE
       ct = @cell.get_celltype
       if ct
         #----- register attributes and initializer to tree view model -----#
-        ct.get_attribute_list.each{|attr|
+        ct.get_attribute_list.each {|attr|
           iter = @tree_view.model.append
           name = attr.get_name.to_s
           if attr.get_initializer
@@ -234,7 +234,7 @@ module TECSCDE
           #----- choice list model -----#
           if attr.get_choice_list
             @choice_list[name] = Gtk::ListStore.new(String)
-            attr.get_choice_list.each{|choice|
+            attr.get_choice_list.each {|choice|
               iter = @choice_list[name].append
               iter[0] = CDLString.remove_dquote(choice.val)
             }

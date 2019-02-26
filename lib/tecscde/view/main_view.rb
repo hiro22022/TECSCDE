@@ -141,7 +141,7 @@ module TECSCDE
           true
         end
         # KEY-PRESS event action
-        @main_window.signal_connect("key-press-event"){|win, event|
+        @main_window.signal_connect("key-press-event") {|win, event|
           if @entry_win.visible?
             # while cell name editing, send forward to Entry window
             event.set_window(@entry_win.window)
@@ -150,19 +150,19 @@ module TECSCDE
             @control.key_pressed(event.keyval & 0xff, event.state)
           end
         }
-        @main_window.signal_connect("focus-in-event"){|win, event|
+        @main_window.signal_connect("focus-in-event") {|win, event|
           # p "event:#{event.class} in"
         }
-        @main_window.signal_connect("focus-out-event"){|win, event|
+        @main_window.signal_connect("focus-out-event") {|win, event|
           # p "event:#{event.class} out"
         }
-        @main_window.signal_connect("grab-broken-event"){|win, event|
+        @main_window.signal_connect("grab-broken-event") {|win, event|
           # p "event:#{event.class}"
         }
-        @main_window.signal_connect("grab-focus"){|win|
+        @main_window.signal_connect("grab-focus") {|win|
           # p "event:grab-focus"
         }
-        @main_window.signal_connect("grab-notify"){|win, arg1|
+        @main_window.signal_connect("grab-notify") {|win, arg1|
           # p "event:grab-notify"
         }
 
@@ -205,7 +205,7 @@ module TECSCDE
         TECSCDE.logger.debug("canvas width=#{@canvas_width}, height=#{@canvas_height}")
 
         # BUTTON PRESS event action
-        @canvas.signal_connect("button-press-event"){|canvas, event| # canvas = @canvas
+        @canvas.signal_connect("button-press-event") {|canvas, event| # canvas = @canvas
           TECSCDE.logger.debug("pressed #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
@@ -224,7 +224,7 @@ module TECSCDE
           @control.pressed_on_canvas(xm, ym, event.state, event.button, event.time, click_count)
         }
         # BUTTON RELEASE event action
-        @canvas.signal_connect("button-release-event"){|canvas, event|
+        @canvas.signal_connect("button-release-event") {|canvas, event|
           TECSCDE.logger.debug("released #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
@@ -232,7 +232,7 @@ module TECSCDE
           @control.released_on_canvas(xm, ym, event.state, event.button)
         }
         # MOTION event action
-        @canvas.signal_connect("motion-notify-event"){|canvas, event|
+        @canvas.signal_connect("motion-notify-event") {|canvas, event|
           TECSCDE.logger.debug("motion #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
@@ -281,13 +281,13 @@ module TECSCDE
         clearCanvasPixmap
 
         #----- draw cells -----#
-        @model.get_cell_list.each{|cell|
+        @model.get_cell_list.each {|cell|
           draw_cell(cell)
         }
 
         #----- draw joins -----#
         # draw linew before draw texts (if other colors are used, it is better to lay texts upper side)
-        @model.get_join_list.each{|join|
+        @model.get_join_list.each {|join|
           draw_join(join)
         }
 
@@ -363,7 +363,7 @@ module TECSCDE
         @hScale.set_digits(0) # 小数点以下
         @hScale.set_value(@scale_val)
         @hScale.set_size_request(@main_window_width, ScaleHeight)
-        @hScale.signal_connect("value-changed"){|scale_self, scroll_type|
+        @hScale.signal_connect("value-changed") {|scale_self, scroll_type|
           # set scale_val in the range [ScaleValMin..ScaleValMax]
           scale_val = scale_self.value
           if scale_val > ScaleValMax
@@ -426,7 +426,7 @@ module TECSCDE
         end
 
         #----- draw entry ports triangle -----#
-        cell.get_eports.each{|name, eport|
+        cell.get_eports.each {|name, eport|
           if !eport.is_array?
             draw_entry_port_triangle(eport)
           else
@@ -435,7 +435,7 @@ module TECSCDE
               @cairo_context_target.set_source_color(@@colors[:brown])
             end
             # EPortArray
-            eport.get_ports.each{|ep|
+            eport.get_ports.each {|ep|
               draw_entry_port_triangle(ep)
             }
             if cell.is_editable? && eport.is_unsubscripted_array?
@@ -471,13 +471,13 @@ module TECSCDE
         end
 
         #----- draw port name -----#
-        (cell.get_cports.merge(cell.get_eports)).each{|name, port|
+        (cell.get_cports.merge(cell.get_eports)).each {|name, port|
           if !port.is_array?
             set_port_color(port, cell)
             draw_port_name(port)
           else
             #--- prot array ---#
-            port.get_ports.each{|pt|
+            port.get_ports.each {|pt|
               set_port_color pt, cell
               draw_port_name(pt)
             }
@@ -563,7 +563,7 @@ module TECSCDE
 
       #=== TView#draw_hilite_objects
       def draw_hilite_objects(obj_list)
-        obj_list.each{|obj|
+        obj_list.each {|obj|
           if obj.is_a?(TECSModel::TmCell)
             draw_cell_rect_direct(obj)
             # drawTargetDirect
@@ -661,7 +661,7 @@ module TECSCDE
 
         @cairo_context_target.move_to(xm, ym)
         #----- draw bars -----#
-        bars.each{|bar|
+        bars.each {|bar|
           if bar.horizontal?
             xm2 = mm2dot(bar.get_position) + 0.5
             # @draw_target.draw_line( @canvas_gc, xm, ym, xm2, ym )
@@ -711,7 +711,7 @@ module TECSCDE
 
         canvas_gc_set_line_width(2)
 
-        bars.each{|bar2|
+        bars.each {|bar2|
           if @control.highlighted_objects.include?(bar2)
             color = @@colors[Color_highlight]
           elsif join.is_editable?
@@ -1088,7 +1088,7 @@ module TECSCDE
 
         [:black, :white, :gray, :yellow, :orange, :skyblue, :magenta, :red, :blue, :green,
           :cyan, :brown, :violet, :lavender, :MistyRose, :lightyellow, :LightCyan, :Beige,
-          :PapayaWhip, :Violet, :pink].each{|color_name|
+          :PapayaWhip, :Violet, :pink].each {|color_name|
           setup_colormap_1 color_name
         }
         setup_colormap_2(:ultraLightGreen, Gdk::Color.new(0xE000, 0xFF00, 0xE000))

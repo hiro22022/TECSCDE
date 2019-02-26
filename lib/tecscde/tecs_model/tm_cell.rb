@@ -86,7 +86,7 @@ module TECSCDE
         @n_cport = 0
         @n_eport = 0
 
-        @celltype.get_port_list.each{|port_def|
+        @celltype.get_port_list.each {|port_def|
           # p "celltype:#{@celltype.get_name} port:#{port_def.get_name}"
           if port_def.get_port_type == :ENTRY
             # if ! port_def.is_reverse_required? then
@@ -119,10 +119,10 @@ module TECSCDE
         x_inc_r = x + w - (@x + @width)
         y_inc_b = y + h - (@y + @height)
 
-        @cports.each{|name, cport|
+        @cports.each {|name, cport|
           cport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         }
-        @eports.each{|name, eport|
+        @eports.each {|name, eport|
           eport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
         }
 
@@ -142,10 +142,10 @@ module TECSCDE
           return
         end
         modified {
-          @cports.each{|name, cport|
+          @cports.each {|name, cport|
             cport.delete
           }
-          @eports.each{|name, eport|
+          @eports.each {|name, eport|
             eport.delete
           }
           @owner.delete_cell self
@@ -199,10 +199,10 @@ module TECSCDE
           x_inc2 = @x - x0
           y_inc2 = @y - y0
 
-          @cports.each{|name, cport|
+          @cports.each {|name, cport|
             cport.moved(x_inc2, y_inc2)
           }
-          @eports.each{|name, eport|
+          @eports.each {|name, eport|
             eport.moved(x_inc2, y_inc2)
           }
         }
@@ -220,7 +220,7 @@ module TECSCDE
 
       #=== TmCell::get_near_port ***
       def get_near_port(x, y)
-        (@cports.merge @eports).each{|name, port|
+        (@cports.merge @eports).each {|name, port|
           if port.is_a?(TECSCDE::TECSModel::TmPort)
             xp, yp = port.get_position
           else
@@ -332,9 +332,9 @@ module TECSCDE
           nearest_port
         }
         nearest_port = nil
-        (@eports.values + @cports.values).each{|port|
+        (@eports.values + @cports.values).each {|port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each{|pt|
+            port.get_ports.each {|pt|
               nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
             }
@@ -361,9 +361,9 @@ module TECSCDE
             end
           end
         }
-        (@eports.values + @cports.values).each{|port|
+        (@eports.values + @cports.values).each {|port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each{|pt|
+            port.get_ports.each {|pt|
               proc_adjust.call(pt, offs, edge_side, move_offs)
             }
           else
@@ -449,14 +449,14 @@ module TECSCDE
 
       #=== TmCell#complete?
       def complete?
-        @celltype.get_attribute_list.each{|attr|
+        @celltype.get_attribute_list.each {|attr|
           if attr.get_initializer.nil?
             if @attr_list[attr.get_name].nil?
               return false
             end
           end
         }
-        @cports.each{|name, cport|
+        @cports.each {|name, cport|
           if !cport.complete? && !cport.is_optional?
             return false
           end
@@ -471,9 +471,9 @@ module TECSCDE
       def get_min_wh
         h_min = 0
         w_min = 0
-        (@cports.values + @eports.values).each{|port|
+        (@cports.values + @eports.values).each {|port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each{|pt|
+            port.get_ports.each {|pt|
               offs = pt.get_offset
               case pt.get_edge_side
               when EDGE_TOP, EDGE_BOTTOM

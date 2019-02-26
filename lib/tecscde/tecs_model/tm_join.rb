@@ -226,7 +226,7 @@ module TECSCDE
         ye = ys
         min_dist = 999999999
         min_bar = nil
-        @bars.each{|bar|
+        @bars.each {|bar|
           if bar.horizontal?
             xe = bar.get_position
             if is_between?(xm, xs, xe) && is_near?(ym, ys)

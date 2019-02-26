@@ -111,21 +111,21 @@ module TECSCDE
 
       #----- cell name ENTRY -----#
       @entry_cell_name = @builder["entry_cell_name"]
-      @entry_cell_name.signal_connect("activate"){|entry|
+      @entry_cell_name.signal_connect("activate") {|entry|
         @control.on_cell_name_entry_active entry
         false
       }
-      @entry_cell_name.signal_connect("focus-out-event"){|entry, event|
+      @entry_cell_name.signal_connect("focus-out-event") {|entry, event|
         @control.on_cell_name_entry_focus_out entry
         false
       }
 
       @entry_cell_region = @builder["entry_cell_region"]
-      @entry_cell_region.signal_connect("activate"){|entry|
+      @entry_cell_region.signal_connect("activate") {|entry|
         @control.on_cell_region_entry_active entry
         false
       }
-      @entry_cell_region.signal_connect("focus-out-event"){|entry, event|
+      @entry_cell_region.signal_connect("focus-out-event") {|entry, event|
         @control.on_cell_region_entry_focus_out entry
         false
       }

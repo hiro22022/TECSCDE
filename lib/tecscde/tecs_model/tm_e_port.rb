@@ -66,7 +66,7 @@ module TECSCDE
       end
 
       def moved(x_inc, y_inc)
-        @joins.each{|join|
+        @joins.each {|join|
           join.moved_eport(x_inc, y_inc)
         }
       end
@@ -94,7 +94,7 @@ module TECSCDE
       def delete
         modified {
           joins = @joins.dup # in join.edelete delete_join is called and change @joins
-          joins.each{|join|
+          joins.each {|join|
             join.delete
           }
         }

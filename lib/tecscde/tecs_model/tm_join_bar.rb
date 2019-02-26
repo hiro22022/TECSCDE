@@ -97,7 +97,7 @@ module TECSCDE
             return # last bar
           end
 
-          bars.each{|bar|
+          bars.each {|bar|
             if bar.equal? self
               break
             end

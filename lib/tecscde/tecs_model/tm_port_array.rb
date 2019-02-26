@@ -80,7 +80,7 @@ module TECSCDE
               # in case of unsized array, extend array
               if @port_def.get_array_size == "[]"
                 # extend array size
-                (0..subscript).each{|subsc|
+                (0..subscript).each {|subsc|
                   if @ports[subsc].nil?
                     port = new_port subsc
                     @ports[subsc] = port
@@ -107,7 +107,7 @@ module TECSCDE
           else # no index
             found = false
             found_port = nil
-            @ports.each{|port|
+            @ports.each {|port|
               if port.get_join.nil?
                 found = true
                 found_port = port
@@ -137,7 +137,7 @@ module TECSCDE
 
       #=== TmPortArray#get_near_port
       def get_near_port(x, y)
-        @ports.each{|port|
+        @ports.each {|port|
           xp, yp = port.get_position
           # p "get_near_port x=#{x} y=#{y} xp=#{xp} yp=#{yp}"
           if ((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
@@ -154,13 +154,13 @@ module TECSCDE
       end
 
       def moved_edge(x_inc_l, x_inc_r, y_inc_t, y_inc_b)
-        @ports.each{|port|
+        @ports.each {|port|
           port.moved_edge(x_inc_l, x_inc_r, y_inc_t, y_inc_b)
         }
       end
 
       def moved(x_inc, y_inc)
-        @ports.each{|port|
+        @ports.each {|port|
           port.moved(x_inc, y_inc)
         }
       end
@@ -176,7 +176,7 @@ module TECSCDE
       #=== TmPortArray#delete
       # this method is called from TmCell
       def delete
-        @ports.each{|port|
+        @ports.each {|port|
           port.delete
         }
       end
@@ -200,7 +200,7 @@ MESSAGE
               TECSCDE.logger.info("delete: not found")
             end
             index = 0
-            @ports.each{|port|
+            @ports.each {|port|
               port.set_subscript index
               index += 1
             }
@@ -240,7 +240,7 @@ MESSAGE
       end
 
       def complete?
-        @ports.each{|port|
+        @ports.each {|port|
           if !port.complete?
             return false
           end
