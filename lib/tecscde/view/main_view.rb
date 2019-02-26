@@ -141,7 +141,7 @@ module TECSCDE
           true
         end
         # KEY-PRESS event action
-        @main_window.signal_connect("key-press-event") {|win, event|
+        @main_window.signal_connect("key-press-event") do |win, event|
           if @entry_win.visible?
             # while cell name editing, send forward to Entry window
             event.set_window(@entry_win.window)
@@ -149,22 +149,22 @@ module TECSCDE
           else
             @control.key_pressed(event.keyval & 0xff, event.state)
           end
-        }
-        @main_window.signal_connect("focus-in-event") {|win, event|
+        end
+        @main_window.signal_connect("focus-in-event") do |win, event|
           # p "event:#{event.class} in"
-        }
-        @main_window.signal_connect("focus-out-event") {|win, event|
+        end
+        @main_window.signal_connect("focus-out-event") do |win, event|
           # p "event:#{event.class} out"
-        }
-        @main_window.signal_connect("grab-broken-event") {|win, event|
+        end
+        @main_window.signal_connect("grab-broken-event") do |win, event|
           # p "event:#{event.class}"
-        }
-        @main_window.signal_connect("grab-focus") {|win|
+        end
+        @main_window.signal_connect("grab-focus") do |win|
           # p "event:grab-focus"
-        }
-        @main_window.signal_connect("grab-notify") {|win, arg1|
+        end
+        @main_window.signal_connect("grab-notify") do |win, arg1|
           # p "event:grab-notify"
-        }
+        end
 
         create_hscale
         create_hbox
@@ -205,7 +205,7 @@ module TECSCDE
         TECSCDE.logger.debug("canvas width=#{@canvas_width}, height=#{@canvas_height}")
 
         # BUTTON PRESS event action
-        @canvas.signal_connect("button-press-event") {|canvas, event| # canvas = @canvas
+        @canvas.signal_connect("button-press-event") do |canvas, event| # canvas = @canvas
           TECSCDE.logger.debug("pressed #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
@@ -222,27 +222,27 @@ module TECSCDE
             click_count = 1
           end
           @control.pressed_on_canvas(xm, ym, event.state, event.button, event.time, click_count)
-        }
+        end
         # BUTTON RELEASE event action
-        @canvas.signal_connect("button-release-event") {|canvas, event|
+        @canvas.signal_connect("button-release-event") do |canvas, event|
           TECSCDE.logger.debug("released #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
           ym = dot2mm(yd)
           @control.released_on_canvas(xm, ym, event.state, event.button)
-        }
+        end
         # MOTION event action
-        @canvas.signal_connect("motion-notify-event") {|canvas, event|
+        @canvas.signal_connect("motion-notify-event") do |canvas, event|
           TECSCDE.logger.debug("motion #{event}")
           xd, yd = event.coords
           xm = dot2mm(xd)
           ym = dot2mm(yd)
           @control.motion_on_canvas(xm, ym, event.state)
-        }
+        end
         # EXPOSE event action
-        @canvas.signal_connect("expose_event") {|win, evt|
+        @canvas.signal_connect("expose_event") do |win, evt|
           refresh_canvas
-        }
+        end
 
         # add events to receive
         @canvas.add_events(Gdk::Event::POINTER_MOTION_MASK |
@@ -281,15 +281,15 @@ module TECSCDE
         clearCanvasPixmap
 
         #----- draw cells -----#
-        @model.get_cell_list.each {|cell|
+        @model.get_cell_list.each do |cell|
           draw_cell(cell)
-        }
+        end
 
         #----- draw joins -----#
         # draw linew before draw texts (if other colors are used, it is better to lay texts upper side)
-        @model.get_join_list.each {|join|
+        @model.get_join_list.each do |join|
           draw_join(join)
-        }
+        end
 
         refresh_canvas
       end
@@ -338,20 +338,20 @@ module TECSCDE
         @hbox = Gtk::HBox.new
         #----- emphasize_cell_name button -----#
         @emphasize_cell_name_button = Gtk::ToggleButton.new("Emphasize Cell Name")
-        @emphasize_cell_name_button.signal_connect("toggled") {|button|
+        @emphasize_cell_name_button.signal_connect("toggled") do |button|
           @b_emphasize_cell_name = button.active?
           paint_canvas
-        }
+        end
         @hbox.pack_start(@emphasize_cell_name_button)
 
         #----- color by region button -----#
         # @color_by_region_button = Gtk::ToggleButton.new( "Color by Region" )
         @color_by_region_button = Gtk::CheckButton.new("Color by Region")
-        @color_by_region_button.signal_connect("toggled") {|button|
+        @color_by_region_button.signal_connect("toggled") do |button|
           @b_color_by_region = button.active?
           # @color_by_region_button.label =  button.active? ? "Color by File" : "Color by Region"
           paint_canvas
-        }
+        end
         @hbox.pack_start(@color_by_region_button)
         @hbox.pack_end(@hScale)
       end
@@ -363,7 +363,7 @@ module TECSCDE
         @hScale.set_digits(0) # 小数点以下
         @hScale.set_value(@scale_val)
         @hScale.set_size_request(@main_window_width, ScaleHeight)
-        @hScale.signal_connect("value-changed") {|scale_self, scroll_type|
+        @hScale.signal_connect("value-changed") do |scale_self, scroll_type|
           # set scale_val in the range [ScaleValMin..ScaleValMax]
           scale_val = scale_self.value
           if scale_val > ScaleValMax
@@ -376,7 +376,7 @@ module TECSCDE
 
           resize_canvas
           paint_canvas
-        }
+        end
       end
 
       #------ Draw Contents on CANVAS  ------#
@@ -426,7 +426,7 @@ module TECSCDE
         end
 
         #----- draw entry ports triangle -----#
-        cell.get_eports.each {|name, eport|
+        cell.get_eports.each do |name, eport|
           if !eport.is_array?
             draw_entry_port_triangle(eport)
           else
@@ -435,15 +435,15 @@ module TECSCDE
               @cairo_context_target.set_source_color(@@colors[:brown])
             end
             # EPortArray
-            eport.get_ports.each {|ep|
+            eport.get_ports.each do |ep|
               draw_entry_port_triangle(ep)
-            }
+            end
             if cell.is_editable? && eport.is_unsubscripted_array?
               # @canvas_gc.set_foreground @@colors[ Color_editable ]
               @cairo_context_target.set_source_color(@@colors[Color_editable])
             end
           end
-        }
+        end
 
         #----- draw cell name & celltype name -----#
         cell_name = cell.get_name
@@ -471,18 +471,18 @@ module TECSCDE
         end
 
         #----- draw port name -----#
-        (cell.get_cports.merge(cell.get_eports)).each {|name, port|
+        (cell.get_cports.merge(cell.get_eports)).each do |name, port|
           if !port.is_array?
             set_port_color(port, cell)
             draw_port_name(port)
           else
             #--- prot array ---#
-            port.get_ports.each {|pt|
+            port.get_ports.each do |pt|
               set_port_color pt, cell
               draw_port_name(pt)
-            }
+            end
           end
-        }
+        end
 
         canvas_gc_reset
       end
@@ -563,7 +563,7 @@ module TECSCDE
 
       #=== TView#draw_hilite_objects
       def draw_hilite_objects(obj_list)
-        obj_list.each {|obj|
+        obj_list.each do |obj|
           if obj.is_a?(TECSModel::TmCell)
             draw_cell_rect_direct(obj)
             # drawTargetDirect
@@ -574,7 +574,7 @@ module TECSCDE
           elsif obj.is_a?(TECSModel::TmJoinBar)
             draw_bar_direct(obj)
           end
-        }
+        end
       end
 
       #=== TView#draw_cell_rect_direct
@@ -661,7 +661,7 @@ module TECSCDE
 
         @cairo_context_target.move_to(xm, ym)
         #----- draw bars -----#
-        bars.each {|bar|
+        bars.each do |bar|
           if bar.horizontal?
             xm2 = mm2dot(bar.get_position) + 0.5
             # @draw_target.draw_line( @canvas_gc, xm, ym, xm2, ym )
@@ -673,7 +673,7 @@ module TECSCDE
             @cairo_context_target.line_to(xm, ym2)
             ym = ym2
           end
-        }
+        end
         @cairo_context_target.set_line_width(1)
         @cairo_context_target.stroke
 
@@ -711,7 +711,7 @@ module TECSCDE
 
         canvas_gc_set_line_width(2)
 
-        bars.each {|bar2|
+        bars.each do |bar2|
           if @control.highlighted_objects.include?(bar2)
             color = @@colors[Color_highlight]
           elsif join.is_editable?
@@ -731,7 +731,7 @@ module TECSCDE
             @gdk_window.draw_line(@canvas_gc, xm, ym, xm, ym2)
             ym = ym2
           end
-        }
+        end
 
         canvas_gc_set_line_width(1)
         canvas_gc_reset
@@ -1088,9 +1088,9 @@ module TECSCDE
 
         [:black, :white, :gray, :yellow, :orange, :skyblue, :magenta, :red, :blue, :green,
           :cyan, :brown, :violet, :lavender, :MistyRose, :lightyellow, :LightCyan, :Beige,
-          :PapayaWhip, :Violet, :pink].each {|color_name|
+          :PapayaWhip, :Violet, :pink].each do |color_name|
           setup_colormap_1 color_name
-        }
+        end
         setup_colormap_2(:ultraLightGreen, Gdk::Color.new(0xE000, 0xFF00, 0xE000))
         setup_colormap_1(Color_editable_cell)
 

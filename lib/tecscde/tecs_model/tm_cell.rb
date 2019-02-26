@@ -86,7 +86,7 @@ module TECSCDE
         @n_cport = 0
         @n_eport = 0
 
-        @celltype.get_port_list.each {|port_def|
+        @celltype.get_port_list.each do |port_def|
           # p "celltype:#{@celltype.get_name} port:#{port_def.get_name}"
           if port_def.get_port_type == :ENTRY
             # if ! port_def.is_reverse_required? then
@@ -105,7 +105,7 @@ module TECSCDE
               end
             end
           end
-        }
+        end
 
         @tecsgen_cell = tecsgen_cell
         @b_editable = true
@@ -119,12 +119,12 @@ module TECSCDE
         x_inc_r = x + w - (@x + @width)
         y_inc_b = y + h - (@y + @height)
 
-        @cports.each {|name, cport|
+        @cports.each do |name, cport|
           cport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
-        }
-        @eports.each {|name, eport|
+        end
+        @eports.each do |name, eport|
           eport.moved_edge(x_inc, x_inc_r, y_inc, y_inc_b)
-        }
+        end
 
         w_min, h_min = get_min_wh
         w = w_min if w < w_min
@@ -141,15 +141,15 @@ module TECSCDE
         if !is_editable?
           return
         end
-        modified {
-          @cports.each {|name, cport|
+        modified do
+          @cports.each do |name, cport|
             cport.delete
-          }
-          @eports.each {|name, eport|
+          end
+          @eports.each do |name, eport|
             eport.delete
-          }
+          end
           @owner.delete_cell self
-        }
+        end
       end
 
       #=== TmCell#get_geometry ***
@@ -168,10 +168,10 @@ module TECSCDE
       # if cell of new_name already exists, results false
       def change_name(name)
         if @owner.rename_cell(self, name)
-          modified {
+          modified do
             @name = name
             return true
-          }
+          end
         else
           false
         end
@@ -190,7 +190,7 @@ module TECSCDE
 
       #=== TmCell#move ***
       def move(x_inc, y_inc)
-        modified {
+        modified do
           TECSCDE.logger.debug("cell move #{@name}")
           x0 = @x
           y0 = @y
@@ -199,13 +199,13 @@ module TECSCDE
           x_inc2 = @x - x0
           y_inc2 = @y - y0
 
-          @cports.each {|name, cport|
+          @cports.each do |name, cport|
             cport.moved(x_inc2, y_inc2)
-          }
-          @eports.each {|name, eport|
+          end
+          @eports.each do |name, eport|
             eport.moved(x_inc2, y_inc2)
-          }
-        }
+          end
+        end
       end
 
       #=== TmCell::is_near?( x, y )  ***
@@ -220,7 +220,7 @@ module TECSCDE
 
       #=== TmCell::get_near_port ***
       def get_near_port(x, y)
-        (@cports.merge @eports).each {|name, port|
+        (@cports.merge @eports).each do |name, port|
           if port.is_a?(TECSCDE::TECSModel::TmPort)
             xp, yp = port.get_position
           else
@@ -235,7 +235,7 @@ module TECSCDE
             # p "near port: found"
             return port
           end
-        }
+        end
         nil
       end
 
@@ -314,7 +314,7 @@ module TECSCDE
         # p "find_nearest_next_port #{port.get_name} #{port.get_subscript}"
         edge_side = port.get_edge_side
         offs = port.get_offset
-        proc_judge_near = Proc.new {|port, offs, edge_side, nearest_port|
+        proc_judge_near = Proc.new do |port, offs, edge_side, nearest_port|
           # p "find_nearest_next_port: comp: #{port.get_name} #{port.get_subscript} at #{port.get_offset}@#{port.get_edge_side} #{offs}@#{edge_side}"
           if port.get_edge_side == edge_side
             dist = port.get_offset - offs
@@ -330,19 +330,19 @@ module TECSCDE
             end
           end
           nearest_port
-        }
+        end
         nearest_port = nil
-        (@eports.values + @cports.values).each {|port|
+        (@eports.values + @cports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each {|pt|
+            port.get_ports.each do |pt|
               nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
-            }
+            end
           else
             nearest_port = proc_judge_near.call(port, offs, edge_side, nearest_port)
             # p "nearest=#{nearest_port}"
           end
-        }
+        end
         # p "find_nearest=#{nearest_port}"
         nearest_port
       end
@@ -353,23 +353,23 @@ module TECSCDE
         # p "adjust_port_position_after_port"
         edge_side = port.get_edge_side
         offs = port.get_offset
-        proc_adjust = Proc.new {|port, offs, edge_side, move_offs|
+        proc_adjust = Proc.new do |port, offs, edge_side, move_offs|
           if port.get_edge_side == edge_side
             dist = port.get_offset - offs
             if dist > 0
               port.move(move_offs, move_offs) # move same value for x, y (only x or y applied in the method)
             end
           end
-        }
-        (@eports.values + @cports.values).each {|port|
+        end
+        (@eports.values + @cports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each {|pt|
+            port.get_ports.each do |pt|
               proc_adjust.call(pt, offs, edge_side, move_offs)
-            }
+            end
           else
             proc_adjust.call(port, offs, edge_side, move_offs)
           end
-        }
+        end
       end
 
       #=== TmCell#get_cports ***
@@ -434,13 +434,13 @@ module TECSCDE
       # name::Symbol
       # init::String|Nil  (from Expression)
       def set_attr(name, init)
-        modified {
+        modified do
           if init.nil?
             @attr_list.delete name
           else
             @attr_list[name] = init
           end
-        }
+        end
       end
 
       def get_attr_list
@@ -449,18 +449,18 @@ module TECSCDE
 
       #=== TmCell#complete?
       def complete?
-        @celltype.get_attribute_list.each {|attr|
+        @celltype.get_attribute_list.each do |attr|
           if attr.get_initializer.nil?
             if @attr_list[attr.get_name].nil?
               return false
             end
           end
-        }
-        @cports.each {|name, cport|
+        end
+        @cports.each do |name, cport|
           if !cport.complete? && !cport.is_optional?
             return false
           end
-        }
+        end
         true
       end
 
@@ -471,9 +471,9 @@ module TECSCDE
       def get_min_wh
         h_min = 0
         w_min = 0
-        (@cports.values + @eports.values).each {|port|
+        (@cports.values + @eports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each {|pt|
+            port.get_ports.each do |pt|
               offs = pt.get_offset
               case pt.get_edge_side
               when EDGE_TOP, EDGE_BOTTOM
@@ -481,7 +481,7 @@ module TECSCDE
               else
                 h_min = offs if offs > h_min
               end
-            }
+            end
           else
             offs = port.get_offset
             case port.get_edge_side
@@ -491,7 +491,7 @@ module TECSCDE
               h_min = offs if offs > h_min
             end
           end
-        }
+        end
         [w_min + DIST_PORT, h_min + DIST_PORT]
       end
 

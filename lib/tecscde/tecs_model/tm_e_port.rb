@@ -66,15 +66,15 @@ module TECSCDE
       end
 
       def moved(x_inc, y_inc)
-        @joins.each {|join|
+        @joins.each do |join|
           join.moved_eport(x_inc, y_inc)
-        }
+        end
       end
 
       def add_join(join)
-        modified {
+        modified do
           @joins << join
-        }
+        end
       end
 
       #=== TmEPort#include?
@@ -92,20 +92,20 @@ module TECSCDE
       #=== TmEPort#delete
       # this method is called from TmCell
       def delete
-        modified {
+        modified do
           joins = @joins.dup # in join.edelete delete_join is called and change @joins
-          joins.each {|join|
+          joins.each do |join|
             join.delete
-          }
-        }
+          end
+        end
       end
 
       #=== TmEPort#delete_join
       # this method is called from TmJoin
       def delete_join(join)
-        modified {
+        modified do
           @joins.delete join
-        }
+        end
       end
 
       #=== TmEPort#complete?

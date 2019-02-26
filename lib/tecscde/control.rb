@@ -341,15 +341,15 @@ MESSAGE
       case @sub_mode
       when :SM_MOVING_CELL_BAR
         # p "move hilite obj"
-        @highlighted_objects.each {|cell_bar|
+        @highlighted_objects.each do |cell_bar|
           cell_bar.move(x_inc2, y_inc2)
-        }
+        end
         @view.refresh_canvas
         @view.draw_hilite_objects @highlighted_objects
       when :SM_MOVING_CPORT, :SM_MOVING_EPORT
-        @highlighted_objects.each {|port|
+        @highlighted_objects.each do |port|
           port.move(x_inc2, y_inc2)
-        }
+        end
         update
         @view.refresh_canvas
         @view.draw_hilite_objects @highlighted_objects
@@ -406,7 +406,7 @@ MESSAGE
 
       case keyval
       when 0xff     # delete key
-        @highlighted_objects.each {|object|
+        @highlighted_objects.each do |object|
           if object.is_a? TECSModel::TmJoinBar
             object.get_join.delete
           elsif object.is_a? TECSModel::TmCell
@@ -414,14 +414,14 @@ MESSAGE
           elsif object.is_a? TECSModel::TmPort
             object.delete_hilited
           end
-        }
+        end
         @highlighted_objects.reset
       when 0x63     # Insert
-        @highlighted_objects.each {|object|
+        @highlighted_objects.each do |object|
           if object.is_a? TECSModel::TmPort
             object.insert(state.shift_mask? ? :before : :after)
           end
-        }
+        end
       when 0x51, 0x52, 0x53, 0x54
         case keyval
         when 0x51     # left arrow
@@ -437,9 +437,9 @@ MESSAGE
           x_inc = 0.0
           y_inc = TECSModel.get_alignment
         end
-        @highlighted_objects.each {|obj|
+        @highlighted_objects.each do |obj|
           obj.move(x_inc, y_inc)
-        }
+        end
       when 0x50     # home
       when 0x57     # end
       when 0x55     # PageUp
@@ -456,7 +456,7 @@ MESSAGE
     #=== find_near object
     # RETURN::TmCell, TmPort, TmJoin
     def find_near(xm, ym)
-      @model.get_cell_list.each {|cell|
+      @model.get_cell_list.each do |cell|
         port = cell.get_near_port(xm, ym)
         if !port.nil?
           # p "found port"
@@ -467,27 +467,27 @@ MESSAGE
           # p "found cell"
           return cell
         end
-      }
+      end
 
       # find nearest bar
       min_dist = 999999999
       min_bar = nil
-      @model.get_join_list.each {|join|
+      @model.get_join_list.each do |join|
         bar, dist = join.get_near_bar(xm, ym)
         if dist < min_dist
           min_dist = dist
           min_bar = bar
         end
-      }
+      end
       min_bar
     end
 
     def add_celltype_list
       ctl = @model.get_celltype_list
       if ctl
-        ctl.each {|ct|
+        ctl.each do |ct|
           @celltype_tree_view.add ct
-        }
+        end
       end
     end
 

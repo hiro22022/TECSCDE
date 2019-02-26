@@ -69,9 +69,9 @@ module TECSCDE
       end
 
       def set_join(join)
-        modified {
+        modified do
           @join = join
-        }
+        end
       end
 
       def moved(x_inc, y_inc)
@@ -88,19 +88,19 @@ module TECSCDE
       # this method is called from TmCell
       def delete
         if @join
-          modified {
+          modified do
             @join.delete
             @join = nil
-          }
+          end
         end
       end
 
       #=== TmCPort#delete_join
       # this method is called from TmJoin
       def delete_join
-        modified {
+        modified do
           @join = nil
-        }
+        end
       end
 
       #=== TmCPort#complete?

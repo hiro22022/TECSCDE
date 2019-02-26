@@ -142,12 +142,12 @@ module TECSCDE
     def update_attr_tree_view
       cell = nil
       n_cell = 0
-      each {|obj|
+      each do |obj|
         if obj.is_a?(TECSModel::TmCell)
           cell = obj
           n_cell += 1
         end
-      }
+      end
       if n_cell == 1
         @cell_name_entry.text = cell.get_name.to_s
         @cell_region_entry.text = cell.get_region.get_namespace_path.to_s

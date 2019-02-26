@@ -226,7 +226,7 @@ module TECSCDE
         ye = ys
         min_dist = 999999999
         min_bar = nil
-        @bars.each {|bar|
+        @bars.each do |bar|
           if bar.horizontal?
             xe = bar.get_position
             if is_between?(xm, xs, xe) && is_near?(ym, ys)
@@ -248,7 +248,7 @@ module TECSCDE
           end
           xs = xe
           ys = ye
-        }
+        end
         [min_bar, min_dist]
       end
 
@@ -277,9 +277,9 @@ module TECSCDE
 
       #=== TmJoin#change_bars bars
       def change_bars(bars)
-        modified {
+        modified do
           @bars = bars
-        }
+        end
       end
 
       #=== TmJoin#get_signature ***
@@ -292,11 +292,11 @@ module TECSCDE
         if !is_editable?
           return
         end
-        modified {
+        modified do
           @cport.delete_join
           @eport.delete_join self
           @owner.delete_join self
-        }
+        end
       end
 
       #=== TmJoin#clone_for_undo

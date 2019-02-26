@@ -104,7 +104,7 @@ module TECSCDE
 
       # ATTRIBUTE column
       col = Gtk::TreeViewColumn.new("attribute", renderer, text: COL_NAME)
-      col.set_cell_data_func(renderer) {|col, renderer, model, iter|
+      col.set_cell_data_func(renderer) do |col, renderer, model, iter|
         if iter[COL_VALUE].nil? || iter[COL_VALUE] == ""
           renderer.foreground = "red"
         elsif @cell.is_editable?
@@ -112,18 +112,18 @@ module TECSCDE
         else
           renderer.foreground = "blue"
         end
-      }
+      end
       @tree_view.append_column(col)
 
       # TYPE column
       col = Gtk::TreeViewColumn.new("type", renderer, text: COL_TYPE)
-      col.set_cell_data_func(renderer) {|col, renderer, model, iter|
+      col.set_cell_data_func(renderer) do |col, renderer, model, iter|
         if @cell.is_editable?
           renderer.foreground = "black"
         else
           renderer.foreground = "blue"
         end
-      }
+      end
       @tree_view.append_column(col)
 
       # VALUE column
@@ -131,7 +131,7 @@ module TECSCDE
       renderer.text_column = 0
       renderer.model = combo_list
       col = Gtk::TreeViewColumn.new("value", renderer, text: COL_VALUE)
-      col.set_cell_data_func(renderer) {|col, renderer, model, iter|
+      col.set_cell_data_func(renderer) do |col, renderer, model, iter|
         # p "iter[0]=#{iter[0]}"
         if @cell.get_attr_list[iter[COL_NAME].to_sym].nil?
           renderer.foreground = "orange"
@@ -175,8 +175,8 @@ module TECSCDE
         #   renderer.text_column = 0
         #   renderer.has_entry = true
         # end
-      }
-      renderer.signal_connect("edited") {|w, path, new_text|
+      end
+      renderer.signal_connect("edited") do |w, path, new_text|
         # new_text can be wrong if 'text_column' is changed in each row
         # after selection is changed, before sending signal, many rows are redrawn
 
@@ -198,7 +198,7 @@ module TECSCDE
           @cell.get_model.set_undo_point
           @view.paint_canvas
         end
-      }
+      end
       @tree_view.append_column(col)
     end
 
@@ -214,7 +214,7 @@ module TECSCDE
       ct = @cell.get_celltype
       if ct
         #----- register attributes and initializer to tree view model -----#
-        ct.get_attribute_list.each {|attr|
+        ct.get_attribute_list.each do |attr|
           iter = @tree_view.model.append
           name = attr.get_name.to_s
           if attr.get_initializer
@@ -234,12 +234,12 @@ module TECSCDE
           #----- choice list model -----#
           if attr.get_choice_list
             @choice_list[name] = Gtk::ListStore.new(String)
-            attr.get_choice_list.each {|choice|
+            attr.get_choice_list.each do |choice|
               iter = @choice_list[name].append
               iter[0] = CDLString.remove_dquote(choice.val)
-            }
+            end
           end
-        }
+        end
       end
     end
 

@@ -72,7 +72,7 @@ module TECSCDE
           return nil
         end
 
-        modified {
+        modified do
           # p "new_join: for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
           if subscript >= 0
             if subscript >= @actual_size
@@ -80,12 +80,12 @@ module TECSCDE
               # in case of unsized array, extend array
               if @port_def.get_array_size == "[]"
                 # extend array size
-                (0..subscript).each {|subsc|
+                (0..subscript).each do |subsc|
                   if @ports[subsc].nil?
                     port = new_port subsc
                     @ports[subsc] = port
                   end
-                }
+                end
                 @actual_size = @ports.length
                 # p "new_join: 1 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
                 return @ports[subscript]
@@ -107,13 +107,13 @@ module TECSCDE
           else # no index
             found = false
             found_port = nil
-            @ports.each {|port|
+            @ports.each do |port|
               if port.get_join.nil?
                 found = true
                 found_port = port
                 break
               end
-            }
+            end
             if found
               return found_port
             end
@@ -127,7 +127,7 @@ module TECSCDE
             end
           end
           return nil
-        }
+        end
       end
 
       #=== TmPortArray#get_ports
@@ -137,14 +137,14 @@ module TECSCDE
 
       #=== TmPortArray#get_near_port
       def get_near_port(x, y)
-        @ports.each {|port|
+        @ports.each do |port|
           xp, yp = port.get_position
           # p "get_near_port x=#{x} y=#{y} xp=#{xp} yp=#{yp}"
           if ((xp - x).abs < NEAR_DIST) && ((yp - y).abs < NEAR_DIST)
             # p "near port: found"
             return port
           end
-        }
+        end
         nil
       end
 
@@ -154,15 +154,15 @@ module TECSCDE
       end
 
       def moved_edge(x_inc_l, x_inc_r, y_inc_t, y_inc_b)
-        @ports.each {|port|
+        @ports.each do |port|
           port.moved_edge(x_inc_l, x_inc_r, y_inc_t, y_inc_b)
-        }
+        end
       end
 
       def moved(x_inc, y_inc)
-        @ports.each {|port|
+        @ports.each do |port|
           port.moved(x_inc, y_inc)
-        }
+        end
       end
 
       def get_member(subscript)
@@ -176,9 +176,9 @@ module TECSCDE
       #=== TmPortArray#delete
       # this method is called from TmCell
       def delete
-        @ports.each {|port|
+        @ports.each do |port|
           port.delete
-        }
+        end
       end
 
       #=== TmPortArray#delete_hilited
@@ -193,18 +193,18 @@ MESSAGE
         end
         index = @ports.index port
         if index != 0
-          modified {
+          modified do
             TECSCDE.logger.info("delete #### subscript=#{port.get_subscript}")
             port.delete
             if @ports.delete(port).nil?
               TECSCDE.logger.info("delete: not found")
             end
             index = 0
-            @ports.each {|port|
+            @ports.each do |port|
               port.set_subscript index
               index += 1
-            }
-          }
+            end
+          end
         else
           TECSCDE.message_box(<<MESSAGE, :OK)
 cannot delete array member with subscript==0
@@ -222,7 +222,7 @@ Cannot insert array member.
 MESSAGE
           return
         end
-        modified {
+        modified do
           @owner.adjust_port_position_to_insert port
           subsc = port.get_subscript
           i = @ports.length - 1
@@ -236,15 +236,15 @@ MESSAGE
           @ports[subsc + 1] = new_port
 
           TECSCDE.logger.info("insert ####")
-        }
+        end
       end
 
       def complete?
-        @ports.each {|port|
+        @ports.each do |port|
           if !port.complete?
             return false
           end
-        }
+        end
         true
       end
 

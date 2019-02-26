@@ -83,14 +83,14 @@ module TECSCDE
     end
 
     def copy_from(tm_object)
-      tm_object.instance_variables.each {|iv|
+      tm_object.instance_variables.each do |iv|
         val = tm_object.instance_variable_get(iv)
         if val.is_a?(Array) || val.is_a?(Hash)
           instance_variable_set(iv, val.dup)
         else
           instance_variable_set(iv, val)
         end
-      }
+      end
     end
   end
 end

@@ -63,9 +63,9 @@ module TECSCDE
         end
 
         @ports = []
-        (0..(@actual_size - 1)).each {|subscript|
+        (0..(@actual_size - 1)).each do |subscript|
           @ports << TECSCDE::TECSModel::TmEPort.new(self, port_def, subscript)
-        }
+        end
         modified {}
       end
 

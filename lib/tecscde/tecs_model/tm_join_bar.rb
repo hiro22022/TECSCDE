@@ -66,9 +66,9 @@ module TECSCDE
       end
 
       def set_position(position)
-        modified {
+        modified do
           @position = TECSCDE::TECSModel.round_length_val position
-        }
+        end
       end
 
       def moved(inc)
@@ -88,7 +88,7 @@ module TECSCDE
       # actually moving previous next bar
       # 1st bar and last bar can not be moved (necessary cport, eport move)
       def move(x_inc, y_inc)
-        modified {
+        modified do
           bar_prev = nil
           bars = @owner.get_bars
 
@@ -97,12 +97,12 @@ module TECSCDE
             return # last bar
           end
 
-          bars.each {|bar|
+          bars.each do |bar|
             if bar.equal? self
               break
             end
             bar_prev = bar
-          }
+          end
 
           if bar_prev # prev_bar is nil if self is 1st bar
             # p "bar_prev exist"
@@ -117,7 +117,7 @@ module TECSCDE
             # 1st bar
             @owner.get_cport.move(x_inc, y_inc)
           end
-        }
+        end
       end
 
       #=== TmJoinBar#clone_for_undo

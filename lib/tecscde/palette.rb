@@ -76,21 +76,21 @@ module TECSCDE
 
       #----- pointer BUTTON -----#
       @button_pointer = @builder["togglebutton_pointer"]
-      @button_pointer.signal_connect("clicked") {
+      @button_pointer.signal_connect("clicked") do
         @control.on_pointer
         # @button_pointer.active = true
         @button_new_cell.active = false
         false
-      }
+      end
 
       #----- new cell BUTTON -----#
       @button_new_cell = @builder["togglebutton_new_cell"]
-      @button_new_cell.signal_connect("clicked") {
+      @button_new_cell.signal_connect("clicked") do
         @control.on_new_cell
         # @button_new_cell.active = true
         @button_pointer.active = false
         false
-      }
+      end
 
       #----- undo BUTTON -----#
       @button_undo = @builder["button_undo"]
@@ -111,24 +111,24 @@ module TECSCDE
 
       #----- cell name ENTRY -----#
       @entry_cell_name = @builder["entry_cell_name"]
-      @entry_cell_name.signal_connect("activate") {|entry|
+      @entry_cell_name.signal_connect("activate") do |entry|
         @control.on_cell_name_entry_active entry
         false
-      }
-      @entry_cell_name.signal_connect("focus-out-event") {|entry, event|
+      end
+      @entry_cell_name.signal_connect("focus-out-event") do |entry, event|
         @control.on_cell_name_entry_focus_out entry
         false
-      }
+      end
 
       @entry_cell_region = @builder["entry_cell_region"]
-      @entry_cell_region.signal_connect("activate") {|entry|
+      @entry_cell_region.signal_connect("activate") do |entry|
         @control.on_cell_region_entry_active entry
         false
-      }
-      @entry_cell_region.signal_connect("focus-out-event") {|entry, event|
+      end
+      @entry_cell_region.signal_connect("focus-out-event") do |entry, event|
         @control.on_cell_region_entry_focus_out entry
         false
-      }
+      end
 
       @treeview_cell_attribute = @builder["treeview_cell_attribute"]
       @attrTreeView = AttrTreeView.new @treeview_cell_attribute

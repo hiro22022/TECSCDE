@@ -64,10 +64,10 @@ module TECSCDE
         end
 
         @ports = []
-        (0..(@actual_size - 1)).each {|subscript|
+        (0..(@actual_size - 1)).each do |subscript|
           # p "TmCPortArray: length=#{@ports.length}  subscript=#{subscript}"
           @ports << TmCPort.new(self, port_def, subscript)
-        }
+        end
         modified {}
       end
 
@@ -83,11 +83,11 @@ module TECSCDE
 
       #=== TmCPortArray#complete?
       def complete?
-        @ports.each {|port|
+        @ports.each do |port|
           if !port.complete?
             return false
           end
-        }
+        end
         true
       end
 

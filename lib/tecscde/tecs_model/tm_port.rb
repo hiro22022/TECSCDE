@@ -62,7 +62,7 @@ module TECSCDE
 
       #=== TmPort#move
       def move(x_inc, y_inc)
-        modified {
+        modified do
           # p "move x=#{x_inc} y=#{y_inc}"
           x, y, w, h = get_owner_cell.get_geometry
           case @edge_side
@@ -82,7 +82,7 @@ module TECSCDE
           end
           @offs = offs
           moved_edge(x_inc, x_inc, y_inc, y_inc)
-        }
+        end
       end
 
       #=== TmPort#moved_edge
@@ -186,9 +186,9 @@ module TECSCDE
       end
 
       def set_subscript(subscript)
-        modified {
+        modified do
           @subscript = subscript
-        }
+        end
       end
 
       #=== TmPort#is_array?
@@ -198,10 +198,10 @@ module TECSCDE
 
       #=== TmPort#set_position
       def set_position(edge_side, offset)
-        modified {
+        modified do
           @edge_side = edge_side
           @offs = TECSCDE::TECSModel.round_length_val offset
-        }
+        end
       end
 
       #=== TmPort#delete_hilited

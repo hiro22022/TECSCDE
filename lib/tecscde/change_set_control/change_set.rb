@@ -23,10 +23,10 @@ module TECSCDE
 
       def apply
         TECSCDE.logger.debug("applying change_no=#{@number}")
-        @set.each_key {|tm_object|
+        @set.each_key do |tm_object|
           tm_object.copy_from(@set[tm_object])
           TECSCDE.logger.debug("apply #{tm_object.class}")
-        }
+        end
       end
     end
   end

@@ -84,10 +84,10 @@ module TECSCDE
 
       def get_region(name)
         if @sub_region[name].nil?
-          modified {
+          modified do
             parent = self
             @sub_region[name] = TmRegion.new(@namespace_path.append(name), parent)
-          }
+          end
         end
         @sub_region[name]
       end
