@@ -209,11 +209,7 @@ module TECSCDE
       #=== TmCell::near?( x, y )  ***
       def near?(x, y)
         # p "near? @x=#{@x} @width=#{@width} @y=#{@y} @height=#{@height} x=#{x} y=#{y}"
-        if (@x < x) && (x < (@x + @width)) && (@y < y) && (y < (@y + @height))
-          true
-        else
-          false
-        end
+        @x < x && x < @x + @width && @y < y && y < @y + @height
       end
 
       #=== TmCell::get_near_port ***
