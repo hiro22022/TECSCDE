@@ -829,8 +829,8 @@ module TECSCDE
       def draw_text_h_cairo(x, y, text, obj_type, alignment)
         cr = @cairo_context_target
         cr.select_font_face(font_family = nil, # "courier", # font_family = "Times New Roman",
-                             font_slant  = Cairo::FONT_SLANT_NORMAL,
-                             font_weight = Cairo::FONT_WEIGHT_NORMAL)
+                            font_slant  = Cairo::FONT_SLANT_NORMAL,
+                            font_weight = Cairo::FONT_WEIGHT_NORMAL)
         cr.set_font_size(font_size(obj_type) / 1000)
         cr_te = cr.text_extents(text)
         # p "width=#{cr_te.width} x_bearing=#{cr_te.x_bearing} height=#{cr_te.height} y_bearing=#{cr_te.y_bearing}"
@@ -922,8 +922,8 @@ module TECSCDE
       def draw_text_v_cairo(x, y, text, obj_type, alignment)
         cr = @cairo_context_target
         cr.select_font_face(font_family = nil, # "courier", # font_family = "Times New Roman",
-                             font_slant  = Cairo::FONT_SLANT_NORMAL,
-                             font_weight = Cairo::FONT_WEIGHT_NORMAL)
+                            font_slant  = Cairo::FONT_SLANT_NORMAL,
+                            font_weight = Cairo::FONT_WEIGHT_NORMAL)
         cr.set_font_size(font_size(obj_type) / 1000)
         cr_te = cr.text_extents(text)
         # p "width=#{cr_te.width} x_bearing=#{cr_te.x_bearing} height=#{cr_te.height} y_bearing=#{cr_te.y_bearing}"
