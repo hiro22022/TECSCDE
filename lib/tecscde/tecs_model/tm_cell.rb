@@ -253,7 +253,7 @@ module TECSCDE
           [@y, @y + @height]
         else
           [@x, @x + @width]
-         end
+        end
       end
 
       #=== TmCell#inc_n_cport
