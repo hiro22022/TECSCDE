@@ -95,9 +95,9 @@ module TECSCDE
       PAPER_MARGIN = 10 # (mm)
 
       #----- constnts for div_string -----#
-      Char_A = "A"[0]
-      Char_Z = "Z"[0]
-      Char__ = "_"[0]
+      Char_A = "A"
+      Char_Z = "Z"
+      Char__ = "_"
 
       #----- Color -----#
       Color_editable_cell = :gray97
