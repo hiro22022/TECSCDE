@@ -185,7 +185,7 @@ module TECSCDE
         @vbox.pack_end(@hbox, false) # expand = false
 
         create_canvas
-        @scrolled_window.set_size_request(width, height - ScaleHeight)
+        @scrolled_window.set_size_request(width, height - SCALE_HEIGHT)
 
         @main_window.show_all
 
@@ -260,8 +260,8 @@ module TECSCDE
         # prepare pixmap (buffer for canvas)
         #  pixmap cannot be resized, so we have the largest one at initial.
         @canvas_pixmap = Gdk::Pixmap.new(@gdk_window,
-                                         @canvas_width  * ScaleValMax / ScaleValIni,
-                                         @canvas_height * ScaleValMax / ScaleValIni,
+                                         @canvas_width  * SCALE_VAL_MAX / SCALE_VAL_INI,
+                                         @canvas_height * SCALE_VAL_MAX / SCALE_VAL_INI,
                                          @gdk_window.depth)
         # @draw_target = @canvas_pixmap
         @cairo_context_pixmap = @canvas_pixmap.create_cairo_context
@@ -358,18 +358,18 @@ module TECSCDE
 
       #------ HScale  ------#
       def create_hscale
-        @scale_val = ScaleValIni
-        @hScale = Gtk::HScale.new(ScaleValMin, ScaleValMax, 1)
+        @scale_val = SCALE_VAL_INI
+        @hScale = Gtk::HScale.new(SCALE_VAL_MIN, SCALE_VAL_MAX, 1)
         @hScale.set_digits(0) # 小数点以下
         @hScale.set_value(@scale_val)
-        @hScale.set_size_request(@main_window_width, ScaleHeight)
+        @hScale.set_size_request(@main_window_width, SCALE_HEIGHT)
         @hScale.signal_connect("value-changed") do |scale_self, _scroll_type|
-          # set scale_val in the range [ScaleValMin..ScaleValMax]
+          # set scale_val in the range [SCALE_VAL_MIN..SCALE_VAL_MAX]
           scale_val = scale_self.value
-          if scale_val > ScaleValMax
-            scale_val = ScaleValMax
-          elsif scale_val < ScaleValMin
-            scale_val = ScaleValMin
+          if scale_val > SCALE_VAL_MAX
+            scale_val = SCALE_VAL_MAX
+          elsif scale_val < SCALE_VAL_MIN
+            scale_val = SCALE_VAL_MIN
           end
           @scale_val = scale_val
           TECSCDE.logger.debug("scale_val=#{@scale_val}")
@@ -416,7 +416,7 @@ module TECSCDE
         @cairo_context_target.set_line_width(1)
         @cairo_context_target.stroke
 
-        gap = mm2dot(GapActive)
+        gap = mm2dot(GAP_ACTIVE)
         gap = 2 if gap < 2 # if less than 2 dots, let gap 2 dots
         if cell.get_celltype && cell.get_celltype.is_active?
           # @draw_target.draw_rectangle( @canvas_gc, false, x1 + gap, y1 + gap, w1 - 2 * gap, h1 - 2 * gap )
@@ -507,8 +507,8 @@ module TECSCDE
       end
 
       def draw_entry_port_triangle(eport)
-        triangle_1_2 = mm2dot(Triangle_Len / 2)
-        triangle_hi  = mm2dot(Triangle_Height)
+        triangle_1_2 = mm2dot(TRIANGLE_LEN / 2)
+        triangle_hi  = mm2dot(TRIANGLE_HEIGHT)
         x1, y1 = eport.get_position
         xe = mm2dot(x1)
         ye = mm2dot(y1)
@@ -809,10 +809,10 @@ module TECSCDE
           x2 = x - rect2.rbearing / 2
           y2 = y - rect2.descent / 2
         when ALIGN_RIGHT
-          x2 = x - rect2.rbearing - mm2dot(GapPort)
+          x2 = x - rect2.rbearing - mm2dot(GAP_PORT)
           y2 = y - rect2.descent
         when ALIGN_LEFT
-          x2 = x + mm2dot(GapPort)
+          x2 = x + mm2dot(GAP_PORT)
           y2 = y - rect2.descent
         end
 
@@ -840,10 +840,10 @@ module TECSCDE
           x2 = x - (cr_te.width + cr_te.x_bearing) / 2
           y2 = y - cr_te.y_bearing / 2
         when ALIGN_RIGHT
-          x2 = x - cr_te.width - cr_te.x_bearing - mm2dot(GapPort)
+          x2 = x - cr_te.width - cr_te.x_bearing - mm2dot(GAP_PORT)
           y2 = y - cr_te.height - cr_te.y_bearing - 2
         when ALIGN_LEFT
-          x2 = x + mm2dot(GapPort)
+          x2 = x + mm2dot(GAP_PORT)
           y2 = y - cr_te.height - cr_te.y_bearing - 2
         end
         cr.move_to(x2, y2)
@@ -868,10 +868,10 @@ module TECSCDE
           x2 = x - rect2.rbearing / 2
           y2 = y - rect2.descent / 2
         when ALIGN_RIGHT
-          x2 = x - rect2.rbearing - mm2dot(GapPort)
+          x2 = x - rect2.rbearing - mm2dot(GAP_PORT)
           y2 = y - rect2.descent
         when ALIGN_LEFT
-          x2 = x + mm2dot(GapPort)
+          x2 = x + mm2dot(GAP_PORT)
           y2 = y - rect2.descent
         end
         cr.move_to(x2, y2)
@@ -909,10 +909,10 @@ module TECSCDE
           y2 = y - rect2.rbearing / 2
         when ALIGN_RIGHT
           x2 = x - rect2.descent
-          y2 = y + mm2dot(GapPort)
+          y2 = y + mm2dot(GAP_PORT)
         when ALIGN_LEFT
           x2 = x - rect2.descent
-          y2 = y - rect2.rbearing - mm2dot(GapPort)
+          y2 = y - rect2.rbearing - mm2dot(GAP_PORT)
         end
 
         @draw_target.draw_layout(@canvas_gc, x2, y2, plo)
@@ -934,10 +934,10 @@ module TECSCDE
           y2 = y - (cr_te.width + cr_te.x_bearing) / 2
         when ALIGN_RIGHT
           x2 = x - 2
-          y2 = y + cr_te.width + cr_te.x_bearing + mm2dot(GapPort)
+          y2 = y + cr_te.width + cr_te.x_bearing + mm2dot(GAP_PORT)
         when ALIGN_LEFT
           x2 = x - 2
-          y2 = y - mm2dot(GapPort)
+          y2 = y - mm2dot(GAP_PORT)
         end
         @cairo_matrix.set_rotate90(x2, y2) # rotate around (0, 0) then shift (x2, y2)
         cr.matrix = @cairo_matrix
@@ -968,10 +968,10 @@ module TECSCDE
           y2 = y - rect2.rbearing / 2
         when ALIGN_RIGHT
           x2 = x
-          y2 = y + rect2.rbearing + mm2dot(GapPort)
+          y2 = y + rect2.rbearing + mm2dot(GAP_PORT)
         when ALIGN_LEFT
           x2 = x
-          y2 = y - mm2dot(GapPort)
+          y2 = y - mm2dot(GAP_PORT)
         end
 
         matrix = Cairo::Matrix.new(0, -1, 1, 0, x2, y2)

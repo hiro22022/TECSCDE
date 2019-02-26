@@ -54,15 +54,15 @@ module TECSCDE
     module Constants
       DPI = 96.0                                  # Dot per Inch
 
-      ScaleHeight = 50                            # Height of HScale widget
+      SCALE_HEIGHT = 50                           # Height of HScale widget
 
-      Scale = 1.0                                 # Scale initial value
-      ScaleValIni = Scale * 100                   # 100%
-      ScaleValMax = ScaleValIni * 2.00            # 200%
-      ScaleValMin = ScaleValIni * 0.05            #   5%
+      SCALE = 1.0                                 # Scale initial value
+      SCALE_VAL_INI = SCALE * 100                 # 100%
+      SCALE_VAL_MAX = SCALE_VAL_INI * 2.00        # 200%
+      SCALE_VAL_MIN = SCALE_VAL_INI * 0.05        #   5%
 
-      Triangle_Len     = 3                        # edge length(mm)
-      Triangle_Height  = 2.598                    # height (mm)
+      TRIANGLE_LEN     = 3                        # edge length(mm)
+      TRIANGLE_HEIGHT  = 2.598                    # height (mm)
 
       #----- draw text argment value -----#
       # object
@@ -88,8 +88,8 @@ module TECSCDE
       CURSOR_JOIN_OK    = Gdk::Cursor.new Gdk::Cursor::CIRCLE
       CURSOR_NORMAL     = Gdk::Cursor.new Gdk::Cursor::TOP_LEFT_ARROW
 
-      GapActive         = 1   # (mm)  gap of active cell between inner rectangle and outer one
-      GapPort           = 0.8 # (mm)  gap between port name & edge
+      GAP_ACTIVE        = 1   # (mm)  gap of active cell between inner rectangle and outer one
+      GAP_PORT          = 0.8 # (mm)  gap between port name & edge
 
       #----- Paper -----#
       PAPER_MARGIN = 10 # (mm)
