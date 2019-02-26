@@ -728,9 +728,9 @@ module TECSCDE
           # mikan necessary more than 2 bars
           if !cport.nil? && !eport.nil? && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2
             # p "2"
-            b_vertical = TECSModel.vertical?(cport.get_edge_side)
+            vertical = TECSModel.vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0].to_sym
-            if (b_vertical && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
+            if (vertical && bar_type == :HBar) || (!vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
 
@@ -1072,9 +1072,9 @@ BAR_INFO
           # mikan necessary more than 2 bars
           if !cport.nil? && !eport.nil? && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2
             # p "2"
-            b_vertical = TECSModel.vertical?(cport.get_edge_side)
+            vertical = TECSModel.vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0]
-            if (b_vertical && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
+            if (vertical && bar_type == :HBar) || (!vertical && bar_type == :VBar)
               # p "3"
               len = bar_list.length
               # bar_list: [ [:HBar, pos]
