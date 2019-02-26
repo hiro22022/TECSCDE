@@ -278,7 +278,7 @@ module TECSCDE
       end
 
       def paint_canvas
-        clearCanvasPixmap
+        clear_canvas_pixmap
 
         #----- draw cells -----#
         @model.get_cell_list.each do |cell|
@@ -306,7 +306,7 @@ module TECSCDE
         # @scrolled_window.queue_draw
       end
 
-      def clearCanvasPixmap
+      def clear_canvas_pixmap
         @canvas_gc.function = Gdk::GC::SET
         @canvas_gc.fill = Gdk::GC::SOLID
         @canvas_gc.foreground = Gdk::Color.new(255, 255, 255)
@@ -319,16 +319,16 @@ module TECSCDE
         @canvas.window.cursor = cursor
       end
 
-      #=== TmView#drawTargetDirect
+      #=== TmView#draw_target_direct
       # change draw target to Window
-      def drawTargetDirect
+      def draw_target_direct
         # @draw_target = @gdk_window
         # @cairo_context_target = @cairo_context_win
       end
 
-      #=== TmView#drawTargetReset
+      #=== TmView#draw_target_reset
       # reset draw target to canvasPixmap
-      def drawTargetReset
+      def draw_target_reset
         # @draw_target = @canvas_pixmap
         # @cairo_context_target = @cairo_context_pixmap
       end
@@ -566,9 +566,9 @@ module TECSCDE
         obj_list.each do |obj|
           if obj.is_a?(TECSModel::TmCell)
             draw_cell_rect_direct(obj)
-            # drawTargetDirect
+            # draw_target_direct
             # draw_cell(obj)
-            # drawTargetReset
+            # draw_target_reset
           elsif obj.is_a?(TECSModel::TmPort)
             draw_port_direct(obj)
           elsif obj.is_a?(TECSModel::TmJoinBar)
@@ -580,7 +580,7 @@ module TECSCDE
       #=== TView#draw_cell_rect_direct
       # directly draw on Window hilited cell rect
       def draw_cell_rect_direct(cell)
-        drawTargetDirect
+        draw_target_direct
 
         #----- set line width -----#
         canvas_gc_set_line_width(2)
@@ -607,11 +607,11 @@ module TECSCDE
         #----- reset GC, line width -----#
         canvas_gc_reset
         canvas_gc_set_line_width(1)
-        drawTargetReset
+        draw_target_reset
       end
 
       def draw_port_direct(port)
-        drawTargetDirect
+        draw_target_direct
 
         #----- set line width -----#
         @canvas_gc.set_foreground(@@colors[Color_highlight])
@@ -644,7 +644,7 @@ module TECSCDE
         canvas_gc_reset
         canvas_gc_set_line_width(1)
 
-        drawTargetReset
+        draw_target_reset
       end
 
       def draw_join(join)
@@ -701,7 +701,7 @@ module TECSCDE
       #=== TView#draw_bar_direct
       # directly draw on Window
       def draw_bar_direct(bar)
-        drawTargetDirect
+        draw_target_direct
 
         join = bar.get_join
         cport, eport, bars = join.get_ports_bars
@@ -736,7 +736,7 @@ module TECSCDE
         canvas_gc_set_line_width(1)
         canvas_gc_reset
 
-        drawTargetReset
+        draw_target_reset
       end
 
       #----- draw and utility for text  -----#
