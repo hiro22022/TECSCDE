@@ -862,7 +862,7 @@ module TECSCDE
           next
         end
 
-        f.print("cell #{ cell.get_celltype.get_namespace_path} #{cell.get_name} {\n")
+        f.print("cell #{cell.get_celltype.get_namespace_path} #{cell.get_name} {\n")
 
         if cell.get_cports.length > 0
           f.print "\n    /*** call ports ***/\n"
