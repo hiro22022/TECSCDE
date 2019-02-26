@@ -53,7 +53,6 @@ module TECSCDE
   module View
     module Constants
       DPI = 96.0                                  # Dot per Inch
-      # DPI = 72.0                                # Dot per Inch
 
       ScaleHeight = 50                            # Height of HScale widget
 
