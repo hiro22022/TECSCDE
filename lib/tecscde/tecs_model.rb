@@ -122,9 +122,9 @@ module TECSCDE
     EDGE_RIGHT  = 0b11
 
     # gap is length between parallel bars.
-    CPGap = 10  # (mm)
-    EPGap = 10  # (mm)
-    Gap   = 5   # (mm)
+    CPGAP = 10  # (mm)
+    EPGAP = 10  # (mm)
+    GAP   = 5   # (mm)
     ALIGN = 1.0 # (mm)    # grid size
 
     # acceptable error of position information in .cde file
@@ -1267,7 +1267,7 @@ require "tecscde/tecs_model/vbar"
 #
 #   #=== (1)  (6) bar from call port. this indicate A position.
 #   TmCPort#get_normal_bar_of_edge
-#       pos = @cell.get_edge_position_in_normal_dir( @edge_side ) + Gap * TECSModel.get_sign_of_normal( @edge_side )
+#       pos = @cell.get_edge_position_in_normal_dir( @edge_side ) + GAP * TECSModel.get_sign_of_normal( @edge_side )
 #       TECSModel.vertical?( @edge_side ) ? HBar.new( pos ) : VBar.new( pos )
 #
 #   TmCPort#tangential_position
@@ -1292,10 +1292,10 @@ require "tecscde/tecs_model/vbar"
 #        pos2 = ( posa - e1 ).abs > ( posa - e2 ).abs ? e2 : e1
 #        @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
 #
-#        pos3 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        pos3 = @eport.get_position_in_normal_dir + GAP * @eport.get_sign_of_normal
 #        @bars[2] = (@bars[1].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
 #
-#        pos4 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        pos4 = @eport.get_position_in_normal_dir + GAP * @eport.get_sign_of_normal
 #        @bars[3] = (@bars[2].instance_of? HBar) ? VBar.new( pos4 ) : HBar.new( pos4 )
 #
 #        pos5 = @eport.get_position_in_tangential_dir
@@ -1309,7 +1309,7 @@ require "tecscde/tecs_model/vbar"
 #
 #        @bars[0] = @cport.get_normal_bar_of_edge
 #
-#        pos1 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        pos1 = @eport.get_position_in_normal_dir + GAP * @eport.get_sign_of_normal
 #        @bars[1] = (bar[0].instance_of? HBar) ? VBar.new( pos1 ) : HBar.new( pos1 )
 #
 #        pos2 = @eport.get_position_in_tangential_dir
@@ -1323,7 +1323,7 @@ require "tecscde/tecs_model/vbar"
 #
 #        @bars[0] = @cport.get_normal_bar_of_edge
 #
-#        pos1 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        pos1 = @eport.get_position_in_normal_dir + GAP * @eport.get_sign_of_normal
 #        @bars[1] = (bar[0].instance_of? HBar) ? VBar.new( pos1 ) : HBar.new( pos1 )
 #
 #        posa = @cport.get_position_in_tangential_dir
@@ -1331,7 +1331,7 @@ require "tecscde/tecs_model/vbar"
 #        pos2 = ( posa - e1 ).abs > ( posa - e2 ).abs ? e2 : e1
 #        @bars[2] = (bar[1].instance_of? HBar) ? VBar.new( pos2 ) : HBar.new( pos2 )
 #
-#        pos3 = @eport.get_position_in_normal_dir + Gap * @eport.get_sign_of_normal
+#        pos3 = @eport.get_position_in_normal_dir + GAP * @eport.get_sign_of_normal
 #        @bars[3] = (bar[2].instance_of? HBar) ? VBar.new( pos3 ) : HBar.new( pos3 )
 #
 #        pos4 = @eport.get_position_in_normal_dir

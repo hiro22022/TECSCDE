@@ -106,7 +106,7 @@ module TECSCDE
       # (1)  (6) bar from call port. this indicate A position.
       # join::TmJoin
       def get_normal_bar_of_edge(join)
-        pos = get_cell.get_edge_position_in_normal_dir(@edge_side) + CPGap * TECSModel.get_sign_of_normal(@edge_side)
+        pos = get_cell.get_edge_position_in_normal_dir(@edge_side) + CPGAP * TECSModel.get_sign_of_normal(@edge_side)
         if TECSCDE::TECSModel.vertical?(@edge_side)
           TECSCDE::TECSModel::HBar.new(pos, join)
         else

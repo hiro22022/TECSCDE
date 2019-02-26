@@ -107,10 +107,10 @@ module TECSCDE
         posa = @cport.get_position_in_tangential_dir
         e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
         # p "posa=#{posa} e1=#{e1}, e2=#{e2}"
-        pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + Gap) : (e1 - Gap)
+        pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + GAP) : (e1 - Gap)
         @bars[1] = create_bar(@bars[0], pos1)
 
-        pos2 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
+        pos2 = @eport.get_position_in_normal_dir + EPGAP * @eport.get_sign_of_normal
         @bars[2] = create_bar(@bars[1], pos2)
 
         pos3 = @eport.get_position_in_tangential_dir
@@ -127,7 +127,7 @@ module TECSCDE
 
         @bars[0] = @cport.get_normal_bar_of_edge self
 
-        pos1 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
+        pos1 = @eport.get_position_in_normal_dir + EPGAP * @eport.get_sign_of_normal
         @bars[1] = create_bar(@bars[0], pos1)
 
         pos2 = @eport.get_position_in_tangential_dir
@@ -146,10 +146,10 @@ module TECSCDE
 
         posa = @cport.get_position_in_tangential_dir
         e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
-        pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + Gap) : (e1 - Gap)
+        pos1 = ((posa - e1).abs > (posa - e2).abs) ? (e2 + GAP) : (e1 - Gap)
         @bars[1] = create_bar(@bars[0], pos1)
 
-        pos2 = @eport.get_position_in_normal_dir + EPGap * @eport.get_sign_of_normal
+        pos2 = @eport.get_position_in_normal_dir + EPGAP * @eport.get_sign_of_normal
         @bars[2] = create_bar(@bars[1], pos2)
 
         pos3 = @eport.get_position_in_tangential_dir
