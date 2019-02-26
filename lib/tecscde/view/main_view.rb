@@ -1086,16 +1086,20 @@ module TECSCDE
         @@colors = {}
         @@colormap = Gdk::Colormap.system
 
-        [:black, :white, :gray, :yellow, :orange, :skyblue, :magenta, :red, :blue, :green,
+        [
+          :black, :white, :gray, :yellow, :orange, :skyblue, :magenta, :red, :blue, :green,
           :cyan, :brown, :violet, :lavender, :MistyRose, :lightyellow, :LightCyan, :Beige,
-          :PapayaWhip, :Violet, :pink].each do |color_name|
+          :PapayaWhip, :Violet, :pink
+        ].each do |color_name|
           setup_colormap_1 color_name
         end
         setup_colormap_2(:ultraLightGreen, Gdk::Color.new(0xE000, 0xFF00, 0xE000))
         setup_colormap_1(Color_editable_cell)
 
-        @@cell_paint_colors = [:MistyRose, :lightyellow, :LightCyan, :ultraLightGreen, :lavender, :Beige,
-                                :PapayaWhip, :Violet, :pink]
+        @@cell_paint_colors = [
+          :MistyRose, :lightyellow, :LightCyan, :ultraLightGreen, :lavender, :Beige,
+          :PapayaWhip, :Violet, :pink
+        ]
         # plum: light purble (pastel)
         # pink: light magenta (pastel)
         # lavender: light blue (pastel)
