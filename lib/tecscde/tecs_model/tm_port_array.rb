@@ -183,10 +183,10 @@ module TECSCDE
       # this method is called from Control
       def delete_hilited(port)
         if @port_def.get_array_size != "[]"
-          TECSCDE.message_box(<<MESSAGE, :OK)
-Array size is fixed (#{@port_def.get_array_size}).
-Cannot delete array member.
-MESSAGE
+          TECSCDE.message_box(<<~MESSAGE, :OK)
+            Array size is fixed (#{@port_def.get_array_size}).
+            Cannot delete array member.
+          MESSAGE
           return
         end
         index = @ports.index port
@@ -204,9 +204,9 @@ MESSAGE
             end
           end
         else
-          TECSCDE.message_box(<<MESSAGE, :OK)
-cannot delete array member with subscript==0
-MESSAGE
+          TECSCDE.message_box(<<~MESSAGE, :OK)
+            cannot delete array member with subscript==0
+          MESSAGE
         end
       end
 
@@ -214,10 +214,10 @@ MESSAGE
       # this method is called from Control
       def insert(port, before_after)
         if @port_def.get_array_size != "[]"
-          TECSCDE.message_box(<<MESSAGE, :OK)
-Array size is fixed (#{@port_def.get_array_size}).
-Cannot insert array member.
-MESSAGE
+          TECSCDE.message_box(<<~MESSAGE, :OK)
+            Array size is fixed (#{@port_def.get_array_size}).
+            Cannot insert array member.
+          MESSAGE
           return
         end
         modified do
