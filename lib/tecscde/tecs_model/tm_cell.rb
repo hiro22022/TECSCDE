@@ -108,7 +108,7 @@ module TECSCDE
         end
 
         @tecsgen_cell = tecsgen_cell
-        @b_editable = true
+        @editable = true
         modified {}
       end
 

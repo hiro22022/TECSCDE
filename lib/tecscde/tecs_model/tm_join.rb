@@ -72,7 +72,7 @@ module TECSCDE
         create_bars
         # @bars.each{ |bar| bar.set_join self }
 
-        @b_editable = true
+        @editable = true
         modified {}
       end
 
