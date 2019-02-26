@@ -94,9 +94,7 @@ module TECSCDE
       def delete
         modified do
           joins = @joins.dup # in join.edelete delete_join is called and change @joins
-          joins.each do |join|
-            join.delete
-          end
+          joins.each(&:delete)
         end
       end
 

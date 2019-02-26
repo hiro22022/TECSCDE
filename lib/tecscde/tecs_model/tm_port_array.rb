@@ -176,9 +176,7 @@ module TECSCDE
       #=== TmPortArray#delete
       # this method is called from TmCell
       def delete
-        @ports.each do |port|
-          port.delete
-        end
+        @ports.each(&:delete)
       end
 
       #=== TmPortArray#delete_hilited
