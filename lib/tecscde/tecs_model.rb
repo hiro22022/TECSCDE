@@ -858,7 +858,7 @@ module TECSCDE
     # output cell definition
     def save_cells(f)
       @cell_list.each do |cell| # mikan region
-        if !cell.is_editable?
+        if !cell.editable?
           next
         end
 

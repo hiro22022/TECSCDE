@@ -401,7 +401,7 @@ module TECSCDE
         @cairo_context_target.fill
 
         #----- setup color -----#
-        if !cell.is_editable?
+        if !cell.editable?
           # @canvas_gc.set_foreground @@colors[ Color_uneditable ]
           @cairo_context_target.set_source_color(@@colors[Color_uneditable])
         else
@@ -430,7 +430,7 @@ module TECSCDE
           if !eport.is_array?
             draw_entry_port_triangle(eport)
           else
-            if cell.is_editable? && eport.is_unsubscripted_array?
+            if cell.editable? && eport.is_unsubscripted_array?
               # @canvas_gc.set_foreground @@colors[ :brown ]
               @cairo_context_target.set_source_color(@@colors[:brown])
             end
@@ -438,7 +438,7 @@ module TECSCDE
             eport.get_ports.each do |ep|
               draw_entry_port_triangle(ep)
             end
-            if cell.is_editable? && eport.is_unsubscripted_array?
+            if cell.editable? && eport.is_unsubscripted_array?
               # @canvas_gc.set_foreground @@colors[ Color_editable ]
               @cairo_context_target.set_source_color(@@colors[Color_editable])
             end
@@ -490,7 +490,7 @@ module TECSCDE
       #=== set_port_color
       def set_port_color(port, cell)
         if port.complete?
-          if cell.is_editable?
+          if cell.editable?
             color_name = Color_editable
           else
             color_name = Color_uneditable
@@ -587,7 +587,7 @@ module TECSCDE
         # @cairo_context_target.set_line_width(2)
 
         #----- if uneditable change color ------#
-        if !cell.is_editable?
+        if !cell.editable?
           @canvas_gc.set_foreground(@@colors[Color_uneditable])
           # @cairo_context_target.set_source_color( @@colors[ Color_uneditable ] )
         end
@@ -654,7 +654,7 @@ module TECSCDE
         ym = mm2dot(y) + 0.5
 
         #----- setup color -----#
-        if !join.is_editable?
+        if !join.editable?
           # @canvas_gc.set_foreground @@colors[ Color_uneditable ]
           @cairo_context_target.set_source_color(@@colors[Color_uneditable])
         end
@@ -714,7 +714,7 @@ module TECSCDE
         bars.each do |bar2|
           if @control.highlighted_objects.include?(bar2)
             color = @@colors[Color_highlight]
-          elsif join.is_editable?
+          elsif join.editable?
             color = @@colors[Color_editable]
           else
             color = @@colors[Color_uneditable]
@@ -1126,7 +1126,7 @@ module TECSCDE
           obj = region
         else
           tecsgen_cell = cell.get_tecsgen_cell
-          if tecsgen_cell.nil? || cell.is_editable?
+          if tecsgen_cell.nil? || cell.editable?
             return @@colors[Color_editable_cell]
           end
           file = tecsgen_cell.get_locale[0]

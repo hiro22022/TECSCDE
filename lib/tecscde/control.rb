@@ -255,7 +255,7 @@ module TECSCDE
       if button == 1
         object = find_near xm, ym
         if object.is_a?(TECSModel::TmCell) && click_count == 2
-          if object.is_editable?
+          if object.editable?
             # p "begin_edit_name"
             @view.begin_edit_name object, time
             @highlighted_objects.reset(object)

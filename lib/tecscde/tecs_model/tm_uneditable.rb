@@ -59,8 +59,8 @@ module TECSCDE
         @editable = locale[0] == get_model.get_file_editing
       end
 
-      #=== TmObject#is_editable?  ***
-      def is_editable?
+      #=== TmObject#editable?  ***
+      def editable?
         @editable
       end
     end

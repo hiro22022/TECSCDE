@@ -289,9 +289,7 @@ module TECSCDE
 
       #=== TmJoin#delete ***
       def delete
-        if !is_editable?
-          return
-        end
+        return unless editable?
         modified do
           @cport.delete_join
           @eport.delete_join self

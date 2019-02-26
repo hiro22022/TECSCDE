@@ -138,9 +138,7 @@ module TECSCDE
 
       #=== TmCell#delete ***
       def delete
-        if !is_editable?
-          return
-        end
+        return unless editable?
         modified do
           @cports.each do |_name, cport|
             cport.delete

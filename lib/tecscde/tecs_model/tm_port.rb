@@ -207,7 +207,7 @@ module TECSCDE
       #=== TmPort#delete_hilited
       # delete_hilited if this port is a member of unsubscripted array.
       def delete_hilited
-        if !@owner.is_editable?
+        if !@owner.editable?
           return
         end
         if @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
@@ -224,9 +224,9 @@ module TECSCDE
         end
       end
 
-      #=== TmPort#is_editable?
-      def is_editable?
-        @owner.is_editable?
+      #=== TmPort#editable?
+      def editable?
+        @owner.editable?
       end
 
       #=== TmPort#get_owner_cell

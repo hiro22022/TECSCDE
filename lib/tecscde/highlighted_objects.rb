@@ -153,7 +153,7 @@ module TECSCDE
         @cell_region_entry.text = cell.get_region.get_namespace_path.to_s
 
         # this doesn't work!  I don't know how to change the color of Entry text
-        if cell.is_editable?
+        if cell.editable?
           @cell_name_entry.modify_fg(Gtk::STATE_NORMAL, Gdk::Color.parse("black"))
           @cell_region_entry.modify_fg(Gtk::STATE_NORMAL, Gdk::Color.parse("black"))
           @cell_property_frame.set_label("cell property")
@@ -163,8 +163,8 @@ module TECSCDE
           @cell_property_frame.set_label("cell property (read only)")
         end
 
-        @cell_name_entry.set_editable(cell.is_editable?)
-        @cell_region_entry.set_editable(cell.is_editable?)
+        @cell_name_entry.set_editable(cell.editable?)
+        @cell_region_entry.set_editable(cell.editable?)
 
         @attr_tree_view.set_cell(cell)
       else

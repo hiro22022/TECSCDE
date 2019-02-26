@@ -107,7 +107,7 @@ module TECSCDE
       col.set_cell_data_func(renderer) do |_col, renderer, _model, iter|
         if iter[COL_VALUE].nil? || iter[COL_VALUE] == ""
           renderer.foreground = "red"
-        elsif @cell.is_editable?
+        elsif @cell.editable?
           renderer.foreground = "black"
         else
           renderer.foreground = "blue"
@@ -118,7 +118,7 @@ module TECSCDE
       # TYPE column
       col = Gtk::TreeViewColumn.new("type", renderer, text: COL_TYPE)
       col.set_cell_data_func(renderer) do |_col, renderer, _model, _iter|
-        if @cell.is_editable?
+        if @cell.editable?
           renderer.foreground = "black"
         else
           renderer.foreground = "blue"
@@ -135,13 +135,13 @@ module TECSCDE
         # p "iter[0]=#{iter[0]}"
         if @cell.get_attr_list[iter[COL_NAME].to_sym].nil?
           renderer.foreground = "orange"
-        elsif @cell.is_editable?
+        elsif @cell.editable?
           renderer.foreground = "black"
         else
           renderer.foreground = "blue"
         end
 
-        if @cell.is_editable?
+        if @cell.editable?
           renderer.editable = true
         else
           renderer.editable = false

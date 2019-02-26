@@ -246,9 +246,9 @@ MESSAGE
         true
       end
 
-      #=== TmPortArray#is_editable?
-      def is_editable?
-        @owner.is_editable?
+      #=== TmPortArray#editable?
+      def editable?
+        @owner.editable?
       end
 
       #=== TmPortArray#is_unsubscripted_array?
