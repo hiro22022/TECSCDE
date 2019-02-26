@@ -288,9 +288,9 @@ module TECSCDE
       ((edge_side & 0b01)) != 0 ? 1 : -1
     end
 
-    #=== TECSModel.is_vertical?
+    #=== TECSModel.vertical?
     # RETURN:: true if vertical, false if horizontal
-    def self.is_vertical?(edge_side)
+    def self.vertical?(edge_side)
       ((edge_side & 0b10) != 0) ? true : false
     end
 
@@ -728,7 +728,7 @@ module TECSCDE
           # mikan necessary more than 2 bars
           if !cport.nil? && !eport.nil? && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2
             # p "2"
-            b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
+            b_vertical = TECSModel.vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0].to_sym
             if (b_vertical && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
               # p "3"
@@ -1072,7 +1072,7 @@ BAR_INFO
           # mikan necessary more than 2 bars
           if !cport.nil? && !eport.nil? && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2
             # p "2"
-            b_vertical = TECSModel.is_vertical?(cport.get_edge_side)
+            b_vertical = TECSModel.vertical?(cport.get_edge_side)
             bar_type = bar_list[0][0]
             if (b_vertical && bar_type == :HBar) || (!b_vertical && bar_type == :VBar)
               # p "3"
@@ -1253,7 +1253,7 @@ require "tecscde/tecs_model/vbar"
 #
 #   TECSModel class method
 #     get_sign_of_normal( edge_side ) = (edge_side & 0b01) ? 1 : -1
-#     is_vertical?( edge_side )   = (edge_side & 0b10) ? true : false
+#     vertical?( edge_side )   = (edge_side & 0b10) ? true : false
 #     is_parallel?( edge_side1, edge_side2 ) = ( edge_side1 ^ edge_side2 ) < 0b10
 #     is_opposite?( edge_side1, edge_side2 ) = ( ( edge_side1 ^ edge_side2 ) & 0b01 ) ? true : false
 #         this function can be applicable only when edge_side1, edge_side2 are parallel
@@ -1268,10 +1268,10 @@ require "tecscde/tecs_model/vbar"
 #   #=== (1)  (6) bar from call port. this indicate A position.
 #   TmCPort#get_normal_bar_of_edge
 #       pos = @cell.get_edge_position_in_normal_dir( @edge_side ) + Gap * TECSModel.get_sign_of_normal( @edge_side )
-#       TECSModel.is_vertical?( @edge_side ) ? HBar.new( pos ) : VBar.new( pos )
+#       TECSModel.vertical?( @edge_side ) ? HBar.new( pos ) : VBar.new( pos )
 #
 #   TmCPort#tangential_position
-#       ( TECSModel.is_vertical? @edge_side ) ? @cell.get_y + @offs : @cell.get_x + @offs
+#       ( TECSModel.vertical? @edge_side ) ? @cell.get_y + @offs : @cell.get_x + @offs
 #
 #   TmJoin#create_bars
 #       if TECSModel.is_parallel?( @edge_side, dest_port.get_edge_side )

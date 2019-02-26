@@ -249,7 +249,7 @@ module TECSCDE
 
       #=== TmCell#get_right_angle_edges_position
       def get_right_angle_edges_position(edge_side)
-        if TECSCDE::TECSModel.is_vertical?(edge_side)
+        if TECSCDE::TECSModel.vertical?(edge_side)
           [@y, @y + @height]
         else
           [@x, @x + @width]

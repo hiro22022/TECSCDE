@@ -107,7 +107,7 @@ module TECSCDE
       # join::TmJoin
       def get_normal_bar_of_edge(join)
         pos = get_cell.get_edge_position_in_normal_dir(@edge_side) + CPGap * TECSModel.get_sign_of_normal(@edge_side)
-        if TECSCDE::TECSModel.is_vertical?(@edge_side)
+        if TECSCDE::TECSModel.vertical?(@edge_side)
           TECSCDE::TECSModel::HBar.new(pos, join)
         else
           TECSCDE::TECSModel::VBar.new(pos, join)
@@ -117,7 +117,7 @@ module TECSCDE
       #=== TmPort#get_position_in_tangential_dir
       def get_position_in_tangential_dir
         x, y, w, h = get_cell.get_geometry
-        (TECSCDE::TECSModel.is_vertical? @edge_side) ? y + @offs : x + @offs
+        TECSCDE::TECSModel.vertical?(@edge_side) ? y + @offs : x + @offs
       end
 
       def get_position_in_normal_dir
