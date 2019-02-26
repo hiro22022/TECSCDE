@@ -73,7 +73,6 @@ module TECSCDE
         end
 
         modified {
-
           # p "new_join: for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
           if subscript >= 0
             if subscript >= @actual_size
@@ -224,7 +223,6 @@ MESSAGE
           return
         end
         modified {
-
           @owner.adjust_port_position_to_insert port
           subsc = port.get_subscript
           i = @ports.length - 1

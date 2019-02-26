@@ -142,7 +142,6 @@ module TECSCDE
           return
         end
         modified {
-
           @cports.each{|name, cport|
             cport.delete
           }
@@ -192,7 +191,6 @@ module TECSCDE
       #=== TmCell#move ***
       def move(x_inc, y_inc)
         modified {
-
           TECSCDE.logger.debug("cell move #{@name}")
           x0 = @x
           y0 = @y
@@ -437,7 +435,6 @@ module TECSCDE
       # init::String|Nil  (from Expression)
       def set_attr(name, init)
         modified {
-
           if init.nil?
             @attr_list.delete name
           else

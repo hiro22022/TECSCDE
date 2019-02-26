@@ -204,7 +204,6 @@ module TECSCDE
     # tecsgen_cell:Cell  : in tecsgen
     def new_cell2(xm, ym, celltype, region, tecsgen_cell)
       modified {
-
         name = celltype.get_name.to_s.gsub(/t(.*)/, '\\1').to_sym
         if @cell_hash[name]
           count = 0
@@ -234,7 +233,6 @@ module TECSCDE
     # don't call externally, use TmCell#delete instead
     def delete_cell(cell)
       modified {
-
         @cell_list.delete cell
         @cell_hash.delete cell.get_name # mikan region
       }
@@ -246,7 +244,6 @@ module TECSCDE
     # don't call externally, use TmCell#change_name instead
     def rename_cell(cell, new_name)
       modified {
-
         if !new_name.is_a? Symbol
           raise "cell name not Symbol"
         end
@@ -271,7 +268,6 @@ module TECSCDE
     #=== TECSModel#new_join ***
     def new_join(cport, eport)
       modified {
-
         join = TmJoin.new(cport, eport, self)
         @join_list << join
         return join
@@ -282,7 +278,6 @@ module TECSCDE
     # don't call externally. call TmJoin#delete instead
     def delete_join(join)
       modified {
-
         @join_list.delete join
       }
     end

@@ -73,7 +73,6 @@ module TECSCDE
 
       def add_join(join)
         modified {
-
           @joins << join
         }
       end
@@ -94,7 +93,6 @@ module TECSCDE
       # this method is called from TmCell
       def delete
         modified {
-
           joins = @joins.dup # in join.edelete delete_join is called and change @joins
           joins.each{|join|
             join.delete

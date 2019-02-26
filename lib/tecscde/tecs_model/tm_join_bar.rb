@@ -67,7 +67,6 @@ module TECSCDE
 
       def set_position(position)
         modified {
-
           @position = TECSCDE::TECSModel.round_length_val position
         }
       end
@@ -90,7 +89,6 @@ module TECSCDE
       # 1st bar and last bar can not be moved (necessary cport, eport move)
       def move(x_inc, y_inc)
         modified {
-
           bar_prev = nil
           bars = @owner.get_bars
 

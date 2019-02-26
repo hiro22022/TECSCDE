@@ -293,7 +293,6 @@ module TECSCDE
           return
         end
         modified {
-
           @cport.delete_join
           @eport.delete_join self
           @owner.delete_join self

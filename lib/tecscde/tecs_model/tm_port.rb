@@ -63,7 +63,6 @@ module TECSCDE
       #=== TmPort#move
       def move(x_inc, y_inc)
         modified {
-
           # p "move x=#{x_inc} y=#{y_inc}"
           x, y, w, h = get_owner_cell.get_geometry
           case @edge_side
@@ -188,7 +187,6 @@ module TECSCDE
 
       def set_subscript(subscript)
         modified {
-
           @subscript = subscript
         }
       end
@@ -201,7 +199,6 @@ module TECSCDE
       #=== TmPort#set_position
       def set_position(edge_side, offset)
         modified {
-
           @edge_side = edge_side
           @offs = TECSCDE::TECSModel.round_length_val offset
         }

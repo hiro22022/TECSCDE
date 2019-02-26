@@ -70,7 +70,6 @@ module TECSCDE
 
       def set_join(join)
         modified {
-
           @join = join
         }
       end
@@ -90,7 +89,6 @@ module TECSCDE
       def delete
         if @join
           modified {
-
             @join.delete
             @join = nil
           }
@@ -101,7 +99,6 @@ module TECSCDE
       # this method is called from TmJoin
       def delete_join
         modified {
-
           @join = nil
         }
       end
