@@ -108,7 +108,7 @@ module TECSCDE
 
       #=== TmEPort#complete?
       def complete?
-        (@joins.length > 0) ? true : false
+        !@joins.empty?
       end
 
       #=== TmEPort#clone_for_undo

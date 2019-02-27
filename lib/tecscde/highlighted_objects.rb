@@ -87,19 +87,18 @@ module TECSCDE
     # Ports belonging to diferent Cell cannot be hilited simultaneously.
     # obj::TmCell | TmBar | TmPort: new object to be hilited
     def reset_if_ncessary(obj)
-      if @objects.length > 0
-        if @objects[0].is_a?(TECSModel::TmPort)
-          if obj.is_a?(TECSModel::TmPort)
-            if obj.get_owner_cell != @objects[0].get_owner_cell
-              reset
-            end
-          else
+      return if @objects.empty?
+      if @objects[0].is_a?(TECSModel::TmPort)
+        if obj.is_a?(TECSModel::TmPort)
+          if obj.get_owner_cell != @objects[0].get_owner_cell
             reset
           end
         else
-          if obj.is_a?(TECSModel::TmPort)
-            reset
-          end
+          reset
+        end
+      else
+        if obj.is_a?(TECSModel::TmPort)
+          reset
         end
       end
     end

@@ -433,7 +433,9 @@ module TECSCDE
     def add_cell_list_from_tecsgen
       #----- set @file_editing -----#
       argv = TECSGEN.get_argv
-      if argv.length > 0
+      if argv.empty?
+        @file_editing = ""
+      else
         last_arg = argv[-1]
         if last_arg =~ /\.cde\Z/
           @file_editing = last_arg
@@ -444,8 +446,6 @@ module TECSCDE
             @file_editing = last_arg + ".cde"
           end
         end
-      else
-        @file_editing = ""
       end
 
       print "file_editing: #{@file_editing}\n"
@@ -864,7 +864,7 @@ module TECSCDE
 
         f.print("cell #{cell.get_celltype.get_namespace_path} #{cell.get_name} {\n")
 
-        if cell.get_cports.length > 0
+        unless cell.get_cports.empty?
           f.print "\n    /*** call ports ***/\n"
         end
         cell.get_cports.each do |_name, cport|
@@ -896,7 +896,7 @@ module TECSCDE
         end
 
         attr_list = cell.get_attr_list
-        if attr_list.length > 0
+        unless attr_list.empty?
           f.print "\n    /*** attributes ***/\n"
         end
         attr_list.keys.sort.each do |attr|
