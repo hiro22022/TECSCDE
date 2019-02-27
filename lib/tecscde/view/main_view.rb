@@ -742,9 +742,9 @@ module TECSCDE
       #----- draw and utility for text  -----#
 
       def get_text_extent(text, obj_type, alignment, direction)
+        pc = @pango_context
+        plo = @pango_layout
         if direction != TEXT_VERTICAL
-          pc = @pango_context
-          plo = @pango_layout
           pc.matrix = nil
           plo.text = text.to_s
           pfd = pc.font_description
@@ -757,8 +757,6 @@ module TECSCDE
           rect2 = plo.pixel_extents[1]
           [dot2mm(rect2.x + rect2.width), dot2mm(rect2.y + rect2.height)]
         else
-          pc = @pango_context
-          plo = @pango_layout
           pm = @pango_matrix
           pc.matrix = pm
           plo.text = text.to_s

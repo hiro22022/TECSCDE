@@ -293,15 +293,13 @@ module TECSCDE
             MESSAGE
           end
         elsif object.is_a? TECSModel::TmEPort
+          @sub_mode = :SM_MOVING_EPORT
           if state.shift_mask?
-            @sub_mode = :SM_MOVING_EPORT
             @highlighted_objects.add object
           elsif state.control_mask?
-            @sub_mode = :SM_MOVING_EPORT
             @highlighted_objects.add_del(object)
           else
             # p "FOUND TmEPort"
-            @sub_mode = :SM_MOVING_EPORT
             @highlighted_objects.reset object
           end
         else
