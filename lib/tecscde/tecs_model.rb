@@ -694,7 +694,8 @@ module TECSCDE
         cp_cell = @cell_hash[cp_cell_nspath]
         ep_cell = @cell_hash[ep_cell_nspath]
         # check existance of cells
-        if !cp_cell.nil? && !ep_cell.nil?
+        next if cp_cell.nil?
+        next if ep_cell.nil?
           cport = cp_cell.get_cports[cp_name]
           if cport.is_a? TmCPortArray
             if cp_subscript.nil?
@@ -766,7 +767,6 @@ module TECSCDE
               end
             end
           end
-        end
       end
     end
 
