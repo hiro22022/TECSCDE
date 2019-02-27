@@ -227,8 +227,6 @@ module TECSCDE
             iter[COL_VALUE] = cell_attr_list[name.to_sym]
           elsif attr.get_initializer
             iter[COL_VALUE] = attr.get_initializer.to_CDL_str
-          else
-            # iter[ COL_VALUE ] = " "
           end
 
           #----- choice list model -----#

@@ -72,13 +72,11 @@ module TECSCDE
       end
 
       def get_join(subscript)
-        if subscript.nil?
-          nil
-        elsif 0 <= subscript && subscript < @actual_size
+        return nil if subscript.nil?
+        if 0 <= subscript && subscript < @actual_size
           @ports[subscript]
-        else
-          nil
         end
+        nil
       end
 
       #=== TmCPortArray#complete?

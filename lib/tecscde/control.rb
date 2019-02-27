@@ -443,7 +443,8 @@ module TECSCDE
       when 0x55     # PageUp
       when 0x56     # PageDown
       else
-        # printf "key_pressed: keyval=%02x\n", keyval
+        message = "key_pressed: keyval=%02x" % [keyval]
+        TECSCDE.logger.info(message)
       end
       if @sub_mode != :SM_EDIT_CELL_NAME
         update
