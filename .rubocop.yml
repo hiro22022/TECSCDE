@@ -17,6 +17,8 @@ Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
 
 Lint/UnderscorePrefixedVariableName:
   Enabled: false

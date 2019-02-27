@@ -261,9 +261,7 @@ module TECSCDE
             @highlighted_objects.reset(object)
             @sub_mode = :SM_EDIT_CELL_NAME
           end
-        elsif object.is_a?(TECSModel::TmCell) ||
-          # if object.kind_of?( TECSModel::TmCell ) ||
-          object.is_a?(TECSModel::TmJoinBar)
+        elsif object.is_a?(TECSModel::TmCell) || object.is_a?(TECSModel::TmJoinBar)
           @sub_mode = :SM_MOVING_CELL_BAR
           # p "FOUND Cell or Bar"
           if state.shift_mask?
