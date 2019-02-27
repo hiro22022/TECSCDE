@@ -9,10 +9,9 @@ module TECSCDE
       end
 
       def add(tm_object)
-        if !@set.has_key?(tm_object)
-          # TECSCDE.logger.info("add_change_set #{tm_object.class} number=#{@number}")
-          @set[tm_object] = tm_object.clone_for_undo
-        end
+        return if @set.key?(tm_object)
+        # TECSCDE.logger.info("add_change_set #{tm_object.class} number=#{@number}")
+        @set[tm_object] = tm_object.clone_for_undo
       end
 
       def set_undo_point

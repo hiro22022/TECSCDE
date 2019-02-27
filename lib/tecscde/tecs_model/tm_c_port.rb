@@ -75,9 +75,8 @@ module TECSCDE
       end
 
       def moved(x_inc, y_inc)
-        if @join
-          @join.moved_cport(x_inc, y_inc)
-        end
+        return unless @join
+        @join.moved_cport(x_inc, y_inc)
       end
 
       def get_join(subscript = nil)
@@ -87,11 +86,10 @@ module TECSCDE
       #=== TmCPort#delete
       # this method is called from TmCell
       def delete
-        if @join
-          modified do
-            @join.delete
-            @join = nil
-          end
+        return unless @join
+        modified do
+          @join.delete
+          @join = nil
         end
       end
 

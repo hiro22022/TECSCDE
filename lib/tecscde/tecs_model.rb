@@ -341,9 +341,8 @@ module TECSCDE
 
     #=== TECSModel#get_celltype_list ***
     def get_celltype_list
-      if @tecsgen
-        @tecsgen.get_celltype_list
-      end
+      return unless @tecsgen
+      @tecsgen.get_celltype_list
     end
 
     #=== TECSModel#get_region_from_tecsgen_region
@@ -458,76 +457,75 @@ module TECSCDE
       # y = @paper[ :height ] -30
 
       cell_list = {} # ::Cell => TmCell
-      if tecsgen_cell_list
-        TECSCDE.logger.info("=== create cell ===")
-        tecsgen_cell_list.each do |cell|
-          # p cell.get_owner.get_namespace
-          # p cell.get_owner.get_namespace_path
-          if @cell_hash[cell.get_name] # duplicate cell in cdl file
-            next
-          end
-          if cell.get_celltype.nil? # celltype not found error in cdl (tecsgen)
-            TECSCDE.logger.info("add_cell: celltype not found: #{cell.get_name} #{cell.get_owner.get_namespace_path}")
-            next
-          end
-
-          TECSCDE.logger.info("add_cell #{cell.get_name} #{cell.get_owner.get_namespace_path} #{cell.get_locale}")
-          new_cell_ = create_cell_from_tecsgen(cell, x, y)
-          tecsgen_cell_list2 << cell
-          cell_list[cell] = new_cell_
-
-          new_cell_.set_editable(cell.get_locale)
-
-          x += 55
-          if x >= @paper[:width] - 30
-            x = 10
-            y += 30
-            if y >= @paper[:height] - 15
-              y = 10
-            end
-          end
-          # x -= 55
-          # if x <= 10
-          #   x =   @paper[ :width ] - 60
-          #   y -= 30
-          #   if y <= 50
-          #     y = @paper[ :height ] -30
-          #   end
-          # end
+      return unless tecsgen_cell_list
+      TECSCDE.logger.info("=== create cell ===")
+      tecsgen_cell_list.each do |cell|
+        # p cell.get_owner.get_namespace
+        # p cell.get_owner.get_namespace_path
+        if @cell_hash[cell.get_name] # duplicate cell in cdl file
+          next
+        end
+        if cell.get_celltype.nil? # celltype not found error in cdl (tecsgen)
+          TECSCDE.logger.info("add_cell: celltype not found: #{cell.get_name} #{cell.get_owner.get_namespace_path}")
+          next
         end
 
-        set_location_from_tecsgen_old
-        #------ validate and set location info from __tool_info( "tecscde" ) ------#
-        # begin
-        if validate || $b_force_apply_tool_info
-          TECSCDE.logger.info("=== set_paper ===")
-          set_paper_from_tecsgen
+        TECSCDE.logger.info("add_cell #{cell.get_name} #{cell.get_owner.get_namespace_path} #{cell.get_locale}")
+        new_cell_ = create_cell_from_tecsgen(cell, x, y)
+        tecsgen_cell_list2 << cell
+        cell_list[cell] = new_cell_
 
-          TECSCDE.logger.info("=== set_cell_location ===")
-          set_cell_location_from_tecsgen
-        else
-          TECSCDE.logger.error("validate error in __tool_info__( \"tecscde\" )")
+        new_cell_.set_editable(cell.get_locale)
+
+        x += 55
+        if x >= @paper[:width] - 30
+          x = 10
+          y += 30
+          if y >= @paper[:height] - 15
+            y = 10
+          end
         end
+        # x -= 55
+        # if x <= 10
+        #   x =   @paper[ :width ] - 60
+        #   y -= 30
+        #   if y <= 50
+        #     y = @paper[ :height ] -30
+        #   end
+        # end
+      end
 
-        TECSCDE.logger.info("=== create join ===")
-        tecsgen_cell_list2.each do |cell|
-          cell.get_join_list.get_items.each do |join|
-            if join.get_array_member2.nil?
-              create_join_from_tecsgen(cell, join, cell_list)
-            else
-              join.get_array_member2.each do |j|
-                if !j.nil?
-                  create_join_from_tecsgen(cell, j, cell_list)
-                end
+      set_location_from_tecsgen_old
+      #------ validate and set location info from __tool_info( "tecscde" ) ------#
+      # begin
+      if validate || $b_force_apply_tool_info
+        TECSCDE.logger.info("=== set_paper ===")
+        set_paper_from_tecsgen
+
+        TECSCDE.logger.info("=== set_cell_location ===")
+        set_cell_location_from_tecsgen
+      else
+        TECSCDE.logger.error("validate error in __tool_info__( \"tecscde\" )")
+      end
+
+      TECSCDE.logger.info("=== create join ===")
+      tecsgen_cell_list2.each do |cell|
+        cell.get_join_list.get_items.each do |join|
+          if join.get_array_member2.nil?
+            create_join_from_tecsgen(cell, join, cell_list)
+          else
+            join.get_array_member2.each do |j|
+              if !j.nil?
+                create_join_from_tecsgen(cell, j, cell_list)
               end
             end
           end
         end
+      end
 
-        if validate || $b_force_apply_tool_info
-          TECSCDE.logger.info("=== set_join_location ===")
-          set_join_location_from_tecsgen
-        end
+      if validate || $b_force_apply_tool_info
+        TECSCDE.logger.info("=== set_join_location ===")
+        set_join_location_from_tecsgen
       end
     end
 
@@ -581,24 +579,21 @@ module TECSCDE
 
     def set_paper_from_tecsgen
       info = TOOL_INFO.get_tool_info(:tecscde)
-      if info.nil? || info[:paper].nil?
-        return
-      end
+      return if info.nil? || info[:paper].nil?
 
       #----- paper -----#
       paper_info = info[:paper]
-      if paper_info
-        size = paper_info[:size]
-        orientation = paper_info[:orientation]
-        paper = nil
-        PAPERS.each do |_name, spec|
-          if spec.size == size && spec.orientation == orientation
-            TECSCDE.logger.info("paper found #{spec.name}")
-            paper = spec
-          end
+      return unless paper_info
+      size = paper_info[:size]
+      orientation = paper_info[:orientation]
+      paper = nil
+      PAPERS.each do |_name, spec|
+        if spec.size == size && spec.orientation == orientation
+          TECSCDE.logger.info("paper found #{spec.name}")
+          paper = spec
         end
-        @paper = paper if paper
       end
+      @paper = paper if paper
     end
 
     def set_cell_location_from_tecsgen

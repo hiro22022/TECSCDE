@@ -207,21 +207,17 @@ module TECSCDE
       #=== TmPort#delete_hilited
       # delete_hilited if this port is a member of unsubscripted array.
       def delete_hilited
-        if !@owner.editable?
-          return
-        end
-        if @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
-          @owner.delete_hilited self
-        end
+        return unless @owner.editable?
+        return unless @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
+        @owner.delete_hilited(self)
       end
 
       #=== TmPort#insert
       # before_after::Symbol: :before, :after
       # insert if this port is a member of unsubscripted array.
       def insert(before_after)
-        if @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
-          @owner.insert self, before_after
-        end
+        return unless @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
+        @owner.insert(self, before_after)
       end
 
       #=== TmPort#editable?

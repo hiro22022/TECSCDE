@@ -173,11 +173,10 @@ module TECSCDE
     end
 
     def on_cell_name_entry_focus_out(entry)
+      return if @b_cell_renaming
       # to avoid nested message box dialog in error case
-      if !@b_cell_renaming
-        @highlighted_objects.change_cell_name entry.text
-        update
-      end
+      @highlighted_objects.change_cell_name entry.text
+      update
     end
 
     def on_cell_region_entry_active(entry)
@@ -388,17 +387,13 @@ module TECSCDE
         end
       end
       @view.set_cursor TECSCDE::CURSOR_NORMAL
-      if @sub_mode != :SM_EDIT_CELL_NAME
-        update
-        @sub_mode = :SM_NONE
-      end
+      return if @sub_mode == :SM_EDIT_CELL_NAME
+      update
+      @sub_mode = :SM_NONE
     end
 
     def key_pressed(keyval, state)
-      if @sub_mode == :SM_EDIT_CELL_NAME
-
-        return
-      end
+      return if @sub_mode == :SM_EDIT_CELL_NAME
 
       case keyval
       when 0xff     # delete key
@@ -481,10 +476,9 @@ module TECSCDE
 
     def add_celltype_list
       ctl = @model.get_celltype_list
-      if ctl
-        ctl.each do |ct|
-          @celltype_tree_view.add ct
-        end
+      return unless ctl
+      ctl.each do |ct|
+        @celltype_tree_view.add ct
       end
     end
 

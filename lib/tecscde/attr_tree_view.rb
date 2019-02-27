@@ -212,30 +212,29 @@ module TECSCDE
       cell_attr_list = cell.get_attr_list
 
       ct = @cell.get_celltype
-      if ct
-        #----- register attributes and initializer to tree view model -----#
-        ct.get_attribute_list.each do |attr|
-          iter = @tree_view.model.append
-          name = attr.get_name.to_s
-          if attr.get_initializer
-            @ct_attr_list[name] = attr.get_initializer.to_CDL_str
-          end
+      return unless ct
+      #----- register attributes and initializer to tree view model -----#
+      ct.get_attribute_list.each do |attr|
+        iter = @tree_view.model.append
+        name = attr.get_name.to_s
+        if attr.get_initializer
+          @ct_attr_list[name] = attr.get_initializer.to_CDL_str
+        end
 
-          iter[COL_NAME] = name
-          iter[COL_TYPE] = "#{attr.get_type.get_type_str}#{attr.get_type.get_type_str_post}"
-          if cell_attr_list[name.to_sym]
-            iter[COL_VALUE] = cell_attr_list[name.to_sym]
-          elsif attr.get_initializer
-            iter[COL_VALUE] = attr.get_initializer.to_CDL_str
-          end
+        iter[COL_NAME] = name
+        iter[COL_TYPE] = "#{attr.get_type.get_type_str}#{attr.get_type.get_type_str_post}"
+        if cell_attr_list[name.to_sym]
+          iter[COL_VALUE] = cell_attr_list[name.to_sym]
+        elsif attr.get_initializer
+          iter[COL_VALUE] = attr.get_initializer.to_CDL_str
+        end
 
-          #----- choice list model -----#
-          if attr.get_choice_list
-            @choice_list[name] = Gtk::ListStore.new(String)
-            attr.get_choice_list.each do |choice|
-              iter = @choice_list[name].append
-              iter[0] = CDLString.remove_dquote(choice.val)
-            end
+        #----- choice list model -----#
+        if attr.get_choice_list
+          @choice_list[name] = Gtk::ListStore.new(String)
+          attr.get_choice_list.each do |choice|
+            iter = @choice_list[name].append
+            iter[0] = CDLString.remove_dquote(choice.val)
           end
         end
       end
