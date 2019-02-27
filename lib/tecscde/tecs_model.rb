@@ -732,42 +732,42 @@ module TECSCDE
         bar_type = bar_list[0][0].to_sym
         next if TECSModel.vertical?(cport.get_edge_side) && bar_type == :VBar
         next if TECSModel.horizontal?(cport.get_edge_side) && bar_type == :HBar
-          # p "3"
-          len = bar_list.length
+        # p "3"
+        len = bar_list.length
 
-          normal_pos = bar_list[len - 1][1]
-          tan_pos = bar_list[len - 2][1]
-          # p "normal_pos=#{normal_pos}, eport_normal=#{eport.get_position_in_normal_dir}"
-          # p "tan_pos=#{tan_pos}, eport_tan=#{eport.get_position_in_tangential_dir}"
-          # check if normal_pos & tan_pos can be evaluated and the position of bars goal
-          if !normal_pos.nil? && !tan_pos.nil? &&
-              ((normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR) &&
-              ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN)
-            # p "4"
-            bars = []
-            bar_list.each do |bar_info|
-              # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
-              pos = bar_info[1]
-              if !pos.nil? && bar_info[0].to_sym == :HBar
-                bar = HBar.new(pos, cport.get_join)
-                bars << bar
-              elsif !pos.nil? && bar_info[0].to_sym == :VBar
-                bar = VBar.new(pos, cport.get_join)
-                bars << bar
-              else
-                bars = []
-                break
-              end
-            end
-            # mikan length more than 2
-            len = bars.length
-            if len >= 0.1
-              bars[len - 1].set_position eport.get_position_in_normal_dir
-              bars[len - 2].set_position eport.get_position_in_tangential_dir
-              # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
-              cport.get_join.change_bars bars
+        normal_pos = bar_list[len - 1][1]
+        tan_pos = bar_list[len - 2][1]
+        # p "normal_pos=#{normal_pos}, eport_normal=#{eport.get_position_in_normal_dir}"
+        # p "tan_pos=#{tan_pos}, eport_tan=#{eport.get_position_in_tangential_dir}"
+        # check if normal_pos & tan_pos can be evaluated and the position of bars goal
+        if !normal_pos.nil? && !tan_pos.nil? &&
+            ((normal_pos - eport.get_position_in_normal_dir).abs <= MAX_ERROR_IN_NOR) &&
+            ((tan_pos - eport.get_position_in_tangential_dir).abs <= MAX_ERROR_IN_TAN)
+          # p "4"
+          bars = []
+          bar_list.each do |bar_info|
+            # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
+            pos = bar_info[1]
+            if !pos.nil? && bar_info[0].to_sym == :HBar
+              bar = HBar.new(pos, cport.get_join)
+              bars << bar
+            elsif !pos.nil? && bar_info[0].to_sym == :VBar
+              bar = VBar.new(pos, cport.get_join)
+              bars << bar
+            else
+              bars = []
+              break
             end
           end
+          # mikan length more than 2
+          len = bars.length
+          if len >= 0.1
+            bars[len - 1].set_position eport.get_position_in_normal_dir
+            bars[len - 2].set_position eport.get_position_in_tangential_dir
+            # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
+            cport.get_join.change_bars bars
+          end
+        end
       end
     end
 
