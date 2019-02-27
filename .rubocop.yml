@@ -98,3 +98,5 @@ Style/ConditionalAssignment:
   Enabled: false
 Style/WhileUntilModifier:
   Enabled: false
+Style/RedundantBegin:
+  Enabled: false
