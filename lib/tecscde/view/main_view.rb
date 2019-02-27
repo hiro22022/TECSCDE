@@ -471,7 +471,7 @@ module TECSCDE
         end
 
         #----- draw port name -----#
-        (cell.get_cports.merge(cell.get_eports)).each do |_name, port|
+        cell.get_cports.merge(cell.get_eports).each do |_name, port|
           if !port.array?
             set_port_color(port, cell)
             draw_port_name(port)
