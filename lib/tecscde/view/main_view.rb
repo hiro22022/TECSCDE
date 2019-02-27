@@ -1108,7 +1108,7 @@ module TECSCDE
 
       def self.setup_colormap_1(name)
         color = Gdk::Color.parse(name.to_s)
-        self.setup_colormap_2(name, color)
+        setup_colormap_2(name, color)
       end
 
       def self.setup_colormap_2(name, color)
