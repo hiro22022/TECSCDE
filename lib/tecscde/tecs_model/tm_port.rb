@@ -191,8 +191,8 @@ module TECSCDE
         end
       end
 
-      #=== TmPort#is_array?
-      def is_array?
+      #=== TmPort#array?
+      def array?
         false
       end
 

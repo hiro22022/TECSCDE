@@ -148,8 +148,8 @@ module TECSCDE
         nil
       end
 
-      #=== TmPortArray#is_array?
-      def is_array?
+      #=== TmPortArray#array?
+      def array?
         true
       end
 

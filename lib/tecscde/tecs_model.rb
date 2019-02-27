@@ -637,7 +637,7 @@ module TECSCDE
               next
             end
             if subscript
-              if !port.is_array?
+              if !port.array?
                 TECSCDE.logger.info("port '#{port_name}' : 'subscript' specified but not array")
                 next
               end
@@ -652,7 +652,7 @@ module TECSCDE
                 next
               end
             else
-              if port.is_array?
+              if port.array?
                 TECSCDE.logger.info("port '#{port_name}' : array but no 'subscript' specified")
                 next
               end
@@ -868,7 +868,7 @@ module TECSCDE
           f.print "\n    /*** call ports ***/\n"
         end
         cell.get_cports.each do |_name, cport|
-          if cport.is_array?
+          if cport.array?
             cport.get_ports.each do |cport|
               join = cport.get_join
               if join
@@ -955,7 +955,7 @@ PAPER_INFO
 CELL_INFO
         delim_2 = ""
         (cell.get_cports.merge cell.get_eports).each do |_name, cport|
-          if cport.is_array?
+          if cport.array?
             cport.get_ports.each do |cp|
               f.print <<PORT_INFO
 #{delim_2}                {
@@ -1131,7 +1131,7 @@ BAR_INFO
         x, y, w, h = cell.get_geometry
         f.print("    __cell__  #{cell.get_name}( #{x}, #{y}, #{w}, #{h} ) {\n")
         cell.get_cports.each do |_name, cport|
-          if cport.is_array?
+          if cport.array?
             cport.get_ports.each do |cp|
               f.print "        #{cp.get_name}( #{cp.get_subscript}, #{cp.get_edge_side_name}, #{cp.get_offset} )\n"
             end
@@ -1140,7 +1140,7 @@ BAR_INFO
           end
         end
         cell.get_eports.each do |_name, eport|
-          if eport.is_array?
+          if eport.array?
             eport.get_ports.each do |ep|
               f.print "        #{ep.get_name}( #{ep.get_subscript}, #{ep.get_edge_side_name}, #{ep.get_offset} )\n"
             end

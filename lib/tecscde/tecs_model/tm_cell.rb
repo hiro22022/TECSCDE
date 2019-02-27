@@ -384,14 +384,14 @@ module TECSCDE
         end
 
         if cport_subscript.nil?
-          if !cp.is_array?
+          if !cp.array?
             return cp
           else
             TECSCDE.logger.error("TM9999 cell #{@name}.#{cport_name} is call port array")
             return nil
           end
         else
-          if cp.is_array?
+          if cp.array?
             return cp.get_port_for_new_join(cport_subscript)
           else
             TECSCDE.logger.error("TM9999 cell #{@name}.#{cport_name} is not call port array")
@@ -408,14 +408,14 @@ module TECSCDE
         end
 
         if eport_subscript.nil?
-          if !ep.is_array?
+          if !ep.array?
             return ep
           else
             TECSCDE.logger.error("TM9999 cell #{@name}.#{eport_name} is entry port array")
             return nil
           end
         else
-          if ep.is_array?
+          if ep.array?
             return ep.get_port_for_new_join(eport_subscript)
           else
             TECSCDE.logger.error("TM9999 cell #{@name}.#{eport_name} is not entry port array")
