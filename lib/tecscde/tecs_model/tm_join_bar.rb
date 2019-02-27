@@ -108,10 +108,10 @@ module TECSCDE
             # p "bar_prev exist"
             if bar_prev.horizontal?
               xm = bar_prev.get_position + x_inc
-              bar_prev.set_position(get_model.clip_x xm)
+              bar_prev.set_position(get_model.clip_x(xm))
             else
               ym = bar_prev.get_position + y_inc
-              bar_prev.set_position(get_model.clip_y ym)
+              bar_prev.set_position(get_model.clip_y(ym))
             end
           else
             # 1st bar

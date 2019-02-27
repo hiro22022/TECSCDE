@@ -56,7 +56,7 @@
 # License::   TOPPERS License (written above and each file)
 
 # tecsgen.rb, tecscde.rb, tecslib & cdelib must be in the same directory
-$tecsgen_base_path = File.dirname(File.expand_path __FILE__)
+$tecsgen_base_path = File.dirname(File.expand_path(__FILE__))
 
 require "tecscde"
 require "tecscde/command"
