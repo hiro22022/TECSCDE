@@ -103,8 +103,8 @@ module TECSCDE
       @button_redo.set_sensitive false
 
       #----- celltype TREEVIEW -----#
-      @treeView_celltype = @builder["treeview_celltype"]
-      @celltypeTreeView = CelltypeTreeView.new @treeView_celltype
+      @tree_view_celltype = @builder["treeview_celltype"]
+      @celltype_tree_view = CelltypeTreeView.new @tree_view_celltype
 
       #-----  -----#
       @frame_cell = @builder["frame_cell"]
@@ -131,9 +131,9 @@ module TECSCDE
       end
 
       @treeview_cell_attribute = @builder["treeview_cell_attribute"]
-      @attrTreeView = AttrTreeView.new @treeview_cell_attribute
+      @attr_tree_view = AttrTreeView.new(@treeview_cell_attribute)
 
-      @control.set_attr_operation_widgets(@window, @celltypeTreeView, @attrTreeView, @entry_cell_name, @entry_cell_region, @frame_cell)
+      @control.set_attr_operation_widgets(@window, @celltype_tree_view, @attr_tree_view, @entry_cell_name, @entry_cell_region, @frame_cell)
     end
 
     def setup_menubar
