@@ -2,6 +2,7 @@ AllCops:
   TargetRubyVersion: 2.5
   DisplayCopNames: true
   Exclude:
+    - "Rakefile"
     - "*.gemspec"
     - "vendor/**/*"
     - "lib/**/*.tab.rb"
