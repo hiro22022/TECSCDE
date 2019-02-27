@@ -308,7 +308,7 @@ module TECSCDE
         # p "find_nearest_next_port #{port.get_name} #{port.get_subscript}"
         edge_side = port.get_edge_side
         offs = port.get_offset
-        proc_judge_near = Proc.new do |port, offs, edge_side, nearest_port|
+        proc_judge_near = proc do |port, offs, edge_side, nearest_port|
           # p "find_nearest_next_port: comp: #{port.get_name} #{port.get_subscript} at #{port.get_offset}@#{port.get_edge_side} #{offs}@#{edge_side}"
           if port.get_edge_side == edge_side
             dist = port.get_offset - offs
@@ -347,7 +347,7 @@ module TECSCDE
         # p "adjust_port_position_after_port"
         edge_side = port.get_edge_side
         offs = port.get_offset
-        proc_adjust = Proc.new do |port, offs, edge_side, move_offs|
+        proc_adjust = proc do |port, offs, edge_side, move_offs|
           if port.get_edge_side == edge_side
             dist = port.get_offset - offs
             if dist > 0

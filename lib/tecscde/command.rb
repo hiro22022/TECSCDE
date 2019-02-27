@@ -11,7 +11,7 @@ module TECSCDE
       $b_tate = true # Bool: true if vertical style
       $b_force_apply_tool_info = false # Bool: force to apply tool_info
 
-      additional_option_parser = Proc.new do |parser|
+      additional_option_parser = proc do |parser|
         parser.on("--base_dir=dir", "base directory (tecscde only)") do |dir|
           $base_dir[dir] = true
         end
