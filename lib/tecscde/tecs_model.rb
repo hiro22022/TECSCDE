@@ -866,15 +866,14 @@ module TECSCDE
           if cport.array?
             cport.get_ports.each do |cport|
               join = cport.get_join
-              if join
-                eport = join.get_eport
-                if eport.get_subscript
-                  subscript = "[ #{eport.get_subscript} ]"
-                else
-                  subscript = ""
-                end
-                f.print "    #{cport.get_name}[ #{cport.get_subscript} ] = #{eport.get_cell.get_name}.#{eport.get_name}#{subscript};\n"
+              next unless join
+              eport = join.get_eport
+              if eport.get_subscript
+                subscript = "[ #{eport.get_subscript} ]"
+              else
+                subscript = ""
               end
+              f.print "    #{cport.get_name}[ #{cport.get_subscript} ] = #{eport.get_cell.get_name}.#{eport.get_name}#{subscript};\n"
             end
           else
             join = cport.get_join
