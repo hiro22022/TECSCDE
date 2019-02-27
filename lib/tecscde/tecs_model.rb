@@ -729,9 +729,9 @@ module TECSCDE
         next unless eport.include?(cport.get_join(cp_subscript))
         next unless bar_list.length >= 2
         # p "2"
-        vertical = TECSModel.vertical?(cport.get_edge_side)
         bar_type = bar_list[0][0].to_sym
-        if (vertical && bar_type == :HBar) || (!vertical && bar_type == :VBar)
+        next if TECSModel.vertical?(cport.get_edge_side) && bar_type == :VBar
+        next if TECSModel.horizontal?(cport.get_edge_side) && bar_type == :HBar
           # p "3"
           len = bar_list.length
 
@@ -768,7 +768,6 @@ module TECSCDE
               cport.get_join.change_bars bars
             end
           end
-        end
       end
     end
 
