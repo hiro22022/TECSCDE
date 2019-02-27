@@ -81,12 +81,7 @@ module TECSCDE
 
       #=== TmCPortArray#complete?
       def complete?
-        @ports.each do |port|
-          if !port.complete?
-            return false
-          end
-        end
-        true
+        @ports.all?(&:complete?)
       end
 
       #=== TmCPortArray#is_optional?

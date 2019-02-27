@@ -238,12 +238,7 @@ module TECSCDE
       end
 
       def complete?
-        @ports.each do |port|
-          if !port.complete?
-            return false
-          end
-        end
-        true
+        @ports.all?(&:complete?)
       end
 
       #=== TmPortArray#editable?
