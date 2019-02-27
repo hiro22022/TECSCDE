@@ -57,8 +57,7 @@ module TECSCDE
   end
 
   def self.test
-    aSet = MainViewAndModel.new
-    aSet.test_main
+    MainViewAndModel.new.test_main
   end
 end
 
