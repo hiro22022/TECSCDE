@@ -109,7 +109,7 @@ module TECSCDE
       # @draw_target::Gtk::Pixmap | Gdk::Window : @canvas_pixmap or @gdk_window
       # @canvas_gc::Gdk::GC
       # @model::Model
-      # @hScale::HScale
+      # @hscale::HScale
       # @scale_val::Integer
       # @control::Control
       # @pango_context::Gdk::Pango.context
@@ -353,17 +353,17 @@ module TECSCDE
           paint_canvas
         end
         @hbox.pack_start(@color_by_region_button)
-        @hbox.pack_end(@hScale)
+        @hbox.pack_end(@hscale)
       end
 
       #------ HScale  ------#
       def create_hscale
         @scale_val = SCALE_VAL_INI
-        @hScale = Gtk::HScale.new(SCALE_VAL_MIN, SCALE_VAL_MAX, 1)
-        @hScale.set_digits(0) # 小数点以下
-        @hScale.set_value(@scale_val)
-        @hScale.set_size_request(@main_window_width, SCALE_HEIGHT)
-        @hScale.signal_connect("value-changed") do |scale_self, _scroll_type|
+        @hscale = Gtk::HScale.new(SCALE_VAL_MIN, SCALE_VAL_MAX, 1)
+        @hscale.set_digits(0) # 小数点以下
+        @hscale.set_value(@scale_val)
+        @hscale.set_size_request(@main_window_width, SCALE_HEIGHT)
+        @hscale.signal_connect("value-changed") do |scale_self, _scroll_type|
           # set scale_val in the range [SCALE_VAL_MIN..SCALE_VAL_MAX]
           scale_val = scale_self.value
           if scale_val > SCALE_VAL_MAX
