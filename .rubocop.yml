@@ -91,3 +91,5 @@ Style/MutableConstant:
   Enabled: false
 Style/SymbolArray:
   Enabled: false
+Style/FormatString:
+  Enabled: false
