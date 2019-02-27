@@ -66,10 +66,6 @@ module TECSCDE
       view.paint_canvas
     end
 
-    def get_model
-      @model
-    end
-
     def test_main
       TECSCDE.logger.degug("test_main")
       cell1 = @model.new_cell(0, 0)
