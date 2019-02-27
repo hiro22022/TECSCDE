@@ -1039,10 +1039,8 @@ BAR_INFO
         cell_nspath, x, y, w, h, port_location_list = cl.get_location
         # p "set_location_from_tecsgen", cell_nspath, x, y, w, h, port_location_list
         cell = @cell_hash[cell_nspath.to_s.to_sym]
-        if cell
-          # p "apply location: #{cell.get_name}"
-          cell.set_geometry(x, y, w, h)
-        end
+        # p "apply location: #{cell&.get_name}"
+        cell&.set_geometry(x, y, w, h)
       end
 
       # set join location

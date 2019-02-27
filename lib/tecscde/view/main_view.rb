@@ -418,7 +418,7 @@ module TECSCDE
 
         gap = mm2dot(GAP_ACTIVE)
         gap = 2 if gap < 2 # if less than 2 dots, let gap 2 dots
-        if cell.get_celltype && cell.get_celltype.is_active?
+        if cell.get_celltype&.is_active?
           # @draw_target.draw_rectangle( @canvas_gc, false, x1 + gap, y1 + gap, w1 - 2 * gap, h1 - 2 * gap )
           @cairo_context_target.rectangle(x1 + gap + 0.5, y1 + gap + 0.5, w1 - 2 * gap, h1 - 2 * gap)
           @cairo_context_target.set_line_width(1)
@@ -1204,9 +1204,7 @@ module TECSCDE
           @cairo_context_target = target_bak
           @cairo_matrix.set_base_shift(0, 0)
           @scale_val = scale_val_bak
-          if surface
-            surface.finish
-          end
+          surface&.finish
         end
 
         paint_canvas
