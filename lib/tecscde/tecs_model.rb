@@ -1059,7 +1059,9 @@ BAR_INFO
 
         # check existance of cport & eport and direction of bar & edge (must be in right angle)
         # mikan necessary more than 2 bars
-        if !cport.nil? && !eport.nil? && eport.include?(cport.get_join(cp_subscript)) && bar_list.length >= 2
+        next if cport.nil? || eport.nil?
+        next unless eport.include?(cport.get_join(cp_subscript))
+        next unless bar_list.length >= 2
           # p "2"
           vertical = TECSModel.vertical?(cport.get_edge_side)
           bar_type = bar_list[0][0]
@@ -1101,7 +1103,6 @@ BAR_INFO
               end
             end
           end
-        end
       end
     end
 
