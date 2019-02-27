@@ -1052,7 +1052,7 @@ BAR_INFO
         cp_cell = @cell_hash[cp_cell_nspath.to_s.to_sym]
         ep_cell = @cell_hash[ep_cell_nspath.to_s.to_sym]
         # check existance of cells
-        if !cp_cell.nil? && !ep_cell.nil?
+        next if cp_cell.nil? || ep_cell.nil?
           cport = cp_cell.get_cports[cp_name.to_sym]
           eport = ep_cell.get_eports[ep_name.to_sym]
           # p "1 #{cp_name} #{ep_name} #{cport} #{eport}"
@@ -1102,7 +1102,6 @@ BAR_INFO
               end
             end
           end
-        end
       end
     end
 
