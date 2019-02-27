@@ -248,11 +248,7 @@ module TECSCDE
 
       #=== TmPortArray#is_unsubscripted_array?
       def is_unsubscripted_array?
-        if @port_def.get_array_size == "[]"
-          true
-        else
-          false
-        end
+        @port_def.get_array_size == "[]"
       end
 
       #=== TmPortArray#clone_for_undo
