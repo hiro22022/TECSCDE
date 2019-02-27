@@ -81,8 +81,8 @@ module TECSCDE
         @width  = 25
         @height = 15
 
-        @cports = { }
-        @eports = { }
+        @cports = {}
+        @eports = {}
         @n_cport = 0
         @n_eport = 0
 

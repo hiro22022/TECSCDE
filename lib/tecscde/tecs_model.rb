@@ -457,7 +457,7 @@ module TECSCDE
       # x = @paper[ :width ] - 60
       # y = @paper[ :height ] -30
 
-      cell_list = { } # ::Cell => TmCell
+      cell_list = {} # ::Cell => TmCell
       if tecsgen_cell_list
         TECSCDE.logger.info("=== create cell ===")
         tecsgen_cell_list.each do |cell|
