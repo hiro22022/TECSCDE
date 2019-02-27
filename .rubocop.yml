@@ -95,3 +95,5 @@ Style/FormatString:
   Enabled: false
 Style/ConditionalAssignment:
   Enabled: false
+Style/WhileUntilModifier:
+  Enabled: false
