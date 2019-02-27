@@ -93,3 +93,5 @@ Style/SymbolArray:
   Enabled: false
 Style/FormatString:
   Enabled: false
+Style/ConditionalAssignment:
+  Enabled: false
