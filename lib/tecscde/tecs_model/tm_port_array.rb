@@ -108,11 +108,10 @@ module TECSCDE
             found = false
             found_port = nil
             @ports.each do |port|
-              if port.get_join.nil?
-                found = true
-                found_port = port
-                break
-              end
+              next if port.get_join
+              found = true
+              found_port = port
+              break
             end
             if found
               return found_port

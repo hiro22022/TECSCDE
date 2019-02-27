@@ -444,10 +444,8 @@ module TECSCDE
       #=== TmCell#complete?
       def complete?
         @celltype.get_attribute_list.each do |attr|
-          if attr.get_initializer.nil?
-            if @attr_list[attr.get_name].nil?
-              return false
-            end
+          if attr.get_initializer.nil? && @attr_list[attr.get_name].nil?
+            return false
           end
         end
         @cports.each do |_name, cport|
