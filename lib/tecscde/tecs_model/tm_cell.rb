@@ -97,7 +97,7 @@ module TECSCDE
             end
             # end
           else
-            if !port_def.is_require?
+            unless port_def.is_require?
               if port_def.get_array_size.nil?
                 @cports[port_def.get_name] = TECSCDE::TECSModel::TmCPort.new(self, port_def)
               else

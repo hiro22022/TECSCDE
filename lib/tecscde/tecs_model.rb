@@ -244,14 +244,12 @@ module TECSCDE
     # don't call externally, use TmCell#change_name instead
     def rename_cell(cell, new_name)
       modified do
-        if !new_name.is_a? Symbol
-          raise "cell name not Symbol"
-        end
+        raise "cell name not Symbol" unless new_name.is_a?(Symbol)
         if cell.get_name == new_name
           return true
         end
 
-        if !(new_name =~ IDENTIFIER_RE)
+        unless IDENTIFIER_RE =~ new_name
           TECSCDE.message_box("'#{new_name}' has unsuitable character for identifier", nil)
           return false
         end
@@ -515,7 +513,7 @@ module TECSCDE
             create_join_from_tecsgen(cell, join, cell_list)
           else
             join.get_array_member2.each do |j|
-              if !j.nil?
+              if j
                 create_join_from_tecsgen(cell, j, cell_list)
               end
             end
@@ -554,7 +552,7 @@ module TECSCDE
       # p "OBJECT CLASS #{object.class}"
       if object.instance_of?(::Port)
         if object.get_port_type == :CALL
-          if !object.is_require?
+          unless object.is_require?
             lhs_cell = cell_list[cell]
             cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
             if cport.nil?
@@ -632,7 +630,7 @@ module TECSCDE
               next
             end
             if subscript
-              if !port.array?
+              unless port.array?
                 TECSCDE.logger.info("port '#{port_name}' : 'subscript' specified but not array")
                 next
               end
@@ -701,7 +699,7 @@ module TECSCDE
             end
             cport = cport.get_member cp_subscript
           else
-            if !cp_subscript.nil?
+            if cp_subscript
               TECSCDE.logger.error("TM9999 #{cp_name} is not array but specified subscript")
             end
           end
@@ -713,7 +711,7 @@ module TECSCDE
             end
             eport = eport.get_member ep_subscript
           else
-            if !ep_subscript.nil?
+            if ep_subscript
               TECSCDE.logger.error("TM9999 #{ep_name} is not array but specified subscript")
             end
           end
@@ -853,9 +851,7 @@ module TECSCDE
     # output cell definition
     def save_cells(f)
       @cell_list.each do |cell| # mikan region
-        if !cell.editable?
-          next
-        end
+        next unless cell.editable?
 
         f.print("cell #{cell.get_celltype.get_namespace_path} #{cell.get_name} {\n")
 

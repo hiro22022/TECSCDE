@@ -449,7 +449,7 @@ module TECSCDE
         cell_name = cell.get_name
         ct_name = cell.get_celltype.get_name
         label = cell_name.to_s + "\n" + ct_name.to_s
-        if !cell.complete?
+        unless cell.complete?
           # @canvas_gc.set_foreground @@colors[ Color_incomplete ]
           @cairo_context_target.set_source_color(@@colors[Color_incomplete])
         end
@@ -548,7 +548,7 @@ module TECSCDE
           direction = TEXT_HORIZONTAL
         end
         name = port.get_name.to_s
-        if !port.get_subscript.nil?
+        if port.get_subscript
           name += "[#{port.get_subscript}]"
         end
         name = port.get_name.to_s
@@ -587,7 +587,7 @@ module TECSCDE
         # @cairo_context_target.set_line_width(2)
 
         #----- if uneditable change color ------#
-        if !cell.editable?
+        unless cell.editable?
           @canvas_gc.set_foreground(@@colors[Color_uneditable])
           # @cairo_context_target.set_source_color( @@colors[ Color_uneditable ] )
         end
@@ -654,7 +654,7 @@ module TECSCDE
         ym = mm2dot(y) + 0.5
 
         #----- setup color -----#
-        if !join.editable?
+        unless join.editable?
           # @canvas_gc.set_foreground @@colors[ Color_uneditable ]
           @cairo_context_target.set_source_color(@@colors[Color_uneditable])
         end

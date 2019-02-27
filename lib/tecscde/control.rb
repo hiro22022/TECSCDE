@@ -450,7 +450,7 @@ module TECSCDE
     def find_near(xm, ym)
       @model.get_cell_list.each do |cell|
         port = cell.get_near_port(xm, ym)
-        if !port.nil?
+        if port
           # p "found port"
           return port
         end
