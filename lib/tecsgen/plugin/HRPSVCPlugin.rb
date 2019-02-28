@@ -33,7 +33,7 @@
 #   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #   の責任を負わない．
 #
-#  $Id: HRPSVCPlugin.rb 2952 2018-05-07 10:19:07Z okuma-top $
+#  $Id: HRPSVCPlugin.rb 3017 2018-08-15 11:35:42Z okuma-top $
 #++
 
 # mikan through plugin: namespace が考慮されていない
@@ -137,6 +137,8 @@ class HRPSVCPlugin < ThroughPlugin
       @@generated_celltype[@ct_name_body] = [self]
         file2 = CFile.open("#{$gen}/#{@ct_name_body}.cdl", "w")
         file2.print <<EOT
+import_C( "t_stdlib.h" );
+
 /* HRPSVC0001 */
 [active,singleton]
 celltype #{@ct_name_body} {
@@ -261,6 +263,10 @@ EOT
 #include "#{@ct_name_body}_factory.h"
 EOT
     file2.close
+
+    # callee_cell のget_restricted_regions を呼び出しておく
+    # restrict が参照された印をつけるため
+    @callee_cell.get_restricted_regions( :dummy_entry_name, :dummy_func_name )
    end
 
   #===  受け口関数の本体(C言語)を生成する
@@ -579,6 +585,7 @@ EOT
   #     "user_cannot_callable"=>ユーザドメインが呼出し不可能かどうかのフラグ}
   #
   def gen_caller_check_code(func_name)
+    dbgPrint "gen_caller_check_code(func_name): #{@callee_cell.get_name}\n"
       #
       #  エラーチェック処理
       #
@@ -598,23 +605,40 @@ EOT
       callable_domains = []
       @@generated_celltype[@ct_name_body].each {|svcplugin|
         if svcplugin.get_caller_cell.get_region.get_domain_root.get_domain_type.get_option == "OutOfDomain"
-          if svcplugin.get_caller_cell.get_celltype.is_active?
-              #
-              #  無所属かつactiveなセルは、TECSから存在が認識されていないのを
-              #  含む任意のドメインから呼び出される可能性も存在する
-              #
+          # 無所属かつ active な場合も、restrict に従う
+          # if svcplugin.get_caller_cell.get_celltype.is_active?
+          #    #
+          #    #  無所属かつactiveなセルは、TECSから存在が認識されていないのを
+          #    #  含む任意のドメインから呼び出される可能性も存在する
+          #    #
+          #    caller_unrestricted = true
+          # else
+          #     #
+          #     #  無所属から接続されている場合は，すべてのセルの
+          #     #  restrictをチェック
+          #     #
+          #     Cell.get_cell_list2.each { |cell|
+          #         if cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
+          #             callable_domains << cell.get_region.get_domain_root
+          #         end
+          #     }
+          #     print "callable_domains: "
+          #     callable_domains.each{ |dm| print dm.get_name, " " }
+          #     print "\n"
+          # end
+
+          # restrict 指定がある場合には、それに従う。さもなければ、チェックしない
+          callable_domains = @callee_cell.get_restricted_regions( get_callee_ep_name, func_name )
+          if callable_domains.nil?
             caller_unrestricted = true
-          else
-              #
-              #  無所属から接続されている場合は，すべてのセルの
-              #  restrictをチェック
-              #
-            Cell.get_cell_list2.each {|cell|
-              if cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
-                callable_domains << cell.get_region.get_domain_root
-              end
-            }
           end
+          #  print "restrict_list: "
+          #  delim = ""
+          #  callable_domains.each{ |domain|
+          #    print delim, domain
+          #    delim = ", "
+          #  }
+          #  print "\n"
         elsif svcplugin.get_caller_cell.callable?(svcplugin.get_callee_cell, svcplugin.get_callee_ep_name, func_name)
             #
             #  特定のドメインから接続されている場合は，呼出し元セルの
@@ -668,12 +692,14 @@ EOT
       #  呼出し元ドメインのチェック処理本体の生成
       #
       if callable_domains.length == 0
+        dbgPrint "callable_domain.length = 0\n"
           #
           #  ユーザドメインから呼出し不可能な場合は
           #  個別のエラーチェックはせず，問答無用でE_OACVを返す
           #
         user_cannot_callable = true
       elsif callable_domains.length == 1
+        dbgPrint "callable_domain.length = 1\n"
           #
           #  呼出し可能なユーザドメインが単一の場合は
           #  cdmid != <domain名> の形式でチェックする
@@ -681,6 +707,7 @@ EOT
         check_code += "\t/* HRPSVC0012.1 */\n"
           check_code += "\tif (cdmid != #{callable_domains[0].get_name}) {\n"
       elsif callable_domains.length > 1 && !all_domain_callable
+        dbgPrint "callable_domain.length > 1 && not all_domains \n"
           #
           #  呼出し可能なユーザドメインが複数の場合は
           #  TACP(cdmid) & (TACP(<domain名>) | ...) != 0U
@@ -690,6 +717,8 @@ EOT
           check_code += "\tif (TACP(cdmid) & ("
           check_code += (callable_domains.map {|domain| "TACP(#{domain.get_name})" }).join("|")
           check_code += ") != 0U) {\n"
+      else
+        dbgPrint "callable_all_domains\n"
       end
       if check_code != ""
           #

@@ -219,7 +219,7 @@ class TECSGEN
     initialize_global_var
     analyze_option addtional_option_parser
     load_modules
-    setup
+    setup unless $TECSFLOW
 
     dbgPrint  "tecspath: #{$tecsgen_base_path}, __FILE__=#{__FILE__}\n"
     dbgPrint  "ARGV(remained): #{ARGV}, argments=#{$arguments}\n"
@@ -459,7 +459,7 @@ class TECSGEN
       parser.parse!
     }
 
-    if ARGV.empty? && !$print_version && !$unit_test
+    if ARGV.empty? && !$print_version && !$unit_test && !$TECSFLOW
       ARGV.options{|parser|
         puts parser.help
         exit 1
@@ -483,7 +483,7 @@ class TECSGEN
     if $verbose
       STDERR << "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE} patchlevel #{RUBY_PATCHLEVEL}) [#{RUBY_PLATFORM}]\n"
     end
-    if $print_version && ARGV.empty?
+    if $print_version && ARGV.empty? && !$TECSFLOW
       exit
     end
 
@@ -512,6 +512,7 @@ class TECSGEN
     require "tecsgen/core/location"
     require "tecsgen/core/tool_info"
     require "tecsgen/core/tecsinfo"
+    require "tecsgen/core/unjoin_plugin"
     require "tecsgen/plugin/CelltypePlugin"
     require "tecsgen/plugin/CompositePlugin"
     require "tecsgen/plugin/CellPlugin"
@@ -594,12 +595,13 @@ end # TECSGEN
 # 複数のジェネレータインスタンスを生成することは、可能だが、以下の問題がある
 #  クラス変数のリセットを確実に行う必要がある
 
-if $TECSCDE != true
+if $TECSCDE != true && $TECSFLOW != true
   begin
     TECSGEN.init
     tecsgen = TECSGEN.new
     tecsgen.run1
     tecsgen.run2
+    tecsgen.dump_tecsgen_rbdmp
   rescue => evar
     print_exception(evar)
     STDERR << "tecsgen: exit because of unrecoverble error.\n"

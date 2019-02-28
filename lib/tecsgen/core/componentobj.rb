@@ -2,7 +2,7 @@
 #  TECS Generator
 #      Generator for TOPPERS Embedded Component System
 #
-#   Copyright (C) 2008-2018 by TOPPERS Project
+#   Copyright (C) 2008-2019 by TOPPERS Project
 #--
 #   上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
 #   ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
@@ -1393,7 +1393,9 @@ class Cell < NSBDNode # < Nestable
 # ID のためのインスタンス変数（optimize.rb にて設定）
 # @id:: Integer : コード生成直前に設定  (プロトタイプ宣言の場合は -1 のまま放置)
 # @id_specified::Integer : 指定された id
-# @restrict_list::{ entry_name => { func_name, [ region_name, ... ] } }
+# @restrict_list::{ entry_name => { func_name, [ region_path_str, ... ] } }
+# @restrict_list2::{ entry_name => { func_name, [ domain_root_region, ... ] } }
+# @b_restrict_referenced::Bool: restrict_list が参照れた
 
 =begin
 # Cell クラスは、以下のものを扱う
@@ -1477,6 +1479,8 @@ class Cell < NSBDNode # < Nestable
     @entry_array_max_subscript = {}
     @referenced_port_list = {}
     @restrict_list = {}
+    @restrict_list2 = {}
+    @b_restrict_referenced = false
     @b_post_code_generated = false
 
     @cell_list = {}
@@ -3018,42 +3022,43 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell#restrict を追加
   def add_restrict(entry_name, func_name, region_name_list)
-    if @restrict_list[entry_name]
-      if @restrict_list[entry_name][func_name]
-        @restrict_list[entry_name][func_name].each{|rn|
-          if region_name_list.include? rn
-            # p func_name
-            name = func_name ? entry_name : entry_name + "." + func_name
-            cdl_warning("W9999 $1 restrict region duplicate $2", name, rn)
-          end
-        }
-      else
-        @restrict_list[entry_name][ func_name ] = region_name_list
-      end
-    else
-      func_list = { }
-      func_list[func_name] = region_name_list
-      @restrict_list[entry_name] = func_list
+    if @restrict_list[entry_name].nil?
+      @restrict_list[entry_name] = {}
+      @restrict_list2[entry_name] = {}
     end
-    # pp @restrict_list
+    if @restrict_list[entry_name][func_name].nil?
+      @restrict_list[entry_name][func_name] = []
+      @restrict_list2[entry_name][func_name] = []
+    end
+    region_name_list.each do |rp|
+      @restrict_list[ entry_name ][ func_name ] << rp
+      # p "Class: " + rp.to_s
+      obj = Namespace.find(rp)
+      if obj.kind_of?(Region)
+        @restrict_list2[entry_name][func_name] << obj.get_domain_root
+      else
+        cdl_error( "S9999 $1 not found or not region", rp.to_s )
+      end
+    end
   end
 
   #=== Cell#check_restrict_list
   def check_restrict_list
+    # p "check_restrict_list"
     @restrict_list.each{|entry_name, func_hash|
       func_hash.each{|func_name, region_list|
-        region_list.each{|rn|
-          obj = Namespace.find [rn]
+        region_list.each{|rp|
+          obj = Namespace.find(rp)
           if obj.is_a? Region
             if obj.get_domain_root != @region.get_domain_root
             else
-              cdl_info("I9999 $1: restrict calling domain to $2, which is same domain as the cell locates", @name, rn)
+              cdl_info( "I9999 $1: restrict calling domain to $2, which is same domain as the cell locates", @name, rp.to_s )
               # restrict を同じドメインを指定してもよいこととする (HRP3)
               # KernelDoamin 内のセルに対し、KernelDomain に restrict している場合、
               # 無所属経由で結合されているが、KernelDomain から呼出すことを想定した許可
             end
           else
-            cdl_error("S9999 $1 not region", rn)
+            cdl_error( "S9999 $1 not region", rp.to_s )
           end
         }
       }
@@ -3062,6 +3067,7 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell#callable?
   def callable?(callee_cell, entry_name, func_name)
+    # p "callable? #{@name}"
     res = callee_cell.callable_from?(entry_name, func_name, self)
     dbgPrint "callable? #{callee_cell.get_namespace_path}.#{entry_name}.#{func_name} from #{@NamespacePath} is #{res}\n"
     return res
@@ -3069,23 +3075,57 @@ class Cell < NSBDNode # < Nestable
 
   #=== Cell#callable_from? (private)
   def callable_from?(entry_name, func_name, caller_cell)
+    @b_restrict_referenced = true
     if @restrict_list.length == 0
       return true
     end
 
+    dr = caller_cell.get_region.get_domain_root
     if @restrict_list[entry_name]
-      if @restrict_list[entry_name][nil] &&
-         @restrict_list[entry_name][nil].include?(caller_cell.get_region.get_domain_root.get_name)
-        return true
-      end
-      if @restrict_list[entry_name][func_name] &&
-         @restrict_list[entry_name][func_name].include?(caller_cell.get_region.get_domain_root.get_name)
-        return true
+      if @restrict_list[entry_name][func_name]
+        @restrict_list2[entry_name][func_name].each{ |region|
+          if dr == region then
+            return true
+          end
+        }
+      elsif @restrict_list[entry_name][nil] then
+        @restrict_list2[entry_name][nil].each{ |region|
+          if dr == region then
+            return true
+          end
+        }
       else
         return false
       end
     else
-      return true
+      return false
+    end
+  end
+
+  #=== Cell#get_callable_regions( entry_name, func_name )
+  # func_name=nil の場合、entry_name の可否をチェック数る
+  # nil が返る場合、制限されていないことを意味する
+  def get_restricted_regions( entry_name, func_name )
+    # p "get_restricted_regions #{@name}"
+    @b_restrict_referenced = true
+    if @restrict_list[entry_name]
+      if @restrict_list[entry_name][func_name]
+        return @restrict_list2[entry_name][func_name]
+      else
+        return @restrict_list2[entry_name][nil]
+      end
+    end
+    return nil
+  end
+
+  #=== Cell#has_ineffective_restrict_specifier
+  # restrict 指定子が指定されていて、参照されていない場合 true
+  # 参照は、HRPSVCPlugin のみ
+  def has_ineffective_restrict_specifier
+    if @restrict_list.length != 0 && @b_restrict_referenced == false
+      true
+    else
+      false
     end
   end
 
@@ -4875,16 +4915,19 @@ class Namespace < NSBDNode
     @cell_list.each {|c|
       if !c.get_f_def # Namespace の @cell_list にはプロトタイプが含まれるケースあり
         if c.get_f_ref
-          cdl_error("S1093 $1 : undefined cell", c.get_namespace_path.get_path_str)
+          c.cdl_error("S1093 $1 : undefined cell" , c.get_namespace_path.get_path_str)
         elsif $verbose
-          cdl_warning("W1006 $1 : only prototype, unused and undefined cell", c.get_namespace_path.get_path_str)
+          c.cdl_warning("W1006 $1 : only prototype, unused and undefined cell", c.get_namespace_path.get_path_str)
         end
       else
         dbgPrint "check_ref_but_undef: #{c.get_global_name}\n"
         ct = c.get_celltype
         # if c.get_f_ref == false && c.is_generate? && ct && ct.is_inactive? then
         if c.get_f_ref == false && ct && ct.is_inactive?
-          cdl_warning("W1007 $1 : non-active cell has no entry join and no factory", c.get_namespace_path.get_path_str)
+          c.cdl_warning("W1007 $1 : non-active cell has no entry join and no factory", c.get_namespace_path.get_path_str)
+        end
+        if c.has_ineffective_restrict_specifier
+          c.cdl_warning("W9999: $1 has ineffective restrict specifier", c.get_namespace_path.get_path_str)
         end
       end
     }
