@@ -377,7 +377,7 @@ struct_specifier		# mikan
         | STRUCT
 		{
 			# tag が無い場合、内部名を与える
-			result = StructType.new( :"$TAG_#{@@no_struct_tag_num}" )
+			result = StructType.new( :"TAG__#{@@no_struct_tag_num}__" )
 			@@no_struct_tag_num += 1
 			StructType.set_define( true )
 		}
@@ -798,10 +798,10 @@ restrict
 		{	result = [ val[0].val, val[2].val, val[5] ]		}
 
 region_name_list
-        : IDENTIFIER
-		{	result = [val[0].val]		}
-        | region_name_list ',' IDENTIFIER
-		{	result << val[2].val		}
+        : namespace_identifier
+		{	result = [val[0]]		}
+        | region_name_list ',' namespace_identifier
+		{	result << val[2]		}
 
 const_statement
         : declaration   # 定数定義
