@@ -7,7 +7,7 @@ port_locations_json = port_locations_lines.first + port_locations_lines[1..-1].m
 end.join
 -%>
 {       /** cell_list[ <%= index %> ] **/
-    "type"     : "cell_locatio",
+    "type"     : "cell_location",
     "name"     : "<%= cell.get_name %>",
     "location" : [ <%= x %>, <%= y %>, <%= width %>, <%= height %> ],
     "region"   : "<%= cell.get_region.get_namespace_path %>",
