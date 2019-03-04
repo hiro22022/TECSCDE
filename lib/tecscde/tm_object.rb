@@ -66,19 +66,19 @@ module TECSCDE
       @owner
     end
 
-    def get_model
+    def model
       if @owner
-        @owner.get_model
+        @owner.model
       else
         if is_a? TECSModel
-          raise "get_model: self is not TECSModel: #{self.class}"
+          raise "model: self is not TECSModel: #{self.class}"
         end
         self
       end
     end
 
     def modified
-      get_model.add_change_set(self)
+      model.add_change_set(self)
       yield
     end
 

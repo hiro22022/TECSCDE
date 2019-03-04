@@ -194,8 +194,8 @@ module TECSCDE
           TECSCDE.logger.debug("cell move #{@name}")
           x0 = @x
           y0 = @y
-          @x = get_model.clip_x(TECSCDE::TECSModel.round_length_val(@x + x_inc))
-          @y = get_model.clip_y(TECSCDE::TECSModel.round_length_val(@y + y_inc))
+          @x = model.clip_x(TECSCDE::TECSModel.round_length_val(@x + x_inc))
+          @y = model.clip_y(TECSCDE::TECSModel.round_length_val(@y + y_inc))
           x_inc2 = @x - x0
           y_inc2 = @y - y0
 

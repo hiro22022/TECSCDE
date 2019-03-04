@@ -127,7 +127,7 @@ module TECSCDE
     def change_cell_name(name)
       if @objects.length == 1 && @objects[0].is_a?(TECSModel::TmCell)
         @objects[0].change_name(name.to_sym)
-        @objects[0].get_model.set_undo_point
+        @objects[0].model.set_undo_point
       end
     end
 

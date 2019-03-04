@@ -195,7 +195,7 @@ module TECSCDE
             iter[COL_VALUE] = new_text
           end
           @cell.set_attr(iter[COL_NAME].to_sym, new_text)
-          @cell.get_model.set_undo_point
+          @cell.model.set_undo_point
           @view.paint_canvas
         end
       end

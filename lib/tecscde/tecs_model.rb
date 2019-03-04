@@ -419,7 +419,7 @@ module TECSCDE
       @join_list = (model.instance_variable_get :@join_list).dup
     end
 
-    def get_model
+    def model
       self
     end
 
