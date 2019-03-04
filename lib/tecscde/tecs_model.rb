@@ -846,7 +846,7 @@ module TECSCDE
           cport.get_ports.each do |call_port|
             join = call_port.get_join
             next unless join
-            entry_port = join.get_eport
+            entry_port = join. eport
             subscript = if entry_port.get_subscript
                           "[ #{entry_port.get_subscript} ]"
                         else
@@ -857,7 +857,7 @@ module TECSCDE
         else
           join = cport.get_join
           next unless join
-          entry_port = join.get_eport
+          entry_port = join.eport
           subscript = if entry_port.get_subscript
                         "[ #{entry_port.get_subscript} ]"
                       else

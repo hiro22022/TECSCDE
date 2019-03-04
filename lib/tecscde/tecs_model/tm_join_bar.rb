@@ -93,7 +93,7 @@ module TECSCDE
           bars = @owner.bars
 
           if bars.length >= 1 && bars[bars.length - 1] == self
-            @owner.get_eport.move(x_inc, y_inc)
+            @owner.eport.move(x_inc, y_inc)
             return # last bar
           end
 
@@ -115,7 +115,7 @@ module TECSCDE
             end
           else
             # 1st bar
-            @owner.get_cport.move(x_inc, y_inc)
+            @owner.cport.move(x_inc, y_inc)
           end
         end
       end

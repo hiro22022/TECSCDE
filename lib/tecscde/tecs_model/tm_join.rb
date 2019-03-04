@@ -61,7 +61,7 @@ module TECSCDE
 
       include TECSCDE::TECSModel::TmUneditable
 
-      attr_reader :bars
+      attr_reader :bars, :cport, :eport
 
       def initialize(cport, eport, tmodel)
         @cport = cport
@@ -164,14 +164,6 @@ module TECSCDE
       #=== TmJoin#get_ports_bars ***
       def get_ports_bars
         [@cport, @eport, @bars]
-      end
-
-      def get_cport
-        @cport
-      end
-
-      def get_eport
-        @eport
       end
 
       def moved_cport(x_inc, y_inc)

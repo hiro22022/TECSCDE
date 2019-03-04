@@ -682,7 +682,7 @@ module TECSCDE
           # draw only 1st entry port join
 
           if (eport.get_subscript.nil? || eport.get_subscript == 0) &&
-              (join.get_cport.get_subscript.nil? || join.get_cport.get_subscript == 0)
+              (join.cport.get_subscript.nil? || join.cport.get_subscript == 0)
 
             if bars[2].vertical?
               xm = mm2dot((bars[1].get_position + bars[3].get_position) / 2)
