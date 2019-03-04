@@ -1,6 +1,7 @@
 <%-
-cport, eport, bars = join.get_ports_bars
-bar_list = bars.map do |bar|
+cport = join.cport
+eport = join.eport
+bar_list = join.bars.map do |bar|
   {
     type: bar.type,
     position: bar.get_position

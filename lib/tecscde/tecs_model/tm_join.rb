@@ -161,11 +161,6 @@ module TECSCDE
         @bars[4] = create_bar(@bars[3], pos4)
       end
 
-      #=== TmJoin#get_ports_bars ***
-      def get_ports_bars
-        [@cport, @eport, @bars]
-      end
-
       def moved_cport(x_inc, y_inc)
         if @bars[0].instance_of?(TECSCDE::TECSModel::VBar)
           @bars[0].moved y_inc

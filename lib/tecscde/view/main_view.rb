@@ -648,7 +648,9 @@ module TECSCDE
       end
 
       def draw_join(join)
-        cport, eport, bars = join.get_ports_bars
+        cport = join.cport
+        eport = join.eport
+        bars = join.bars
         x, y = cport.get_position
         xm = mm2dot(x) + 0.5
         ym = mm2dot(y) + 0.5
@@ -704,7 +706,9 @@ module TECSCDE
         draw_target_direct
 
         join = bar.get_join
-        cport, eport, bars = join.get_ports_bars
+        cport = join.cport
+        eport = join.eport
+        bars = join.bars
         x, y = cport.get_position
         xm = mm2dot(x)
         ym = mm2dot(y)
