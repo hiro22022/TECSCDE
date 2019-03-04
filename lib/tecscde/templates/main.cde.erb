@@ -2,7 +2,7 @@ __tool_info__ ("tecsgen") <%= JSON.pretty_generate(tecsgen, indent: "    ") %>
 
 <%- @cell_list.select(&:editable?).each do |cell| -%>
 cell <%= cell.get_celltype.get_namespace_path %> <%= cell.get_name %> {
-    <%- cports = cell.get_cports -%>
+    <%- cports = cell.cports -%>
     <%- unless cports.empty? -%>
     /*** call ports ***/
     <%-   generate_cports_lines(cports).each do |line| -%>

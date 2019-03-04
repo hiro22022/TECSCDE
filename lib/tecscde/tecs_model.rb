@@ -570,7 +570,7 @@ module TECSCDE
             if rhs_cell.nil? # not joined in cdl (tecsgen)
               return
             end
-            # eport = rhs_cell.get_eports[ join.get_port_name ]
+            # eport = rhs_cell.eports[ join.get_port_name ]
             eport = rhs_cell.get_eport_for_new_join(join.get_port_name, join.get_rhs_subscript1)
             # p "new_join #{lhs_cell.get_name}.#{cport.get_name} => #{rhs_cell.get_name}.#{eport.get_name}"
             new_join_ = new_join cport, eport
@@ -628,9 +628,9 @@ module TECSCDE
             edge = get_edge_side_val(port_location[:edge])
             offset = port_location[:offset]
             subscript = port_location[:subscript]
-            port = cell.get_cports[port_name]
+            port = cell.cports[port_name]
             if port.nil?
-              port = cell.get_eports[port_name]
+              port = cell.eports[port_name]
             end
             if port.nil?
               TECSCDE.logger.info("port '#{port_name}' not found")
@@ -699,7 +699,7 @@ module TECSCDE
         # check existance of cells
         next if cp_cell.nil?
         next if ep_cell.nil?
-        cport = cp_cell.get_cports[cp_name]
+        cport = cp_cell.cports[cp_name]
         if cport.is_a? TmCPortArray
           if cp_subscript.nil?
             TECSCDE.logger.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
@@ -711,7 +711,7 @@ module TECSCDE
             TECSCDE.logger.error("TM9999 #{cp_name} is not array but specified subscript")
           end
         end
-        eport = ep_cell.get_eports[ep_name]
+        eport = ep_cell.eports[ep_name]
         if eport.is_a? TmEPortArray
           if ep_subscript.nil?
             TECSCDE.logger.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
@@ -927,8 +927,8 @@ module TECSCDE
         ep_cell = @cell_hash[ep_cell_nspath.to_s.to_sym]
         # check existance of cells
         next if cp_cell.nil? || ep_cell.nil?
-        cport = cp_cell.get_cports[cp_name.to_sym]
-        eport = ep_cell.get_eports[ep_name.to_sym]
+        cport = cp_cell.cports[cp_name.to_sym]
+        eport = ep_cell.eports[ep_name.to_sym]
         # p "1 #{cp_name} #{ep_name} #{cport} #{eport}"
 
         # check existance of cport & eport and direction of bar & edge (must be in right angle)

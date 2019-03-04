@@ -1,6 +1,6 @@
 <%-
 x, y, width, height = cell.get_geometry
-ports = cell.get_cports.values + cell.get_eports.values
+ports = cell.cports.values + cell.eports.values
 port_locations_lines = JSON.pretty_generate(port_location(ports), indent: "    ").lines
 port_locations_json = port_locations_lines.first + port_locations_lines[1..-1].map do |line|
   "    " + line

@@ -69,6 +69,8 @@ module TECSCDE
 
       include TECSCDE::TECSModel::TmUneditable
 
+      attr_reader :cports, :eports
+
       def initialize(name, celltype, x, y, region, tecsgen_cell = nil)
         TECSCDE.logger.debug("TmCell.new")
         @name = name
@@ -364,16 +366,6 @@ module TECSCDE
             proc_adjust.call(port, offs, edge_side, move_offs)
           end
         end
-      end
-
-      #=== TmCell#get_cports ***
-      def get_cports
-        @cports
-      end
-
-      #=== TmCell#get_eports ***
-      def get_eports
-        @eports
       end
 
       #=== TmCell#get_cport_for_new_join

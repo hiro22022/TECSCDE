@@ -426,7 +426,7 @@ module TECSCDE
         end
 
         #----- draw entry ports triangle -----#
-        cell.get_eports.each do |_name, eport|
+        cell.eports.each do |_name, eport|
           if !eport.array?
             draw_entry_port_triangle(eport)
           else
@@ -471,7 +471,7 @@ module TECSCDE
         end
 
         #----- draw port name -----#
-        cell.get_cports.merge(cell.get_eports).each do |_name, port|
+        cell.cports.merge(cell.eports).each do |_name, port|
           if !port.array?
             set_port_color(port, cell)
             draw_port_name(port)
