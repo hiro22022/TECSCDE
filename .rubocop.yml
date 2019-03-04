@@ -8,6 +8,9 @@ AllCops:
     - "lib/**/*.tab.rb"
     - "lib/tecsgen.rb"
     - "lib/tecsgen/**/*.rb"
+    - "lib/tcflow.rb"
+    - "lib/tecsflow.rb"
+    - "lib/tecsflow/**/*.rb"
     - "glade/*.rb"
 
 Layout/ExtraSpacing:
