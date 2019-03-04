@@ -90,7 +90,7 @@ module TECSCDE
       return if @objects.empty?
       if @objects[0].is_a?(TECSModel::TmPort)
         if obj.is_a?(TECSModel::TmPort)
-          if obj.get_owner_cell != @objects[0].get_owner_cell
+          if obj.owner_cell != @objects[0].owner_cell
             reset
           end
         else

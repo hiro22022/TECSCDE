@@ -64,7 +64,7 @@ module TECSCDE
       def move(x_inc, y_inc)
         modified do
           # p "move x=#{x_inc} y=#{y_inc}"
-          x, y, w, h = get_owner_cell.get_geometry
+          x, y, w, h = owner_cell.get_geometry
           case @edge_side
           when EDGE_LEFT, EDGE_RIGHT
             offs = TECSModel.round_length_val(@offs + y_inc)
@@ -225,8 +225,8 @@ module TECSCDE
         @owner.editable?
       end
 
-      #=== TmPort#get_owner_cell
-      def get_owner_cell
+      #=== TmPort#owner_cell
+      def owner_cell
         if @owner.is_a?(TECSCDE::TECSModel::TmCell)
           @owner
         elsif @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
