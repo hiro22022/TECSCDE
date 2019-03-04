@@ -1,0 +1,27 @@
+<%-
+cport, eport, bars = join.get_ports_bars
+bar_list = bars.map do |bar|
+  {
+    type: bar.type,
+    position: bar.get_position
+  }
+end
+bar_list_lines = JSON.pretty_generate(bar_list, indent: "    ").lines
+bar_list_json = bar_list_lines.first + bar_list_lines[1..-1].map do |line|
+  "    " + line
+end.join
+-%>
+{       /** join_list[ <%= index %> ] **/
+    "type"        : "join_location",
+    "call_cell"   : "<%= cport.get_cell.get_name %>",
+    "call_region" : "<%= cport.get_cell.get_region.get_namespace_path %>",
+    "call_port"   : "<%= cport.get_name %>",
+<%- if cport.get_subscript -%>
+    "call_port_subscript": "<%= cport.get_subscript %>",
+<%- end -%>
+    "entry_cell"  : "<%= eport.get_cell.get_name %>",
+    "entry_region": "<%= eport.get_cell.get_region.get_namespace_path %>",
+    "entry_port"  : "<%= eport.get_name %>",
+    "entry_port_subscript": "<%= eport.get_subscript %>",
+    "bar_list": <%= bar_list_json %>
+}
