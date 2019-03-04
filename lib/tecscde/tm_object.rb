@@ -58,13 +58,8 @@ module TECSCDE
     #  TmJoin    => TECSModel
     #  TmJoinBar => TmJoin
     #  TECSModel => Nil
-    def set_owner(owner)
-      @owner = owner
-    end
 
-    def get_owner
-      @owner
-    end
+    attr_accessor :owner
 
     def model
       if @owner

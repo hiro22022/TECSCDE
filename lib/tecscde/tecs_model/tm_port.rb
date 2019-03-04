@@ -153,7 +153,7 @@ module TECSCDE
         if @owner.is_a?(TECSCDE::TECSModel::TmCell)
           @owner
         else
-          @owner.get_owner
+          @owner.owner
         end
       end
 
@@ -230,7 +230,7 @@ module TECSCDE
         if @owner.is_a?(TECSCDE::TECSModel::TmCell)
           @owner
         elsif @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
-          @owner.get_owner
+          @owner.owner
         else
           raise "unknown cell"
         end
