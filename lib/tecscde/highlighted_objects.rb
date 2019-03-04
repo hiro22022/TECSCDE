@@ -83,9 +83,9 @@ module TECSCDE
     end
 
     #=== objects#reset_if_ncessary
-    # Port and ( Cell or Bar ) cannot be hilited simultaneously.
-    # Ports belonging to diferent Cell cannot be hilited simultaneously.
-    # obj::TmCell | TmBar | TmPort: new object to be hilited
+    # Port and ( Cell or Bar ) cannot be highlighted simultaneously.
+    # Ports belonging to diferent Cell cannot be highlighted simultaneously.
+    # obj::TmCell | TmBar | TmPort: new object to be highlighted
     def reset_if_ncessary(obj)
       return if @objects.empty?
       if @objects[0].is_a?(TECSModel::TmPort)

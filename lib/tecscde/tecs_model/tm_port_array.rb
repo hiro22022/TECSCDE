@@ -178,9 +178,9 @@ module TECSCDE
         @ports.each(&:delete)
       end
 
-      #=== TmPortArray#delete_hilited
+      #=== TmPortArray#delete_highlighted
       # this method is called from Control
-      def delete_hilited(port)
+      def delete_highlighted(port)
         if @port_def.get_array_size != "[]"
           TECSCDE.message_box(<<~MESSAGE, :OK)
             Array size is fixed (#{@port_def.get_array_size}).

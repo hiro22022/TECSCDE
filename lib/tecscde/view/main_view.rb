@@ -296,7 +296,7 @@ module TECSCDE
 
       def refresh_canvas
         @gdk_window.draw_drawable(@canvas_gc, @canvas_pixmap, 0, 0, 0, 0, @canvas_width, @canvas_height)
-        draw_hilite_objects(@control.highlighted_objects)
+        draw_highlight_objects(@control.highlighted_objects)
       end
 
       def resize_canvas
@@ -561,8 +561,8 @@ module TECSCDE
         draw_text(xp, yp, name, PORT_NAME, alignment, direction)
       end
 
-      #=== TView#draw_hilite_objects
-      def draw_hilite_objects(obj_list)
+      #=== TView#draw_highlight_objects
+      def draw_highlight_objects(obj_list)
         obj_list.each do |obj|
           if obj.is_a?(TECSModel::TmCell)
             draw_cell_rect_direct(obj)
@@ -578,7 +578,7 @@ module TECSCDE
       end
 
       #=== TView#draw_cell_rect_direct
-      # directly draw on Window hilited cell rect
+      # directly draw on Window highlighted cell rect
       def draw_cell_rect_direct(cell)
         draw_target_direct
 

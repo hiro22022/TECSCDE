@@ -270,7 +270,7 @@ module TECSCDE
           elsif !@highlighted_objects.include? object
             @highlighted_objects.reset(object)
           end
-          @view.draw_hilite_objects @highlighted_objects
+          @view.draw_highlight_objects @highlighted_objects
         elsif object.is_a? TECSModel::TmCPort
           # p "FOUND TmCPort"
           if state.shift_mask?
@@ -288,7 +288,7 @@ module TECSCDE
             TECSCDE.message_box(<<~MESSAGE, :OK)
               Call port has already been joined.
               Delete existing join before creating new join.
-              If you want to hilited port, click with pressing shift key.
+              If you want to highlighted port, click with pressing shift key.
             MESSAGE
           end
         elsif object.is_a? TECSModel::TmEPort
@@ -335,19 +335,18 @@ module TECSCDE
 
       case @sub_mode
       when :SM_MOVING_CELL_BAR
-        # p "move hilite obj"
         @highlighted_objects.each do |cell_bar|
           cell_bar.move(x_inc2, y_inc2)
         end
         @view.refresh_canvas
-        @view.draw_hilite_objects @highlighted_objects
+        @view.draw_highlight_objects @highlighted_objects
       when :SM_MOVING_CPORT, :SM_MOVING_EPORT
         @highlighted_objects.each do |port|
           port.move(x_inc2, y_inc2)
         end
         update
         @view.refresh_canvas
-        @view.draw_hilite_objects @highlighted_objects
+        @view.draw_highlight_objects @highlighted_objects
       when :SM_JOINING
         object = find_near xm, ym
         if object.is_a? TECSModel::TmEPort
@@ -403,7 +402,7 @@ module TECSCDE
           elsif object.is_a? TECSModel::TmCell
             object.delete
           elsif object.is_a? TECSModel::TmPort
-            object.delete_hilited
+            object.delete_highlighted
           end
         end
         @highlighted_objects.reset

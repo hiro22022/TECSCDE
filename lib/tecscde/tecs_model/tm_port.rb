@@ -204,12 +204,12 @@ module TECSCDE
         end
       end
 
-      #=== TmPort#delete_hilited
-      # delete_hilited if this port is a member of unsubscripted array.
-      def delete_hilited
+      #=== TmPort#delete_highlighted
+      # delete_highlighted if this port is a member of unsubscripted array.
+      def delete_highlighted
         return unless @owner.editable?
         return unless @owner.is_a?(TECSCDE::TECSModel::TmPortArray)
-        @owner.delete_hilited(self)
+        @owner.delete_highlighted(self)
       end
 
       #=== TmPort#insert
