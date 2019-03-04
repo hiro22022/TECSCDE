@@ -1183,7 +1183,7 @@ module TECSCDE
           paint_canvas
 
           #----- draw model name -----#
-          draw_text(paper_width, paper_height, @model.get_file_editing, PAPER_COMMENT, ALIGN_RIGHT, TEXT_HORIZONTAL)
+          draw_text(paper_width, paper_height, @model.file_editing, PAPER_COMMENT, ALIGN_RIGHT, TEXT_HORIZONTAL)
 
           #----- draw rectangle frame around paper -----#
           @cairo_context_target.rectangle(0, 0, paper_width, paper_height)

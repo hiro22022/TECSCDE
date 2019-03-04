@@ -164,6 +164,8 @@ module TECSCDE
     # @root_region::TmRegion
     # @file_editing::String
 
+    attr_reader :file_editing
+
     def initialize(tecsgen)
       @cell_list = []
       @cell_hash = {}
@@ -377,12 +379,6 @@ module TECSCDE
     def create_root_region
       nsp = NamespacePath.new("::", true)
       @root_region = TmRegion.new(nsp, self)
-    end
-
-    #=== TECSModel#get_file_editing
-    # return::String : file name editing
-    def get_file_editing
-      @file_editing
     end
 
     #=== TECSModel.get_alignment

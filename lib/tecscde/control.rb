@@ -127,11 +127,11 @@ module TECSCDE
     #----- operations for palette -----#
     def on_save
       TECSCDE.logger.info("save")
-      @model.save(@model.get_file_editing)
+      @model.save(@model.file_editing)
     end
 
     def on_export
-      fname = @model.get_file_editing.sub(/\.[Cc][Dd][Ee]\Z/, ".pdf")
+      fname = @model.file_editing.sub(/\.[Cc][Dd][Ee]\Z/, ".pdf")
       if !(fname =~ /\.pdf\Z/)
         fname += ".pdf"
       end
