@@ -154,7 +154,7 @@ module TECSCDE
 
     IDENTIFIER_RE = /[A-Za-z_][0-9A-Za-z_]*/
 
-    attr_reader :paper
+    attr_reader :file_editing, :paper
 
     # @paper::PaperSpec : See PaperSpec
     # @cell_list::[TmCell]
@@ -163,8 +163,6 @@ module TECSCDE
     # @view::TView
     # @root_region::TmRegion
     # @file_editing::String
-
-    attr_reader :file_editing
 
     def initialize(tecsgen)
       @cell_list = []
@@ -331,10 +329,6 @@ module TECSCDE
     #=== TECSModel#get_join_list ***
     def get_join_list
       @join_list
-    end
-
-    def get_paper
-      @paper
     end
 
     def paper=(name)
