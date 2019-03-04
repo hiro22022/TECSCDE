@@ -90,7 +90,7 @@ module TECSCDE
       def move(x_inc, y_inc)
         modified do
           bar_prev = nil
-          bars = @owner.get_bars
+          bars = @owner.bars
 
           if bars.length >= 1 && bars[bars.length - 1] == self
             @owner.get_eport.move(x_inc, y_inc)
