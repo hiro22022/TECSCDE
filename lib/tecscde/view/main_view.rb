@@ -707,7 +707,6 @@ module TECSCDE
 
         join = bar.get_join
         cport = join.cport
-        eport = join.eport
         bars = join.bars
         x, y = cport.get_position
         xm = mm2dot(x)
