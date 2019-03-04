@@ -1109,61 +1109,6 @@ BAR_INFO
       end
     end
 
-    def save_old_info(f)
-      f.print "//////////  TECSCDE  ///////////\n"
-      f.print "\n"
-      f.print "/*************************************************\n"
-      f.print " *             LOCATION INFORMATION              *\n"
-      f.print " *   location information is used by tecscde     *\n"
-      f.print " *  please don't touch if you are not familiar   *\n"
-      f.print " ************************************************/\n"
-      f.print "__location_information__ {\n"
-
-      @cell_list.each do |cell|
-        x, y, w, h = cell.get_geometry
-        f.print("    __cell__  #{cell.get_name}( #{x}, #{y}, #{w}, #{h} ) {\n")
-        cell.get_cports.each do |_name, cport|
-          if cport.array?
-            cport.get_ports.each do |cp|
-              f.print "        #{cp.get_name}( #{cp.get_subscript}, #{cp.get_edge_side_name}, #{cp.get_offset} )\n"
-            end
-          else
-            f.print "        #{cport.get_name}( #{cport.get_edge_side_name}, #{cport.get_offset} )\n"
-          end
-        end
-        cell.get_eports.each do |_name, eport|
-          if eport.array?
-            eport.get_ports.each do |ep|
-              f.print "        #{ep.get_name}( #{ep.get_subscript}, #{ep.get_edge_side_name}, #{ep.get_offset} )\n"
-            end
-          else
-            f.print "        #{eport.get_name}( #{eport.get_edge_side_name}, #{eport.get_offset} )\n"
-          end
-        end
-        f.print("    }\n")
-      end
-      @join_list.each do |join|
-        cport, eport, bars = join.get_ports_bars
-        if cport.get_subscript
-          cp_subsc = "[ #{cport.get_subscript} ]"
-        else
-          cp_subsc = ""
-        end
-        if eport.get_subscript
-          ep_subsc = "[ #{eport.get_subscript} ]"
-        else
-          ep_subsc = ""
-        end
-
-        f.print("    __join__( #{cport.get_cell.get_name}.#{cport.get_name}#{cp_subsc} => #{eport.get_cell.get_name}.#{eport.get_name}#{ep_subsc} ){\n")
-        bars.each do |bar|
-          f.print("        #{bar.type}( #{bar.get_position} )\n")
-        end
-        f.print("    }\n")
-      end
-      f.print("} //__location_information\n")
-    end
-
     #=== TECSModel#get_edge_side_val
     def get_edge_side_val(edge_side_name)
       case edge_side_name
