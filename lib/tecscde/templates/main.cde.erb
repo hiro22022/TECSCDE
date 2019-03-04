@@ -1,0 +1,49 @@
+__tool_info__ ("tecsgen") <%= JSON.pretty_generate(tecsgen, indent: "    ") %>
+
+<%- @cell_list.select(&:editable?).each do |cell| -%>
+cell <%= cell.get_celltype.get_namespace_path %> <%= cell.get_name %> {
+    <%- cports = cell.get_cports -%>
+    <%- unless cports.empty? -%>
+    /*** call ports ***/
+    <%-   generate_cports_lines(cports).each do |line| -%>
+    <%=     line %>
+    <%-   end -%>
+    <%- end -%>
+    <%- attributes = cell.get_attr_list -%>
+    <%- unless attributes.empty? -%>
+    /*** attributes ***/
+    <%-   attributes.keys.sort.each do |key| -%>
+    <%=     key %> = <%= attributes[key] %>
+    <%-   end -%>
+    <%- end -%>
+};
+<%- end -%>
+
+/*************************************************
+ *         TOOL INFORMATION FOR TECSCDE          *
+ *     This  information is used by tecscde      *
+ *  please don't touch if you are not familiar   *
+ ************************************************/
+__tool_info__ ("tecscde") {
+    "paper" : {
+        "type" : "paper",
+        "size" :  "<%= @paper[:size] %>",
+        "orientation" :  "<%= @paper[:orientation] %>"
+    },
+    "cell_list" : [
+    <%- unless @cell_list.empty? -%>
+      <%- @cell_list[0..-2].each_with_index do |cell, index| -%>
+        <%= render_partial("_cell_info.cde.erb", index: index, cell: cell).chomp %>,
+      <%- end -%>
+        <%= render_partial("_cell_info.cde.erb", index: @cell_list.size, cell: @cell_list.last).chomp %>
+    <%- end -%>
+    ],
+    "join_list" : [
+    <%- unless @join_list.empty? -%>
+      <%- @join_list[0..-2].each do |join| -%>
+        <%= render_partial("_join_info.cde.erb", join: join).chomp %>,
+      <%- end -%>
+        <%= render_partial("_join_info.cde.erb", join: @join_list.last).chomp %>
+    <%- end -%>
+    ]
+}

@@ -52,6 +52,9 @@
 # don't call unmarked methods other than TECSModel.
 #
 
+require "erb"
+require "json"
+
 require "tecscde/view/constants"
 require "tecscde/tm_object"
 require "tecscde/change_set_control"
@@ -780,16 +783,122 @@ module TECSCDE
 
     #=== save data ***
     def save(filename)
-      begin
-        Dir.chdir($run_dir) do
-          File.open(filename, "w") do |file|
-            save_tecsgen(file)
-            save_cells(file)
-            save_info(file)
+      File.open(filename, "w") do |file|
+        file.write(render)
+      end
+    rescue => ex
+      TECSCDE.message_box("fail to save #{filename}\n#{ex}", :OK)
+    end
+
+    def render
+      erb = ERB.new(File.read(File.join(__dir__, "templates", "main.cde.erb")), nil, "-")
+      erb.result(binding)
+    end
+
+    def render_partial(file, indent_width: 8, **kw)
+      erb = ERB.new(File.read(File.join(__dir__, "templates", file)), nil, "-")
+      b = binding
+      kw.each do |name, value|
+        b.local_variable_set(name, value)
+      end
+      lines = erb.result(b).lines
+      string = lines.first.dup
+      lines[1..-1].each do |line|
+        string << " " * indent_width
+        string << line
+      end
+      string
+    end
+
+    def base_directories
+      dirs = $base_dir.select do |dir, necessary|
+        necessary
+      end
+      dirs.keys
+    end
+
+    def define_macros
+      $define
+    end
+
+    def import_paths
+      tecspath = $tecspath.gsub(/\\/, '\\\\\\\\')
+      $import_path.reject do |path|
+        path =~ Regexp.new("\\A#{tecspath}")
+      end
+    end
+
+    def direct_imports
+      imports = Import.get_list
+      return [] if imports.empty?
+      imports = imports.select do |_path, import|
+        (import.is_imported? == false) && (import.get_cdl_name != @file_editing)
+      end
+      imports.values.map(&:get_cdl_name)
+    end
+
+    def tecsgen
+      {
+        tecscde_version: TECSCDE::VERSION,
+        cde_format_version: TECSCDE::FORMAT_VERSION,
+        save_date: DateTime.now,
+        base_dir: base_directories,
+        define_macro: define_macros,
+        import_path: import_paths,
+        direct_import: direct_imports
+      }
+    end
+
+    def generate_cports_lines(cports, indet_width = 4)
+      lines = []
+      cports.each do |_name, cport|
+        if cport.array?
+          cport.get_ports.each do |call_port|
+            join = call_port.get_join
+            next unless join
+            entry_port = join.get_eport
+            subscript = if entry_port.get_subscript
+                          "[ #{entry_port.get_subscript} ]"
+                        else
+                          ""
+                        end
+            lines << "#{call_port.get_name}[ #{call_port.get_subscript} ] = #{entry_port.get_cell.get_name}.#{entry_port.get_name}#{subscript};"
           end
+        else
+          join = cport.get_join
+          next unless join
+          entry_port = join.get_eport
+          subscript = if entry_port.get_subscript
+                        "[ #{entry_port.get_subscript} ]"
+                      else
+                        ""
+                      end
+          lines << "#{cport.get_name} = #{entry_port.get_cell.get_name}.#{entry_port.get_name}#{subscript};"
         end
-      rescue => evar
-        TECSCDE.message_box("fail to save #{filename}\n#{evar}", :OK)
+      end
+      lines
+    end
+
+    def port_location(ports)
+      ports.map do |port|
+        if port.array?
+          port.get_ports.map do |child|
+            {
+              type: "port_location",
+              port_name: port.get_name,
+              subscript: port.get_subscript,
+              edge: port.get_edge_side_name,
+              offset: port.get_offset
+            }
+          end
+        else
+          {
+            type: "port_location",
+            port_name: port.get_name,
+            edge: port.get_edge_side_name,
+            offset: port.get_offset
+          }
+        end
       end
     end
 

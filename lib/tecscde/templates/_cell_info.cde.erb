@@ -1,0 +1,15 @@
+<%-
+x, y, width, height = cell.get_geometry
+ports = cell.get_cports.values + cell.get_eports.values
+port_locations_lines = JSON.pretty_generate(port_location(ports), indent: "    ").lines
+port_locations_json = port_locations_lines.first + port_locations_lines[1..-1].map do |line|
+  "    " + line
+end.join
+-%>
+{       /** cell_list[ <%= index %> ] **/
+    "type"     : "cell_locatio",
+    "name"     : "<%= cell.get_name %>",
+    "location" : [ <%= x %>, <%= y %>, <%= width %>, <%= height %> ],
+    "region"   : "<%= cell.get_region.get_namespace_path %>",
+    "port_location" : <%= port_locations_json %>
+}
