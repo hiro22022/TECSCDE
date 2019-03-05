@@ -262,7 +262,6 @@ class TECSGEN
     require "optparse"
     # 2.0 require 'runit/assert.rb'
     require "kconv"
-    $b_no_kcode = true
     require "pp"
     # include RUNIT::Assert
 
