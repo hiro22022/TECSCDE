@@ -183,8 +183,8 @@ module TECSCDE
               TECSCDE.logger.info("delete: not found")
             end
             index = 0
-            @ports.each do |port|
-              port.set_subscript index
+            @ports.each do |pt|
+              pt.set_subscript(index)
               index += 1
             end
           end
