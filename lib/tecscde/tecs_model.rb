@@ -878,7 +878,7 @@ module TECSCDE
               port_name: port.get_name,
               subscript: port.get_subscript,
               edge: port.get_edge_side_name,
-              offset: port.get_offset
+              offset: port.offset
             }
           end
         else
@@ -886,7 +886,7 @@ module TECSCDE
             type: "port_location",
             port_name: port.get_name,
             edge: port.get_edge_side_name,
-            offset: port.get_offset
+            offset: port.offset
           }
         end
       end

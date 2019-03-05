@@ -60,6 +60,8 @@ module TECSCDE
       # @port_def:: ::Port
       # @subscript::Integer | Nil
 
+      attr_reader :offset
+
       #=== TmPort#move
       def move(x_inc, y_inc)
         modified do
@@ -143,10 +145,6 @@ module TECSCDE
         when EDGE_RIGHT
           :EDGE_RIGHT
         end
-      end
-
-      def get_offset
-        @offset
       end
 
       def get_cell

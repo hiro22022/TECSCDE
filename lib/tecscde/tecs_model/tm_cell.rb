@@ -296,7 +296,7 @@ module TECSCDE
         # p "adjust_port_position_to_insert"
         nearest_port = find_nearest_next_port port
         if nearest_port
-          dist = (nearest_port.get_offset - port.get_offset)
+          dist = (nearest_port.offset - port.offset)
           if dist < (DIST_PORT * 2)
             offs = (DIST_PORT * 2) - dist
             adjust_port_position_after_port port, offs
@@ -309,15 +309,15 @@ module TECSCDE
       def find_nearest_next_port(port)
         # p "find_nearest_next_port #{port.get_name} #{port.get_subscript}"
         edge_side = port.get_edge_side
-        offs = port.get_offset
+        offs = port.offset
         proc_judge_near = proc do |port, offs, edge_side, nearest_port|
-          # p "find_nearest_next_port: comp: #{port.get_name} #{port.get_subscript} at #{port.get_offset}@#{port.get_edge_side} #{offs}@#{edge_side}"
+          # p "find_nearest_next_port: comp: #{port.get_name} #{port.get_subscript} at #{port.offset}@#{port.get_edge_side} #{offs}@#{edge_side}"
           if port.get_edge_side == edge_side
-            dist = port.get_offset - offs
+            dist = port.offset - offs
             # p "dist=#{dist}"
             if dist > 0
               if nearest_port
-                if (nearest_port.get_offset - offs) > dist
+                if (nearest_port.offset - offs) > dist
                   nearest_port = port
                 end
               else
@@ -348,10 +348,10 @@ module TECSCDE
       def adjust_port_position_after_port(port, move_offs)
         # p "adjust_port_position_after_port"
         edge_side = port.get_edge_side
-        offs = port.get_offset
+        offs = port.offset
         proc_adjust = proc do |port, offs, edge_side, move_offs|
           if port.get_edge_side == edge_side
-            dist = port.get_offset - offs
+            dist = port.offset - offs
             if dist > 0
               port.move(move_offs, move_offs) # move same value for x, y (only x or y applied in the method)
             end
@@ -458,7 +458,7 @@ module TECSCDE
         (@cports.values + @eports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
             port.get_ports.each do |pt|
-              offs = pt.get_offset
+              offs = pt.offset
               case pt.get_edge_side
               when EDGE_TOP, EDGE_BOTTOM
                 w_min = offs if offs > w_min
@@ -467,7 +467,7 @@ module TECSCDE
               end
             end
           else
-            offs = port.get_offset
+            offs = port.offset
             case port.get_edge_side
             when EDGE_TOP, EDGE_BOTTOM
               w_min = offs if offs > w_min

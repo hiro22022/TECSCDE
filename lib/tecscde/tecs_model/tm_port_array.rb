@@ -229,7 +229,7 @@ module TECSCDE
             i -= 1
           end
           new_port = new_port(subsc + 1)
-          new_port.set_position(port.get_edge_side, port.get_offset + DIST_PORT)
+          new_port.set_position(port.get_edge_side, port.offset + DIST_PORT)
           @ports[subsc + 1] = new_port
 
           TECSCDE.logger.info("insert ####")
