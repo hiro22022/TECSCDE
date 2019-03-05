@@ -192,31 +192,31 @@ class TECS_LANG
     # 文字コードの設定
     case $CHARSET_FILE           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
     when :eucJP
-      $KCONV_CDL = Encoding::EUC_JP
+      $ENCODING_CDL = Encoding::EUC_JP
       $Ruby19_File_Encode = "ASCII-8BIT"
     when :sjis
-      $KCONV_CDL = Encoding::Shift_JIS
+      $ENCODING_CDL = Encoding::Shift_JIS
       $Ruby19_File_Encode = "Shift_JIS"
     when :utf8
-      $KCONV_CDL = Encoding::UTF_8
+      $ENCODING_CDL = Encoding::UTF_8
       $Ruby19_File_Encode = "ASCII-8BIT"
     else
-      $KCONV_CDL = Encoding::BINARY
+      $ENCODING_CDL = Encoding::BINARY
       $Ruby19_File_Encode = "ASCII-8BIT"
     end
 
     case $CHARSET_CONSOLE
     when :eucJP
-      $KCONV_CONSOLE = Encoding::EUC_JP
+      $ENCODING_CONSOLE = Encoding::EUC_JP
     when :sjis
-      $KCONV_CONSOLE = Encoding::Shift_JIS
+      $ENCODING_CONSOLE = Encoding::Shift_JIS
     when :utf8
-      $KCONV_CONSOLE = Encoding::UTF_8
+      $ENCODING_CONSOLE = Encoding::UTF_8
     else
-      $KCONV_CONSOLE = Encoding::BINARY
+      $ENCODING_CONSOLE = Encoding::BINARY
     end
 
-    $KCONV_TECSGEN = Encoding::UTF_8 # const:
+    $ENCODING_TECSGEN = Encoding::UTF_8 # const:
   end
 
   #####
@@ -274,7 +274,7 @@ class TECS_LANG
   self.set_kconv_var
 
   dbgPrint "LANG_FILE=#{$LANG_FILE}.#{$CHARSET_FILE}, LANG_CONSOLE=#{$LANG_CONSOLE}.#{$CHARSET_CONSOLE}\n"
-  dbgPrint "KCONV_CDL=#{$KCONV_CDL} KCONV_CONSOLE=#{$KCONV_CONSOLE}\n"
+  dbgPrint "ENCODING_CDL=#{$ENCODING_CDL} ENCODING_CONSOLE=#{$ENCODING_CONSOLE}\n"
   dbgPrint "Ruby19_File_Encode=#{$Ruby19_File_Encode}\n"
 
   #=== 単体テスト実行
@@ -294,18 +294,18 @@ end
 # 文字コードを変換する
 class Console
   def self.print(str)
-    if $KCONV_CONSOLE == Encoding::BINARY
+    if $ENCODING_CONSOLE == Encoding::BINARY
       STDOUT.print(str)
     else
-      STDOUT.print(str.encode($KCONV_CONSOLE))
+      STDOUT.print(str.encode($ENCODING_CONSOLE))
     end
   end
 
   def self.puts(str)
-    if $KCONV_CONSOLE == Encoding::BINARY
+    if $ENCODING_CONSOLE == Encoding::BINARY
       STDOUT.puts(str)
     else
-      STDOUT.puts(str.encode($KCONV_CONSOLE))
+      STDOUT.puts(str.encode($ENCODING_CONSOLE))
     end
   end
 end
