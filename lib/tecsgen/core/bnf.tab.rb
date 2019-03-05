@@ -249,9 +249,6 @@ module_eval(<<'...end bnf.y/module_eval...', 'bnf.y', 1533)
       b_in_comment = false
       b_in_string = false
 
-      # euc のコメントを utf8 として扱うと、コメントの終わりを誤る問題の対策
-      TECS_LANG::set_kcode_binary
-
       files.each {|file|
         lineno = 1
         begin
@@ -373,7 +370,6 @@ module_eval(<<'...end bnf.y/module_eval...', 'bnf.y', 1533)
 
     ensure
       @@generator_nest -= 1
-      TECS_LANG::reset_kcode
     end
 
   end
