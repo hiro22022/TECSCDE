@@ -234,7 +234,6 @@ class TECS_LANG
 
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const:
-    # set_kcode $KCODE_TECSGEN     # このファイルの文字コードを設定
   end
 
   #=== 一時的に KCODE を BINARY に変更する
@@ -246,7 +245,6 @@ class TECS_LANG
 
   #=== 一時的なあ KCODE の変更を元に戻す
   def self.reset_kcode
-    set_kcode $KCODE_BACK
   end
 
   #####
@@ -338,8 +336,4 @@ class Console
       STDOUT.puts str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
     end
   end
-end
-
-# Copy from original tecgen.rb
-def set_kcode(kcode)
 end

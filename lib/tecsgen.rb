@@ -93,7 +93,6 @@ end
 # RETURN::Bool   : true=成功、 false=失敗   失敗した場合、Generator.error は呼び元で出力する
 def require_tecsgen_lib(fname, b_fatal = true)
   dbgPrint("require_lib: #{fname}\n")
-  set_kcode $KCODE_TECSGEN
   begin
     b_require = false
     b_exception = false
@@ -155,9 +154,6 @@ def require_tecsgen_lib(fname, b_fatal = true)
       return false
     end
     return true
-  ensure
-    # $KCODE を CDL の文字コードに戻しておく
-    set_kcode $KCODE_CDL
   end
 end
 
@@ -205,9 +201,6 @@ def print_report
   puts msg if msg
 end
 
-#=== $KCODE を設定
-def set_kcode(kcode)
-end
 #----- class TECSGEN -------#
 class TECSGEN
   @@current_tecsgen = nil
@@ -340,7 +333,6 @@ class TECSGEN
     # $KCODE_TECSGEN, $KCONV_TECSGEN を仮に設定する (tecs_lang.rb ですぐに再設定される)
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const:
-    set_kcode($KCODE_TECSGEN) # このファイルの文字コードを設定
   end # initialize_global_var
 
   def self.analyze_option(additional_option_parser)
