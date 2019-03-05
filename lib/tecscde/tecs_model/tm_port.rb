@@ -55,7 +55,7 @@ module TECSCDE
   class TECSModel
     class TmPort < TECSCDE::TmObject
       # @edge_side::Integer()
-      # @offs::Integer(mm)  # distance from top or left side
+      # @offset::Integer(mm)  # distance from top or left side
       # @owner::TmCell | TmXPortArray  (Reverse Reference)
       # @port_def:: ::Port
       # @subscript::Integer | Nil
@@ -67,20 +67,20 @@ module TECSCDE
           x, y, w, h = owner_cell.get_geometry
           case @edge_side
           when EDGE_LEFT, EDGE_RIGHT
-            offs = TECSModel.round_length_val(@offs + y_inc)
+            offs = TECSModel.round_length_val(@offset + y_inc)
             if offs < 0 || offs > h
               return
             end
             x_inc = 0
           when EDGE_TOP, EDGE_BOTTOM
-            offs = TECSCDE::TECSModel.round_length_val(@offs + x_inc)
+            offs = TECSCDE::TECSModel.round_length_val(@offset + x_inc)
             # p "offs=#{offs} x=#{x} w=#{w}"
             if offs < 0 || offs > w
               return
             end
             y_inc = 0
           end
-          @offs = offs
+          @offset = offs
           moved_edge(x_inc, x_inc, y_inc, y_inc)
         end
       end
@@ -117,7 +117,7 @@ module TECSCDE
       #=== TmPort#get_position_in_tangential_dir
       def get_position_in_tangential_dir
         x, y, w, h = get_cell.get_geometry
-        TECSCDE::TECSModel.vertical?(@edge_side) ? y + @offs : x + @offs
+        TECSCDE::TECSModel.vertical?(@edge_side) ? y + @offset : x + @offset
       end
 
       def get_position_in_normal_dir
@@ -146,7 +146,7 @@ module TECSCDE
       end
 
       def get_offset
-        @offs
+        @offset
       end
 
       def get_cell
@@ -161,13 +161,13 @@ module TECSCDE
         x, y, w, h = get_cell.get_geometry
         case @edge_side
         when EDGE_TOP
-          [x + @offs, y]
+          [x + @offset, y]
         when EDGE_BOTTOM
-          [x + @offs, y + h]
+          [x + @offset, y + h]
         when EDGE_LEFT
-          [x, y + @offs]
+          [x, y + @offset]
         when EDGE_RIGHT
-          [x + w, y + @offs]
+          [x + w, y + @offset]
         end
       end
 
@@ -200,7 +200,7 @@ module TECSCDE
       def set_position(edge_side, offset)
         modified do
           @edge_side = edge_side
-          @offs = TECSCDE::TECSModel.round_length_val offset
+          @offset = TECSCDE::TECSModel.round_length_val offset
         end
       end
 
