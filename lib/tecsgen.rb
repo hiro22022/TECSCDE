@@ -322,7 +322,6 @@ class TECSGEN
     end
 
     # 文字コードの設定
-    $KCODE_CDL = "EUC"               # string: "EUC" | "SJIS" | "NONE" | "UTF8"
     $KCONV_CDL = Encoding::EUC_JP    # const: NONE には ASCII を対応させる
     $KCONV_TECSGEN = Encoding::UTF_8 # const:
   end # initialize_global_var
