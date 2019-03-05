@@ -188,7 +188,7 @@ class TECS_LANG
 
   #=== Kconv クラス用の変数を設定
   # 言語情報から Kconv に関する変数を設定
-  def self.set_kconv_var
+  def self.set_encoding_var
     # 文字コードの設定
     case $CHARSET_FILE           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
     when :eucJP
@@ -271,7 +271,7 @@ class TECS_LANG
   end
 
   # Kconv クラスのための変数を設定
-  self.set_kconv_var
+  self.set_encoding_var
 
   dbgPrint "LANG_FILE=#{$LANG_FILE}.#{$CHARSET_FILE}, LANG_CONSOLE=#{$LANG_CONSOLE}.#{$CHARSET_CONSOLE}\n"
   dbgPrint "ENCODING_CDL=#{$ENCODING_CDL} ENCODING_CONSOLE=#{$ENCODING_CONSOLE}\n"
