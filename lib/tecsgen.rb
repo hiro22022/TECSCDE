@@ -253,10 +253,7 @@ class TECSGEN
   #-----  initialize_global_var -----#
   def self.initialize_global_var
     require "optparse"
-    # 2.0 require 'runit/assert.rb'
-    require "kconv"
     require "pp"
-    # include RUNIT::Assert
 
     ### グローバル変数定義 ###
 

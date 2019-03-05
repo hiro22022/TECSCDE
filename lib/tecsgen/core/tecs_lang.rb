@@ -36,8 +36,6 @@
 #   $Id: tecs_lang.rb 2061 2014-05-31 22:15:33Z okuma-top $
 #++
 
-require "kconv" # TODO remove kconv
-
 #== 言語に関する変数を設定
 # メッセージファイルの読み込みも行う (読み込みに失敗した場合、デフォルトの文字コードに変更する)
 class TECS_LANG
@@ -186,8 +184,7 @@ class TECS_LANG
     end
   end
 
-  #=== Kconv クラス用の変数を設定
-  # 言語情報から Kconv に関する変数を設定
+  # 言語情報から Encoding に関する変数を設定
   def self.set_encoding_var
     # 文字コードの設定
     case $CHARSET_FILE           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
@@ -270,7 +267,6 @@ class TECS_LANG
     $LANG_FILE, $CHARSET_FILE = $LANG_FILE_DEFAULT, $CHARSET_FILE_DEFAULT
   end
 
-  # Kconv クラスのための変数を設定
   self.set_encoding_var
 
   dbgPrint "LANG_FILE=#{$LANG_FILE}.#{$CHARSET_FILE}, LANG_CONSOLE=#{$LANG_CONSOLE}.#{$CHARSET_CONSOLE}\n"
@@ -280,7 +276,6 @@ class TECS_LANG
   #=== 単体テスト実行
   if $unit_test
     print "unit test: set_lang_var\n"
-    require "kconv"
     self.set_lang_var
     print "#{$LANG_FILE} #{$LANG_CONSOLE}\n"
     print "#{$CHARSET_FILE} #{$CHARSET_CONSOLE}\n"
