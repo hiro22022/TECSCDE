@@ -303,17 +303,17 @@ end
 class Console
   def self.print(str)
     if $KCONV_CONSOLE == Kconv::BINARY
-      STDOUT.print str
+      STDOUT.print(str)
     else
-      STDOUT.print str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
+      STDOUT.print(str.encode($KCONV_CONSOLE))
     end
   end
 
   def self.puts(str)
     if $KCONV_CONSOLE == Kconv::BINARY
-      STDOUT.puts str
+      STDOUT.puts(str)
     else
-      STDOUT.puts str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
+      STDOUT.puts(str.encode($KCONV_CONSOLE))
     end
   end
 end

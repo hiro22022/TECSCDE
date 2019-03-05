@@ -305,7 +305,7 @@ class CFile
     if $KCONV_CONSOLE == Kconv::BINARY
       @file.print(str)
     else
-      @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
+      @file.print(str.encode($KCONV_CDL))
     end
   end
 
@@ -313,7 +313,7 @@ class CFile
     if $KCONV_CONSOLE == Kconv::BINARY
       @file.print(str)
     else
-      @file.print(str.kconv($KCONV_CDL, $KCONV_TECSGEN))
+      @file.print(str.encode($KCONV_CDL))
     end
     @file.print("\n")
   end
@@ -322,7 +322,7 @@ class CFile
     if $KCONV_CONSOLE == Kconv::BINARY
       @file.print(sprintf(format, *arg))
     else
-      @file.print(sprintf(format, *arg).kconv($KCONV_CDL, $KCONV_TECSGEN))
+      @file.print(sprintf(format, *arg).encode($KCONV_CDL))
     end
   end
 

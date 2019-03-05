@@ -48,7 +48,7 @@ class TECSMsg
     if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Kconv::BINARY
       return str
     else
-      return str.kconv($KCONV_CDL, $KCONV_TECSGEN)
+      return str.encode($KCONV_CDL)
     end
   end
 
