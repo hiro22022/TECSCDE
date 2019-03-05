@@ -636,7 +636,7 @@ module TECSCDE
                 next
               end
               p0 = port
-              port = port.get_ports[subscript] # array
+              port = port.ports[subscript] # array
               if port.nil?
                 TECSCDE.logger.info("port '#{port_name}' : 'subscript=#{subscript}' out of range")
                 next
@@ -843,7 +843,7 @@ module TECSCDE
       lines = []
       cports.each do |_name, cport|
         if cport.array?
-          cport.get_ports.each do |call_port|
+          cport.ports.each do |call_port|
             join = call_port.get_join
             next unless join
             entry_port = join. eport
@@ -872,7 +872,7 @@ module TECSCDE
     def port_location(ports)
       ports.map do |port|
         if port.array?
-          port.get_ports.map do |child|
+          port.ports.map do |child|
             {
               type: "port_location",
               port_name: port.get_name,

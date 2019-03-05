@@ -57,6 +57,8 @@ module TECSCDE
       # @actual_size::Integer
       # @subscript1::subscript value of 1st element. to check consistency of subscript
 
+      attr_reader :ports
+
       def get_actual_size
         @actual_size
       end
@@ -127,11 +129,6 @@ module TECSCDE
           end
           return nil
         end
-      end
-
-      #=== TmPortArray#get_ports
-      def get_ports
-        @ports
       end
 
       #=== TmPortArray#get_near_port

@@ -330,7 +330,7 @@ module TECSCDE
         nearest_port = nil
         (@eports.values + @cports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each do |pt|
+            port.ports.each do |pt|
               nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
             end
@@ -359,7 +359,7 @@ module TECSCDE
         end
         (@eports.values + @cports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each do |pt|
+            port.ports.each do |pt|
               proc_adjust.call(pt, offs, edge_side, move_offs)
             end
           else
@@ -457,7 +457,7 @@ module TECSCDE
         w_min = 0
         (@cports.values + @eports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.get_ports.each do |pt|
+            port.ports.each do |pt|
               offs = pt.offset
               case pt.get_edge_side
               when EDGE_TOP, EDGE_BOTTOM

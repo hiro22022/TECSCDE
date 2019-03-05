@@ -435,7 +435,7 @@ module TECSCDE
               @cairo_context_target.set_source_color(@@colors[:brown])
             end
             # EPortArray
-            eport.get_ports.each do |ep|
+            eport.ports.each do |ep|
               draw_entry_port_triangle(ep)
             end
             if cell.editable? && eport.is_unsubscripted_array?
@@ -477,7 +477,7 @@ module TECSCDE
             draw_port_name(port)
           else
             #--- prot array ---#
-            port.get_ports.each do |pt|
+            port.ports.each do |pt|
               set_port_color pt, cell
               draw_port_name(pt)
             end
