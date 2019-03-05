@@ -321,15 +321,9 @@ class TECSGEN
       $tecspath = "#{$tecsgen_base_path}/tecs"
     end
 
-    # # 文字コードの設定
-    if $IN_EXERB
-      # KCODE_CDL, $KCONV_CDL を仮に設定する (tecs_lang.rb ですぐに再設定される)
-      $KCODE_CDL = "SJIS"          # string: "EUC" | "SJIS" | "NONE" | "UTF8"
-      $KCONV_CDL = Kconv::SJIS     # const: NONE には ASCII を対応させる
-    else
-      $KCODE_CDL = "EUC"           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
-      $KCONV_CDL = Kconv::EUC      # const: NONE には ASCII を対応させる
-    end
+    # 文字コードの設定
+    $KCODE_CDL = "EUC"           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
+    $KCONV_CDL = Kconv::EUC      # const: NONE には ASCII を対応させる
     # $KCODE_TECSGEN, $KCONV_TECSGEN を仮に設定する (tecs_lang.rb ですぐに再設定される)
     $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const:
@@ -515,9 +509,6 @@ class TECSGEN
   end # load_modules
 
   def self.setup
-    # $import_path, $tecspath を調整
-    TECSGEN.adjust_exerb_path
-
     # $import_path に環境変数 $TECSGEN およびその直下を追加
     if $no_default_import_path == false
       # $TECSGEN および、その直下のディレクトリをパスに追加

@@ -49,26 +49,6 @@ class TECSGEN
     end
   end
 
-  #=== EXEB 版のパスの調整
-  # 環境変数 TECSPATH が cygwin スタイルだと、exerb 版では扱えない
-  # $import_path と $TECSPATH を調整する
-  def self.adjust_exerb_path
-    if $IN_EXERB
-      new_tecspath = cygpath($tecspath, $tecspath)
-      pattern = /\A#{$tecspath}/
-      paths = []
-      $import_path.each{|path|
-        # cygpath は '..' を簡約してしまうので、new_tecspath で置換する
-        # paths << cygpath( path, path )
-        paths << path.sub(pattern, new_tecspath)
-      }
-      $import_path = paths
-      $tecspath = new_tecspath
-    else
-      return
-    end
-  end
-
   #=== $(TECSPATH) への置換
   # path::String   : ENV[ 'TECSPATH' ] に一致する部分があれば、 "$(TECSPATH)" に置換
   # b_global::Bool : true なら gsub で置換。false なら sub で置換

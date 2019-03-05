@@ -134,15 +134,7 @@ class TECS_LANG
   #   ・TECSGEN_FILE_LANG 環境変数 (ファイルの文字コードのみ)
   #   ・-k オプション (ファイルの文字コードのみ)
   def self.set_lang_var
-    if $IN_EXERB && (ENV["TERM"].nil? || ENV["TERM"] == "cygwin")
-      # exerb 版で端末 cygwin の時は codepage のみを見る
-      cp = get_win_codepage
-      lang = codepage_to_lang cp
-      $LANG_FILE, $CHARSET_FILE, *dum = self.parse_lang(lang)
-      $LANG_CONSOLE = $LANG_FILE
-      $CHARSET_CONSOLE = $CHARSET_FILE
-
-    elsif ENV["LANG"]
+    if ENV["LANG"]
       # 非 exerb 版では LANG 環境変数を見る
       # cygwin console では codepage に従って出力した方が平和なため
 

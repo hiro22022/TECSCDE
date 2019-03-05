@@ -7339,14 +7339,10 @@ class Import_C < Node
 
     # コマンドライン指定された DEFINE
     $define.each{|define|
-      if $IN_EXERB
-        q = ""
+      if define =~ /'/
+        q = '"'
       else
-        if define =~ /'/
-          q = '"'
-        else
-          q = "'"
-        end
+        q = "'"
       end
       def_opt = "#{def_opt} -D #{q}#{define}#{q}"
     }
