@@ -48,11 +48,10 @@ module TECSCDE
       end
 
       def redo
-        if @change_set_list.length > @change_no + 1
-          @change_no += 1
-          TECSCDE.logger.info("* redo change_no=#{@change_no}")
-          @change_set_list[@change_no].apply
-        end
+        return if @change_set_list.length <= @change_no + 1
+        @change_no += 1
+        TECSCDE.logger.info("* redo change_no=#{@change_no}")
+        @change_set_list[@change_no].apply
       end
 
       def modified?
