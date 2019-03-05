@@ -836,9 +836,6 @@ end
     comment = false
 #    b_asm   = false
 
-    # euc のコメントを utf8 として扱うと、コメントの終わりを誤る問題の対策
-    TECS_LANG::set_kcode_binary
-
     # 800U, 0xffLL など (整数リテラルに共通の修飾子)
     integer_qualifier = "([Uu][Ll][Ll]|[Uu][Ll]|[Uu]|[Ll][Ll]|[Ll])?"
 
@@ -930,7 +927,6 @@ end
 
    ensure
     @@generator_nest -= 1
-    TECS_LANG::reset_kcode
    end
 
   end

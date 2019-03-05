@@ -236,17 +236,6 @@ class TECS_LANG
     $KCONV_TECSGEN = Kconv::UTF8 # const:
   end
 
-  #=== 一時的に KCODE を BINARY に変更する
-  # EUC を UTF8 で読み込んだ場合に文字区切りを誤る問題の対応
-  # コメントの読み飛ばしを誤る点が問題
-  # ただし、SJIS の場合は、エスケープ文字の問題があるため、変更しない
-  def self.set_kcode_binary
-  end
-
-  #=== 一時的なあ KCODE の変更を元に戻す
-  def self.reset_kcode
-  end
-
   #####
   # $LANG_FILE        言語 (C は en_US に変換される)
   # $LANG_CONSOLE     言語 (C は en_US に変換される)
