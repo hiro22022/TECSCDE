@@ -438,11 +438,7 @@ class Expression < Node
     when :CHARACTER_LITERAL
       str =  elements[1].val.gsub(/'/, "")
 # 2.0      if str.jlength == 1
-      if $b_no_kcode
-        len = str.length
-      else
-        len = str.jlength
-      end
+      len = str.length
       if len == 1
         sum = 0
         str.each_byte {|b| sum = sum * 256 + b }

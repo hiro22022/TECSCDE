@@ -242,15 +242,6 @@ class TECS_LANG
   # コメントの読み飛ばしを誤る点が問題
   # ただし、SJIS の場合は、エスケープ文字の問題があるため、変更しない
   def self.set_kcode_binary
-    # 2.0
-    if $b_no_kcode
-      return
-    end
-
-    $KCODE_BACK = $KCODE
-    if $KCODE != "SJIS"
-      set_kcode "BINARY"
-    end
   end
 
   #=== 一時的なあ KCODE の変更を元に戻す
@@ -333,7 +324,7 @@ end
 # 文字コードを変換する
 class Console
   def self.print(str)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
+    if $KCONV_CONSOLE == Kconv::BINARY
       STDOUT.print str
     else
       STDOUT.print str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
@@ -341,7 +332,7 @@ class Console
   end
 
   def self.puts(str)
-    if $b_no_kcode && $KCONV_CONSOLE == Kconv::BINARY
+    if $KCONV_CONSOLE == Kconv::BINARY
       STDOUT.puts str
     else
       STDOUT.puts str.kconv($KCONV_CONSOLE, $KCONV_TECSGEN)
@@ -351,7 +342,4 @@ end
 
 # Copy from original tecgen.rb
 def set_kcode(kcode)
-  if !$b_no_kcode
-    $KCODE = kcode
-  end
 end

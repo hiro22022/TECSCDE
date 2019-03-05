@@ -207,9 +207,6 @@ end
 
 #=== $KCODE を設定
 def set_kcode(kcode)
-  if !$b_no_kcode
-    $KCODE = kcode
-  end
 end
 #----- class TECSGEN -------#
 class TECSGEN
@@ -265,11 +262,7 @@ class TECSGEN
     require "optparse"
     # 2.0 require 'runit/assert.rb'
     require "kconv"
-    $b_no_kcode = RUBY_VERSION >= "1.9.0" ? true : false
-    # Use Ruby 1.9 M17N code (use Ruby 1.8 code if false).
-    if !$b_no_kcode
-      require "jcode"
-    end
+    $b_no_kcode = true
     require "pp"
     # include RUNIT::Assert
 

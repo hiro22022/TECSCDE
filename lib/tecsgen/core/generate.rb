@@ -5103,11 +5103,7 @@ class AppFile
     end
 
 # 2.0
-    if $b_no_kcode
-      mode = ":" + $Ruby19_File_Encode
-    else
-      mode = ""
-    end
+    mode = ":" + $Ruby19_File_Encode
 
     # 既に開いているか？
     if @@file_name_list[name]
