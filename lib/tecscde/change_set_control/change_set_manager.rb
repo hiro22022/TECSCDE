@@ -39,13 +39,12 @@ module TECSCDE
 
       # assumed undo is done just after set_undo_point (this means @change_set_next has no contents)
       def undo
-        if @change_no > 1
-          @change_no -= 1
-          TECSCDE.logger.info("* undo change_no=#{@change_no}")
-          @change_set_list[@change_no].apply
-          # TECSCDE.logger.info("* undo1 change_no=#{@change_no}")
-          @change_set_next = ChangeSet.new(@change_no)
-        end
+        return unless modified?
+        @change_no -= 1
+        TECSCDE.logger.info("* undo change_no=#{@change_no}")
+        @change_set_list[@change_no].apply
+        # TECSCDE.logger.info("* undo1 change_no=#{@change_no}")
+        @change_set_next = ChangeSet.new(@change_no)
       end
 
       def redo
