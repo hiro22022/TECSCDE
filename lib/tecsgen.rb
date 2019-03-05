@@ -324,8 +324,6 @@ class TECSGEN
     # 文字コードの設定
     $KCODE_CDL = "EUC"           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
     $KCONV_CDL = Kconv::EUC      # const: NONE には ASCII を対応させる
-    # $KCODE_TECSGEN, $KCONV_TECSGEN を仮に設定する (tecs_lang.rb ですぐに再設定される)
-    $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const:
   end # initialize_global_var
 

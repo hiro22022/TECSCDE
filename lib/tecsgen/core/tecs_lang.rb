@@ -224,7 +224,6 @@ class TECS_LANG
       $KCONV_CONSOLE = Kconv::BINARY
     end
 
-    $KCODE_TECSGEN = "UTF8"      # string: "EUC"  このファイルの文字コード（オプションではなく定数）
     $KCONV_TECSGEN = Kconv::UTF8 # const:
   end
 
