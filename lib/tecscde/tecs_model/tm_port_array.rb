@@ -103,17 +103,10 @@ module TECSCDE
               return port
             end
           else # no index
-            found = false
-            found_port = nil
-            @ports.each do |port|
-              next if port.get_join
-              found = true
-              found_port = port
-              break
+            found_port = @ports.find do |pt|
+              pt.get_join.nil?
             end
-            if found
-              return found_port
-            end
+            return found_port if found_port
 
             # in case of unsized array, extend array
             if @port_def.get_array_size == "[]"
