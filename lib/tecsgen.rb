@@ -322,9 +322,9 @@ class TECSGEN
     end
 
     # 文字コードの設定
-    $KCODE_CDL = "EUC"           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
-    $KCONV_CDL = Kconv::EUC      # const: NONE には ASCII を対応させる
-    $KCONV_TECSGEN = Kconv::UTF8 # const:
+    $KCODE_CDL = "EUC"               # string: "EUC" | "SJIS" | "NONE" | "UTF8"
+    $KCONV_CDL = Encoding::EUC_JP    # const: NONE には ASCII を対応させる
+    $KCONV_TECSGEN = Encoding::UTF_8 # const:
   end # initialize_global_var
 
   def self.analyze_option(additional_option_parser)

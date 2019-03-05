@@ -45,7 +45,7 @@ class TECSMsg
   def self.get(msg)
     str = @@comment[msg]
 # 2.0    if $KCONV_TECSGEN == $KCONV_CDL
-    if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Kconv::BINARY
+    if $KCONV_TECSGEN == $KCONV_CDL || $KCONV_CDL == Encoding::BINARY
       return str
     else
       return str.encode($KCONV_CDL)

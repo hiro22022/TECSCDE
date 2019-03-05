@@ -193,38 +193,38 @@ class TECS_LANG
     case $CHARSET_FILE           # string: "EUC" | "SJIS" | "NONE" | "UTF8"
     when :eucJP
       $KCODE_CDL = "EUC"
-      $KCONV_CDL = Kconv::EUC
+      $KCONV_CDL = Encoding::EUC_JP
       $Ruby19_File_Encode = "ASCII-8BIT"
     when :sjis
       $KCODE_CDL = "SJIS"
-      $KCONV_CDL = Kconv::SJIS
+      $KCONV_CDL = Encoding::Shift_JIS
       $Ruby19_File_Encode = "Shift_JIS"
     when :utf8
       $KCODE_CDL = "UTF8"
-      $KCONV_CDL = Kconv::UTF8
+      $KCONV_CDL = Encoding::UTF_8
       $Ruby19_File_Encode = "ASCII-8BIT"
     else
       $KCODE_CDL = "BINARY"
-      $KCONV_CDL = Kconv::BINARY
+      $KCONV_CDL = Encoding::BINARY
       $Ruby19_File_Encode = "ASCII-8BIT"
     end
 
     case $CHARSET_CONSOLE
     when :eucJP
       $KCODE_CONSOLE = "EUC"
-      $KCONV_CONSOLE = Kconv::EUC
+      $KCONV_CONSOLE = Encoding::EUC_JP
     when :sjis
       $KCODE_CONSOLE = "SJIS"
-      $KCONV_CONSOLE = Kconv::SJIS
+      $KCONV_CONSOLE = Encoding::Shift_JIS
     when :utf8
       $KCODE_CONSOLE = "UTF8"
-      $KCONV_CONSOLE = Kconv::UTF8
+      $KCONV_CONSOLE = Encoding::UTF_8
     else
       $KCODE_CONSOLE = "BINARY"
-      $KCONV_CONSOLE = Kconv::BINARY
+      $KCONV_CONSOLE = Encoding::BINARY
     end
 
-    $KCONV_TECSGEN = Kconv::UTF8 # const:
+    $KCONV_TECSGEN = Encoding::UTF_8 # const:
   end
 
   #####
@@ -302,7 +302,7 @@ end
 # 文字コードを変換する
 class Console
   def self.print(str)
-    if $KCONV_CONSOLE == Kconv::BINARY
+    if $KCONV_CONSOLE == Encoding::BINARY
       STDOUT.print(str)
     else
       STDOUT.print(str.encode($KCONV_CONSOLE))
@@ -310,7 +310,7 @@ class Console
   end
 
   def self.puts(str)
-    if $KCONV_CONSOLE == Kconv::BINARY
+    if $KCONV_CONSOLE == Encoding::BINARY
       STDOUT.puts(str)
     else
       STDOUT.puts(str.encode($KCONV_CONSOLE))

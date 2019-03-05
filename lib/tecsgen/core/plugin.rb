@@ -302,7 +302,7 @@ class CFile
   end
 
   def print(str)
-    if $KCONV_CONSOLE == Kconv::BINARY
+    if $KCONV_CONSOLE == Encoding::BINARY
       @file.print(str)
     else
       @file.print(str.encode($KCONV_CDL))
@@ -310,7 +310,7 @@ class CFile
   end
 
   def puts(str)
-    if $KCONV_CONSOLE == Kconv::BINARY
+    if $KCONV_CONSOLE == Encoding::BINARY
       @file.print(str)
     else
       @file.print(str.encode($KCONV_CDL))
@@ -319,7 +319,7 @@ class CFile
   end
 
   def printf(format, *arg)
-    if $KCONV_CONSOLE == Kconv::BINARY
+    if $KCONV_CONSOLE == Encoding::BINARY
       @file.print(sprintf(format, *arg))
     else
       @file.print(sprintf(format, *arg).encode($KCONV_CDL))
