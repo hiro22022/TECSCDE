@@ -548,10 +548,6 @@ module TECSCDE
           direction = TEXT_HORIZONTAL
         end
         name = port.get_name.to_s
-        if port.get_subscript
-          name += "[#{port.get_subscript}]"
-        end
-        name = port.get_name.to_s
         subscript = port.get_subscript
         if subscript
           if subscript >= 0
