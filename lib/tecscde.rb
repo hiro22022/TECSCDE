@@ -33,7 +33,8 @@ module TECSCDE
       parent,
       Gtk::Dialog::Flags::MODAL | Gtk::Dialog::Flags::DESTROY_WITH_PARENT,
       [Gtk::Stock::OK, Gtk::ResponseType::OK],
-      [Gtk::Stock::CANCEL, Gtk::ResponseType::CANCEL])
+      [Gtk::Stock::CANCEL, Gtk::ResponseType::CANCEL]
+    )
     dialog.vbox.add(Gtk::Label.new(message))
     dialog.show_all
     response = dialog.run
