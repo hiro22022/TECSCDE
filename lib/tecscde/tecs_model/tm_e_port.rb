@@ -61,7 +61,7 @@ module TECSCDE
         @subscript = subscript
 
         @joins = []
-        @edge_side, @offs = get_cell.get_new_eport_position port_def
+        @edge_side, @offset = get_cell.get_new_eport_position(port_def)
         modified {}
       end
 

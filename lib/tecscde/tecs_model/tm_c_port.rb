@@ -64,7 +64,7 @@ module TECSCDE
         # p "subscript=#{subscript}"
 
         @name = "cCport" # temporal
-        @edge_side, @offs = get_cell.get_new_cport_position port_def
+        @edge_side, @offset = get_cell.get_new_cport_position(port_def)
         modified {}
       end
 
