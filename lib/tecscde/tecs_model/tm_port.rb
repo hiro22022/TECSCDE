@@ -66,7 +66,7 @@ module TECSCDE
       def move(x_inc, y_inc)
         modified do
           # p "move x=#{x_inc} y=#{y_inc}"
-          x, y, w, h = owner_cell.get_geometry
+          _x, _y, w, h = owner_cell.get_geometry
           case @edge_side
           when EDGE_LEFT, EDGE_RIGHT
             offs = TECSModel.round_length_val(@offset + y_inc)
@@ -118,7 +118,7 @@ module TECSCDE
 
       #=== TmPort#get_position_in_tangential_dir
       def get_position_in_tangential_dir
-        x, y, w, h = get_cell.get_geometry
+        x, y, _width, _height = get_cell.get_geometry
         TECSCDE::TECSModel.vertical?(@edge_side) ? y + @offset : x + @offset
       end
 
