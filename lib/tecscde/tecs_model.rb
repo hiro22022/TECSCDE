@@ -635,7 +635,6 @@ module TECSCDE
                 TECSCDE.logger.info("port '#{port_name}' : 'subscript' negative valude specified")
                 next
               end
-              p0 = port
               port = port.ports[subscript] # array
               if port.nil?
                 TECSCDE.logger.info("port '#{port_name}' : 'subscript=#{subscript}' out of range")
