@@ -255,70 +255,70 @@ module TECSCDE
 
       return unless button == 1
 
-        object = find_near xm, ym
-        if object.is_a?(TECSModel::TmCell) && click_count == 2
-          if object.editable?
-            # p "begin_edit_name"
-            @view.begin_edit_name object, time
-            @highlighted_objects.reset(object)
-            @sub_mode = :SM_EDIT_CELL_NAME
-          end
-        elsif object.is_a?(TECSModel::TmCell) || object.is_a?(TECSModel::TmJoinBar)
-          @sub_mode = :SM_MOVING_CELL_BAR
-          # p "FOUND Cell or Bar"
-          if state.shift_mask?
-            @highlighted_objects.add(object)
-          elsif state.control_mask?
-            @highlighted_objects.add_del(object)
-          elsif !@highlighted_objects.include? object
-            @highlighted_objects.reset(object)
-          end
-          @view.draw_highlight_objects @highlighted_objects
-        elsif object.is_a? TECSModel::TmCPort
-          # p "FOUND TmCPort"
-          if state.shift_mask?
-            @sub_mode = :SM_MOVING_CPORT
-            @highlighted_objects.add object
-          elsif state.control_mask?
-            @sub_mode = :SM_MOVING_CPORT
-            @highlighted_objects.reset(object)
-          elsif object.get_join.nil?
-            @sub_mode = :SM_JOINING
-            @highlighted_objects.reset
-            @cport_joining = object
-            @view.set_cursor TECSCDE::CURSOR_JOINING
-          else
-            TECSCDE.message_box(<<~MESSAGE, :OK)
-              Call port has already been joined.
-              Delete existing join before creating new join.
-              If you want to highlighted port, click with pressing shift key.
-            MESSAGE
-          end
-        elsif object.is_a? TECSModel::TmEPort
-          @sub_mode = :SM_MOVING_EPORT
-          if state.shift_mask?
-            @highlighted_objects.add object
-          elsif state.control_mask?
-            @highlighted_objects.add_del(object)
-          else
-            # p "FOUND TmEPort"
-            @highlighted_objects.reset object
-          end
-        else
-          # p "NOT FOUND"
-          if @mode == :MODE_NEW_CELL
-            ctn, nsp = @celltype_tree_view.selected
-            if ctn
-              cell = @model.new_cell(xm, ym, ctn, nsp)
-              @model.set_undo_point
-            end
-            @highlighted_objects.reset cell
-          else
-            @highlighted_objects.reset
-          end
+      object = find_near xm, ym
+      if object.is_a?(TECSModel::TmCell) && click_count == 2
+        if object.editable?
+          # p "begin_edit_name"
+          @view.begin_edit_name object, time
+          @highlighted_objects.reset(object)
+          @sub_mode = :SM_EDIT_CELL_NAME
         end
-        @last_xm = xm
-        @last_ym = ym
+      elsif object.is_a?(TECSModel::TmCell) || object.is_a?(TECSModel::TmJoinBar)
+        @sub_mode = :SM_MOVING_CELL_BAR
+        # p "FOUND Cell or Bar"
+        if state.shift_mask?
+          @highlighted_objects.add(object)
+        elsif state.control_mask?
+          @highlighted_objects.add_del(object)
+        elsif !@highlighted_objects.include? object
+          @highlighted_objects.reset(object)
+        end
+        @view.draw_highlight_objects @highlighted_objects
+      elsif object.is_a? TECSModel::TmCPort
+        # p "FOUND TmCPort"
+        if state.shift_mask?
+          @sub_mode = :SM_MOVING_CPORT
+          @highlighted_objects.add object
+        elsif state.control_mask?
+          @sub_mode = :SM_MOVING_CPORT
+          @highlighted_objects.reset(object)
+        elsif object.get_join.nil?
+          @sub_mode = :SM_JOINING
+          @highlighted_objects.reset
+          @cport_joining = object
+          @view.set_cursor TECSCDE::CURSOR_JOINING
+        else
+          TECSCDE.message_box(<<~MESSAGE, :OK)
+            Call port has already been joined.
+            Delete existing join before creating new join.
+            If you want to highlighted port, click with pressing shift key.
+          MESSAGE
+        end
+      elsif object.is_a? TECSModel::TmEPort
+        @sub_mode = :SM_MOVING_EPORT
+        if state.shift_mask?
+          @highlighted_objects.add object
+        elsif state.control_mask?
+          @highlighted_objects.add_del(object)
+        else
+          # p "FOUND TmEPort"
+          @highlighted_objects.reset object
+        end
+      else
+        # p "NOT FOUND"
+        if @mode == :MODE_NEW_CELL
+          ctn, nsp = @celltype_tree_view.selected
+          if ctn
+            cell = @model.new_cell(xm, ym, ctn, nsp)
+            @model.set_undo_point
+          end
+          @highlighted_objects.reset cell
+        else
+          @highlighted_objects.reset
+        end
+      end
+      @last_xm = xm
+      @last_ym = ym
     end
 
     #=== mouse moved on canvas
