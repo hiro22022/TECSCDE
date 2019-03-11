@@ -74,23 +74,20 @@ module TECSCDE
           # p "new_join: for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
           if subscript >= 0
             if subscript >= @actual_size
-
-              # in case of unsized array, extend array
-              if @port_def.get_array_size == "[]"
-                # extend array size
-                (0..subscript).each do |subsc|
-                  if @ports[subsc].nil?
-                    port = new_port subsc
-                    @ports[subsc] = port
-                  end
-                end
-                @actual_size = @ports.length
-                # p "new_join: 1 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
-                return @ports[subscript]
+              unless @port_def.get_array_size == "[]"
+                TECSCDE.logger.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size - 1})")
+                return nil
               end
-
-              TECSCDE.logger.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: subscript=#{subscript} out of range(0..(#{@actual_size - 1})")
-              return nil
+              # in case of unsized array, extend array
+              # extend array size
+              (0..subscript).each do |subsc|
+                next if @ports[subsc]
+                port = new_port subsc
+                @ports[subsc] = port
+              end
+              @actual_size = @ports.length
+              # p "new_join: 1 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
+              return @ports[subscript]
             else
               port = @ports[subscript]
               # p "new_join: 2 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
