@@ -311,14 +311,14 @@ module TECSCDE
         edge_side = port.get_edge_side
         offs = port.offset
         nearest_port = nil
-        (@eports.values + @cports.values).each do |port|
-          if port.is_a?(TECSCDE::TECSModel::TmPortArray)
-            port.ports.each do |pt|
+        (@eports.values + @cports.values).each do |_port|
+          if _port.is_a?(TECSCDE::TECSModel::TmPortArray)
+            _port.ports.each do |pt|
               nearest_port = judge_near(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
             end
           else
-            nearest_port = judge_near(port, offs, edge_side, nearest_port)
+            nearest_port = judge_near(_port, offs, edge_side, nearest_port)
             # p "nearest=#{nearest_port}"
           end
         end
