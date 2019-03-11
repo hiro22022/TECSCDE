@@ -478,7 +478,7 @@ module TECSCDE
 
       def judge_near(port, offs, edge_side, nearest_port)
         # p "find_nearest_next_port: comp: #{port.get_name} #{port.get_subscript} at #{port.offset}@#{port.get_edge_side} #{offs}@#{edge_side}"
-        if port.get_edge_side == edge_side
+        return nearest_port unless port.get_edge_side == edge_side
           dist = port.offset - offs
           # p "dist=#{dist}"
           if dist > 0
@@ -490,7 +490,6 @@ module TECSCDE
               nearest_port = port
             end
           end
-        end
         nearest_port
       end
     end
