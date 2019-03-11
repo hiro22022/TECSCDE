@@ -549,7 +549,7 @@ module TECSCDE
       # p "OBJECT CLASS #{object.class}"
       if object.instance_of?(::Port)
         return unless object.get_port_type == :CALL
-        unless object.is_require?
+        return if object.is_require?
           lhs_cell = cell_list[cell]
           cport = lhs_cell.get_cport_for_new_join(join.get_name, join.get_subscript)
           if cport.nil?
@@ -565,7 +565,6 @@ module TECSCDE
           # p "new_join #{lhs_cell.get_name}.#{cport.get_name} => #{rhs_cell.get_name}.#{eport.get_name}"
           new_join_ = new_join cport, eport
           new_join_.set_editable(join.get_locale)
-        end
       else
         cell_list[cell].set_attr(join.get_name, join.get_rhs.to_CDL_str)
       end
