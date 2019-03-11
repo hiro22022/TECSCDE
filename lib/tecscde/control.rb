@@ -251,7 +251,10 @@ module TECSCDE
         @sub_mode = :SM_NONE
       end
 
-      if button == 1
+      @prev_time = time
+
+      return unless button == 1
+
         object = find_near xm, ym
         if object.is_a?(TECSModel::TmCell) && click_count == 2
           if object.editable?
@@ -316,8 +319,6 @@ module TECSCDE
         end
         @last_xm = xm
         @last_ym = ym
-      end
-      @prev_time = time
     end
 
     #=== mouse moved on canvas
