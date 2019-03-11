@@ -310,32 +310,15 @@ module TECSCDE
         # p "find_nearest_next_port #{port.get_name} #{port.get_subscript}"
         edge_side = port.get_edge_side
         offs = port.offset
-        proc_judge_near = proc do |port, offs, edge_side, nearest_port|
-          # p "find_nearest_next_port: comp: #{port.get_name} #{port.get_subscript} at #{port.offset}@#{port.get_edge_side} #{offs}@#{edge_side}"
-          if port.get_edge_side == edge_side
-            dist = port.offset - offs
-            # p "dist=#{dist}"
-            if dist > 0
-              if nearest_port
-                if (nearest_port.offset - offs) > dist
-                  nearest_port = port
-                end
-              else
-                nearest_port = port
-              end
-            end
-          end
-          nearest_port
-        end
         nearest_port = nil
         (@eports.values + @cports.values).each do |port|
           if port.is_a?(TECSCDE::TECSModel::TmPortArray)
             port.ports.each do |pt|
-              nearest_port = proc_judge_near.call(pt, offs, edge_side, nearest_port)
+              nearest_port = judge_near(pt, offs, edge_side, nearest_port)
               # p "nearest=#{nearest_port}"
             end
           else
-            nearest_port = proc_judge_near.call(port, offs, edge_side, nearest_port)
+            nearest_port = judge_near(port, offs, edge_side, nearest_port)
             # p "nearest=#{nearest_port}"
           end
         end
@@ -489,6 +472,26 @@ module TECSCDE
         bu = clone
         bu.copy_from self
         bu
+      end
+
+      private
+
+      def judge_near(port, offs, edge_side, nearest_port)
+        # p "find_nearest_next_port: comp: #{port.get_name} #{port.get_subscript} at #{port.offset}@#{port.get_edge_side} #{offs}@#{edge_side}"
+        if port.get_edge_side == edge_side
+          dist = port.offset - offs
+          # p "dist=#{dist}"
+          if dist > 0
+            if nearest_port
+              if (nearest_port.offset - offs) > dist
+                nearest_port = port
+              end
+            else
+              nearest_port = port
+            end
+          end
+        end
+        nearest_port
       end
     end
   end
