@@ -91,13 +91,11 @@ module TECSCDE
             else
               port = @ports[subscript]
               # p "new_join: 2 for name:#{@port_def.get_name}[ #{subscript} ] owner:#{@owner.get_name}, len=#{@ports.length}"
-              if instance_of?(TECSCDE::TECSModel::TmCPortArray) # CPort cannot have multiple join
-                if port.get_join
-                  TECSCDE.logger.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: duplicate join")
-                  return nil
-                end
+              return port unless instance_of?(TECSCDE::TECSModel::TmCPortArray) # CPort cannot have multiple join
+              if port.get_join
+                TECSCDE.logger.error("#{@owner.get_name}.#{@port_def.get_name}[#{subscript}]: duplicate join")
+                return nil
               end
-              return port
             end
           else # no index
             found_port = @ports.find do |pt|
