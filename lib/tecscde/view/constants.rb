@@ -74,9 +74,9 @@ module TECSCDE
       PAPER_COMMENT     = 6
 
       # text alignment
-      ALIGN_CENTER      = Pango::Layout::ALIGN_CENTER
-      ALIGN_LEFT        = Pango::Layout::ALIGN_LEFT
-      ALIGN_RIGHT       = Pango::Layout::ALIGN_RIGHT
+      ALIGN_CENTER      = :center
+      ALIGN_LEFT        = :left
+      ALIGN_RIGHT       = :right
 
       # text direction
       TEXT_HORIZONTAL   = 1   # left to right
