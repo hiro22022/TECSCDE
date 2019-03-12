@@ -105,3 +105,5 @@ Style/RedundantBegin:
   Enabled: false
 Style/YodaCondition:
   EnforcedStyle: forbid_for_equality_operators_only
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses_when_complex
