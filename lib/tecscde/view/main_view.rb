@@ -430,7 +430,7 @@ module TECSCDE
           if !eport.array?
             draw_entry_port_triangle(eport)
           else
-            if cell.editable? && eport.is_unsubscripted_array?
+            if cell.editable? && eport.unsubscripted_array?
               # @canvas_gc.set_foreground @@colors[ :brown ]
               @cairo_context_target.set_source_color(@@colors[:brown])
             end
@@ -438,7 +438,7 @@ module TECSCDE
             eport.ports.each do |ep|
               draw_entry_port_triangle(ep)
             end
-            if cell.editable? && eport.is_unsubscripted_array?
+            if cell.editable? && eport.unsubscripted_array?
               # @canvas_gc.set_foreground @@colors[ Color_editable ]
               @cairo_context_target.set_source_color(@@colors[Color_editable])
             end

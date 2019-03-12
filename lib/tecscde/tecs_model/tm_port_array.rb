@@ -226,8 +226,8 @@ module TECSCDE
         @owner.editable?
       end
 
-      #=== TmPortArray#is_unsubscripted_array?
-      def is_unsubscripted_array?
+      #=== TmPortArray#unsubscripted_array?
+      def unsubscripted_array?
         @port_def.get_array_size == "[]"
       end
 
