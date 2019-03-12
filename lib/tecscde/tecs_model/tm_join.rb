@@ -68,8 +68,8 @@ module TECSCDE
         @eport = eport
         @owner = tmodel
 
-        cport.set_join self
-        eport.add_join self
+        cport.set_join(self)
+        eport.add_join(self)
 
         create_bars
         # @bars.each{ |bar| bar.set_join self }
@@ -104,7 +104,7 @@ module TECSCDE
       def create_bars_a
         @bars = []
 
-        @bars[0] = @cport.get_normal_bar_of_edge self
+        @bars[0] = @cport.get_normal_bar_of_edge(self)
 
         posa = @cport.get_position_in_tangential_dir
         e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
@@ -127,7 +127,7 @@ module TECSCDE
       def create_bars_c
         @bars = []
 
-        @bars[0] = @cport.get_normal_bar_of_edge self
+        @bars[0] = @cport.get_normal_bar_of_edge(self)
 
         pos1 = @eport.get_position_in_normal_dir + EPGAP * @eport.get_sign_of_normal
         @bars[1] = create_bar(@bars[0], pos1)
@@ -144,7 +144,7 @@ module TECSCDE
       def create_bars_e
         @bars = []
 
-        @bars[0] = @cport.get_normal_bar_of_edge self
+        @bars[0] = @cport.get_normal_bar_of_edge(self)
 
         posa = @cport.get_position_in_tangential_dir
         e1, e2 = @eport.get_cell.get_right_angle_edges_position(@cport.get_edge_side)
@@ -163,9 +163,9 @@ module TECSCDE
 
       def moved_cport(x_inc, y_inc)
         if @bars[0].instance_of?(TECSCDE::TECSModel::VBar)
-          @bars[0].moved y_inc
+          @bars[0].moved(y_inc)
         else
-          @bars[0].moved x_inc
+          @bars[0].moved(x_inc)
         end
       end
 
@@ -175,32 +175,32 @@ module TECSCDE
 
         if len >= 5
           if @bars[len - 4].instance_of?(TECSCDE::TECSModel::VBar)
-            @bars[len - 4].moved y_inc
+            @bars[len - 4].moved(y_inc)
           else
-            @bars[len - 4].moved x_inc
+            @bars[len - 4].moved(x_inc)
           end
         end
 
         if len >= 4
           if @bars[len - 3].instance_of?(TECSCDE::TECSModel::VBar)
-            @bars[len - 3].moved y_inc
+            @bars[len - 3].moved(y_inc)
           else
-            @bars[len - 3].moved x_inc
+            @bars[len - 3].moved(x_inc)
           end
         end
 
         if len >= 3
           if @bars[len - 2].instance_of?(TECSCDE::TECSModel::VBar)
-            @bars[len - 2].moved y_inc
+            @bars[len - 2].moved(y_inc)
           else
-            @bars[len - 2].moved x_inc
+            @bars[len - 2].moved(x_inc)
           end
         end
 
         if @bars[len - 1].instance_of?(TECSCDE::TECSModel::VBar)
-          @bars[len - 1].moved y_inc
+          @bars[len - 1].moved(y_inc)
         else
-          @bars[len - 1].moved x_inc
+          @bars[len - 1].moved(x_inc)
         end
       end
 
@@ -277,15 +277,15 @@ module TECSCDE
         return unless editable?
         modified do
           @cport.delete_join
-          @eport.delete_join self
-          @owner.delete_join self
+          @eport.delete_join(self)
+          @owner.delete_join(self)
         end
       end
 
       #=== TmJoin#clone_for_undo
       def clone_for_undo
         bu = clone
-        bu.copy_from self
+        bu.copy_from(self)
         bu
       end
     end

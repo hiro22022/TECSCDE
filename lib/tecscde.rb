@@ -53,7 +53,7 @@ module TECSCDE
   end
 
   def self.main(tecsgen)
-    MainViewAndModel.new tecsgen
+    MainViewAndModel.new(tecsgen)
     Gtk.main
   end
 

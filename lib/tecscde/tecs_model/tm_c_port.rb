@@ -114,7 +114,7 @@ module TECSCDE
       #=== TmCPort#clone_for_undo
       def clone_for_undo
         bu = clone
-        bu.copy_from self
+        bu.copy_from(self)
         bu
       end
     end

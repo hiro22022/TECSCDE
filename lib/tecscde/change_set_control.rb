@@ -10,7 +10,7 @@ module TECSCDE
     # at the time modifying tm_object, record only the changed tm_object
     def add_change_set(tm_object)
       # TECSCDE.logger.info("add_change_set #{tm_object.class} change_set=#{@change_no}")
-      @change_set_manager.add_change_set tm_object
+      @change_set_manager.add_change_set(tm_object)
     end
 
     def set_undo_point

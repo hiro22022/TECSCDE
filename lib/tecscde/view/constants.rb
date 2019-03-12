@@ -83,10 +83,10 @@ module TECSCDE
       TEXT_VERTICAL     = 2   # bottom to top
 
       #----- Cursor for mouse pointer -----#
-      CURSOR_PORT       = Gdk::Cursor.new Gdk::Cursor::SB_LEFT_ARROW
-      CURSOR_JOINING    = Gdk::Cursor.new Gdk::Cursor::DOT
-      CURSOR_JOIN_OK    = Gdk::Cursor.new Gdk::Cursor::CIRCLE
-      CURSOR_NORMAL     = Gdk::Cursor.new Gdk::Cursor::TOP_LEFT_ARROW
+      CURSOR_PORT       = Gdk::Cursor.new(Gdk::Cursor::SB_LEFT_ARROW)
+      CURSOR_JOINING    = Gdk::Cursor.new(Gdk::Cursor::DOT)
+      CURSOR_JOIN_OK    = Gdk::Cursor.new(Gdk::Cursor::CIRCLE)
+      CURSOR_NORMAL     = Gdk::Cursor.new(Gdk::Cursor::TOP_LEFT_ARROW)
 
       GAP_ACTIVE        = 1   # (mm)  gap of active cell between inner rectangle and outer one
       GAP_PORT          = 0.8 # (mm)  gap between port name & edge

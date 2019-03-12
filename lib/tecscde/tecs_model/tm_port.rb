@@ -127,7 +127,7 @@ module TECSCDE
       end
 
       def get_sign_of_normal
-        TECSCDE::TECSModel.get_sign_of_normal @edge_side
+        TECSCDE::TECSModel.get_sign_of_normal(@edge_side)
       end
 
       def get_edge_side
@@ -198,7 +198,7 @@ module TECSCDE
       def set_position(edge_side, offset)
         modified do
           @edge_side = edge_side
-          @offset = TECSCDE::TECSModel.round_length_val offset
+          @offset = TECSCDE::TECSModel.round_length_val(offset)
         end
       end
 

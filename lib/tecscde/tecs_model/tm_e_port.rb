@@ -81,7 +81,7 @@ module TECSCDE
       # TmEPort can have plural of joins.
       # test if TmEPort has specified join.
       def include?(join)
-        @joins.include? join
+        @joins.include?(join)
       end
 
       #=== TmEPort#get_joins
@@ -102,7 +102,7 @@ module TECSCDE
       # this method is called from TmJoin
       def delete_join(join)
         modified do
-          @joins.delete join
+          @joins.delete(join)
         end
       end
 
@@ -114,7 +114,7 @@ module TECSCDE
       #=== TmEPort#clone_for_undo
       def clone_for_undo
         bu = clone
-        bu.copy_from self
+        bu.copy_from(self)
         bu
       end
 

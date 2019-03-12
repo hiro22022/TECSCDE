@@ -67,7 +67,7 @@ module TECSCDE
 
       def set_position(position)
         modified do
-          @position = TECSCDE::TECSModel.round_length_val position
+          @position = TECSCDE::TECSModel.round_length_val(position)
         end
       end
 
@@ -98,7 +98,7 @@ module TECSCDE
           end
 
           bars.each do |bar|
-            if bar.equal? self
+            if bar.equal?(self)
               break
             end
             bar_prev = bar
@@ -123,7 +123,7 @@ module TECSCDE
       #=== TmJoinBar#clone_for_undo
       def clone_for_undo
         bu = clone
-        bu.copy_from self
+        bu.copy_from(self)
         bu
       end
 

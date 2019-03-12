@@ -82,7 +82,7 @@ module TECSCDE
               # extend array size
               (0..subscript).each do |subsc|
                 next if @ports[subsc]
-                port = new_port subsc
+                port = new_port(subsc)
                 @ports[subsc] = port
               end
               @actual_size = @ports.length
@@ -105,7 +105,7 @@ module TECSCDE
 
             # in case of unsized array, extend array
             if @port_def.get_array_size == "[]"
-              port = new_port @ports.length
+              port = new_port(@ports.length)
               @ports << port
               @actual_size = @ports.length
               return port
@@ -169,7 +169,7 @@ module TECSCDE
           MESSAGE
           return
         end
-        index = @ports.index port
+        index = @ports.index(port)
         if index != 0
           modified do
             TECSCDE.logger.info("delete #### subscript=#{port.get_subscript}")
@@ -201,7 +201,7 @@ module TECSCDE
           return
         end
         modified do
-          @owner.adjust_port_position_to_insert port
+          @owner.adjust_port_position_to_insert(port)
           subsc = port.get_subscript
           i = @ports.length - 1
           while i > subsc
@@ -234,7 +234,7 @@ module TECSCDE
       #=== TmPortArray#clone_for_undo
       def clone_for_undo
         bu = clone
-        bu.copy_from self
+        bu.copy_from(self)
         bu
       end
 

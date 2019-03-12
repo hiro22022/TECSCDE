@@ -77,12 +77,12 @@ module TECSCDE
 
       @button_ok = @builder["button_ok"]
       @button_ok.signal_connect("clicked") do |_me|
-        @dialog.response Gtk::Dialog::RESPONSE_OK
+        @dialog.response(Gtk::Dialog::RESPONSE_OK)
       end
 
       @button_cancel = @builder["button_cancel"]
       @button_cancel.signal_connect("clicked") do |_me|
-        @dialog.response Gtk::Dialog::RESPONSE_CANCEL
+        @dialog.response(Gtk::Dialog::RESPONSE_CANCEL)
       end
     end
   end

@@ -100,11 +100,11 @@ module TECSCDE
       @button_redo = @builder["button_redo"]
       @button_redo.signal_connect("clicked") { @control.on_redo }
       # currently redo doesn't work well
-      @button_redo.set_sensitive false
+      @button_redo.set_sensitive(false)
 
       #----- celltype TREEVIEW -----#
       @tree_view_celltype = @builder["treeview_celltype"]
-      @celltype_tree_view = CelltypeTreeView.new @tree_view_celltype
+      @celltype_tree_view = CelltypeTreeView.new(@tree_view_celltype)
 
       #-----  -----#
       @frame_cell = @builder["frame_cell"]
@@ -112,21 +112,21 @@ module TECSCDE
       #----- cell name ENTRY -----#
       @entry_cell_name = @builder["entry_cell_name"]
       @entry_cell_name.signal_connect("activate") do |entry|
-        @control.on_cell_name_entry_active entry
+        @control.on_cell_name_entry_active(entry)
         false
       end
       @entry_cell_name.signal_connect("focus-out-event") do |entry, _event|
-        @control.on_cell_name_entry_focus_out entry
+        @control.on_cell_name_entry_focus_out(entry)
         false
       end
 
       @entry_cell_region = @builder["entry_cell_region"]
       @entry_cell_region.signal_connect("activate") do |entry|
-        @control.on_cell_region_entry_active entry
+        @control.on_cell_region_entry_active(entry)
         false
       end
       @entry_cell_region.signal_connect("focus-out-event") do |entry, _event|
-        @control.on_cell_region_entry_focus_out entry
+        @control.on_cell_region_entry_focus_out(entry)
         false
       end
 
@@ -167,7 +167,7 @@ module TECSCDE
 
     def set_view(view)
       @window.set_transient_for(view.get_window)
-      @window.window.set_group view.get_window.window
+      @window.window.set_group(view.get_window.window)
       @window.window.raise
     end
   end

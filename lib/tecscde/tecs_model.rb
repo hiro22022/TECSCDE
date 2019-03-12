@@ -187,8 +187,8 @@ module TECSCDE
     # namespace_path::String : namespace path string of celltype
     def new_cell(xm, ym, celltype_name, ct_namespace_path, tecsgen_cell = nil)
       ct_nsp = NamespacePath.analyze(ct_namespace_path)
-      ct_nsp.append! celltype_name.to_sym
-      ct = Namespace.find ct_nsp
+      ct_nsp.append!(celltype_name.to_sym)
+      ct = Namespace.find(ct_nsp)
       if ct.nil?
         TECSCDE.logger.error("TM9999 celltype #{ct_nsp}: not found for cell #{@name}")
         return
@@ -236,8 +236,8 @@ module TECSCDE
     # don't call externally, use TmCell#delete instead
     def delete_cell(cell)
       modified do
-        @cell_list.delete cell
-        @cell_hash.delete cell.get_name # mikan region
+        @cell_list.delete(cell)
+        @cell_hash.delete(cell.get_name) # mikan region
       end
     end
 
@@ -260,7 +260,7 @@ module TECSCDE
           TECSCDE.message_box("'#{new_name}' already exists", nil)
           return false
         end
-        @cell_hash.delete cell.get_name
+        @cell_hash.delete(cell.get_name)
         @cell_hash[new_name] = cell
         return true
       end
@@ -279,7 +279,7 @@ module TECSCDE
     # don't call externally. call TmJoin#delete instead
     def delete_join(join)
       modified do
-        @join_list.delete join
+        @join_list.delete(join)
       end
     end
 
@@ -349,7 +349,7 @@ module TECSCDE
     #=== TECSModel#get_region_from_tecsgen_region
     def get_region_from_tecsgen_region(tecsgen_region)
       nsp = tecsgen_region.get_namespace_path
-      get_region_from_namespace_path nsp
+      get_region_from_namespace_path(nsp)
     end
 
     #=== TECSModel#get_region_from_namespace_path
@@ -358,7 +358,7 @@ module TECSCDE
       region = @root_region
       i = 0
       while i < path_array.length
-        region = region.get_region path_array[i]
+        region = region.get_region(path_array[i])
         i += 1
       end
       region
@@ -404,7 +404,7 @@ module TECSCDE
     #=== TECSModel.clone_for_undo
     def clone_for_undo
       bu = clone
-      bu.copy_from self
+      bu.copy_from(self)
       bu
     end
 
@@ -414,9 +414,9 @@ module TECSCDE
         val = model.instance_variable_get(iv)
         instance_variable_set(iv, val)
       end
-      @cell_list = (model.instance_variable_get :@cell_list).dup
-      @cell_hash = (model.instance_variable_get :@cell_hash).dup
-      @join_list = (model.instance_variable_get :@join_list).dup
+      @cell_list = (model.instance_variable_get(:@cell_list)).dup
+      @cell_hash = (model.instance_variable_get(:@cell_hash)).dup
+      @join_list = (model.instance_variable_get(:@join_list)).dup
     end
 
     def model
@@ -545,7 +545,7 @@ module TECSCDE
     #=== TECSModel#create_join_from_tecsgen
     def create_join_from_tecsgen(cell, join, cell_list)
       # p join.get_name
-      object = cell.get_celltype.find join.get_name
+      object = cell.get_celltype.find(join.get_name)
       # p "OBJECT CLASS #{object.class}"
       if object.instance_of?(::Port)
         return unless object.get_port_type == :CALL
@@ -563,7 +563,7 @@ module TECSCDE
         # eport = rhs_cell.eports[ join.get_port_name ]
         eport = rhs_cell.get_eport_for_new_join(join.get_port_name, join.get_rhs_subscript1)
         # p "new_join #{lhs_cell.get_name}.#{cport.get_name} => #{rhs_cell.get_name}.#{eport.get_name}"
-        new_join_ = new_join cport, eport
+        new_join_ = new_join(cport, eport)
         new_join_.set_editable(join.get_locale)
       else
         cell_list[cell].set_attr(join.get_name, join.get_rhs.to_CDL_str)
@@ -644,7 +644,7 @@ module TECSCDE
                 next
               end
             end
-            port.set_position edge, offset
+            port.set_position(edge, offset)
           end
         else
           @cell_hash.each do |a, _b|
@@ -687,24 +687,24 @@ module TECSCDE
         next if cp_cell.nil?
         next if ep_cell.nil?
         cport = cp_cell.cports[cp_name]
-        if cport.is_a? TmCPortArray
+        if cport.is_a?(TmCPortArray)
           if cp_subscript.nil?
             TECSCDE.logger.error("TM9999 location information ignored #{cp_name} is array but not specified subscript")
             next
           end
-          cport = cport.get_member cp_subscript
+          cport = cport.get_member(cp_subscript)
         else
           if cp_subscript
             TECSCDE.logger.error("TM9999 #{cp_name} is not array but specified subscript")
           end
         end
         eport = ep_cell.eports[ep_name]
-        if eport.is_a? TmEPortArray
+        if eport.is_a?(TmEPortArray)
           if ep_subscript.nil?
             TECSCDE.logger.error("TM9999 location information ignored #{ep_name} is array but not specified subscript")
             next
           end
-          eport = eport.get_member ep_subscript
+          eport = eport.get_member(ep_subscript)
         else
           if ep_subscript
             TECSCDE.logger.error("TM9999 #{ep_name} is not array but specified subscript")
@@ -752,10 +752,10 @@ module TECSCDE
           # mikan length more than 2
           len = bars.length
           if len >= 0.1
-            bars[len - 1].set_position eport.get_position_in_normal_dir
-            bars[len - 2].set_position eport.get_position_in_tangential_dir
+            bars[len - 1].set_position(eport.get_position_in_normal_dir)
+            bars[len - 2].set_position(eport.get_position_in_tangential_dir)
             # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
-            cport.get_join.change_bars bars
+            cport.get_join.change_bars(bars)
           end
         end
       end
@@ -942,7 +942,7 @@ module TECSCDE
           bars = []
           bar_list.each do |bar_info|
             # bar_list: array of [ IDENTIFER, position ] => bars ( array of HBar or VBar )
-            pos = bar_info[1].eval_const nil
+            pos = bar_info[1].eval_const(nil)
             if !pos.nil? && bar_info[0] == :HBar
               bar = HBar.new(pos, cport.get_join)
               bars << bar
@@ -957,10 +957,10 @@ module TECSCDE
           # mikan length more than 2
           len = bars.length
           if len >= 2
-            bars[len - 1].set_position eport.get_position_in_normal_dir
-            bars[len - 2].set_position eport.get_position_in_tangential_dir
+            bars[len - 1].set_position(eport.get_position_in_normal_dir)
+            bars[len - 2].set_position(eport.get_position_in_tangential_dir)
             # p "bar changed for #{cp_cell_nspath}.#{cport.get_name}"
-            cport.get_join.change_bars bars
+            cport.get_join.change_bars(bars)
           end
         end
       end

@@ -132,10 +132,10 @@ module TECSCDE
         w = w_min if w < w_min
         h = h_min if h < h_min
 
-        @x = TECSCDE::TECSModel.round_length_val x
-        @y = TECSCDE::TECSModel.round_length_val y
-        @width = TECSCDE::TECSModel.round_length_val w
-        @height = TECSCDE::TECSModel.round_length_val h
+        @x = TECSCDE::TECSModel.round_length_val(x)
+        @y = TECSCDE::TECSModel.round_length_val(y)
+        @width = TECSCDE::TECSModel.round_length_val(w)
+        @height = TECSCDE::TECSModel.round_length_val(h)
       end
 
       #=== TmCell#delete ***
@@ -148,7 +148,7 @@ module TECSCDE
           @eports.each do |_name, eport|
             eport.delete
           end
-          @owner.delete_cell self
+          @owner.delete_cell(self)
         end
       end
 
@@ -216,7 +216,7 @@ module TECSCDE
 
       #=== TmCell::get_near_port ***
       def get_near_port(x, y)
-        (@cports.merge @eports).each do |_name, port|
+        (@cports.merge(@eports)).each do |_name, port|
           if port.is_a?(TECSCDE::TECSModel::TmPort)
             xp, yp = port.get_position
           else
@@ -294,12 +294,12 @@ module TECSCDE
       # port::TmPort : insert after the port
       def adjust_port_position_to_insert(port)
         # p "adjust_port_position_to_insert"
-        nearest_port = find_nearest_next_port port
+        nearest_port = find_nearest_next_port(port)
         if nearest_port
           dist = (nearest_port.offset - port.offset)
           if dist < (DIST_PORT * 2)
             offs = (DIST_PORT * 2) - dist
-            adjust_port_position_after_port port, offs
+            adjust_port_position_after_port(port, offs)
           end
         end
       end
@@ -405,7 +405,7 @@ module TECSCDE
       def set_attr(name, init)
         modified do
           if init.nil?
-            @attr_list.delete name
+            @attr_list.delete(name)
           else
             @attr_list[name] = init
           end
@@ -470,7 +470,7 @@ module TECSCDE
       #=== TmCell#clone_for_undo
       def clone_for_undo
         bu = clone
-        bu.copy_from self
+        bu.copy_from(self)
         bu
       end
 

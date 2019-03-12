@@ -109,3 +109,17 @@ Style/YodaCondition:
   EnforcedStyle: forbid_for_equality_operators_only
 Style/TernaryParentheses:
   EnforcedStyle: require_parentheses_when_complex
+Style/MethodCallWithArgsParentheses:
+  Exclude:
+    - "**/*.rake"
+    - "Rakefile"
+    - "Gemfile"
+  Enabled: true
+  IgnoredMethods:
+    - p
+    - pp
+    - puts
+    - print
+    - printf
+    - raise
+    - require

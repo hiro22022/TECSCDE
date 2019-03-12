@@ -167,7 +167,7 @@ module TECSCDE
 
     def on_cell_name_entry_active(entry)
       @b_cell_renaming = true
-      @highlighted_objects.change_cell_name entry.text
+      @highlighted_objects.change_cell_name(entry.text)
       @b_cell_renaming = false
       update
     end
@@ -175,7 +175,7 @@ module TECSCDE
     def on_cell_name_entry_focus_out(entry)
       return if @b_cell_renaming
       # to avoid nested message box dialog in error case
-      @highlighted_objects.change_cell_name entry.text
+      @highlighted_objects.change_cell_name(entry.text)
       update
     end
 
@@ -216,7 +216,7 @@ module TECSCDE
 
     #----- palette -----#
     def create_new_operation_window
-      @palette = TECSCDE::Palette.new self
+      @palette = TECSCDE::Palette.new(self)
       # @palette.get_entry_cell_name
       # @palette.get_attrTreeView
     end
@@ -225,14 +225,14 @@ module TECSCDE
 
     def set_view(view)
       @view = view
-      @attr_tree_view.set_view view
+      @attr_tree_view.set_view(view)
 
       # keep controlWindow above mainWindow
       @window.set_transient_for(@view.get_window)
-      @window.window.set_group @view.get_window.window
+      @window.window.set_group(@view.get_window.window)
       @window.window.raise
 
-      @palette.set_view view
+      @palette.set_view(view)
     end
 
     #----- canvas events action -----#
@@ -247,7 +247,7 @@ module TECSCDE
       if @sub_mode == :SM_EDIT_CELL_NAME
         name = @view.end_edit_name
         # p "end_edit_name name=#{name}"
-        @highlighted_objects.change_cell_name name
+        @highlighted_objects.change_cell_name(name)
         @sub_mode = :SM_NONE
       end
 
@@ -255,11 +255,11 @@ module TECSCDE
 
       return unless button == 1
 
-      object = find_near xm, ym
+      object = find_near(xm, ym)
       if object.is_a?(TECSModel::TmCell) && click_count == 2
         if object.editable?
           # p "begin_edit_name"
-          @view.begin_edit_name object, time
+          @view.begin_edit_name(object, time)
           @highlighted_objects.reset(object)
           @sub_mode = :SM_EDIT_CELL_NAME
         end
@@ -270,15 +270,15 @@ module TECSCDE
           @highlighted_objects.add(object)
         elsif state.control_mask?
           @highlighted_objects.add_del(object)
-        elsif !@highlighted_objects.include? object
+        elsif !@highlighted_objects.include?(object)
           @highlighted_objects.reset(object)
         end
-        @view.draw_highlight_objects @highlighted_objects
-      elsif object.is_a? TECSModel::TmCPort
+        @view.draw_highlight_objects(@highlighted_objects)
+      elsif object.is_a?(TECSModel::TmCPort)
         # p "FOUND TmCPort"
         if state.shift_mask?
           @sub_mode = :SM_MOVING_CPORT
-          @highlighted_objects.add object
+          @highlighted_objects.add(object)
         elsif state.control_mask?
           @sub_mode = :SM_MOVING_CPORT
           @highlighted_objects.reset(object)
@@ -286,7 +286,7 @@ module TECSCDE
           @sub_mode = :SM_JOINING
           @highlighted_objects.reset
           @cport_joining = object
-          @view.set_cursor TECSCDE::CURSOR_JOINING
+          @view.set_cursor(TECSCDE::CURSOR_JOINING)
         else
           TECSCDE.message_box(<<~MESSAGE, :OK)
             Call port has already been joined.
@@ -294,15 +294,15 @@ module TECSCDE
             If you want to highlighted port, click with pressing shift key.
           MESSAGE
         end
-      elsif object.is_a? TECSModel::TmEPort
+      elsif object.is_a?(TECSModel::TmEPort)
         @sub_mode = :SM_MOVING_EPORT
         if state.shift_mask?
-          @highlighted_objects.add object
+          @highlighted_objects.add(object)
         elsif state.control_mask?
           @highlighted_objects.add_del(object)
         else
           # p "FOUND TmEPort"
-          @highlighted_objects.reset object
+          @highlighted_objects.reset(object)
         end
       else
         # p "NOT FOUND"
@@ -312,7 +312,7 @@ module TECSCDE
             cell = @model.new_cell(xm, ym, ctn, nsp)
             @model.set_undo_point
           end
-          @highlighted_objects.reset cell
+          @highlighted_objects.reset(cell)
         else
           @highlighted_objects.reset
         end
@@ -326,11 +326,11 @@ module TECSCDE
       x_inc = xm - @last_xm
       y_inc = ym - @last_ym
 
-      q, r = x_inc.divmod TECSModel.get_alignment
+      q, r = x_inc.divmod(TECSModel.get_alignment)
       x_inc2 = TECSModel.get_alignment * q
       @last_xm = xm - r
 
-      q, r = y_inc.divmod TECSModel.get_alignment
+      q, r = y_inc.divmod(TECSModel.get_alignment)
       y_inc2 = TECSModel.get_alignment * q
       @last_ym = ym - r
 
@@ -340,29 +340,29 @@ module TECSCDE
           cell_bar.move(x_inc2, y_inc2)
         end
         @view.refresh_canvas
-        @view.draw_highlight_objects @highlighted_objects
+        @view.draw_highlight_objects(@highlighted_objects)
       when :SM_MOVING_CPORT, :SM_MOVING_EPORT
         @highlighted_objects.each do |port|
           port.move(x_inc2, y_inc2)
         end
         update
         @view.refresh_canvas
-        @view.draw_highlight_objects @highlighted_objects
+        @view.draw_highlight_objects(@highlighted_objects)
       when :SM_JOINING
-        object = find_near xm, ym
-        if object.is_a? TECSModel::TmEPort
+        object = find_near(xm, ym)
+        if object.is_a?(TECSModel::TmEPort)
           if object.get_signature == @cport_joining.get_signature
-            @view.set_cursor TECSCDE::CURSOR_JOIN_OK
+            @view.set_cursor(TECSCDE::CURSOR_JOIN_OK)
           end
           # update
         end
 
       when :SM_NONE
-        object = find_near xm, ym
-        if object.is_a? TECSModel::TmCPort
-          @view.set_cursor TECSCDE::CURSOR_PORT
+        object = find_near(xm, ym)
+        if object.is_a?(TECSModel::TmCPort)
+          @view.set_cursor(TECSCDE::CURSOR_PORT)
         else
-          @view.set_cursor TECSCDE::CURSOR_NORMAL
+          @view.set_cursor(TECSCDE::CURSOR_NORMAL)
         end
       end
     end
@@ -377,8 +377,8 @@ module TECSCDE
         # update
         @model.set_undo_point
       when :SM_JOINING
-        object = find_near xm, ym
-        if object.is_a? TECSModel::TmEPort
+        object = find_near(xm, ym)
+        if object.is_a?(TECSModel::TmEPort)
           if object.get_signature == @cport_joining.get_signature
             join = @model.new_join(@cport_joining, object)
             @model.set_undo_point
@@ -386,7 +386,7 @@ module TECSCDE
           # update
         end
       end
-      @view.set_cursor TECSCDE::CURSOR_NORMAL
+      @view.set_cursor(TECSCDE::CURSOR_NORMAL)
       return if @sub_mode == :SM_EDIT_CELL_NAME
       update
       @sub_mode = :SM_NONE
@@ -398,18 +398,18 @@ module TECSCDE
       case keyval
       when 0xff     # delete key
         @highlighted_objects.each do |object|
-          if object.is_a? TECSModel::TmJoinBar
+          if object.is_a?(TECSModel::TmJoinBar)
             object.get_join.delete
-          elsif object.is_a? TECSModel::TmCell
+          elsif object.is_a?(TECSModel::TmCell)
             object.delete
-          elsif object.is_a? TECSModel::TmPort
+          elsif object.is_a?(TECSModel::TmPort)
             object.delete_highlighted
           end
         end
         @highlighted_objects.reset
       when 0x63     # Insert
         @highlighted_objects.each do |object|
-          if object.is_a? TECSModel::TmPort
+          if object.is_a?(TECSModel::TmPort)
             object.insert(state.shift_mask? ? :before : :after)
           end
         end
@@ -478,7 +478,7 @@ module TECSCDE
       ctl = @model.get_celltype_list
       return unless ctl
       ctl.each do |ct|
-        @celltype_tree_view.add ct
+        @celltype_tree_view.add(ct)
       end
     end
 

@@ -65,7 +65,7 @@ module TECSCDE
       if @owner
         @owner.model
       else
-        if is_a? TECSModel
+        if is_a?(TECSModel)
           raise "model: self is not TECSModel: #{self.class}"
         end
         self

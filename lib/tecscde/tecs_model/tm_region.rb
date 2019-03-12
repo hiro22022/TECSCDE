@@ -75,11 +75,11 @@ module TECSCDE
       end
 
       def delete_cell(cell)
-        @owner.delete_cell cell
+        @owner.delete_cell(cell)
       end
 
       def rename_cell(cell, name)
-        @owner.rename_cell cell, name
+        @owner.rename_cell(cell, name)
       end
 
       def get_region(name)
@@ -95,7 +95,7 @@ module TECSCDE
       #=== TmRegion#clone_for_undo
       def clone_for_undo
         bu = clone
-        bu.copy_from self
+        bu.copy_from(self)
         bu
       end
 
