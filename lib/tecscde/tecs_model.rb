@@ -286,7 +286,7 @@ module TECSCDE
     #=== TECSModel.normal direction of edge
     # RETURN:: 1: if direction is positive, -1: negative
     def self.get_sign_of_normal(edge_side)
-      ((edge_side & 0b01)) != 0 ? 1 : -1
+      (edge_side & 0b01) != 0 ? 1 : -1
     end
 
     #=== TECSModel.vertical?
