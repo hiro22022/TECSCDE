@@ -216,7 +216,7 @@ module TECSCDE
 
       #=== TmCell::get_near_port ***
       def get_near_port(x, y)
-        (@cports.merge(@eports)).each do |_name, port|
+        @cports.merge(@eports).each do |_name, port|
           if port.is_a?(TECSCDE::TECSModel::TmPort)
             xp, yp = port.get_position
           else

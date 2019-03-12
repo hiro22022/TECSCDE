@@ -414,9 +414,9 @@ module TECSCDE
         val = model.instance_variable_get(iv)
         instance_variable_set(iv, val)
       end
-      @cell_list = (model.instance_variable_get(:@cell_list)).dup
-      @cell_hash = (model.instance_variable_get(:@cell_hash)).dup
-      @join_list = (model.instance_variable_get(:@join_list)).dup
+      @cell_list = model.instance_variable_get(:@cell_list).dup
+      @cell_hash = model.instance_variable_get(:@cell_hash).dup
+      @join_list = model.instance_variable_get(:@join_list).dup
     end
 
     def model
