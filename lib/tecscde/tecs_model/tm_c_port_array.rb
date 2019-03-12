@@ -84,8 +84,8 @@ module TECSCDE
         @ports.all?(&:complete?)
       end
 
-      #=== TmCPortArray#is_optional?
-      def is_optional?
+      #=== TmCPortArray#optional?
+      def optional?
         @port_def.is_optional?
       end
 

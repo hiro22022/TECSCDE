@@ -496,7 +496,7 @@ module TECSCDE
             color_name = Color_uneditable
           end
         else
-          if port.is_a?(TECSModel::TmCPort) && !port.is_optional?
+          if port.is_a?(TECSModel::TmCPort) && !port.optional?
             color_name = Color_incomplete
           else
             color_name = Color_unjoin

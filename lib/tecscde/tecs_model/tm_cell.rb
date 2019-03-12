@@ -424,7 +424,7 @@ module TECSCDE
           end
         end
         @cports.each do |_name, cport|
-          if !cport.complete? && !cport.is_optional?
+          if !cport.complete? && !cport.optional?
             return false
           end
         end

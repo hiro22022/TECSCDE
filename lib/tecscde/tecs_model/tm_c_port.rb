@@ -106,8 +106,8 @@ module TECSCDE
         @join ? true : false
       end
 
-      #=== TmCPort#is_optional?
-      def is_optional?
+      #=== TmCPort#optional?
+      def optional?
         @port_def.is_optional?
       end
 
